@@ -40,6 +40,7 @@ for (const required of [
   "deploy/mibvendor-health.timer",
   "deploy/nginx.conf",
   ".github/workflows/production-monitor.yml",
+  ".github/workflows/parser-arm64.yml",
   "scripts/verify-production.sh",
   "docs/research/demand/validation-evidence.json",
   "docs/research/rights/permission-requests.json",
@@ -92,6 +93,21 @@ for (const requiredMonitorBoundary of [
 ]) {
   if (!productionMonitor.includes(requiredMonitorBoundary)) {
     failures.push(`Production monitor is missing boundary: ${requiredMonitorBoundary}`);
+  }
+}
+
+const arm64ParserWorkflow = await readFile(path.join(root, ".github", "workflows", "parser-arm64.yml"), "utf8");
+for (const requiredArm64Boundary of [
+  "workflow_dispatch:",
+  "permissions:\n  contents: read",
+  "runs-on: ubuntu-24.04-arm",
+  "test \"$(uname -m)\" = aarch64",
+  "run_containers.sh",
+  "validate_results.py",
+  "retention-days: 14"
+]) {
+  if (!arm64ParserWorkflow.includes(requiredArm64Boundary)) {
+    failures.push(`Linux arm64 parser workflow is missing boundary: ${requiredArm64Boundary}`);
   }
 }
 

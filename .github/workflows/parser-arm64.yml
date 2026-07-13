@@ -1,0 +1,40 @@
+name: Parser Linux arm64
+
+run-name: Parser Linux arm64 · ${{ github.sha }}
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reproduce:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Verify native runner and Docker architecture
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(uname -s)" = Linux
+          test "$(uname -m)" = aarch64
+          test "$(docker info --format '{{.Architecture}}')" = aarch64
+          df -h /
+
+      - name: Run pinned parser containers
+        run: experiments/parser-bakeoff/scripts/run_containers.sh "$RUNNER_TEMP/linux-arm64"
+
+      - name: Validate evidence without parser dependencies
+        run: python3 experiments/parser-bakeoff/scripts/validate_results.py "$RUNNER_TEMP/linux-arm64"
+
+      - name: Upload parser evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: parser-linux-arm64-${{ github.run_id }}
+          path: ${{ runner.temp }}/linux-arm64/*.json
+          if-no-files-found: error
+          retention-days: 14
+
