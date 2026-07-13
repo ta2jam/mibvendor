@@ -8,6 +8,7 @@ Type=oneshot
 User=deploy
 Group=deploy
 SupplementaryGroups=docker
+Environment=DOCKER_CONFIG=/tmp
 ExecStart=/srv/sites/mibvendor/app/deploy/mibvendor-health
 NoNewPrivileges=true
 PrivateTmp=true

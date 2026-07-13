@@ -3,6 +3,13 @@
 All notable changes are documented here. The project uses Semantic Versioning
 while it is pre-1.0; research releases may remain unstable.
 
+## [0.1.0-alpha.5] - 2026-07-13
+
+### Fixed
+
+- Isolated the host health service from the deploy user's Docker client
+  configuration, removing a harmless but recurring `ProtectHome` warning.
+
 ## [0.1.0-alpha.4] - 2026-07-13
 
 ### Added
@@ -65,6 +72,7 @@ while it is pre-1.0; research releases may remain unstable.
   evidence cannot be marked complete.
 - Repository checks and CI without production MIB data.
 
+[0.1.0-alpha.5]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.5
 [0.1.0-alpha.4]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.4
 [0.1.0-alpha.3]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.3
 [0.1.0-alpha.2]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.2
