@@ -1,6 +1,6 @@
 {
   "name": "mibvendor",
-  "version": "0.1.0-alpha.5",
+  "version": "0.1.0-alpha.6",
   "private": true,
   "description": "Research foundation and task prototype for a source-aware MIB browser and API",
   "license": "MIT",
@@ -10,7 +10,7 @@
     "check:rights": "python3 docs/research/rights/validate_rights_matrix.py",
     "check:rights-requests": "node scripts/validate-rights-requests.mjs",
     "check:demand": "node scripts/validate-demand-evidence.mjs",
-    "check:parser-results": "python3 experiments/parser-bakeoff/scripts/validate_results.py experiments/parser-bakeoff/results/2026-07-13-linux-amd64",
+    "check:parser-results": "python3 experiments/parser-bakeoff/scripts/validate_results.py experiments/parser-bakeoff/results/2026-07-13-linux-amd64 && python3 experiments/parser-bakeoff/scripts/validate_results.py experiments/parser-bakeoff/results/2026-07-14-linux-arm64 && python3 experiments/parser-bakeoff/scripts/validate_multiarch_results.py experiments/parser-bakeoff/results/2026-07-13-linux-amd64 experiments/parser-bakeoff/results/2026-07-14-linux-arm64",
     "check:production": "./scripts/verify-production.sh",
     "test": "node --test tests/*.test.mjs",
     "verify": "npm run check && npm run check:rights && npm run check:rights-requests && npm run check:demand && npm run check:parser-results && npm test",

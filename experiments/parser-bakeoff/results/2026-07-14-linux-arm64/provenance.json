@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "captured_on": "2026-07-14",
+  "workflow": {
+    "name": "Parser Linux arm64",
+    "run_id": 29294289938,
+    "url": "https://github.com/ta2jam/mibvendor/actions/runs/29294289938",
+    "head_sha": "299e0a367894081e2db05f8b37046082da3a0ba1",
+    "conclusion": "success"
+  },
+  "runner": {
+    "label": "ubuntu-24.04-arm",
+    "machine": "aarch64",
+    "execution_mode": "container"
+  },
+  "artifact": {
+    "id": 8296194154,
+    "name": "parser-linux-arm64-29294289938",
+    "retention_days": 14
+  },
+  "validation": {
+    "candidates": 3,
+    "synthetic_cases_per_candidate": 9,
+    "status": "passed",
+    "parser_gate": "provisional"
+  }
+}

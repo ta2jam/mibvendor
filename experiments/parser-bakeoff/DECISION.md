@@ -10,8 +10,8 @@ Net-SNMP to the application runtime; retain it only as a compatibility oracle
 for behaviors that must match common SNMP tooling.
 
 This is not a final selection. The 9-case synthetic run cannot establish vendor
-compatibility. Pinned containers now pass on Linux amd64, but no Linux arm64
-container run or rights-approved 100-case result exists.
+compatibility. Pinned containers pass on native Linux amd64 and arm64 with
+identical normalized case evidence, but no rights-approved 100-case result exists.
 
 ## Evidence
 

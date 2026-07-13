@@ -3,20 +3,31 @@
 This experiment compares PySMI 2.0.0, libsmi 0.5.0, and the Net-SNMP 5.9.4
 release archive against the same MIB inputs. It does not make the Phase 0 parser
 gate pass. The checked-in corpus has nine synthetic cases; the required
-rights-approved 100-case corpus and Linux arm64 reproduction are still missing.
+rights-approved 100-case corpus is still missing.
 
 ## Current result
 
-The current committed run was produced from the pinned containers on Linux
-amd64. Runtime networking was disabled, the root filesystem was read-only, and
-all output was written by the invoking host UID/GID. The earlier macOS arm64
-source-build result remains available as a separate baseline.
+The current committed runs were produced from the pinned containers on native
+Linux amd64 and arm64. Runtime networking was disabled, the root filesystem was
+read-only, and all output was written by the invoking host UID/GID. Both
+architectures produced identical normalized case evidence. The earlier macOS
+arm64 source-build result remains available as a separate baseline.
+
+Linux amd64:
 
 | Candidate | Valid parsed | Invalid rejected | Requested field checks | Normalized deterministic | Raw deterministic | Measured wall time | Peak child RSS | Container image |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | PySMI 2.0.0 | 6/6 | 3/3 | 10/10 | 9/9 | 3/9 | 32.830 s | 43,768 KiB | 55.4 MiB |
 | libsmi 0.5.0 | 6/6 | 3/3 | 10/10 | 9/9 | 9/9 | 0.185 s | 26,332 KiB | 47.0 MiB |
 | Net-SNMP 5.9.4 archive | 6/6 | 3/3 | 5/10 | 9/9 | 9/9 | 0.403 s | 26,624 KiB | 49.8 MiB |
+
+Linux arm64:
+
+| Candidate | Valid parsed | Invalid rejected | Requested field checks | Normalized deterministic | Raw deterministic | Measured wall time | Peak child RSS | Container image |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| PySMI 2.0.0 | 6/6 | 3/3 | 10/10 | 9/9 | 3/9 | 8.610 s | 42,312 KiB | 176.8 MiB |
+| libsmi 0.5.0 | 6/6 | 3/3 | 10/10 | 9/9 | 9/9 | 0.038 s | 25,404 KiB | 163.9 MiB |
+| Net-SNMP 5.9.4 archive | 6/6 | 3/3 | 5/10 | 9/9 | 9/9 | 0.069 s | 25,416 KiB | 171.4 MiB |
 
 Each candidate runs in a separate process. Peak RSS is a candidate-level child
 high-water mark, not a per-case measurement. Nine small cases mostly measure
@@ -69,7 +80,10 @@ hash-locked Python dependencies.
 The committed evidence can be checked without parser binaries or downloads:
 
 ```sh
-./scripts/validate_results.py results/2026-07-13-macos-arm64
+./scripts/validate_results.py results/2026-07-13-linux-amd64
+./scripts/validate_results.py results/2026-07-14-linux-arm64
+./scripts/validate_multiarch_results.py \
+  results/2026-07-13-linux-amd64 results/2026-07-14-linux-arm64
 ```
 
 ## Reproduce in pinned containers
@@ -84,11 +98,14 @@ with no network, a read-only root filesystem, and a bounded tmpfs.
 ```
 
 The committed Linux evidence is in
-[`results/2026-07-13-linux-amd64/`](results/2026-07-13-linux-amd64/). It verifies
+[`results/2026-07-13-linux-amd64/`](results/2026-07-13-linux-amd64/) and
+[`results/2026-07-14-linux-arm64/`](results/2026-07-14-linux-arm64/). It verifies
 container build correctness, exact parser versions, image sizes, runtime
-isolation, malformed-input rejection, and deterministic normalized output on
-amd64. The earlier unavailable-daemon record is retained as audit history, not
-as the current status.
+isolation, malformed-input rejection, deterministic normalized output, and
+cross-architecture normalized parity. The arm64 run is tied to its public
+[GitHub Actions execution](https://github.com/ta2jam/mibvendor/actions/runs/29294289938).
+The earlier unavailable-daemon record is retained as audit history, not as the
+current status.
 
 ## Measurement semantics
 
@@ -117,6 +134,8 @@ constant and energy costs in this small run.
 - `requirements-pysmi.txt`: exact packages and accepted wheel hashes.
 - `scripts/run_bakeoff.py`: adapters, normalization, metrics, and aggregation.
 - `scripts/validate_results.py`: dependency-free result consistency check.
+- `scripts/validate_multiarch_results.py`: architecture and normalized parity check.
 - `containers/`: one pinned Dockerfile per candidate.
 - `results/2026-07-13-macos-arm64/`: committed real local run.
 - `results/2026-07-13-linux-amd64/`: committed pinned-container run.
+- `results/2026-07-14-linux-arm64/`: committed native arm64 container run and provenance.
