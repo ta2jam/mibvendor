@@ -3,6 +3,20 @@
 All notable changes are documented here. The project uses Semantic Versioning
 while it is pre-1.0; research releases may remain unstable.
 
+## [0.1.0-alpha.3] - 2026-07-13
+
+### Changed
+
+- Moved the public alpha from GitHub Pages to the dedicated `mibvendor.io`
+  production origin on the shared VPS.
+- Added a pinned, non-root, read-only static runtime bound only to
+  `127.0.0.1:3001`, with explicit health and version endpoints.
+- Added container resource, process, capability, logging, and network limits.
+- Added a versioned host-Caddy site definition with strict browser security
+  headers and a localhost-only upstream.
+- Removed the GitHub Pages deployment workflow and all public Pages links.
+- Updated CI to current Node 24-compatible official GitHub actions.
+
 ## [0.1.0-alpha.2] - 2026-07-13
 
 ### Changed
@@ -31,5 +45,6 @@ while it is pre-1.0; research releases may remain unstable.
   evidence cannot be marked complete.
 - Repository checks and CI without production MIB data.
 
+[0.1.0-alpha.3]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.3
 [0.1.0-alpha.2]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.2
 [0.1.0-alpha.1]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.1

@@ -1,0 +1,46 @@
+name: mibvendor
+
+services:
+  app:
+    image: mibvendor:${APP_VERSION:?APP_VERSION is required}
+    build:
+      context: .
+      args:
+        APP_VERSION: ${APP_VERSION:?APP_VERSION is required}
+        VCS_REF: ${VCS_REF:?VCS_REF is required}
+        DATA_RELEASE: ${DATA_RELEASE:?DATA_RELEASE is required}
+    restart: unless-stopped
+    init: true
+    user: "101:101"
+    ports:
+      - 127.0.0.1:3001:8080
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:8080/healthz"]
+      interval: 15s
+      timeout: 5s
+      retries: 12
+      start_period: 5s
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 64M
+          pids: 64
+    logging:
+      driver: local
+      options:
+        max-size: 10m
+        max-file: "3"
+    networks:
+      - frontend
+
+networks:
+  frontend:
+    driver: bridge

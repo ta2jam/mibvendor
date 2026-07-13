@@ -32,6 +32,10 @@ for (const required of [
   "README.md",
   "docs/PHASE-0.md",
   "docs/PRODUCT.md",
+  "Dockerfile",
+  "compose.production.yaml",
+  "deploy/Caddyfile",
+  "deploy/nginx.conf",
   "prototype/index.html",
   "prototype/app.js",
   "prototype/core.mjs"
@@ -55,6 +59,9 @@ for (const forbidden of [
 ]) {
   if (forbidden.test(readme)) failures.push(`README contains a self-host/setup instruction matching ${forbidden}`);
 }
+if (readme.includes("ta2jam.github.io/mibvendor")) {
+  failures.push("README must point users to mibvendor.io, not GitHub Pages");
+}
 for (const requiredCopy of [
   "## Use the web application",
   "## Use it safely",
@@ -63,6 +70,45 @@ for (const requiredCopy of [
   "open source on GitHub"
 ]) {
   if (!readme.includes(requiredCopy)) failures.push(`README is missing required service copy: ${requiredCopy}`);
+}
+
+if (await exists(".github/workflows/pages.yml")) {
+  failures.push("GitHub Pages workflow must remain disabled; production runs on the VPS");
+}
+
+const dockerfile = await readFile(path.join(root, "Dockerfile"), "utf8");
+const productionCompose = await readFile(path.join(root, "compose.production.yaml"), "utf8");
+const caddySite = await readFile(path.join(root, "deploy", "Caddyfile"), "utf8");
+for (const requiredRuntimeBoundary of [
+  "@sha256:",
+  "USER 101:101"
+]) {
+  if (!dockerfile.includes(requiredRuntimeBoundary)) {
+    failures.push(`Dockerfile is missing production boundary: ${requiredRuntimeBoundary}`);
+  }
+}
+for (const requiredProxyBoundary of [
+  "www.mibvendor.io",
+  "mibvendor.io",
+  "reverse_proxy 127.0.0.1:3001",
+  "Content-Security-Policy",
+  "CF-Connecting-IP"
+]) {
+  if (!caddySite.includes(requiredProxyBoundary)) {
+    failures.push(`Caddy site is missing proxy boundary: ${requiredProxyBoundary}`);
+  }
+}
+for (const requiredRuntimeBoundary of [
+  "127.0.0.1:3001:8080",
+  "DATA_RELEASE: ${DATA_RELEASE:?DATA_RELEASE is required}",
+  "read_only: true",
+  "no-new-privileges:true",
+  "pids: 64",
+  "driver: bridge"
+]) {
+  if (!productionCompose.includes(requiredRuntimeBoundary)) {
+    failures.push(`Production Compose is missing runtime boundary: ${requiredRuntimeBoundary}`);
+  }
 }
 
 const allFiles = await walk(root);

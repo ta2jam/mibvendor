@@ -4,7 +4,7 @@
 
 **Find the right OID, understand its context, and use it with confidence.**
 
-[Open the public alpha](https://ta2jam.github.io/mibvendor/) ·
+[Open mibvendor](https://mibvendor.io) ·
 [Safe use](#use-it-safely) ·
 [API status](#api-status)
 
@@ -17,9 +17,8 @@ one place.
 
 ## Use the web application
 
-The official public alpha is available at
-[ta2jam.github.io/mibvendor](https://ta2jam.github.io/mibvendor/). It currently
-provides:
+The official public alpha is available at [mibvendor.io](https://mibvendor.io).
+It currently provides:
 
 - task, symbol, module, and numeric OID search;
 - scalar, table, index, enum, access, revision, and source context;
@@ -32,8 +31,7 @@ dataset. It is not yet the production MIB corpus.
 
 ## Use it safely
 
-- Use only the official service links published in this repository. The planned
-  production origin is `https://mibvendor.io`.
+- Use only the official service at `https://mibvendor.io`.
 - Never enter an SNMP community string, SNMPv3 credential, device password, API
   secret, or customer identifier into search or walk fields.
 - Walk text is decoded inside the browser tab. The current client makes no

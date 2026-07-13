@@ -15,7 +15,7 @@ it. Every criterion needs a dated artifact or observation.
 | API demand | 3 concrete integrations validated with builders | `docs/research/demand/` | 3 executable hypotheses; 0 external integrations |
 | Rights | Viable approved Tier A/B seed plus one vendor path | `docs/research/rights/` | Narrow IETF/IANA Tier A seed; 0 approved vendor paths |
 | Parser | One canonical parser selected from reproducible measurements | `experiments/parser-bakeoff/` | PySMI provisional; 9 synthetic local cases, 100-case/container gate open |
-| Prototype | Public task prototype available for sessions | `prototype/` | Passed: [public build](https://ta2jam.github.io/mibvendor/) returns 200; local-only walk decoding and 50,000-line baseline verified |
+| Prototype | Public task prototype available for sessions | `prototype/` | Passed: [mibvendor.io](https://mibvendor.io) is the production origin; local-only walk decoding and 50,000-line baseline verified |
 
 ## Decision rule
 

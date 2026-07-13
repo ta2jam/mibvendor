@@ -1,0 +1,7 @@
+*
+!Dockerfile
+!VERSION
+!deploy/
+!deploy/nginx.conf
+!prototype/
+!prototype/**
