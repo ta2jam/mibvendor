@@ -13,7 +13,7 @@ complete. Order is dependency-driven.
 | 6 | Send first-wave vendor rights requests from an accountable owner identity: Cisco, Juniper, Arista, HPE Aruba, Fortinet, Palo Alto Networks, VMware/Broadcom, NetApp, Dell, Synology. | A vendor-relevant public Tier A/B path. | Public corpus remains the narrow approved standards seed; vendor data stays Q/P. |
 | 7 | Supply or authorize a rights-approved 100-case parser corpus: 20 IETF/IANA, 20 valid vendor, 20 broken vendor, 20 revision-pair, and 20 collision/import cases. | Final canonical parser selection and real-vendor compatibility evidence. | Nine CC0 synthetic cases support only a provisional recommendation. |
 | 8 | Provide a Docker-compatible runtime for Linux arm64/amd64 reproduction before Phase 1. | Container build, image size, Linux CPU/RSS, and malformed-input verification. | Pinned local venv/source builds remain explicitly non-container evidence. |
-| 9 | Authenticate Cloudflare access locally or provide a least-privilege token for the `mibvendor.io` zone. | Mapping the research site to `mibvendor.io`. | Use the public GitHub Pages URL; production remains untouched. |
+| 9 | Run `npx wrangler login`, explicitly approve authenticated Chrome fallback, or provide a least-privilege token for the `mibvendor.io` zone. | Mapping the research site to `mibvendor.io`. | Use [the public GitHub Pages build](https://ta2jam.github.io/mibvendor/); production remains untouched. |
 
 ## Dependency notes
 

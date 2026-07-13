@@ -25,6 +25,8 @@ These claims are unproven until the gates in [Phase 0](docs/PHASE-0.md) pass.
 
 ## Research prototype
 
+Public build: <https://ta2jam.github.io/mibvendor/>
+
 ```bash
 npm run serve:prototype
 ```
