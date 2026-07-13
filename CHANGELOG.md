@@ -3,6 +3,18 @@
 All notable changes are documented here. The project uses Semantic Versioning
 while it is pre-1.0; research releases may remain unstable.
 
+## [0.1.0-alpha.2] - 2026-07-13
+
+### Changed
+
+- Reframed the top-level README around using the hosted mibvendor service
+  safely; removed local setup, self-hosting-adjacent, and API mock instructions.
+- Added prominent safe-use boundaries for browser-local walk decoding, official
+  origins, device credentials, source/revision confidence, and future API use.
+- Added a small open-source attribution to the README and public web footer.
+- Polished the public alpha copy and trust presentation without implying that
+  the production corpus or public API is already released.
+
 ## [0.1.0-alpha.1] - 2026-07-13
 
 ### Added
@@ -19,4 +31,5 @@ while it is pre-1.0; research releases may remain unstable.
   evidence cannot be marked complete.
 - Repository checks and CI without production MIB data.
 
+[0.1.0-alpha.2]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.2
 [0.1.0-alpha.1]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.1

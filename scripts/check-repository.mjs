@@ -45,6 +45,26 @@ if (packageJson.version !== version) {
   failures.push(`VERSION (${version}) and package.json (${packageJson.version}) differ`);
 }
 
+const readme = await readFile(path.join(root, "README.md"), "utf8");
+for (const forbidden of [
+  /\blocalhost\b/i,
+  /\bnpm\s+run\s+(?:serve|dev|build|verify)\b/i,
+  /\bdocker\s+compose\b/i,
+  /\bgit\s+clone\b/i,
+  /\bself[- ]host(?:ed|ing)?\b/i
+]) {
+  if (forbidden.test(readme)) failures.push(`README contains a self-host/setup instruction matching ${forbidden}`);
+}
+for (const requiredCopy of [
+  "## Use the web application",
+  "## Use it safely",
+  "## API status",
+  "The public mibvendor API is not released yet",
+  "open source on GitHub"
+]) {
+  if (!readme.includes(requiredCopy)) failures.push(`README is missing required service copy: ${requiredCopy}`);
+}
+
 const allFiles = await walk(root);
 for (const file of allFiles.filter((candidate) => candidate.endsWith(".json"))) {
   try {
@@ -89,6 +109,15 @@ for (const match of prototypeApp.matchAll(/querySelector\("#([^"]+)"\)/g)) {
 }
 if (!prototypeHtml.includes('<html lang="en">')) failures.push("Prototype must declare its document language");
 if (!prototypeHtml.includes('name="viewport"')) failures.push("Prototype must include a responsive viewport");
+for (const requiredCopy of [
+  "Local walk parsing",
+  "No device connections",
+  "Public API",
+  "Not released",
+  "open source on GitHub"
+]) {
+  if (!prototypeHtml.includes(requiredCopy)) failures.push(`Prototype is missing required trust copy: ${requiredCopy}`);
+}
 
 if (failures.length) {
   for (const failure of failures) console.error(`ERROR: ${failure}`);

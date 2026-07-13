@@ -38,8 +38,8 @@ VPS is also not production completion.
 
 ## Current Phase 0 boundary
 
-`v0.1.0-alpha.1` publishes research artifacts, a synthetic local API probe, and
-a static task prototype. It does not authorize a production database, vendor
+`v0.1.0-alpha.2` publishes research artifacts, a synthetic local API probe, and
+a static public alpha. It does not authorize a production database, vendor
 MIB publication, or VPS deployment. GitHub Pages may host the research
 prototype for user sessions; mapping `mibvendor.io` requires explicit
 Cloudflare access and does not turn the prototype into production.

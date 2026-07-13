@@ -48,7 +48,7 @@ function renderDetail(record, resultCount) {
       </div>
       <div>
         <span class="status-badge">${escapeHtml(record.kind)}</span>
-        <span class="source-badge">Source visible</span>
+        <span class="source-badge">Provenance included</span>
       </div>
     </div>
     <dl class="fact-grid">
@@ -87,7 +87,7 @@ function runSearch(query) {
       <div class="detail-header">
         <div><p class="eyebrow">No mock match</p><h2>${escapeHtml(query)}</h2></div>
       </div>
-      <p>This Phase 0 prototype has six standards-derived mock records. A production result must also show module revision, source, and rights scope.</p>
+      <p>This public alpha contains six standards-derived mock records. Production results must also show module revision, source, parse status, and rights scope.</p>
     `;
     return;
   }

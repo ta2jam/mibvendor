@@ -2,67 +2,70 @@
 
 # mibvendor
 
-**A task-first, source-aware MIB browser, walk decoder, and API.**
+**Find the right OID, understand its context, and use it with confidence.**
+
+[Open the public alpha](https://ta2jam.github.io/mibvendor/) ·
+[Safe use](#use-it-safely) ·
+[API status](#api-status)
 
 </div>
 
-> [!WARNING]
-> This repository is in Phase 0 validation. The prototype uses synthetic and
-> standards-derived mock records; it is not a production MIB corpus or parser.
+mibvendor is a task-first MIB browser and walk decoder for monitoring engineers
+and tool developers. Search by numeric OID, symbol, module, or monitoring intent;
+then see the table/index meaning, usable command, revision, and source context in
+one place.
 
-mibvendor is being designed for monitoring engineers and tool developers who
-need to resolve OIDs, understand table/index semantics, decode existing
-`snmpwalk` output, and cite the exact source revision behind a result.
+## Use the web application
 
-The product claim is not "a prettier MIB tree." The claims under test are:
+The official public alpha is available at
+[ta2jam.github.io/mibvendor](https://ta2jam.github.io/mibvendor/). It currently
+provides:
 
-1. task-oriented resolution is materially faster than browsing module trees;
-2. local-first walk decoding removes a recurring manual interpretation cost;
-3. revision and provenance metadata are useful enough to become an API
-   contract, not decoration.
+- task, symbol, module, and numeric OID search;
+- scalar, table, index, enum, access, revision, and source context;
+- copy-ready polling guidance;
+- browser-local decoding of numeric `snmpwalk` output;
+- explicit unresolved results instead of silent guesses.
 
-These claims are unproven until the gates in [Phase 0](docs/PHASE-0.md) pass.
+The current alpha uses a small synthetic and standards-derived demonstration
+dataset. It is not yet the production MIB corpus.
 
-## Research prototype
+## Use it safely
 
-Public build: <https://ta2jam.github.io/mibvendor/>
+- Use only the official service links published in this repository. The planned
+  production origin is `https://mibvendor.io`.
+- Never enter an SNMP community string, SNMPv3 credential, device password, API
+  secret, or customer identifier into search or walk fields.
+- Walk text is decoded inside the browser tab. The current client makes no
+  network request for walk decoding and the public service never connects to an
+  SNMP device.
+- Treat every result according to its visible source, revision, parse status,
+  and permitted output scope. A MIB definition does not prove that a specific
+  device or firmware implements the object.
+- Do not treat third-party mirrors or unofficial API endpoints as mibvendor
+  services.
 
-```bash
-npm run serve:prototype
-```
+## API status
 
-Open <http://localhost:4173>. The prototype has no runtime dependencies and no
-network calls. Walk text stays in the browser process.
+The public mibvendor API is not released yet. The experimental repository probe
+is not a hosted service and is not a supported integration target.
 
-Three API integration hypotheses can be exercised against a synthetic, local
-contract probe:
+When the API opens, its official versioned origin will be published under
+`https://mibvendor.io/v1`. Clients will be expected to send bounded numeric OID
+batches—not raw walks, device credentials, hostnames, or serial numbers—and to
+pin results to the returned immutable data-release identifier.
 
-```bash
-npm run serve:api-mock
-```
+No third party is currently authorized to sell API keys or claim an official
+mibvendor integration.
 
-The probe at <http://127.0.0.1:4010> is deliberately non-production and returns
-only the six mock objects used by the browser prototype. It exists to expose
-contract gaps during Phase 0 interviews.
+## Data trust
 
-## Verification
+Public availability is not redistribution permission. mibvendor reviews
+metadata indexing, rendered text, API output, raw download, and bulk export as
+separate rights scopes. Unknown-rights vendor material does not enter public
+results merely because it can be downloaded elsewhere.
 
-```bash
-npm run verify
-```
+Current validation and data boundaries are published in the
+[Phase 0 status](docs/PHASE-0.md) and [product definition](docs/PRODUCT.md).
 
-## Repository boundaries
-
-- Application code is MIT-licensed.
-- No third-party vendor MIB is bundled merely because it is publicly reachable.
-- Rights are reviewed independently for metadata indexing, rendered text, API
-  output, raw download, and bulk export.
-- Unknown-rights material is QA/private input, not public output.
-- The public service will never connect to an SNMP device.
-
-See [product definition](docs/PRODUCT.md), [roadmap](docs/ROADMAP.md), and the
-[research index](docs/research/README.md). Work requiring the repository owner's
-identity, participants, vendor permission, or Cloudflare access is tracked in
-the [owner action register](docs/ACTIONS.md). The repository's binding
-commit/tag/CI/VPS synchronization meaning of `prod'a al` is defined in the
-[release contract](docs/RELEASE.md).
+<div align="center"><sub>The mibvendor application and research foundation are open source on GitHub.</sub></div>

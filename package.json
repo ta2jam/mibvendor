@@ -1,6 +1,6 @@
 {
   "name": "mibvendor",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "private": true,
   "description": "Research foundation and task prototype for a source-aware MIB browser and API",
   "license": "MIT",

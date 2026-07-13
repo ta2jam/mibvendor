@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Task prototype for a source-aware MIB browser and local walk decoder.">
-    <title>mibvendor — research prototype</title>
+    <meta name="description" content="Find OIDs, understand MIB context, and decode numeric SNMP walks safely in your browser.">
+    <title>mibvendor — MIB context without the maze</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -14,18 +14,18 @@
       <nav aria-label="Primary navigation">
         <a href="#search">OID search</a>
         <a href="#decoder">Walk decoder</a>
-        <a href="#research">Research status</a>
+        <a href="#safe-use">Safe use</a>
       </nav>
-      <span class="prototype-badge">Research prototype</span>
+      <span class="alpha-badge">Public alpha</span>
     </header>
 
     <main id="main">
       <section class="hero" aria-labelledby="hero-title">
-        <p class="eyebrow">From monitoring intent to usable OID context</p>
-        <h1 id="hero-title">Find the object. Understand the index. Use it correctly.</h1>
+        <p class="eyebrow">MIB context without the maze</p>
+        <h1 id="hero-title">Find the object. Understand the index. Use it with confidence.</h1>
         <p class="hero-copy">
-          Search by OID, symbol, module, or task. Every result keeps revision and
-          source context visible.
+          Search by OID, symbol, module, or monitoring task. Go from a numeric
+          leaf to table meaning, a usable command, and traceable source context.
         </p>
 
         <form id="search" class="search-form" role="search">
@@ -48,6 +48,12 @@
             <button type="button" data-query="processor load">processor load</button>
           </div>
         </form>
+
+        <ul class="trust-strip" aria-label="Service trust boundaries">
+          <li><strong>Local walk parsing</strong><span>Values stay in this browser tab</span></li>
+          <li><strong>No device connections</strong><span>mibvendor never polls your equipment</span></li>
+          <li><strong>Source-aware answers</strong><span>Revision and provenance stay visible</span></li>
+        </ul>
       </section>
 
       <section class="workspace" aria-label="OID result workspace">
@@ -63,6 +69,46 @@
         <article id="object-detail" class="detail-panel" aria-live="polite">
           <p>Search for an object to see its operational context.</p>
         </article>
+      </section>
+
+      <section id="safe-use" class="safety-section" aria-labelledby="safe-use-title">
+        <div class="section-intro safety-heading">
+          <div>
+            <p class="eyebrow">Secure by boundary</p>
+            <h2 id="safe-use-title">Use mibvendor without handing over your network.</h2>
+          </div>
+          <p>
+            OID context does not require device access. Keep operational secrets
+            out of every field and use only official mibvendor service origins.
+          </p>
+        </div>
+
+        <div class="safety-grid">
+          <article class="safety-card">
+            <span class="card-number" aria-hidden="true">01</span>
+            <div>
+              <h3>Web application</h3>
+              <p>Search definitions and decode numeric walks without entering community strings, SNMPv3 credentials, device passwords, or customer identifiers.</p>
+            </div>
+          </article>
+          <article class="safety-card">
+            <span class="card-number" aria-hidden="true">02</span>
+            <div>
+              <h3>Walk decoder</h3>
+              <p>Raw walk values are parsed locally in this tab. The current decoder makes no network request and retains nothing after the tab closes.</p>
+            </div>
+          </article>
+          <article class="safety-card api-card">
+            <span class="card-number" aria-hidden="true">03</span>
+            <div>
+              <div class="card-title-row">
+                <h3>Public API</h3>
+                <span class="api-status">Not released</span>
+              </div>
+              <p>When available, use only <code>https://mibvendor.io/v1</code>. Send bounded numeric OID batches—not raw walks, credentials, hostnames, or serial numbers.</p>
+            </div>
+          </article>
+        </div>
       </section>
 
       <section id="decoder" class="decoder-section" aria-labelledby="decoder-title">
@@ -114,20 +160,19 @@
       </section>
 
       <section id="research" class="research-section" aria-labelledby="research-title">
-        <p class="eyebrow">Evidence gate</p>
-        <h2 id="research-title">The product claim is still under validation.</h2>
+        <p class="eyebrow">Data trust</p>
+        <h2 id="research-title">Every answer should say where it came from.</h2>
         <p>
-          This is not a production corpus. Public data will be restricted by
-          source-specific rights scopes, and parser choice will follow a
-          reproducible comparison. Forum posts do not replace observed user
-          sessions.
+          mibvendor keeps source, revision, parse status, and rights scope in the
+          result model. Unknown-rights vendor material is not promoted into the
+          public service merely because it is available elsewhere.
         </p>
-        <a href="https://github.com/ta2jam/mibvendor/blob/main/docs/PHASE-0.md">View Phase 0 criteria</a>
       </section>
     </main>
 
     <footer>
-      <p>mibvendor.io · Phase 0 research prototype · No device connections</p>
+      <p>mibvendor.io · No device connections · Source-aware by design</p>
+      <p class="open-source-note">The application is <a href="https://github.com/ta2jam/mibvendor">open source on GitHub</a>.</p>
     </footer>
 
     <script type="module" src="app.js"></script>

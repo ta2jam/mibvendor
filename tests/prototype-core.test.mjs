@@ -87,3 +87,14 @@ test("browser prototype contains no network transport primitive", async () => {
   assert.doesNotMatch(joined, /\bfetch\s*\(/);
   assert.doesNotMatch(joined, /XMLHttpRequest|WebSocket|sendBeacon/);
 });
+
+test("public page states safe-use and API availability boundaries", async () => {
+  const html = await readFile(new URL("../prototype/index.html", import.meta.url), "utf8");
+  assert.match(html, /Local walk parsing/);
+  assert.match(html, /No device connections/);
+  assert.match(html, /Public API/);
+  assert.match(html, /Not released/);
+  assert.match(html, /https:\/\/mibvendor\.io\/v1/);
+  assert.match(html, /open source on GitHub/);
+  assert.doesNotMatch(html, /community string[^<]*value|SNMPv3 credential[^<]*value/i);
+});
