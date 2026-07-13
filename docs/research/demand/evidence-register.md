@@ -1,0 +1,46 @@
+# Evidence register
+
+Reviewed 2026-07-13. Links point to the originating post, official documentation, product page, or official store listing rather than a search-results page.
+
+| ID | Source | Directly supports | Quality and limits |
+|---|---|---|---|
+| S01 | [Junior engineer cannot translate a manufacturer walk after downloading the MIB](https://www.reddit.com/r/networking/comments/wwtw8o/snmpwalk_issue_with_a_manufacturer_mib/) | Loading paths/configuration and translating numeric walks are beginner blockers. | First-person report; one user; successful fix reported. |
+| S02 | [User has imported OIDs but cannot find temperature or use relational OIDs](https://www.reddit.com/r/networking/comments/1eoaayc/snmp_helpquestion/) | Desired-metric search, table semantics, device validation, and trial-and-error. | First-person report plus several practitioner replies; not a controlled study. |
+| S03 | [Nokia operator cannot find the OID for a known CLI value](https://www.reddit.com/r/networking/comments/1czv5h8/finding_snmp_miboid_for_specific_data/) | Search by operational intent, vendor support delay, walk/diff workflow, service availability risk. | First-person report; replies describe concrete workflow; one commenter reports two reference sites offline. |
+| S04 | [CPU/RAM/temperature OIDs remain unfound after trying MIB browsers](https://www.reddit.com/r/networking/comments/wjgbrv/snmp_oids_for_cpu_and_ram_properties/) | A metric may be vendor-specific, firmware-dependent, absent, or better exposed by another protocol. | First-person report and practitioner replies; device-specific. |
+| S05 | [MIBs are required to interpret table indexes and traps](https://www.reddit.com/r/networking/comments/x93hmy/are_snmp_mibs_required/) | Scalar/table distinction, INDEX semantics, notification translation. | Detailed worked example; informal source. |
+| S06 | [Dynamic VLAN value requires correlating an index/table](https://www.reddit.com/r/networking/comments/1cu83fd/snmp_mib_to_retrieve_dynamic_vlan_assignment_on/) | Dynamic indexes can produce a syntactically valid but semantically wrong value. | First-person operational example; one device family. |
+| S07 | [47 Zabbix items took almost two entire days](https://www.reddit.com/r/zabbix/comments/1f4sbop/snmp_custom_template/) | Manual MIB-to-template mapping can consume material time. | Explicit duration and item count; single report. |
+| S08 | [After weeks of investigation, user still does not know how to turn an OID into a Zabbix item](https://www.reddit.com/r/zabbix/comments/d0rd6k/oid_template_creation_for_snmp_monitoring/) | Strong time-loss signal and confusion between numeric OID polling and MIB installation. | Explicit duration; single historical report. |
+| S09 | [New user cannot convert vendor MIBs to a useful Zabbix template](https://www.reddit.com/r/zabbix/comments/1o97g5n/mib_conversion_help/) | Whole-MIB conversion creates too many useless items; selection is the real job. | First-person report and expert reply; recent but not quantified. |
+| S10 | [Zabbix/MIB discussion: generated templates can be mostly junk](https://www.reddit.com/r/zabbix/comments/1i2qmmm/zabbix_and_snmp_mibs/) | Users need selected objects and numeric OIDs, not a blind full conversion. | Multiple replies; no task timing. |
+| S11 | [User seeks paid help for Cisco/BGP MIB integration](https://www.reddit.com/r/zabbix/comments/1qrufm9/seeking_zabbix_assistance_snmp_mib_customization/) | Willingness to pay for help exists in at least one case, but does not prove SaaS willingness to pay. | Direct paid-help request; very small sample. |
+| S12 | [LibreNMS: adding a MIB alone does not add monitoring](https://community.librenms.org/t/custom-mibs/2883) | MIB discovery must be translated into platform-specific definitions. | Direct support exchange; historical. |
+| S13 | [LibreNMS: a MIB can contain hundreds of objects that vary by hardware, software, or license](https://community.librenms.org/t/mibs-discovery-yaml/19292/2) | Users must identify the useful object and validate applicability. | Practitioner explanation; no quantified frequency. |
+| S14 | [LibreNMS custom OID request describes the extension as complicated](https://community.librenms.org/t/how-to-add-custom-oid/311) | Copy-ready platform guidance may reduce integration friction. | First-person qualitative report; historical. |
+| S15 | [Zabbix current SNMP documentation](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmp) | Official workflow: walk, find an item, translate to numeric OID, configure version/credentials, account for dynamic indexes and bulk limits. | Authoritative product documentation; describes workflow, not dissatisfaction. |
+| S16 | [Zabbix template guidelines](https://www.zabbix.com/documentation/guidelines/en/template_guidelines) | Templates should use numeric OIDs and reuse master walk values to reduce load. | Authoritative current guidance. |
+| S17 | [Zabbix MIB installation documentation](https://www.zabbix.com/documentation/7.0/en/manual/config/items/itemtypes/snmp/mibs) | MIB dependencies, config changes, server/proxy restarts, and license-driven package gaps. | Authoritative documentation. |
+| S18 | [Prometheus SNMP exporter concepts](https://github.com/prometheus/snmp_exporter) | Table indexes become labels; custom/non-public MIBs require generator work. | Primary project documentation. |
+| S19 | [Prometheus SNMP exporter generator configuration](https://github.com/prometheus/snmp_exporter/blob/main/generator/README.md) | Lookups, index handling, overrides, regex extraction, and MIB-name collisions are API/tool-developer jobs. | Primary project documentation; technical, not user research. |
+| S20 | [Question: extract all enum meanings from a MIB](https://stackoverflow.com/questions/65925309/how-to-get-extract-the-symbolic-meaning-of-integer-values-in-a-snmp-mib-file-for) | Current walk values alone do not expose all enum meanings; developers need parsed MIB semantics. | Direct developer question; Stack Overflow answer quality varies. |
+| S21 | [Question: how is a table index determined?](https://stackoverflow.com/questions/12792600/how-is-table-index-determined) | Instance suffix and non-accessible index semantics are non-obvious. | Direct developer question; old and small sample. |
+| S22 | [Observium MIB Browser](https://mibs.observium.org/) | Existing jobs include symbol/numeric lookup, trap varbind lookup, syntax values, and browse-by-MIB. | Direct product capability, not evidence that its UX fails. |
+| S23 | [MIBBrowser.Online](https://mibbrowser.online/mibdb_search.php) | Existing jobs include exact/any search, vendor browse, tree navigation, and MIB/CSV/JSON/YAML downloads. | Direct product capability; its “user-friendly” claim is self-description. |
+| S24 | [Creator says existing online browsers were outdated or hard to use](https://bestmonitoringtools.com/snmp-mib-download-any-mib-from-any-vendor/) | At least one practitioner independently experienced enough friction to build an alternative. | Founder statement, not independent market validation. |
+| S25 | [ManageEngine SNMP MIB Browser on Google Play](https://play.google.com/store/apps/details?hl=en_US&id=com.zoho.snmpbrowser) | Mobile jobs: load MIBs, fetch scalar/table values, poll, and manage dependencies; listing also exposes privacy/security concerns. | Official listing. Public web rendering did not expose the complete review corpus. |
+| S26 | [MIB Browser Pro on Apple App Store](https://apps.apple.com/us/app/mib-browser-pro-snmp/id577658200) | Private MIB import, result filtering/export, bookmarks, table sorting, device profiles, walk history. | Official listing; US page showed only 8 ratings, too few for strong conclusions. |
+| S27 | [Mac MIB Browser App Store listing and timeout review](https://apps.apple.com/us/app/mib-browser-snmp-monitoring/id523006753) | A user needed configurable timeout and could not find it. | One visible 2013 review; too old to generalize about current products. |
+| S28 | [OID-base terms](https://oid-base.com/disclaimer.htm) | Existing OID databases can have copying/redistribution restrictions. | Direct terms; supports provenance/rights requirement, not demand. |
+
+## Store-review limitation
+
+Google Play and Apple expose different ratings/reviews by locale, authentication state, and rendering path. The accessible pages did not provide a complete, stable review corpus. No review text was invented or paraphrased from inaccessible content. Store evidence here is therefore limited to visible official metadata, described features, aggregate rating counts where rendered, and the single review visible on the Mac App Store page. Ratings are weak signals and are not treated as proof of a particular UX defect.
+
+## Evidence gaps
+
+- No interviewed participant yet.
+- No observed task completion against Observium, MIBBrowser.Online, or a prototype.
+- No reliable population frequency, market size, conversion, retention, or willingness-to-pay estimate.
+- Two sources report explicit multi-day/week time loss; other sources show blocking/friction but not measured time.
+- Product capability pages prove that jobs exist, not that users prefer the proposed solution.

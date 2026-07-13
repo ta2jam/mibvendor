@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "sources": {
+    "libsmi": {
+      "version": "0.5.0",
+      "url": "https://www.ibr.cs.tu-bs.de/projects/libsmi/download/libsmi-0.5.0.tar.gz",
+      "sha256": "f21accdadb1bb328ea3f8a13fc34d715baac6e2db66065898346322c725754d3"
+    },
+    "net_snmp": {
+      "release": "5.9.4",
+      "reported_binary_version": "5.9.4.pre2",
+      "url": "https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.9.4/net-snmp-5.9.4.tar.gz",
+      "sha256": "8b4de01391e74e3c7014beb43961a2d6d6fa03acc34280b9585f4930745b0544"
+    }
+  },
+  "images": {
+    "python": "python:3.12.11-slim-bookworm@sha256:519591d6871b7bc437060736b9f7456b8731f1499a57e22e6c285135ae657bf7",
+    "gcc": "gcc:14.2.0-bookworm@sha256:b99b86a28812b1e6453a231a947dc43d76fe192788a12f344a9b568bf9f5d24c",
+    "debian": "debian:bookworm-slim@sha256:60eac759739651111db372c07be67863818726f754804b8707c90979bda511df"
+  }
+}

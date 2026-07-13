@@ -1,0 +1,24 @@
+-- SPDX-License-Identifier: CC0-1.0
+MIBVENDOR-COLLISION-A-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    MODULE-IDENTITY, OBJECT-TYPE, Integer32, enterprises
+        FROM SNMPv2-SMI;
+
+mvCollisionA MODULE-IDENTITY
+    LAST-UPDATED "202607130000Z"
+    ORGANIZATION "mibvendor parser bake-off"
+    CONTACT-INFO "nobody@example.invalid"
+    DESCRIPTION  "First half of a symbol-collision fixture."
+    REVISION     "202607130000Z"
+    DESCRIPTION  "Initial fixture revision."
+    ::= { enterprises 99998 }
+
+mvSharedName OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Same descriptor as another module, different OID."
+    ::= { mvCollisionA 1 }
+
+END

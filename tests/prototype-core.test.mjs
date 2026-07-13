@@ -1,0 +1,89 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import test from "node:test";
+
+import { records } from "../prototype/data.mjs";
+import {
+  MAX_WALK_BYTES,
+  MAX_WALK_LINES,
+  oidStartsWith,
+  parseOid,
+  parseWalk,
+  resolveOid,
+  searchRecords
+} from "../prototype/core.mjs";
+
+test("parseOid accepts canonical numeric OIDs and rejects malformed input", () => {
+  assert.deepEqual(parseOid(".1.3.6.1.2.1"), [1, 3, 6, 1, 2, 1]);
+  assert.equal(parseOid("1.3.nope"), null);
+  assert.equal(parseOid("1..3"), null);
+  assert.equal(parseOid("-1.3"), null);
+});
+
+test("oidStartsWith compares subidentifiers, not lexical text", () => {
+  assert.equal(oidStartsWith([1, 3, 6, 10], [1, 3, 6]), true);
+  assert.equal(oidStartsWith([1, 3, 60], [1, 3, 6]), false);
+});
+
+test("resolveOid chooses the longest actual ancestor and preserves the instance", () => {
+  const resolved = resolveOid("1.3.6.1.2.1.2.2.1.8.17", records);
+  assert.equal(resolved.record.symbol, "ifOperStatus");
+  assert.deepEqual(resolved.instance, [17]);
+});
+
+test("task, symbol, module-qualified, and numeric queries resolve", () => {
+  assert.equal(searchRecords("interface status", records)[0].symbol, "ifOperStatus");
+  assert.equal(searchRecords("IF-MIB::ifOperStatus", records)[0].symbol, "ifOperStatus");
+  assert.equal(searchRecords("1.3.6.1.2.1.1.3.0", records)[0].symbol, "sysUpTime");
+  assert.equal(searchRecords("processor load", records)[0].symbol, "hrProcessorLoad");
+});
+
+test("walk parsing resolves table rows, scalar instances, and unknown OIDs", () => {
+  const walk = [
+    ".1.3.6.1.2.1.2.2.1.2.1 = STRING: Ethernet0/1",
+    ".1.3.6.1.2.1.2.2.1.8.1 = INTEGER: up(1)",
+    ".1.3.6.1.2.1.1.3.0 = Timeticks: 123",
+    ".1.3.6.1.4.1.99999.1.0 = INTEGER: 7"
+  ].join("\n");
+
+  const result = parseWalk(walk, records);
+  assert.equal(result.rows.length, 4);
+  assert.equal(result.resolvedCount, 3);
+  assert.equal(result.unresolvedCount, 1);
+  assert.equal(result.rows[0].group, "ifTable");
+  assert.equal(result.rows[0].instance, "1");
+  assert.equal(result.rows[2].record.symbol, "sysUpTime");
+  assert.equal(result.errors.length, 0);
+});
+
+test("walk parsing reports unsupported lines without inventing rows", () => {
+  const result = parseWalk("IF-MIB::ifOperStatus.1 = up(1)", records);
+  assert.equal(result.rows.length, 0);
+  assert.equal(result.errors.length, 1);
+  assert.equal(result.errors[0].line, 1);
+});
+
+test("walk parsing enforces byte and line bounds", () => {
+  assert.throws(
+    () => parseWalk("12345", records, { maxBytes: 4 }),
+    (error) => error instanceof RangeError && error.message.includes("bytes")
+  );
+
+  assert.throws(
+    () => parseWalk("1\n2\n3", records, { maxLines: 2 }),
+    (error) => error instanceof RangeError && error.message.includes("lines")
+  );
+  assert.equal(MAX_WALK_BYTES, 10 * 1024 * 1024);
+  assert.equal(MAX_WALK_LINES, 50_000);
+});
+
+test("browser prototype contains no network transport primitive", async () => {
+  const sources = await Promise.all([
+    readFile(new URL("../prototype/app.js", import.meta.url), "utf8"),
+    readFile(new URL("../prototype/core.mjs", import.meta.url), "utf8"),
+    readFile(new URL("../prototype/data.mjs", import.meta.url), "utf8")
+  ]);
+  const joined = sources.join("\n");
+  assert.doesNotMatch(joined, /\bfetch\s*\(/);
+  assert.doesNotMatch(joined, /XMLHttpRequest|WebSocket|sendBeacon/);
+});

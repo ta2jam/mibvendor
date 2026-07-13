@@ -1,0 +1,80 @@
+{
+  "candidates": [
+    {
+      "candidate": "pysmi",
+      "collision_module_qualified_preserved": true,
+      "container_image_bytes": null,
+      "expectations_met": 9,
+      "expectations_total": 9,
+      "field_fidelity_passed": 10,
+      "field_fidelity_total": 10,
+      "installed_footprint_bytes": 18133342,
+      "invalid_rejected": 3,
+      "invalid_total": 3,
+      "normalized_deterministic_cases": 9,
+      "peak_child_rss_kib": 52544,
+      "raw_deterministic_cases": 3,
+      "timeout_cases": 0,
+      "total_measured_wall_seconds": 4.32436,
+      "total_system_cpu_seconds": 0.381388,
+      "total_user_cpu_seconds": 3.869964,
+      "valid_parse_success": 6,
+      "valid_parse_total": 6,
+      "version": "2.0.0"
+    },
+    {
+      "candidate": "libsmi",
+      "collision_module_qualified_preserved": true,
+      "container_image_bytes": null,
+      "expectations_met": 9,
+      "expectations_total": 9,
+      "field_fidelity_passed": 10,
+      "field_fidelity_total": 10,
+      "installed_footprint_bytes": 21579755,
+      "invalid_rejected": 3,
+      "invalid_total": 3,
+      "normalized_deterministic_cases": 9,
+      "peak_child_rss_kib": 2544,
+      "raw_deterministic_cases": 9,
+      "timeout_cases": 0,
+      "total_measured_wall_seconds": 0.126074,
+      "total_system_cpu_seconds": 0.036631,
+      "total_user_cpu_seconds": 0.030456,
+      "valid_parse_success": 6,
+      "valid_parse_total": 6,
+      "version": "0.5.0"
+    },
+    {
+      "candidate": "net-snmp",
+      "collision_module_qualified_preserved": true,
+      "container_image_bytes": null,
+      "expectations_met": 9,
+      "expectations_total": 9,
+      "field_fidelity_passed": 5,
+      "field_fidelity_total": 10,
+      "installed_footprint_bytes": 9661260,
+      "invalid_rejected": 3,
+      "invalid_total": 3,
+      "normalized_deterministic_cases": 9,
+      "peak_child_rss_kib": 6720,
+      "raw_deterministic_cases": 9,
+      "timeout_cases": 0,
+      "total_measured_wall_seconds": 0.196059,
+      "total_system_cpu_seconds": 0.105003,
+      "total_user_cpu_seconds": 0.060684,
+      "valid_parse_success": 6,
+      "valid_parse_total": 6,
+      "version": "5.9.4.pre2"
+    }
+  ],
+  "container_measurement_status": "not_measured",
+  "generated_at": "2026-07-13T13:32:32.740221+00:00",
+  "parser_gate": {
+    "reasons": [
+      "the checked-in corpus has 9 synthetic cases, not the required 100-case rights-approved corpus",
+      "pinned container execution has not been reproduced in this result set"
+    ],
+    "status": "provisional"
+  },
+  "schema_version": 1
+}

@@ -1,0 +1,21 @@
+-- SPDX-License-Identifier: CC0-1.0
+MIBVENDOR-TRUNCATED-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    MODULE-IDENTITY, OBJECT-TYPE, Integer32, enterprises
+        FROM SNMPv2-SMI;
+
+mvTruncated MODULE-IDENTITY
+    LAST-UPDATED "202607130000Z"
+    ORGANIZATION "mibvendor parser bake-off"
+    CONTACT-INFO "nobody@example.invalid"
+    DESCRIPTION  "Intentionally truncated fixture."
+    REVISION     "202607130000Z"
+    DESCRIPTION  "Initial fixture revision."
+    ::= { enterprises 99994 }
+
+mvBrokenValue OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Missing assignment and END tokens."

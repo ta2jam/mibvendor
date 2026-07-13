@@ -1,0 +1,41 @@
+FROM gcc:14.2.0-bookworm@sha256:b99b86a28812b1e6453a231a947dc43d76fe192788a12f344a9b568bf9f5d24c AS build
+
+COPY .tools/src/net-snmp-5.9.4.tar.gz /tmp/net-snmp-5.9.4.tar.gz
+RUN echo "8b4de01391e74e3c7014beb43961a2d6d6fa03acc34280b9585f4930745b0544  /tmp/net-snmp-5.9.4.tar.gz" | sha256sum -c - \
+    && tar -xzf /tmp/net-snmp-5.9.4.tar.gz -C /tmp \
+    && cd /tmp/net-snmp-5.9.4 \
+    && ./configure \
+        --prefix=/opt/net-snmp \
+        --with-default-snmp-version=3 \
+        --with-sys-contact=nobody@example.invalid \
+        --with-sys-location=container \
+        --with-logfile=/tmp/mibvendor-snmpd.log \
+        --with-persistent-directory=/tmp/mibvendor-snmp \
+        --disable-agent \
+        --disable-manuals \
+        --disable-scripts \
+        --disable-embedded-perl \
+        --without-openssl \
+        --without-zlib \
+    && make -j2 \
+    && make installbin installlibs
+
+COPY .tools/src/libsmi-0.5.0.tar.gz /tmp/libsmi-0.5.0.tar.gz
+RUN echo "f21accdadb1bb328ea3f8a13fc34d715baac6e2db66065898346322c725754d3  /tmp/libsmi-0.5.0.tar.gz" | sha256sum -c - \
+    && mkdir -p /opt/standard-mibs \
+    && tar -xzf /tmp/libsmi-0.5.0.tar.gz -C /tmp \
+    && cp -R /tmp/libsmi-0.5.0/mibs/ietf /opt/standard-mibs/ietf \
+    && cp -R /tmp/libsmi-0.5.0/mibs/iana /opt/standard-mibs/iana
+
+FROM python:3.12.11-slim-bookworm@sha256:519591d6871b7bc437060736b9f7456b8731f1499a57e22e6c285135ae657bf7
+COPY --from=build /opt/net-snmp /opt/net-snmp
+COPY --from=build /opt/standard-mibs /opt/standard-mibs
+COPY corpus /bench/corpus
+COPY scripts/run_bakeoff.py /bench/scripts/run_bakeoff.py
+
+ENV BAKEOFF_NETSNMP=/opt/net-snmp/bin/snmptranslate \
+    BAKEOFF_STANDARD_MIB_DIRS=/opt/standard-mibs/ietf:/opt/standard-mibs/iana \
+    BAKEOFF_EXECUTION_MODE=container \
+    BAKEOFF_WORK_DIR=/tmp/bakeoff-work
+
+ENTRYPOINT ["python", "/bench/scripts/run_bakeoff.py", "--candidate", "net-snmp", "--results-dir", "/results"]

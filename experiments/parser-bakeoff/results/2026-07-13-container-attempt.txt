@@ -1,0 +1,18 @@
+Attempt date: 2026-07-13 Europe/Istanbul
+Command: ./scripts/run_containers.sh results/2026-07-13-container-attempt
+Exit code: 2
+
+Docker-compatible daemon is unavailable; container run not executed.
+
+Diagnostic command:
+docker info --format '{{json .ServerVersion}} {{json .Architecture}} {{json .OSType}}'
+
+Observed output:
+"" "" ""
+Cannot connect to the Docker daemon at unix://<HOME>/.docker/run/docker.sock. Is the docker daemon running?
+
+No Docker, OrbStack, Podman, or Rancher application was found in /Applications
+or ~/Applications. No colima, podman, or lima executable was found on PATH.
+
+Consequence: pinned Dockerfiles exist but were not built or run. Container image
+sizes and Linux parser metrics are intentionally null in the committed result.

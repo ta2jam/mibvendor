@@ -1,0 +1,751 @@
+{
+  "binary": "<BAKEOFF_ROOT>/.tools/net-snmp-5.9.4/bin/snmptranslate",
+  "candidate": "net-snmp",
+  "cases": [
+    {
+      "diagnostics": "",
+      "expectation_met": true,
+      "expected": "success",
+      "feature_checks": {
+        "augments": true,
+        "enums": true,
+        "imports": false,
+        "indexes": true,
+        "notifications": true,
+        "revisions": false,
+        "textual_conventions": true
+      },
+      "id": "base-full-fidelity",
+      "module": "MIBVENDOR-BASE-MIB",
+      "normalized": {
+        "augments": [
+          "mvEntry"
+        ],
+        "enums": [
+          "down=2",
+          "unknown=0",
+          "up=1"
+        ],
+        "imports": [],
+        "indexes": [
+          "mvIndex"
+        ],
+        "notifications": [
+          "mvStateChanged"
+        ],
+        "oids": {
+          "mibVendorBase": "99999",
+          "mvAugmentEntry": "1",
+          "mvEntry": "1",
+          "mvScalar": "1",
+          "mvStateChanged": "1"
+        },
+        "revisions": [],
+        "symbols": [
+          "mibVendorBase",
+          "mvAugmentEntry",
+          "mvEntry",
+          "mvScalar",
+          "mvStateChanged"
+        ],
+        "textual_conventions": [
+          "MibVendorState"
+        ]
+      },
+      "normalized_output_deterministic": true,
+      "raw_output_deterministic": true,
+      "runs": [
+        {
+          "measurement": {
+            "command": [
+              "<BAKEOFF_ROOT>/.tools/net-snmp-5.9.4/bin/snmptranslate",
+              "-Le",
+              "-M",
+              "<BAKEOFF_ROOT>/corpus:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/ietf:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/iana",
+              "-m",
+              "MIBVENDOR-BASE-MIB",
+              "-Td",
+              "MIBVENDOR-BASE-MIB::mibVendorBase",
+              "MIBVENDOR-BASE-MIB::mvScalar",
+              "MIBVENDOR-BASE-MIB::mvEntry",
+              "MIBVENDOR-BASE-MIB::mvAugmentEntry",
+              "MIBVENDOR-BASE-MIB::mvStateChanged"
+            ],
+            "peak_child_rss_kib_so_far": 6640,
+            "returncode": 0,
+            "system_cpu_seconds": 0.006909,
+            "timed_out": false,
+            "user_cpu_seconds": 0.003509,
+            "wall_seconds": 0.011781
+          },
+          "normalized_sha256": "51d12c949dc8cfb0656357d5deb7542ef141f9adfbcec126795e93ba23ba54e4",
+          "raw_sha256": "36d08ccf327bb8e40c33e262da0c455b361bdf8c8edc1393f2b63702d9e646f7"
+        },
+        {
+          "measurement": {
+            "command": [
+              "<BAKEOFF_ROOT>/.tools/net-snmp-5.9.4/bin/snmptranslate",
+              "-Le",
+              "-M",
+              "<BAKEOFF_ROOT>/corpus:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/ietf:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/iana",
+              "-m",
+              "MIBVENDOR-BASE-MIB",
+              "-Td",
+              "MIBVENDOR-BASE-MIB::mibVendorBase",
+              "MIBVENDOR-BASE-MIB::mvScalar",
+              "MIBVENDOR-BASE-MIB::mvEntry",
+              "MIBVENDOR-BASE-MIB::mvAugmentEntry",
+              "MIBVENDOR-BASE-MIB::mvStateChanged"
+            ],
+            "peak_child_rss_kib_so_far": 6720,
+            "returncode": 0,
+            "system_cpu_seconds": 0.007199,
+            "timed_out": false,
+            "user_cpu_seconds": 0.003763,
+            "wall_seconds": 0.016395
+          },
+          "normalized_sha256": "51d12c949dc8cfb0656357d5deb7542ef141f9adfbcec126795e93ba23ba54e4",
+          "raw_sha256": "36d08ccf327bb8e40c33e262da0c455b361bdf8c8edc1393f2b63702d9e646f7"
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostics": "",
+      "expectation_met": true,
+      "expected": "success",
+      "feature_checks": {
+        "imports": false
+      },
+      "id": "cross-module-import",
+      "module": "MIBVENDOR-CHILD-MIB",
+      "normalized": {
+        "augments": [],
+        "enums": [],
+        "imports": [],
+        "indexes": [],
+        "notifications": [],
+        "oids": {
+          "mibVendorChild": "10",
+          "mvChildValue": "1"
+        },
+        "revisions": [],
+        "symbols": [
+          "mibVendorChild",
+          "mvChildValue"
+        ],
+        "textual_conventions": []
+      },
+      "normalized_output_deterministic": true,
+      "raw_output_deterministic": true,
+      "runs": [
+        {
+          "measurement": {
+            "command": [
+              "<BAKEOFF_ROOT>/.tools/net-snmp-5.9.4/bin/snmptranslate",
+              "-Le",
+              "-M",
+              "<BAKEOFF_ROOT>/corpus:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/ietf:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/iana",
+              "-m",
+              "MIBVENDOR-CHILD-MIB",
+              "-Td",
+              "MIBVENDOR-CHILD-MIB::mibVendorChild",
+              "MIBVENDOR-CHILD-MIB::mvChildValue"
+            ],
+            "peak_child_rss_kib_so_far": 6720,
+            "returncode": 0,
+            "system_cpu_seconds": 0.010363,
+            "timed_out": false,
+            "user_cpu_seconds": 0.005362,
+            "wall_seconds": 0.021359
+          },
+          "normalized_sha256": "3e7af822305f12595e1f14ac24f2c9c14f4f0833616f787a8c0b6fa3ea12a0c6",
+          "raw_sha256": "2ce7824a02c759951b457a26203958c0a08b0e2b9c13ac0d8d58479bddde0de6"
+        },
+        {
+          "measurement": {
+            "command": [
+              "<BAKEOFF_ROOT>/.tools/net-snmp-5.9.4/bin/snmptranslate",
+              "-Le",
+              "-M",
+              "<BAKEOFF_ROOT>/corpus:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/ietf:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/iana",
+              "-m",
+              "MIBVENDOR-CHILD-MIB",
+              "-Td",
+              "MIBVENDOR-CHILD-MIB::mibVendorChild",
+              "MIBVENDOR-CHILD-MIB::mvChildValue"
+            ],
+            "peak_child_rss_kib_so_far": 6720,
+            "returncode": 0,
+            "system_cpu_seconds": 0.009793,
+            "timed_out": false,
+            "user_cpu_seconds": 0.006237,
+            "wall_seconds": 0.019056
+          },
+          "normalized_sha256": "3e7af822305f12595e1f14ac24f2c9c14f4f0833616f787a8c0b6fa3ea12a0c6",
+          "raw_sha256": "2ce7824a02c759951b457a26203958c0a08b0e2b9c13ac0d8d58479bddde0de6"
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostics": "",
+      "expectation_met": true,
+      "expected": "success",
+      "feature_checks": {},
+      "id": "collision-a",
+      "module": "MIBVENDOR-COLLISION-A-MIB",
+      "normalized": {
+        "augments": [],
+        "enums": [],
+        "imports": [],
+        "indexes": [],
+        "notifications": [],
+        "oids": {
+          "mvCollisionA": "99998",
+          "mvSharedName": "1"
+        },
+        "revisions": [],
+        "symbols": [
+          "mvCollisionA",
+          "mvSharedName"
+        ],
+        "textual_conventions": []
+      },
+      "normalized_output_deterministic": true,
+      "raw_output_deterministic": true,
+      "runs": [
+        {
+          "measurement": {
+            "command": [
+              "<BAKEOFF_ROOT>/.tools/net-snmp-5.9.4/bin/snmptranslate",
+              "-Le",
+              "-M",
+              "<BAKEOFF_ROOT>/corpus:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/ietf:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/iana",
+              "-m",
+              "MIBVENDOR-COLLISION-A-MIB",
+              "-Td",
+              "MIBVENDOR-COLLISION-A-MIB::mvCollisionA",
+              "MIBVENDOR-COLLISION-A-MIB::mvSharedName"
+            ],
+            "peak_child_rss_kib_so_far": 6720,
+            "returncode": 0,
+            "system_cpu_seconds": 0.007513,
+            "timed_out": false,
+            "user_cpu_seconds": 0.004036,
+            "wall_seconds": 0.012757
+          },
+          "normalized_sha256": "04b32fb47c69ca322e005eae64cb4f887d5dc6e7a675c05f3c51fe8665194c56",
+          "raw_sha256": "08d9a54e2738e43968bd6353b0eeef5ae25066c481a0a26862dd220effb99ec7"
+        },
+        {
+          "measurement": {
+            "command": [
+              "<BAKEOFF_ROOT>/.tools/net-snmp-5.9.4/bin/snmptranslate",
+              "-Le",
+              "-M",
+              "<BAKEOFF_ROOT>/corpus:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/ietf:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/iana",
+              "-m",
+              "MIBVENDOR-COLLISION-A-MIB",
+              "-Td",
+              "MIBVENDOR-COLLISION-A-MIB::mvCollisionA",
+              "MIBVENDOR-COLLISION-A-MIB::mvSharedName"
+            ],
+            "peak_child_rss_kib_so_far": 6720,
+            "returncode": 0,
+            "system_cpu_seconds": 0.005705,
+            "timed_out": false,
+            "user_cpu_seconds": 0.003598,
+            "wall_seconds": 0.010489
+          },
+          "normalized_sha256": "04b32fb47c69ca322e005eae64cb4f887d5dc6e7a675c05f3c51fe8665194c56",
+          "raw_sha256": "08d9a54e2738e43968bd6353b0eeef5ae25066c481a0a26862dd220effb99ec7"
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostics": "",
+      "expectation_met": true,
+      "expected": "success",
+      "feature_checks": {},
+      "id": "collision-b",
+      "module": "MIBVENDOR-COLLISION-B-MIB",
+      "normalized": {
+        "augments": [],
+        "enums": [],
+        "imports": [],
+        "indexes": [],
+        "notifications": [],
+        "oids": {
+          "mvCollisionB": "99997",
+          "mvSharedName": "1"
+        },
+        "revisions": [],
+        "symbols": [
+          "mvCollisionB",
+          "mvSharedName"
+        ],
+        "textual_conventions": []
+      },
+      "normalized_output_deterministic": true,
+      "raw_output_deterministic": true,
+      "runs": [
+        {
+          "measurement": {
+            "command": [
+              "<BAKEOFF_ROOT>/.tools/net-snmp-5.9.4/bin/snmptranslate",
+              "-Le",
+              "-M",
+              "<BAKEOFF_ROOT>/corpus:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/ietf:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/iana",
+              "-m",
+              "MIBVENDOR-COLLISION-B-MIB",
+              "-Td",
+              "MIBVENDOR-COLLISION-B-MIB::mvCollisionB",
+              "MIBVENDOR-COLLISION-B-MIB::mvSharedName"
+            ],
+            "peak_child_rss_kib_so_far": 6720,
+            "returncode": 0,
+            "system_cpu_seconds": 0.00491,
+            "timed_out": false,
+            "user_cpu_seconds": 0.003032,
+            "wall_seconds": 0.009016
+          },
+          "normalized_sha256": "de58013e993af6b20108ef1ec1853ae4615bd9c28b9caf95d0c8d93263f58b3b",
+          "raw_sha256": "905781eec66f3b59294be0125f3c36bd65cc98c8fb868673cf50a7601304f8aa"
+        },
+        {
+          "measurement": {
+            "command": [
+              "<BAKEOFF_ROOT>/.tools/net-snmp-5.9.4/bin/snmptranslate",
+              "-Le",
+              "-M",
+              "<BAKEOFF_ROOT>/corpus:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/ietf:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/iana",
+              "-m",
+              "MIBVENDOR-COLLISION-B-MIB",
+              "-Td",
+              "MIBVENDOR-COLLISION-B-MIB::mvCollisionB",
+              "MIBVENDOR-COLLISION-B-MIB::mvSharedName"
+            ],
+            "peak_child_rss_kib_so_far": 6720,
+            "returncode": 0,
+            "system_cpu_seconds": 0.005073,
+            "timed_out": false,
+            "user_cpu_seconds": 0.003131,
+            "wall_seconds": 0.009428
+          },
+          "normalized_sha256": "de58013e993af6b20108ef1ec1853ae4615bd9c28b9caf95d0c8d93263f58b3b",
+          "raw_sha256": "905781eec66f3b59294be0125f3c36bd65cc98c8fb868673cf50a7601304f8aa"
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostics": "",
+      "expectation_met": true,
+      "expected": "success",
+      "feature_checks": {
+        "revisions": false
+      },
+      "id": "revision-old-shape",
+      "module": "MIBVENDOR-REV-OLD-MIB",
+      "normalized": {
+        "augments": [],
+        "enums": [],
+        "imports": [],
+        "indexes": [],
+        "notifications": [],
+        "oids": {
+          "mvRevisionOld": "99996",
+          "mvRevisionValue": "1"
+        },
+        "revisions": [],
+        "symbols": [
+          "mvRevisionOld",
+          "mvRevisionValue"
+        ],
+        "textual_conventions": []
+      },
+      "normalized_output_deterministic": true,
+      "raw_output_deterministic": true,
+      "runs": [
+        {
+          "measurement": {
+            "command": [
+              "<BAKEOFF_ROOT>/.tools/net-snmp-5.9.4/bin/snmptranslate",
+              "-Le",
+              "-M",
+              "<BAKEOFF_ROOT>/corpus:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/ietf:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/iana",
+              "-m",
+              "MIBVENDOR-REV-OLD-MIB",
+              "-Td",
+              "MIBVENDOR-REV-OLD-MIB::mvRevisionOld",
+              "MIBVENDOR-REV-OLD-MIB::mvRevisionValue"
+            ],
+            "peak_child_rss_kib_so_far": 6720,
+            "returncode": 0,
+            "system_cpu_seconds": 0.004928,
+            "timed_out": false,
+            "user_cpu_seconds": 0.002872,
+            "wall_seconds": 0.008908
+          },
+          "normalized_sha256": "9c79f4e089fd2531b7dc166dc1ff4c76e01f71bd968fe5b85d679c74d7bc2360",
+          "raw_sha256": "41674a25783c8f66fa047be1ab720eae5f67be734a0945fc4b6787fba94cc8d3"
+        },
+        {
+          "measurement": {
+            "command": [
+              "<BAKEOFF_ROOT>/.tools/net-snmp-5.9.4/bin/snmptranslate",
+              "-Le",
+              "-M",
+              "<BAKEOFF_ROOT>/corpus:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/ietf:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/iana",
+              "-m",
+              "MIBVENDOR-REV-OLD-MIB",
+              "-Td",
+              "MIBVENDOR-REV-OLD-MIB::mvRevisionOld",
+              "MIBVENDOR-REV-OLD-MIB::mvRevisionValue"
+            ],
+            "peak_child_rss_kib_so_far": 6720,
+            "returncode": 0,
+            "system_cpu_seconds": 0.005098,
+            "timed_out": false,
+            "user_cpu_seconds": 0.002928,
+            "wall_seconds": 0.009174
+          },
+          "normalized_sha256": "9c79f4e089fd2531b7dc166dc1ff4c76e01f71bd968fe5b85d679c74d7bc2360",
+          "raw_sha256": "41674a25783c8f66fa047be1ab720eae5f67be734a0945fc4b6787fba94cc8d3"
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostics": "",
+      "expectation_met": true,
+      "expected": "success",
+      "feature_checks": {
+        "revisions": false
+      },
+      "id": "revision-new-shape",
+      "module": "MIBVENDOR-REV-NEW-MIB",
+      "normalized": {
+        "augments": [],
+        "enums": [],
+        "imports": [],
+        "indexes": [],
+        "notifications": [],
+        "oids": {
+          "mvRevisionExtra": "2",
+          "mvRevisionNew": "99995",
+          "mvRevisionValue": "1"
+        },
+        "revisions": [],
+        "symbols": [
+          "mvRevisionExtra",
+          "mvRevisionNew",
+          "mvRevisionValue"
+        ],
+        "textual_conventions": []
+      },
+      "normalized_output_deterministic": true,
+      "raw_output_deterministic": true,
+      "runs": [
+        {
+          "measurement": {
+            "command": [
+              "<BAKEOFF_ROOT>/.tools/net-snmp-5.9.4/bin/snmptranslate",
+              "-Le",
+              "-M",
+              "<BAKEOFF_ROOT>/corpus:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/ietf:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/iana",
+              "-m",
+              "MIBVENDOR-REV-NEW-MIB",
+              "-Td",
+              "MIBVENDOR-REV-NEW-MIB::mvRevisionNew",
+              "MIBVENDOR-REV-NEW-MIB::mvRevisionValue",
+              "MIBVENDOR-REV-NEW-MIB::mvRevisionExtra"
+            ],
+            "peak_child_rss_kib_so_far": 6720,
+            "returncode": 0,
+            "system_cpu_seconds": 0.00442,
+            "timed_out": false,
+            "user_cpu_seconds": 0.002745,
+            "wall_seconds": 0.008197
+          },
+          "normalized_sha256": "dbfb6728e62bd92bcd702f304fd1da3d2f1b2fca5e1e58bcea29eb9c77c14c1f",
+          "raw_sha256": "1a4a2dbbd57b7c5034001d607bf5d3ae11b9e7eb0af64eda58266585905c0e58"
+        },
+        {
+          "measurement": {
+            "command": [
+              "<BAKEOFF_ROOT>/.tools/net-snmp-5.9.4/bin/snmptranslate",
+              "-Le",
+              "-M",
+              "<BAKEOFF_ROOT>/corpus:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/ietf:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/iana",
+              "-m",
+              "MIBVENDOR-REV-NEW-MIB",
+              "-Td",
+              "MIBVENDOR-REV-NEW-MIB::mvRevisionNew",
+              "MIBVENDOR-REV-NEW-MIB::mvRevisionValue",
+              "MIBVENDOR-REV-NEW-MIB::mvRevisionExtra"
+            ],
+            "peak_child_rss_kib_so_far": 6720,
+            "returncode": 0,
+            "system_cpu_seconds": 0.004822,
+            "timed_out": false,
+            "user_cpu_seconds": 0.00291,
+            "wall_seconds": 0.008778
+          },
+          "normalized_sha256": "dbfb6728e62bd92bcd702f304fd1da3d2f1b2fca5e1e58bcea29eb9c77c14c1f",
+          "raw_sha256": "1a4a2dbbd57b7c5034001d607bf5d3ae11b9e7eb0af64eda58266585905c0e58"
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostics": "MIB search path: <BAKEOFF_ROOT>/corpus:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/ietf:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/iana\nCannot find module (MIBVENDOR-DOES-NOT-EXIST-MIB): At line 8 in <BAKEOFF_ROOT>/corpus/MIBVENDOR-MISSING-IMPORT-MIB.mib\nDid not find 'absentRoot' in module #-1 (<BAKEOFF_ROOT>/corpus/MIBVENDOR-MISSING-IMPORT-MIB.mib)\nUnlinked OID in MIBVENDOR-MISSING-IMPORT-MIB: mvMissingImport ::= { absentRoot 1 }\nUndefined identifier: absentRoot near line 10 of <BAKEOFF_ROOT>/corpus/MIBVENDOR-MISSING-IMPORT-MIB.mib\nCannot adopt OID in MIBVENDOR-MISSING-IMPORT-MIB: mvMissingImport ::= { absentRoot 1 }\nCannot adopt OID in MIBVENDOR-MISSING-IMPORT-MIB: mvMissingValue ::= { mvMissingImport 1 }\nMIBVENDOR-MISSING-IMPORT-MIB::mvMissingImport: Unknown Object Identifier\n",
+      "expectation_met": true,
+      "expected": "failure",
+      "feature_checks": {},
+      "id": "missing-import",
+      "module": "MIBVENDOR-MISSING-IMPORT-MIB",
+      "normalized": {},
+      "normalized_output_deterministic": true,
+      "raw_output_deterministic": true,
+      "runs": [
+        {
+          "measurement": {
+            "command": [
+              "<BAKEOFF_ROOT>/.tools/net-snmp-5.9.4/bin/snmptranslate",
+              "-Le",
+              "-M",
+              "<BAKEOFF_ROOT>/corpus:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/ietf:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/iana",
+              "-m",
+              "MIBVENDOR-MISSING-IMPORT-MIB",
+              "-Td",
+              "MIBVENDOR-MISSING-IMPORT-MIB::mvMissingImport"
+            ],
+            "peak_child_rss_kib_so_far": 6720,
+            "returncode": 2,
+            "system_cpu_seconds": 0.004967,
+            "timed_out": false,
+            "user_cpu_seconds": 0.002711,
+            "wall_seconds": 0.008484
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "measurement": {
+            "command": [
+              "<BAKEOFF_ROOT>/.tools/net-snmp-5.9.4/bin/snmptranslate",
+              "-Le",
+              "-M",
+              "<BAKEOFF_ROOT>/corpus:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/ietf:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/iana",
+              "-m",
+              "MIBVENDOR-MISSING-IMPORT-MIB",
+              "-Td",
+              "MIBVENDOR-MISSING-IMPORT-MIB::mvMissingImport"
+            ],
+            "peak_child_rss_kib_so_far": 6720,
+            "returncode": 2,
+            "system_cpu_seconds": 0.00519,
+            "timed_out": false,
+            "user_cpu_seconds": 0.00279,
+            "wall_seconds": 0.009148
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "success": false,
+      "timed_out": false
+    },
+    {
+      "diagnostics": "Bad format (EOF): At line 22 in <BAKEOFF_ROOT>/corpus/MIBVENDOR-TRUNCATED-MIB.mib\nBad parse of OBJECT-TYPE: At line 22 in <BAKEOFF_ROOT>/corpus/MIBVENDOR-TRUNCATED-MIB.mib\nMIBVENDOR-TRUNCATED-MIB::mvTruncated: Unknown Object Identifier\n",
+      "expectation_met": true,
+      "expected": "failure",
+      "feature_checks": {},
+      "id": "truncated-input",
+      "module": "MIBVENDOR-TRUNCATED-MIB",
+      "normalized": {},
+      "normalized_output_deterministic": true,
+      "raw_output_deterministic": true,
+      "runs": [
+        {
+          "measurement": {
+            "command": [
+              "<BAKEOFF_ROOT>/.tools/net-snmp-5.9.4/bin/snmptranslate",
+              "-Le",
+              "-M",
+              "<BAKEOFF_ROOT>/corpus:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/ietf:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/iana",
+              "-m",
+              "MIBVENDOR-TRUNCATED-MIB",
+              "-Td",
+              "MIBVENDOR-TRUNCATED-MIB::mvTruncated"
+            ],
+            "peak_child_rss_kib_so_far": 6720,
+            "returncode": 2,
+            "system_cpu_seconds": 0.004634,
+            "timed_out": false,
+            "user_cpu_seconds": 0.002912,
+            "wall_seconds": 0.008653
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "measurement": {
+            "command": [
+              "<BAKEOFF_ROOT>/.tools/net-snmp-5.9.4/bin/snmptranslate",
+              "-Le",
+              "-M",
+              "<BAKEOFF_ROOT>/corpus:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/ietf:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/iana",
+              "-m",
+              "MIBVENDOR-TRUNCATED-MIB",
+              "-Td",
+              "MIBVENDOR-TRUNCATED-MIB::mvTruncated"
+            ],
+            "peak_child_rss_kib_so_far": 6720,
+            "returncode": 2,
+            "system_cpu_seconds": 0.004348,
+            "timed_out": false,
+            "user_cpu_seconds": 0.002577,
+            "wall_seconds": 0.007746
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "success": false,
+      "timed_out": false
+    },
+    {
+      "diagnostics": "Expected \")\" ((): At line 18 in <BAKEOFF_ROOT>/corpus/MIBVENDOR-MALFORMED-NESTING-MIB.mib\nShould be ACCESS ((): At line 18 in <BAKEOFF_ROOT>/corpus/MIBVENDOR-MALFORMED-NESTING-MIB.mib\nBad parse of OBJECT-TYPE: At line 18 in <BAKEOFF_ROOT>/corpus/MIBVENDOR-MALFORMED-NESTING-MIB.mib\nMIBVENDOR-MALFORMED-NESTING-MIB::mvMalformedNesting: Unknown Object Identifier\n",
+      "expectation_met": true,
+      "expected": "failure",
+      "feature_checks": {},
+      "id": "malformed-nesting",
+      "module": "MIBVENDOR-MALFORMED-NESTING-MIB",
+      "normalized": {},
+      "normalized_output_deterministic": true,
+      "raw_output_deterministic": true,
+      "runs": [
+        {
+          "measurement": {
+            "command": [
+              "<BAKEOFF_ROOT>/.tools/net-snmp-5.9.4/bin/snmptranslate",
+              "-Le",
+              "-M",
+              "<BAKEOFF_ROOT>/corpus:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/ietf:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/iana",
+              "-m",
+              "MIBVENDOR-MALFORMED-NESTING-MIB",
+              "-Td",
+              "MIBVENDOR-MALFORMED-NESTING-MIB::mvMalformedNesting"
+            ],
+            "peak_child_rss_kib_so_far": 6720,
+            "returncode": 2,
+            "system_cpu_seconds": 0.004526,
+            "timed_out": false,
+            "user_cpu_seconds": 0.002698,
+            "wall_seconds": 0.008216
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "measurement": {
+            "command": [
+              "<BAKEOFF_ROOT>/.tools/net-snmp-5.9.4/bin/snmptranslate",
+              "-Le",
+              "-M",
+              "<BAKEOFF_ROOT>/corpus:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/ietf:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/iana",
+              "-m",
+              "MIBVENDOR-MALFORMED-NESTING-MIB",
+              "-Td",
+              "MIBVENDOR-MALFORMED-NESTING-MIB::mvMalformedNesting"
+            ],
+            "peak_child_rss_kib_so_far": 6720,
+            "returncode": 2,
+            "system_cpu_seconds": 0.004605,
+            "timed_out": false,
+            "user_cpu_seconds": 0.002873,
+            "wall_seconds": 0.008474
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "success": false,
+      "timed_out": false
+    }
+  ],
+  "collision": {
+    "diagnostics": "Warning: Module IANA-ITU-ALARM-TC-MIB was in <BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/ietf/IANA-ITU-ALARM-TC-MIB now is <BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/iana/IANA-ITU-ALARM-TC-MIB\nMODULE-IDENTITY MACRO (lines 55..79 parsed and ignored).\nOBJECT-IDENTITY MACRO (lines 82..103 parsed and ignored).\nOBJECT-TYPE MACRO (lines 222..306 parsed and ignored).\nNOTIFICATION-TYPE MACRO (lines 311..342 parsed and ignored).\n",
+    "measurement": {
+      "command": [
+        "<BAKEOFF_ROOT>/.tools/net-snmp-5.9.4/bin/snmptranslate",
+        "-Le",
+        "-Pw",
+        "-M",
+        "<BAKEOFF_ROOT>/corpus:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/ietf:<BAKEOFF_ROOT>/.tools/libsmi-0.5.0/share/mibs/iana",
+        "-m",
+        "MIBVENDOR-COLLISION-A-MIB:MIBVENDOR-COLLISION-B-MIB",
+        "-On",
+        "MIBVENDOR-COLLISION-A-MIB::mvSharedName",
+        "MIBVENDOR-COLLISION-B-MIB::mvSharedName"
+      ],
+      "peak_child_rss_kib_so_far": 6720,
+      "returncode": 0,
+      "system_cpu_seconds": 0.004956,
+      "timed_out": false,
+      "user_cpu_seconds": 0.002942,
+      "wall_seconds": 0.009042
+    },
+    "module_qualified_preserved": true,
+    "resolved": {
+      "MIBVENDOR-COLLISION-A-MIB": ".1.3.6.1.4.1.99998.1",
+      "MIBVENDOR-COLLISION-B-MIB": ".1.3.6.1.4.1.99997.1"
+    },
+    "success": true
+  },
+  "corpus": {
+    "cases": 9,
+    "invalid_cases": 3,
+    "license": "CC0-1.0",
+    "sha256": "2acab8c0f030bf2c9052e8da03a2125929f8c0f27cc676ff49e1ee80c282b54a",
+    "valid_cases": 6
+  },
+  "execution_mode": "local-source-build",
+  "host": {
+    "machine": "arm64",
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "python": "3.14.6"
+  },
+  "schema_version": 1,
+  "started_at": "2026-07-13T13:32:32.435450+00:00",
+  "summary": {
+    "container_image_bytes": null,
+    "expectations_met": 9,
+    "expectations_total": 9,
+    "field_fidelity_passed": 5,
+    "field_fidelity_total": 10,
+    "installed_footprint_bytes": 9661260,
+    "invalid_rejected": 3,
+    "invalid_total": 3,
+    "normalized_deterministic_cases": 9,
+    "peak_child_rss_kib": 6720,
+    "raw_deterministic_cases": 9,
+    "timeout_cases": 0,
+    "total_measured_wall_seconds": 0.196059,
+    "total_system_cpu_seconds": 0.105003,
+    "total_user_cpu_seconds": 0.060684,
+    "valid_parse_success": 6,
+    "valid_parse_total": 6
+  },
+  "version": "5.9.4.pre2"
+}

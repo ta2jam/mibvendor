@@ -1,0 +1,24 @@
+-- SPDX-License-Identifier: CC0-1.0
+MIBVENDOR-MALFORMED-NESTING-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    MODULE-IDENTITY, OBJECT-TYPE, Integer32, enterprises
+        FROM SNMPv2-SMI;
+
+mvMalformedNesting MODULE-IDENTITY
+    LAST-UPDATED "202607130000Z"
+    ORGANIZATION "mibvendor parser bake-off"
+    CONTACT-INFO "nobody@example.invalid"
+    DESCRIPTION  "Malformed bounded nesting fixture for failure behavior."
+    REVISION     "202607130000Z"
+    DESCRIPTION  "Initial fixture revision."
+    ::= { enterprises 99993 }
+
+mvMalformedValue OBJECT-TYPE
+    SYNTAX      Integer32 ((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((0..10))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Intentionally unbalanced nesting."
+    ::= { mvMalformedNesting 1 }
+
+END

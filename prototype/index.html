@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Task prototype for a source-aware MIB browser and local walk decoder.">
+    <title>mibvendor — research prototype</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="mibvendor home">mib<span>vendor</span></a>
+      <nav aria-label="Primary navigation">
+        <a href="#search">OID search</a>
+        <a href="#decoder">Walk decoder</a>
+        <a href="#research">Research status</a>
+      </nav>
+      <span class="prototype-badge">Research prototype</span>
+    </header>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <p class="eyebrow">From monitoring intent to usable OID context</p>
+        <h1 id="hero-title">Find the object. Understand the index. Use it correctly.</h1>
+        <p class="hero-copy">
+          Search by OID, symbol, module, or task. Every result keeps revision and
+          source context visible.
+        </p>
+
+        <form id="search" class="search-form" role="search">
+          <label for="query">OID, symbol, module, or monitoring task</label>
+          <div class="search-row">
+            <input
+              id="query"
+              name="query"
+              type="search"
+              autocomplete="off"
+              value="ifOperStatus"
+              placeholder="Try ifOperStatus, 1.3.6.1.2.1.2.2.1.8, or interface status"
+            >
+            <button type="submit">Find</button>
+          </div>
+          <div class="examples" aria-label="Example searches">
+            <span>Try:</span>
+            <button type="button" data-query="IF-MIB::ifOperStatus">IF-MIB::ifOperStatus</button>
+            <button type="button" data-query="1.3.6.1.2.1.1.3.0">1.3.6.1.2.1.1.3.0</button>
+            <button type="button" data-query="processor load">processor load</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="workspace" aria-label="OID result workspace">
+        <aside class="tree-panel" aria-labelledby="tree-title">
+          <div class="panel-heading">
+            <p class="eyebrow">Path</p>
+            <h2 id="tree-title">Object tree</h2>
+          </div>
+          <ol id="object-path" class="object-path"></ol>
+          <p class="tree-note">Only the active path is expanded in this prototype.</p>
+        </aside>
+
+        <article id="object-detail" class="detail-panel" aria-live="polite">
+          <p>Search for an object to see its operational context.</p>
+        </article>
+      </section>
+
+      <section id="decoder" class="decoder-section" aria-labelledby="decoder-title">
+        <div class="section-intro">
+          <div>
+            <p class="eyebrow">Local-first workflow</p>
+            <h2 id="decoder-title">Decode an existing SNMP walk</h2>
+          </div>
+          <p>
+            Raw text is parsed in this browser tab. This prototype makes no
+            network request and retains nothing after the tab closes.
+          </p>
+        </div>
+
+        <div class="decoder-grid">
+          <div>
+            <label for="walk-input">Paste numeric walk output</label>
+            <textarea id="walk-input" rows="12" spellcheck="false">.1.3.6.1.2.1.2.2.1.2.1 = STRING: Ethernet0/1
+.1.3.6.1.2.1.2.2.1.8.1 = INTEGER: up(1)
+.1.3.6.1.2.1.2.2.1.2.2 = STRING: Ethernet0/2
+.1.3.6.1.2.1.2.2.1.8.2 = INTEGER: down(2)
+.1.3.6.1.2.1.1.3.0 = Timeticks: (3928177) 10:54:41.77</textarea>
+            <div class="decoder-actions">
+              <button id="decode-button" type="button">Decode locally</button>
+              <button id="clear-button" type="button" class="secondary">Clear</button>
+            </div>
+            <p class="limit-note">Prototype limit: 10 MiB or 50,000 lines.</p>
+          </div>
+
+          <div id="decoder-summary" class="decoder-summary" aria-live="polite">
+            <p>Decoded groups and unresolved OIDs will appear here.</p>
+          </div>
+        </div>
+
+        <div class="table-scroll">
+          <table>
+            <caption id="walk-caption">No decoded rows yet</caption>
+            <thead>
+              <tr>
+                <th scope="col">Group / index</th>
+                <th scope="col">Resolved object</th>
+                <th scope="col">Numeric OID</th>
+                <th scope="col">Value</th>
+              </tr>
+            </thead>
+            <tbody id="walk-results"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="research" class="research-section" aria-labelledby="research-title">
+        <p class="eyebrow">Evidence gate</p>
+        <h2 id="research-title">The product claim is still under validation.</h2>
+        <p>
+          This is not a production corpus. Public data will be restricted by
+          source-specific rights scopes, and parser choice will follow a
+          reproducible comparison. Forum posts do not replace observed user
+          sessions.
+        </p>
+        <a href="https://github.com/ta2jam/mibvendor/blob/main/docs/PHASE-0.md">View Phase 0 criteria</a>
+      </section>
+    </main>
+
+    <footer>
+      <p>mibvendor.io · Phase 0 research prototype · No device connections</p>
+    </footer>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+-- SPDX-License-Identifier: CC0-1.0
+MIBVENDOR-CHILD-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    MODULE-IDENTITY, OBJECT-TYPE, Integer32
+        FROM SNMPv2-SMI
+    mibVendorBase
+        FROM MIBVENDOR-BASE-MIB;
+
+mibVendorChild MODULE-IDENTITY
+    LAST-UPDATED "202607130000Z"
+    ORGANIZATION "mibvendor parser bake-off"
+    CONTACT-INFO "nobody@example.invalid"
+    DESCRIPTION  "Synthetic cross-module import fixture."
+    REVISION     "202607130000Z"
+    DESCRIPTION  "Initial fixture revision."
+    ::= { mibVendorBase 10 }
+
+mvChildValue OBJECT-TYPE
+    SYNTAX      Integer32 (0..100)
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Imported-root child object."
+    ::= { mibVendorChild 1 }
+
+END

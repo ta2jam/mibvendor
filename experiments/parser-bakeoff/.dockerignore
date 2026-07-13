@@ -1,0 +1,7 @@
+**/__pycache__/
+.git/
+.work/
+results/
+.tools/*
+!.tools/src/
+!.tools/src/*.tar.gz

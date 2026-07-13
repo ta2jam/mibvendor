@@ -1,0 +1,114 @@
+-- SPDX-License-Identifier: CC0-1.0
+MIBVENDOR-BASE-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    MODULE-IDENTITY, OBJECT-TYPE, NOTIFICATION-TYPE, Integer32, enterprises
+        FROM SNMPv2-SMI
+    TEXTUAL-CONVENTION, DisplayString
+        FROM SNMPv2-TC;
+
+mibVendorBase MODULE-IDENTITY
+    LAST-UPDATED "202607130000Z"
+    ORGANIZATION "mibvendor parser bake-off"
+    CONTACT-INFO "nobody@example.invalid"
+    DESCRIPTION  "Synthetic fixture exercising common SMIv2 constructs."
+    REVISION     "202607130000Z"
+    DESCRIPTION  "Second fixture revision."
+    REVISION     "202601010000Z"
+    DESCRIPTION  "Initial fixture revision."
+    ::= { enterprises 99999 }
+
+MibVendorState ::= TEXTUAL-CONVENTION
+    STATUS      current
+    DESCRIPTION "Synthetic state enumeration."
+    SYNTAX      INTEGER {
+        unknown(0),
+        up(1),
+        down(2)
+    }
+
+mvObjects OBJECT IDENTIFIER ::= { mibVendorBase 1 }
+mvNotifications OBJECT IDENTIFIER ::= { mibVendorBase 2 }
+
+mvScalar OBJECT-TYPE
+    SYNTAX      MibVendorState
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "A scalar carrying an enumerated textual convention."
+    ::= { mvObjects 1 }
+
+mvTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF MvEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "A synthetic table."
+    ::= { mvObjects 2 }
+
+mvEntry OBJECT-TYPE
+    SYNTAX      MvEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "A synthetic row."
+    INDEX       { mvIndex }
+    ::= { mvTable 1 }
+
+MvEntry ::= SEQUENCE {
+    mvIndex Integer32,
+    mvName  DisplayString,
+    mvState MibVendorState
+}
+
+mvIndex OBJECT-TYPE
+    SYNTAX      Integer32 (1..2147483647)
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "Primary table index."
+    ::= { mvEntry 1 }
+
+mvName OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (0..64))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Row label."
+    ::= { mvEntry 2 }
+
+mvState OBJECT-TYPE
+    SYNTAX      MibVendorState
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Row state."
+    ::= { mvEntry 3 }
+
+mvAugmentTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF MvAugmentEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "A table augmenting mvTable."
+    ::= { mvObjects 3 }
+
+mvAugmentEntry OBJECT-TYPE
+    SYNTAX      MvAugmentEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "An augmented row."
+    AUGMENTS    { mvEntry }
+    ::= { mvAugmentTable 1 }
+
+MvAugmentEntry ::= SEQUENCE {
+    mvNote DisplayString
+}
+
+mvNote OBJECT-TYPE
+    SYNTAX      DisplayString (SIZE (0..128))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Augmented row note."
+    ::= { mvAugmentEntry 1 }
+
+mvStateChanged NOTIFICATION-TYPE
+    OBJECTS     { mvState }
+    STATUS      current
+    DESCRIPTION "Signals a synthetic state change."
+    ::= { mvNotifications 1 }
+
+END

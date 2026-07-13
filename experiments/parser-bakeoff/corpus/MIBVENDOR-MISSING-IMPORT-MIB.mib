@@ -1,0 +1,26 @@
+-- SPDX-License-Identifier: CC0-1.0
+MIBVENDOR-MISSING-IMPORT-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    MODULE-IDENTITY, OBJECT-TYPE, Integer32
+        FROM SNMPv2-SMI
+    absentRoot
+        FROM MIBVENDOR-DOES-NOT-EXIST-MIB;
+
+mvMissingImport MODULE-IDENTITY
+    LAST-UPDATED "202607130000Z"
+    ORGANIZATION "mibvendor parser bake-off"
+    CONTACT-INFO "nobody@example.invalid"
+    DESCRIPTION  "Fixture with an intentionally missing dependency."
+    REVISION     "202607130000Z"
+    DESCRIPTION  "Initial fixture revision."
+    ::= { absentRoot 1 }
+
+mvMissingValue OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "This object should not resolve."
+    ::= { mvMissingImport 1 }
+
+END

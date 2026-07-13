@@ -1,0 +1,22 @@
+FROM python:3.12.11-slim-bookworm@sha256:519591d6871b7bc437060736b9f7456b8731f1499a57e22e6c285135ae657bf7
+
+COPY requirements-pysmi.txt /bench/requirements-pysmi.txt
+RUN python -m pip install --no-cache-dir --require-hashes -r /bench/requirements-pysmi.txt
+
+COPY .tools/src/libsmi-0.5.0.tar.gz /tmp/libsmi-0.5.0.tar.gz
+RUN echo "f21accdadb1bb328ea3f8a13fc34d715baac6e2db66065898346322c725754d3  /tmp/libsmi-0.5.0.tar.gz" | sha256sum -c - \
+    && mkdir -p /opt/standard-mibs \
+    && tar -xzf /tmp/libsmi-0.5.0.tar.gz -C /tmp \
+    && cp -R /tmp/libsmi-0.5.0/mibs/ietf /opt/standard-mibs/ietf \
+    && cp -R /tmp/libsmi-0.5.0/mibs/iana /opt/standard-mibs/iana \
+    && rm -rf /tmp/libsmi-0.5.0 /tmp/libsmi-0.5.0.tar.gz
+
+COPY corpus /bench/corpus
+COPY scripts/run_bakeoff.py /bench/scripts/run_bakeoff.py
+
+ENV BAKEOFF_PYSMI=/usr/local/bin/mibdump \
+    BAKEOFF_STANDARD_MIB_DIRS=/opt/standard-mibs/ietf:/opt/standard-mibs/iana \
+    BAKEOFF_EXECUTION_MODE=container \
+    BAKEOFF_WORK_DIR=/tmp/bakeoff-work
+
+ENTRYPOINT ["python", "/bench/scripts/run_bakeoff.py", "--candidate", "pysmi", "--results-dir", "/results"]
