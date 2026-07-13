@@ -35,7 +35,14 @@ for (const required of [
   "Dockerfile",
   "compose.production.yaml",
   "deploy/Caddyfile",
+  "deploy/mibvendor-health",
+  "deploy/mibvendor-health.service",
+  "deploy/mibvendor-health.timer",
   "deploy/nginx.conf",
+  ".github/workflows/production-monitor.yml",
+  "scripts/verify-production.sh",
+  "docs/research/demand/validation-evidence.json",
+  "docs/research/rights/permission-requests.json",
   "prototype/index.html",
   "prototype/app.js",
   "prototype/core.mjs"
@@ -74,6 +81,41 @@ for (const requiredCopy of [
 
 if (await exists(".github/workflows/pages.yml")) {
   failures.push("GitHub Pages workflow must remain disabled; production runs on the VPS");
+}
+
+const productionMonitor = await readFile(path.join(root, ".github", "workflows", "production-monitor.yml"), "utf8");
+for (const requiredMonitorBoundary of [
+  "schedule:",
+  "workflow_dispatch:",
+  "permissions:\n  contents: read",
+  "./scripts/verify-production.sh"
+]) {
+  if (!productionMonitor.includes(requiredMonitorBoundary)) {
+    failures.push(`Production monitor is missing boundary: ${requiredMonitorBoundary}`);
+  }
+}
+
+const hostHealth = await readFile(path.join(root, "deploy", "mibvendor-health"), "utf8");
+const healthService = await readFile(path.join(root, "deploy", "mibvendor-health.service"), "utf8");
+const healthTimer = await readFile(path.join(root, "deploy", "mibvendor-health.timer"), "utf8");
+for (const requiredHealthBoundary of [
+  "127.0.0.1:3001",
+  "com.docker.compose.project=mibvendor",
+  "MIBVENDOR_DISK_LIMIT_PERCENT",
+  "EXPECTED_DATA_RELEASE"
+]) {
+  if (!hostHealth.includes(requiredHealthBoundary)) failures.push(`Host health check is missing boundary: ${requiredHealthBoundary}`);
+}
+for (const requiredServiceBoundary of [
+  "User=deploy",
+  "SupplementaryGroups=docker",
+  "NoNewPrivileges=true",
+  "ProtectSystem=strict"
+]) {
+  if (!healthService.includes(requiredServiceBoundary)) failures.push(`Health service is missing boundary: ${requiredServiceBoundary}`);
+}
+if (!healthTimer.includes("OnUnitActiveSec=5min") || !healthTimer.includes("Persistent=true")) {
+  failures.push("Health timer must run every five minutes and be persistent");
 }
 
 const dockerfile = await readFile(path.join(root, "Dockerfile"), "utf8");

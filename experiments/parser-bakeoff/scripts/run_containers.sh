@@ -20,6 +20,10 @@ for candidate in pysmi libsmi net-snmp; do
         --tag "$tag" \
         "$ROOT"
     docker run --rm \
+        --user "$(id -u):$(id -g)" \
+        --env USER=mibvendor-benchmark \
+        --env LOGNAME=mibvendor-benchmark \
+        --env HOME=/tmp \
         --network none \
         --read-only \
         --tmpfs /tmp:rw,size=256m \

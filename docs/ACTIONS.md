@@ -12,7 +12,7 @@ complete. Order is dependency-driven.
 | 5 | Have at least 3 external tool developers exercise the synthetic API probe and provide code/test artifacts. | `0/3` real API-integration gate. | Contracts remain hypotheses. |
 | 6 | Send first-wave vendor rights requests from an accountable owner identity: Cisco, Juniper, Arista, HPE Aruba, Fortinet, Palo Alto Networks, VMware/Broadcom, NetApp, Dell, Synology. | A vendor-relevant public Tier A/B path. | Public corpus remains the narrow approved standards seed; vendor data stays Q/P. |
 | 7 | Supply or authorize a rights-approved 100-case parser corpus: 20 IETF/IANA, 20 valid vendor, 20 broken vendor, 20 revision-pair, and 20 collision/import cases. | Final canonical parser selection and real-vendor compatibility evidence. | Nine CC0 synthetic cases support only a provisional recommendation. |
-| 8 | Provide a containerized parser bake-off runtime for Linux arm64/amd64 reproduction before Phase 1. | Parser image build, size, Linux CPU/RSS, and malformed-input verification. | The public web runtime does not close the parser reproducibility gate. |
+| 8 | Provide access to a clean Linux arm64 container runner before Phase 1. | Multi-architecture parser reproduction. | Pinned containers now pass on Linux amd64; arm64 execution is still unverified. |
 
 ## Dependency notes
 
@@ -22,7 +22,8 @@ complete. Order is dependency-driven.
   reachable to integrators.
 - Action 6 can start immediately but vendor response time is open-ended. Silence
   is not approval.
-- Actions 7–8 close the parser decision gate; neither permits third-party MIB
+- Action 7 and the remaining arm64 run close the parser decision gate; neither permits third-party MIB
   text to be committed or exposed in diagnostics.
-- A container runtime is a reproducibility dependency, not permission to install
-  or run a production database/application stack.
+- The Linux amd64 container run is complete: all three candidates met all nine
+  synthetic expectations with no timeout and deterministic normalized output.
+  This is reproducibility evidence, not vendor-compatibility evidence.

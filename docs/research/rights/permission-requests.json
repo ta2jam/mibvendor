@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "scope_keys": [
+    "metadata_index",
+    "rendered_text",
+    "api_output",
+    "raw_download",
+    "bulk_export"
+  ],
+  "requests": [
+    {"request_id":"REQ-CISCO-001","source_id":"cisco","vendor":"Cisco","product_scope":"Cisco enterprise MIBs","contact_route":"https://www.cisco.com/c/en/us/about/legal/terms-conditions.html","status":"not_sent","recipient":null,"sent_at":null,"response_evidence":null,"scopes":{"metadata_index":"unknown","rendered_text":"unknown","api_output":"unknown","raw_download":"unknown","bulk_export":"unknown"}},
+    {"request_id":"REQ-JUNIPER-001","source_id":"juniper","vendor":"Juniper Networks","product_scope":"Junos enterprise MIBs","contact_route":"https://www.juniper.net/us/en/legal-notices.html","status":"not_sent","recipient":null,"sent_at":null,"response_evidence":null,"scopes":{"metadata_index":"unknown","rendered_text":"unknown","api_output":"unknown","raw_download":"unknown","bulk_export":"unknown"}},
+    {"request_id":"REQ-ARISTA-001","source_id":"arista","vendor":"Arista Networks","product_scope":"EOS proprietary MIBs","contact_route":"https://www.arista.com/en/terms-of-use","status":"not_sent","recipient":null,"sent_at":null,"response_evidence":null,"scopes":{"metadata_index":"unknown","rendered_text":"unknown","api_output":"unknown","raw_download":"unknown","bulk_export":"unknown"}},
+    {"request_id":"REQ-ARUBA-001","source_id":"aruba-hpe","vendor":"HPE Aruba Networking","product_scope":"AOS-CX and ArubaOS MIBs","contact_route":"https://www.arubanetworks.com/techdocs/AOS-CX/10.11/PDF/snmp_mib.pdf","status":"not_sent","recipient":null,"sent_at":null,"response_evidence":null,"scopes":{"metadata_index":"unknown","rendered_text":"unknown","api_output":"unknown","raw_download":"unknown","bulk_export":"unknown"}},
+    {"request_id":"REQ-FORTINET-001","source_id":"fortinet","vendor":"Fortinet","product_scope":"FortiGate and Fortinet Core MIBs","contact_route":"https://www.fortinet.com/corporate/about-us/legal","status":"not_sent","recipient":null,"sent_at":null,"response_evidence":null,"scopes":{"metadata_index":"unknown","rendered_text":"unknown","api_output":"unknown","raw_download":"unknown","bulk_export":"unknown"}},
+    {"request_id":"REQ-PAN-001","source_id":"palo-alto-networks","vendor":"Palo Alto Networks","product_scope":"Enterprise SNMP MIBs","contact_route":"https://www.paloaltonetworks.com/legal-notices/terms-of-use","status":"not_sent","recipient":null,"sent_at":null,"response_evidence":null,"scopes":{"metadata_index":"unknown","rendered_text":"unknown","api_output":"unknown","raw_download":"unknown","bulk_export":"unknown"}},
+    {"request_id":"REQ-VMWARE-001","source_id":"vmware-broadcom","vendor":"Broadcom / VMware","product_scope":"vSphere, NSX, and vCenter MIBs","contact_route":"https://www.broadcom.com/company/legal/terms-of-use","status":"not_sent","recipient":null,"sent_at":null,"response_evidence":null,"scopes":{"metadata_index":"unknown","rendered_text":"unknown","api_output":"unknown","raw_download":"unknown","bulk_export":"unknown"}},
+    {"request_id":"REQ-NETAPP-001","source_id":"netapp","vendor":"NetApp","product_scope":"ONTAP custom MIB and traps.dat","contact_route":"https://www.netapp.com/company/legal/copyright/","status":"not_sent","recipient":null,"sent_at":null,"response_evidence":null,"scopes":{"metadata_index":"unknown","rendered_text":"unknown","api_output":"unknown","raw_download":"unknown","bulk_export":"unknown"}},
+    {"request_id":"REQ-DELL-001","source_id":"dell","vendor":"Dell Technologies","product_scope":"OpenManage and iDRAC MIBs","contact_route":"https://www.dell.com/en-us/lp/legal/site-terms-of-use","status":"not_sent","recipient":null,"sent_at":null,"response_evidence":null,"scopes":{"metadata_index":"unknown","rendered_text":"unknown","api_output":"unknown","raw_download":"unknown","bulk_export":"unknown"}},
+    {"request_id":"REQ-SYNOLOGY-001","source_id":"synology","vendor":"Synology","product_scope":"DSM, SRM, and APM MIBs","contact_route":"https://www.synology.com/en-us/company/legal/terms_conditions","status":"not_sent","recipient":null,"sent_at":null,"response_evidence":null,"scopes":{"metadata_index":"unknown","rendered_text":"unknown","api_output":"unknown","raw_download":"unknown","bulk_export":"unknown"}}
+  ]
+}

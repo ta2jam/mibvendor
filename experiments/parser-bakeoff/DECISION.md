@@ -10,7 +10,8 @@ Net-SNMP to the application runtime; retain it only as a compatibility oracle
 for behaviors that must match common SNMP tooling.
 
 This is not a final selection. The 9-case synthetic run cannot establish vendor
-compatibility, and no pinned container was executed.
+compatibility. Pinned containers now pass on Linux amd64, but no Linux arm64
+container run or rights-approved 100-case result exists.
 
 ## Evidence
 
@@ -43,8 +44,9 @@ also compiled to a binary reporting `5.9.4.pre2`. Neither fact makes Net-SNMP a
 bad SNMP tool; they make this CLI path a weak canonical ingest contract.
 
 The measured timing and RSS do not decide the selection. Nine small files mostly
-measure process startup, and macOS RSS is a per-candidate child high-water mark.
-The 100-case container run must supply representative throughput and memory data.
+measure process startup, and RSS is a per-candidate child high-water mark. The
+100-case multi-architecture container run must supply representative throughput
+and memory data.
 
 ## Exit criteria for the parser gate
 

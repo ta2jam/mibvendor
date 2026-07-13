@@ -15,6 +15,11 @@ Files:
 - `scoring-sheet.md`: per-session and aggregate scoring.
 - `api-scenarios.md`: three unvalidated API integration hypotheses expressed as contracts and tests.
 - `prototype-performance.md`: one reproducible 50,000-line synthetic walk baseline and its limits.
+- `validation-evidence.json`: machine-checked, privacy-minimized participant,
+  repeat-use, and external integration evidence register. It intentionally
+  contains zero claimed observations until real artifacts exist.
+- `operations-runbook.md`: exact recruitment-to-evidence workflow and the
+  distinction between an observation and an unsupported claim.
 - `gate-status.md`: what is actually complete, what remains unverified, and which gate is blocked.
 
 Evidence labels:

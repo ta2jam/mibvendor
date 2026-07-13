@@ -1,9 +1,10 @@
 # Phase 0 research index
 
 - [`demand/`](demand/): desk evidence, task inventory, interview protocol, and
-  demand gate status.
+  demand gate status; the JSON evidence register is machine-checked and starts
+  with zero invented observations.
 - [`rights/`](rights/): source-specific rights matrix, evidence, and permission
-  actions.
+  actions, including a ten-vendor first-wave request tracker.
 - [`../../experiments/parser-bakeoff/`](../../experiments/parser-bakeoff/):
   reproducible parser comparison and decision evidence.
 

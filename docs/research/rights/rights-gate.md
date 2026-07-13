@@ -64,6 +64,13 @@ IANA MIB kabulü şu şekilde sınırlandırılır:
 
 İlk temas için kapsamları ayrı soran [izin talebi şablonunu](./permission-request-template.md) kullan; sessizlik veya kapsamı belirtmeyen genel destek yanıtı izin sayılmaz.
 
+İlk dalganın on satırlık durum kaydı
+[`permission-requests.json`](./permission-requests.json) dosyasındadır. Hesap
+verebilir gönderici kimliği sağlandığında kişiselleştirilmiş taslak
+`scripts/render-rights-request.mjs` ile üretilir. Gönderim ve cevap kanıtı
+olmadan kayıt `sent` veya bir scope `approved` yapılamaz; bu kural
+`npm run check:rights-requests` ile doğrulanır.
+
 Her talep tek bir “MIB kullanabilir miyiz?” sorusu olmamalı. Yazılı cevapta ayrı ayrı şunlar istenmeli:
 
 1. OID, symbol, module, revision, object kind ve resmi kaynak linkinden oluşan `metadata_index`.
@@ -95,6 +102,7 @@ Hak kontrolünün çalışma zamanı maliyeti artifact başına sabit sayıda al
 ## Gate testleri
 
 - Matris şema testi: `python3 docs/research/rights/validate_rights_matrix.py`
+- İzin takip bütünlüğü: `node scripts/validate-rights-requests.mjs`
 - Negatif fixture: bir scope'u `unknown` olan A/B satırı doğrulamadan geçmemeli.
 - Notice fixture: attribution veya license notice kaybedilen IETF/IANA artifact'i aktive edilmemeli.
 - URL fixture: yalnız HTTPS primary source kabul edilmeli.

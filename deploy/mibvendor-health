@@ -1,0 +1,68 @@
+#!/bin/sh
+set -eu
+
+site_dir=${MIBVENDOR_SITE_DIR:-/srv/sites/mibvendor}
+release_env=${MIBVENDOR_RELEASE_ENV:-$site_dir/release.env}
+origin=${MIBVENDOR_ORIGIN:-https://mibvendor.io}
+disk_limit=${MIBVENDOR_DISK_LIMIT_PERCENT:-85}
+
+fail() {
+    printf 'mibvendor health failed: %s\n' "$1" >&2
+    exit 1
+}
+
+[ -r "$release_env" ] || fail "release.env is not readable"
+# shellcheck disable=SC1090
+. "$release_env"
+: "${APP_VERSION:?APP_VERSION is missing from release.env}"
+: "${VCS_REF:?VCS_REF is missing from release.env}"
+: "${DATA_RELEASE:?DATA_RELEASE is missing from release.env}"
+
+systemctl is-active --quiet caddy || fail "caddy is inactive"
+
+containers=$(docker ps \
+    --filter label=com.docker.compose.project=mibvendor \
+    --filter label=com.docker.compose.service=app \
+    --format '{{.ID}}')
+[ "$(printf '%s\n' "$containers" | sed '/^$/d' | wc -l)" -eq 1 ] || fail "expected exactly one running app container"
+container_id=$(printf '%s\n' "$containers" | sed -n '1p')
+[ "$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}missing{{end}}' "$container_id")" = healthy ] \
+    || fail "app container is not healthy"
+
+listeners=$(ss -H -ltn 'sport = :3001')
+printf '%s\n' "$listeners" | grep -Eq '127\.0\.0\.1:3001([[:space:]]|$)' \
+    || fail "port 3001 is not listening on IPv4 loopback"
+printf '%s\n' "$listeners" | grep -Eq '(^|[[:space:]])(0\.0\.0\.0|\*|\[::\]|:::):?3001([[:space:]]|$)' \
+    && fail "port 3001 has a public wildcard listener"
+
+local_health=$(curl --fail --silent --show-error --connect-timeout 3 --max-time 8 http://127.0.0.1:3001/healthz)
+[ "$local_health" = ok ] || fail "local health endpoint failed"
+
+check_version() {
+    VERSION_JSON=$1 EXPECTED_VERSION=$APP_VERSION EXPECTED_COMMIT=$VCS_REF \
+    EXPECTED_DATA_RELEASE=$DATA_RELEASE python3 - <<'PY'
+import json
+import os
+
+document = json.loads(os.environ["VERSION_JSON"])
+expected = {
+    "schema_version": 1,
+    "version": os.environ["EXPECTED_VERSION"],
+    "commit": os.environ["EXPECTED_COMMIT"],
+    "data_release": os.environ["EXPECTED_DATA_RELEASE"],
+}
+for key, value in expected.items():
+    if document.get(key) != value:
+        raise SystemExit(f"{key} mismatch")
+PY
+}
+
+check_version "$(curl --fail --silent --show-error --connect-timeout 3 --max-time 8 http://127.0.0.1:3001/version)" 
+[ "$(curl --fail --silent --show-error --retry 1 --connect-timeout 5 --max-time 15 "$origin/healthz")" = ok ] \
+    || fail "public health endpoint failed"
+check_version "$(curl --fail --silent --show-error --retry 1 --connect-timeout 5 --max-time 15 "$origin/version")"
+
+disk_used=$(df -P / | awk 'NR == 2 {gsub(/%/, "", $5); print $5}')
+[ "$disk_used" -lt "$disk_limit" ] || fail "root filesystem is ${disk_used}% full (limit ${disk_limit}%)"
+
+printf 'mibvendor health passed: version=%s commit=%s disk=%s%%\n' "$APP_VERSION" "$VCS_REF" "$disk_used"

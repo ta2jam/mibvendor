@@ -3,6 +3,26 @@
 All notable changes are documented here. The project uses Semantic Versioning
 while it is pre-1.0; research releases may remain unstable.
 
+## [0.1.0-alpha.4] - 2026-07-13
+
+### Added
+
+- Added an independent scheduled GitHub production monitor and a hardened
+  five-minute VPS health timer with release, container, loopback, Caddy, public
+  endpoint, and disk-threshold checks.
+- Added a privacy-minimized, machine-validated demand evidence register for
+  sessions, material loss, repeat use, and external API integrations.
+- Added a ten-vendor first-wave permission tracker, five-scope integrity
+  validation, and accountable-identity request renderer.
+- Added a real pinned-container Linux amd64 parser result with image, CPU, RSS,
+  malformed-input, and determinism measurements.
+
+### Fixed
+
+- Made parser containers write results with the invoking UID/GID and supplied a
+  deterministic non-root identity environment, preventing root-owned output and
+  PySMI failures on arbitrary host UIDs.
+
 ## [0.1.0-alpha.3] - 2026-07-13
 
 ### Changed
@@ -45,6 +65,7 @@ while it is pre-1.0; research releases may remain unstable.
   evidence cannot be marked complete.
 - Repository checks and CI without production MIB data.
 
+[0.1.0-alpha.4]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.4
 [0.1.0-alpha.3]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.3
 [0.1.0-alpha.2]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.2
 [0.1.0-alpha.1]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.1

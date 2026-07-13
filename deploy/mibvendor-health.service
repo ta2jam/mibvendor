@@ -1,0 +1,26 @@
+[Unit]
+Description=mibvendor production health verification
+After=docker.service caddy.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=deploy
+Group=deploy
+SupplementaryGroups=docker
+ExecStart=/srv/sites/mibvendor/app/deploy/mibvendor-health
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+SystemCallArchitectures=native
+TimeoutStartSec=60
+
+[Install]
+WantedBy=multi-user.target

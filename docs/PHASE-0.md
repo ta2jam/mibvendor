@@ -14,7 +14,7 @@ it. Every criterion needs a dated artifact or observation.
 | Repeat use | At least 3 participants return for a second task | `docs/research/demand/` | 0 observed returns |
 | API demand | 3 concrete integrations validated with builders | `docs/research/demand/` | 3 executable hypotheses; 0 external integrations |
 | Rights | Viable approved Tier A/B seed plus one vendor path | `docs/research/rights/` | Narrow IETF/IANA Tier A seed; 0 approved vendor paths |
-| Parser | One canonical parser selected from reproducible measurements | `experiments/parser-bakeoff/` | PySMI provisional; 9 synthetic local cases, 100-case/container gate open |
+| Parser | One canonical parser selected from reproducible measurements | `experiments/parser-bakeoff/` | PySMI provisional; pinned Linux amd64 containers pass 9 synthetic cases; 100-case and Linux arm64 evidence open |
 | Prototype | Public task prototype available for sessions | `prototype/` | Passed: [mibvendor.io](https://mibvendor.io) is the production origin; local-only walk decoding and 50,000-line baseline verified |
 
 ## Decision rule

@@ -1,0 +1,902 @@
+{
+  "binary": "/usr/local/bin/mibdump",
+  "candidate": "pysmi",
+  "cases": [
+    {
+      "diagnostics": "",
+      "expectation_met": true,
+      "expected": "success",
+      "feature_checks": {
+        "augments": true,
+        "enums": true,
+        "imports": true,
+        "indexes": true,
+        "notifications": true,
+        "revisions": true,
+        "textual_conventions": true
+      },
+      "id": "base-full-fidelity",
+      "module": "MIBVENDOR-BASE-MIB",
+      "normalized": {
+        "augments": [
+          "mvEntry"
+        ],
+        "enums": [
+          "down=2",
+          "unknown=0",
+          "up=1"
+        ],
+        "imports": [
+          "SNMPv2-CONF::MODULE-COMPLIANCE",
+          "SNMPv2-CONF::NOTIFICATION-GROUP",
+          "SNMPv2-SMI::Bits",
+          "SNMPv2-SMI::Integer32",
+          "SNMPv2-SMI::IpAddress",
+          "SNMPv2-SMI::MODULE-IDENTITY",
+          "SNMPv2-SMI::MibIdentifier",
+          "SNMPv2-SMI::NOTIFICATION-TYPE",
+          "SNMPv2-SMI::OBJECT-IDENTITY",
+          "SNMPv2-SMI::OBJECT-TYPE",
+          "SNMPv2-SMI::TimeTicks",
+          "SNMPv2-SMI::Unsigned32",
+          "SNMPv2-SMI::enterprises",
+          "SNMPv2-SMI::iso",
+          "SNMPv2-TC::DisplayString",
+          "SNMPv2-TC::PhysAddress",
+          "SNMPv2-TC::TEXTUAL-CONVENTION"
+        ],
+        "indexes": [
+          "mvIndex"
+        ],
+        "notifications": [
+          "mvStateChanged"
+        ],
+        "oids": {
+          "mibVendorBase": "1.3.6.1.4.1.99999",
+          "mvAugmentEntry": "1.3.6.1.4.1.99999.1.3.1",
+          "mvAugmentTable": "1.3.6.1.4.1.99999.1.3",
+          "mvEntry": "1.3.6.1.4.1.99999.1.2.1",
+          "mvIndex": "1.3.6.1.4.1.99999.1.2.1.1",
+          "mvName": "1.3.6.1.4.1.99999.1.2.1.2",
+          "mvNote": "1.3.6.1.4.1.99999.1.3.1.1",
+          "mvNotifications": "1.3.6.1.4.1.99999.2",
+          "mvObjects": "1.3.6.1.4.1.99999.1",
+          "mvScalar": "1.3.6.1.4.1.99999.1.1",
+          "mvState": "1.3.6.1.4.1.99999.1.2.1.3",
+          "mvStateChanged": "1.3.6.1.4.1.99999.2.1",
+          "mvTable": "1.3.6.1.4.1.99999.1.2"
+        },
+        "revisions": [
+          "2026-01-01 00:00",
+          "2026-07-13 00:00"
+        ],
+        "symbols": [
+          "MibVendorState",
+          "mibVendorBase",
+          "mvAugmentEntry",
+          "mvAugmentTable",
+          "mvEntry",
+          "mvIndex",
+          "mvName",
+          "mvNote",
+          "mvNotifications",
+          "mvObjects",
+          "mvScalar",
+          "mvState",
+          "mvStateChanged",
+          "mvTable"
+        ],
+        "textual_conventions": [
+          "MibVendorState"
+        ]
+      },
+      "normalized_output_deterministic": true,
+      "raw_output_deterministic": false,
+      "runs": [
+        {
+          "measurement": {
+            "command": [
+              "/usr/local/bin/mibdump",
+              "--destination-format=json",
+              "--destination-directory=/tmp/bakeoff-work/pysmi/base-full-fidelity/1",
+              "--mib-borrower=/tmp/bakeoff-work/pysmi/empty-borrower",
+              "--generate-mib-texts",
+              "--rebuild",
+              "--mib-source=file://<BAKEOFF_ROOT>/corpus",
+              "--mib-source=file:///opt/standard-mibs/ietf",
+              "--mib-source=file:///opt/standard-mibs/iana",
+              "MIBVENDOR-BASE-MIB"
+            ],
+            "peak_child_rss_kib_so_far": 43644,
+            "returncode": 0,
+            "system_cpu_seconds": 0.146004,
+            "timed_out": false,
+            "user_cpu_seconds": 1.585053,
+            "wall_seconds": 1.738322
+          },
+          "normalized_sha256": "95c0e55a893d30b1ea40b256799c0d856e9f8b696b6b0985897ed89b661e7938",
+          "raw_sha256": "0297a7cf6af8df316e4464edfbfa6d56448073cf30d5ad5f5fd6fe91e202a1d4"
+        },
+        {
+          "measurement": {
+            "command": [
+              "/usr/local/bin/mibdump",
+              "--destination-format=json",
+              "--destination-directory=/tmp/bakeoff-work/pysmi/base-full-fidelity/2",
+              "--mib-borrower=/tmp/bakeoff-work/pysmi/empty-borrower",
+              "--generate-mib-texts",
+              "--rebuild",
+              "--mib-source=file://<BAKEOFF_ROOT>/corpus",
+              "--mib-source=file:///opt/standard-mibs/ietf",
+              "--mib-source=file:///opt/standard-mibs/iana",
+              "MIBVENDOR-BASE-MIB"
+            ],
+            "peak_child_rss_kib_so_far": 43644,
+            "returncode": 0,
+            "system_cpu_seconds": 0.176125,
+            "timed_out": false,
+            "user_cpu_seconds": 1.475045,
+            "wall_seconds": 1.65544
+          },
+          "normalized_sha256": "95c0e55a893d30b1ea40b256799c0d856e9f8b696b6b0985897ed89b661e7938",
+          "raw_sha256": "06e4dbbc692ff5a8668e5ba63319386808650f8965e210fa76fa9e1efd1f3195"
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostics": "",
+      "expectation_met": true,
+      "expected": "success",
+      "feature_checks": {
+        "imports": true
+      },
+      "id": "cross-module-import",
+      "module": "MIBVENDOR-CHILD-MIB",
+      "normalized": {
+        "augments": [],
+        "enums": [],
+        "imports": [
+          "MIBVENDOR-BASE-MIB::mibVendorBase",
+          "SNMPv2-CONF::MODULE-COMPLIANCE",
+          "SNMPv2-CONF::NOTIFICATION-GROUP",
+          "SNMPv2-SMI::Bits",
+          "SNMPv2-SMI::Integer32",
+          "SNMPv2-SMI::IpAddress",
+          "SNMPv2-SMI::MODULE-IDENTITY",
+          "SNMPv2-SMI::MibIdentifier",
+          "SNMPv2-SMI::OBJECT-IDENTITY",
+          "SNMPv2-SMI::OBJECT-TYPE",
+          "SNMPv2-SMI::TimeTicks",
+          "SNMPv2-SMI::Unsigned32",
+          "SNMPv2-SMI::iso",
+          "SNMPv2-TC::DisplayString",
+          "SNMPv2-TC::PhysAddress",
+          "SNMPv2-TC::TEXTUAL-CONVENTION"
+        ],
+        "indexes": [],
+        "notifications": [],
+        "oids": {
+          "mibVendorChild": "1.3.6.1.4.1.99999.10",
+          "mvChildValue": "1.3.6.1.4.1.99999.10.1"
+        },
+        "revisions": [
+          "2026-07-13 00:00"
+        ],
+        "symbols": [
+          "mibVendorChild",
+          "mvChildValue"
+        ],
+        "textual_conventions": []
+      },
+      "normalized_output_deterministic": true,
+      "raw_output_deterministic": false,
+      "runs": [
+        {
+          "measurement": {
+            "command": [
+              "/usr/local/bin/mibdump",
+              "--destination-format=json",
+              "--destination-directory=/tmp/bakeoff-work/pysmi/cross-module-import/1",
+              "--mib-borrower=/tmp/bakeoff-work/pysmi/empty-borrower",
+              "--generate-mib-texts",
+              "--rebuild",
+              "--mib-source=file://<BAKEOFF_ROOT>/corpus",
+              "--mib-source=file:///opt/standard-mibs/ietf",
+              "--mib-source=file:///opt/standard-mibs/iana",
+              "MIBVENDOR-CHILD-MIB"
+            ],
+            "peak_child_rss_kib_so_far": 43644,
+            "returncode": 0,
+            "system_cpu_seconds": 0.147028,
+            "timed_out": false,
+            "user_cpu_seconds": 1.440268,
+            "wall_seconds": 1.588794
+          },
+          "normalized_sha256": "6204b20555ed9acfe1ca9ec430084a405de21eb049767686434d52ef42a962fb",
+          "raw_sha256": "9249a299c76bff989f85a264e7e6abe1accdf9f0e009c3b46c3c13d7990b3a95"
+        },
+        {
+          "measurement": {
+            "command": [
+              "/usr/local/bin/mibdump",
+              "--destination-format=json",
+              "--destination-directory=/tmp/bakeoff-work/pysmi/cross-module-import/2",
+              "--mib-borrower=/tmp/bakeoff-work/pysmi/empty-borrower",
+              "--generate-mib-texts",
+              "--rebuild",
+              "--mib-source=file://<BAKEOFF_ROOT>/corpus",
+              "--mib-source=file:///opt/standard-mibs/ietf",
+              "--mib-source=file:///opt/standard-mibs/iana",
+              "MIBVENDOR-CHILD-MIB"
+            ],
+            "peak_child_rss_kib_so_far": 43644,
+            "returncode": 0,
+            "system_cpu_seconds": 0.125872,
+            "timed_out": false,
+            "user_cpu_seconds": 1.301682,
+            "wall_seconds": 1.42979
+          },
+          "normalized_sha256": "6204b20555ed9acfe1ca9ec430084a405de21eb049767686434d52ef42a962fb",
+          "raw_sha256": "5a004f860054719a2399d3e6eb23ed6345364e33a87ce79cce2ef72df3c4c953"
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostics": "",
+      "expectation_met": true,
+      "expected": "success",
+      "feature_checks": {},
+      "id": "collision-a",
+      "module": "MIBVENDOR-COLLISION-A-MIB",
+      "normalized": {
+        "augments": [],
+        "enums": [],
+        "imports": [
+          "SNMPv2-CONF::MODULE-COMPLIANCE",
+          "SNMPv2-CONF::NOTIFICATION-GROUP",
+          "SNMPv2-SMI::Bits",
+          "SNMPv2-SMI::Integer32",
+          "SNMPv2-SMI::IpAddress",
+          "SNMPv2-SMI::MODULE-IDENTITY",
+          "SNMPv2-SMI::MibIdentifier",
+          "SNMPv2-SMI::OBJECT-IDENTITY",
+          "SNMPv2-SMI::OBJECT-TYPE",
+          "SNMPv2-SMI::TimeTicks",
+          "SNMPv2-SMI::Unsigned32",
+          "SNMPv2-SMI::enterprises",
+          "SNMPv2-SMI::iso",
+          "SNMPv2-TC::DisplayString",
+          "SNMPv2-TC::PhysAddress",
+          "SNMPv2-TC::TEXTUAL-CONVENTION"
+        ],
+        "indexes": [],
+        "notifications": [],
+        "oids": {
+          "mvCollisionA": "1.3.6.1.4.1.99998",
+          "mvSharedName": "1.3.6.1.4.1.99998.1"
+        },
+        "revisions": [
+          "2026-07-13 00:00"
+        ],
+        "symbols": [
+          "mvCollisionA",
+          "mvSharedName"
+        ],
+        "textual_conventions": []
+      },
+      "normalized_output_deterministic": true,
+      "raw_output_deterministic": false,
+      "runs": [
+        {
+          "measurement": {
+            "command": [
+              "/usr/local/bin/mibdump",
+              "--destination-format=json",
+              "--destination-directory=/tmp/bakeoff-work/pysmi/collision-a/1",
+              "--mib-borrower=/tmp/bakeoff-work/pysmi/empty-borrower",
+              "--generate-mib-texts",
+              "--rebuild",
+              "--mib-source=file://<BAKEOFF_ROOT>/corpus",
+              "--mib-source=file:///opt/standard-mibs/ietf",
+              "--mib-source=file:///opt/standard-mibs/iana",
+              "MIBVENDOR-COLLISION-A-MIB"
+            ],
+            "peak_child_rss_kib_so_far": 43644,
+            "returncode": 0,
+            "system_cpu_seconds": 0.148229,
+            "timed_out": false,
+            "user_cpu_seconds": 1.496312,
+            "wall_seconds": 1.646319
+          },
+          "normalized_sha256": "7b21d0cf32a85dad379fe19d3f7054294cbac1d26d840e53287da97d8654df33",
+          "raw_sha256": "801282aeb798f1f48333a14fbbd82fabd877ffb30a786373d1aeb1631f7c2524"
+        },
+        {
+          "measurement": {
+            "command": [
+              "/usr/local/bin/mibdump",
+              "--destination-format=json",
+              "--destination-directory=/tmp/bakeoff-work/pysmi/collision-a/2",
+              "--mib-borrower=/tmp/bakeoff-work/pysmi/empty-borrower",
+              "--generate-mib-texts",
+              "--rebuild",
+              "--mib-source=file://<BAKEOFF_ROOT>/corpus",
+              "--mib-source=file:///opt/standard-mibs/ietf",
+              "--mib-source=file:///opt/standard-mibs/iana",
+              "MIBVENDOR-COLLISION-A-MIB"
+            ],
+            "peak_child_rss_kib_so_far": 43644,
+            "returncode": 0,
+            "system_cpu_seconds": 0.178104,
+            "timed_out": false,
+            "user_cpu_seconds": 1.473862,
+            "wall_seconds": 1.653766
+          },
+          "normalized_sha256": "7b21d0cf32a85dad379fe19d3f7054294cbac1d26d840e53287da97d8654df33",
+          "raw_sha256": "5974fc8482fca7b1bc689305e3358dd1a7d2d4fe14c01f1087f00c04a40dc392"
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostics": "",
+      "expectation_met": true,
+      "expected": "success",
+      "feature_checks": {},
+      "id": "collision-b",
+      "module": "MIBVENDOR-COLLISION-B-MIB",
+      "normalized": {
+        "augments": [],
+        "enums": [],
+        "imports": [
+          "SNMPv2-CONF::MODULE-COMPLIANCE",
+          "SNMPv2-CONF::NOTIFICATION-GROUP",
+          "SNMPv2-SMI::Bits",
+          "SNMPv2-SMI::Integer32",
+          "SNMPv2-SMI::IpAddress",
+          "SNMPv2-SMI::MODULE-IDENTITY",
+          "SNMPv2-SMI::MibIdentifier",
+          "SNMPv2-SMI::OBJECT-IDENTITY",
+          "SNMPv2-SMI::OBJECT-TYPE",
+          "SNMPv2-SMI::TimeTicks",
+          "SNMPv2-SMI::Unsigned32",
+          "SNMPv2-SMI::enterprises",
+          "SNMPv2-SMI::iso",
+          "SNMPv2-TC::DisplayString",
+          "SNMPv2-TC::PhysAddress",
+          "SNMPv2-TC::TEXTUAL-CONVENTION"
+        ],
+        "indexes": [],
+        "notifications": [],
+        "oids": {
+          "mvCollisionB": "1.3.6.1.4.1.99997",
+          "mvSharedName": "1.3.6.1.4.1.99997.1"
+        },
+        "revisions": [
+          "2026-07-13 00:00"
+        ],
+        "symbols": [
+          "mvCollisionB",
+          "mvSharedName"
+        ],
+        "textual_conventions": []
+      },
+      "normalized_output_deterministic": true,
+      "raw_output_deterministic": false,
+      "runs": [
+        {
+          "measurement": {
+            "command": [
+              "/usr/local/bin/mibdump",
+              "--destination-format=json",
+              "--destination-directory=/tmp/bakeoff-work/pysmi/collision-b/1",
+              "--mib-borrower=/tmp/bakeoff-work/pysmi/empty-borrower",
+              "--generate-mib-texts",
+              "--rebuild",
+              "--mib-source=file://<BAKEOFF_ROOT>/corpus",
+              "--mib-source=file:///opt/standard-mibs/ietf",
+              "--mib-source=file:///opt/standard-mibs/iana",
+              "MIBVENDOR-COLLISION-B-MIB"
+            ],
+            "peak_child_rss_kib_so_far": 43644,
+            "returncode": 0,
+            "system_cpu_seconds": 0.155488,
+            "timed_out": false,
+            "user_cpu_seconds": 1.766535,
+            "wall_seconds": 1.929874
+          },
+          "normalized_sha256": "8d2ef2a330bb398d13b353d7b037c79a65698de234f535b6933d4d228f45ba9b",
+          "raw_sha256": "7012ac650a434fec5dea425a25accc38272cf775765418e0412c9c3e2ac3c3a8"
+        },
+        {
+          "measurement": {
+            "command": [
+              "/usr/local/bin/mibdump",
+              "--destination-format=json",
+              "--destination-directory=/tmp/bakeoff-work/pysmi/collision-b/2",
+              "--mib-borrower=/tmp/bakeoff-work/pysmi/empty-borrower",
+              "--generate-mib-texts",
+              "--rebuild",
+              "--mib-source=file://<BAKEOFF_ROOT>/corpus",
+              "--mib-source=file:///opt/standard-mibs/ietf",
+              "--mib-source=file:///opt/standard-mibs/iana",
+              "MIBVENDOR-COLLISION-B-MIB"
+            ],
+            "peak_child_rss_kib_so_far": 43764,
+            "returncode": 0,
+            "system_cpu_seconds": 0.209368,
+            "timed_out": false,
+            "user_cpu_seconds": 1.985889,
+            "wall_seconds": 2.202521
+          },
+          "normalized_sha256": "8d2ef2a330bb398d13b353d7b037c79a65698de234f535b6933d4d228f45ba9b",
+          "raw_sha256": "627befca890d3618dbc276cb948cc241b8e1c57d39fbf6b312b7875f32848b9e"
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostics": "",
+      "expectation_met": true,
+      "expected": "success",
+      "feature_checks": {
+        "revisions": true
+      },
+      "id": "revision-old-shape",
+      "module": "MIBVENDOR-REV-OLD-MIB",
+      "normalized": {
+        "augments": [],
+        "enums": [],
+        "imports": [
+          "SNMPv2-CONF::MODULE-COMPLIANCE",
+          "SNMPv2-CONF::NOTIFICATION-GROUP",
+          "SNMPv2-SMI::Bits",
+          "SNMPv2-SMI::Integer32",
+          "SNMPv2-SMI::IpAddress",
+          "SNMPv2-SMI::MODULE-IDENTITY",
+          "SNMPv2-SMI::MibIdentifier",
+          "SNMPv2-SMI::OBJECT-IDENTITY",
+          "SNMPv2-SMI::OBJECT-TYPE",
+          "SNMPv2-SMI::TimeTicks",
+          "SNMPv2-SMI::Unsigned32",
+          "SNMPv2-SMI::enterprises",
+          "SNMPv2-SMI::iso",
+          "SNMPv2-TC::DisplayString",
+          "SNMPv2-TC::PhysAddress",
+          "SNMPv2-TC::TEXTUAL-CONVENTION"
+        ],
+        "indexes": [],
+        "notifications": [],
+        "oids": {
+          "mvRevisionOld": "1.3.6.1.4.1.99996",
+          "mvRevisionValue": "1.3.6.1.4.1.99996.1"
+        },
+        "revisions": [
+          "2025-01-01 00:00"
+        ],
+        "symbols": [
+          "mvRevisionOld",
+          "mvRevisionValue"
+        ],
+        "textual_conventions": []
+      },
+      "normalized_output_deterministic": true,
+      "raw_output_deterministic": false,
+      "runs": [
+        {
+          "measurement": {
+            "command": [
+              "/usr/local/bin/mibdump",
+              "--destination-format=json",
+              "--destination-directory=/tmp/bakeoff-work/pysmi/revision-old-shape/1",
+              "--mib-borrower=/tmp/bakeoff-work/pysmi/empty-borrower",
+              "--generate-mib-texts",
+              "--rebuild",
+              "--mib-source=file://<BAKEOFF_ROOT>/corpus",
+              "--mib-source=file:///opt/standard-mibs/ietf",
+              "--mib-source=file:///opt/standard-mibs/iana",
+              "MIBVENDOR-REV-OLD-MIB"
+            ],
+            "peak_child_rss_kib_so_far": 43764,
+            "returncode": 0,
+            "system_cpu_seconds": 0.188897,
+            "timed_out": false,
+            "user_cpu_seconds": 2.0173,
+            "wall_seconds": 2.215042
+          },
+          "normalized_sha256": "47c31316eae86127462aa408b37bcaa5a8a4b51d56899a3e91074656e76a187f",
+          "raw_sha256": "2847f59d171453a7718cb76f7c01469f45ff80c79e2e18ee89ad8aee1bdd678f"
+        },
+        {
+          "measurement": {
+            "command": [
+              "/usr/local/bin/mibdump",
+              "--destination-format=json",
+              "--destination-directory=/tmp/bakeoff-work/pysmi/revision-old-shape/2",
+              "--mib-borrower=/tmp/bakeoff-work/pysmi/empty-borrower",
+              "--generate-mib-texts",
+              "--rebuild",
+              "--mib-source=file://<BAKEOFF_ROOT>/corpus",
+              "--mib-source=file:///opt/standard-mibs/ietf",
+              "--mib-source=file:///opt/standard-mibs/iana",
+              "MIBVENDOR-REV-OLD-MIB"
+            ],
+            "peak_child_rss_kib_so_far": 43768,
+            "returncode": 0,
+            "system_cpu_seconds": 0.169388,
+            "timed_out": false,
+            "user_cpu_seconds": 2.05113,
+            "wall_seconds": 2.224896
+          },
+          "normalized_sha256": "47c31316eae86127462aa408b37bcaa5a8a4b51d56899a3e91074656e76a187f",
+          "raw_sha256": "6c0b5c262c3bead6fe4ceb458a6e5a485ecb9601c038d4cfb8dd2a9f2f371c11"
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostics": "",
+      "expectation_met": true,
+      "expected": "success",
+      "feature_checks": {
+        "revisions": true
+      },
+      "id": "revision-new-shape",
+      "module": "MIBVENDOR-REV-NEW-MIB",
+      "normalized": {
+        "augments": [],
+        "enums": [],
+        "imports": [
+          "SNMPv2-CONF::MODULE-COMPLIANCE",
+          "SNMPv2-CONF::NOTIFICATION-GROUP",
+          "SNMPv2-SMI::Bits",
+          "SNMPv2-SMI::Integer32",
+          "SNMPv2-SMI::IpAddress",
+          "SNMPv2-SMI::MODULE-IDENTITY",
+          "SNMPv2-SMI::MibIdentifier",
+          "SNMPv2-SMI::OBJECT-IDENTITY",
+          "SNMPv2-SMI::OBJECT-TYPE",
+          "SNMPv2-SMI::TimeTicks",
+          "SNMPv2-SMI::Unsigned32",
+          "SNMPv2-SMI::enterprises",
+          "SNMPv2-SMI::iso",
+          "SNMPv2-TC::DisplayString",
+          "SNMPv2-TC::PhysAddress",
+          "SNMPv2-TC::TEXTUAL-CONVENTION"
+        ],
+        "indexes": [],
+        "notifications": [],
+        "oids": {
+          "mvRevisionExtra": "1.3.6.1.4.1.99995.2",
+          "mvRevisionNew": "1.3.6.1.4.1.99995",
+          "mvRevisionValue": "1.3.6.1.4.1.99995.1"
+        },
+        "revisions": [
+          "2025-01-01 00:00",
+          "2026-07-13 00:00"
+        ],
+        "symbols": [
+          "mvRevisionExtra",
+          "mvRevisionNew",
+          "mvRevisionValue"
+        ],
+        "textual_conventions": []
+      },
+      "normalized_output_deterministic": true,
+      "raw_output_deterministic": false,
+      "runs": [
+        {
+          "measurement": {
+            "command": [
+              "/usr/local/bin/mibdump",
+              "--destination-format=json",
+              "--destination-directory=/tmp/bakeoff-work/pysmi/revision-new-shape/1",
+              "--mib-borrower=/tmp/bakeoff-work/pysmi/empty-borrower",
+              "--generate-mib-texts",
+              "--rebuild",
+              "--mib-source=file://<BAKEOFF_ROOT>/corpus",
+              "--mib-source=file:///opt/standard-mibs/ietf",
+              "--mib-source=file:///opt/standard-mibs/iana",
+              "MIBVENDOR-REV-NEW-MIB"
+            ],
+            "peak_child_rss_kib_so_far": 43768,
+            "returncode": 0,
+            "system_cpu_seconds": 0.17664,
+            "timed_out": false,
+            "user_cpu_seconds": 1.861364,
+            "wall_seconds": 2.047388
+          },
+          "normalized_sha256": "96efb3eaa8c3647bf2edcb343c0f20027b2dd34b4e47e84e81ae9f084f945def",
+          "raw_sha256": "db632be60041653ae8e3d2106df2a60e610cce30b52b21ae717c3f5dddd777d8"
+        },
+        {
+          "measurement": {
+            "command": [
+              "/usr/local/bin/mibdump",
+              "--destination-format=json",
+              "--destination-directory=/tmp/bakeoff-work/pysmi/revision-new-shape/2",
+              "--mib-borrower=/tmp/bakeoff-work/pysmi/empty-borrower",
+              "--generate-mib-texts",
+              "--rebuild",
+              "--mib-source=file://<BAKEOFF_ROOT>/corpus",
+              "--mib-source=file:///opt/standard-mibs/ietf",
+              "--mib-source=file:///opt/standard-mibs/iana",
+              "MIBVENDOR-REV-NEW-MIB"
+            ],
+            "peak_child_rss_kib_so_far": 43768,
+            "returncode": 0,
+            "system_cpu_seconds": 0.159496,
+            "timed_out": false,
+            "user_cpu_seconds": 1.835213,
+            "wall_seconds": 1.99797
+          },
+          "normalized_sha256": "96efb3eaa8c3647bf2edcb343c0f20027b2dd34b4e47e84e81ae9f084f945def",
+          "raw_sha256": "88e06015aae071e2f37bf0c3755a2b041f7e7de8bce0873b4d5bd45a45ba7d4e"
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostics": "Created/updated MIBs: \nPre-compiled MIBs borrowed: \nUp to date MIBs: SNMPv2-CONF, SNMPv2-SMI, SNMPv2-TC\nSource MIB repositories: file://<BAKEOFF_ROOT>/corpus, file:///opt/standard-mibs/ietf, file:///opt/standard-mibs/iana\nBorrow missing/failed MIBs from: \nExisting/compiled MIB locations: \nCompiled MIBs destination directory: /tmp/bakeoff-work/pysmi/missing-import/1\nMIBs excluded from code generation: RFC-1212, RFC-1215, RFC1065-SMI, RFC1155-SMI, RFC1158-MIB, RFC1213-MIB, SNMPv2-CONF, SNMPv2-SMI, SNMPv2-TC, SNMPv2-TM\nMIBs to compile: MIBVENDOR-MISSING-IMPORT-MIB\nDestination format: json\nCustom destination template: None\nParser grammar cache directory: not used\nAlso compile all relevant MIBs: yes\nRebuild MIBs regardless of age: yes\nDry run mode: no\nCreate/update MIBs: yes\nByte-compile Python modules: no (optimization level no)\nIgnore compilation errors: no\nGenerate OID->MIB index: no\nGenerate texts in MIBs: yes\nKeep original texts layout: no\nTry various file names while searching for MIB module: yes\nMissing source MIBs: MIBVENDOR-DOES-NOT-EXIST-MIB\nIgnored MIBs: \nFailed MIBs: MIBVENDOR-MISSING-IMPORT-MIB (no module \"MIBVENDOR-DOES-NOT-EXIST-MIB\" in symbolTable at MIB MIBVENDOR-MISSING-IMPORT-MIB)\n",
+      "expectation_met": true,
+      "expected": "failure",
+      "feature_checks": {},
+      "id": "missing-import",
+      "module": "MIBVENDOR-MISSING-IMPORT-MIB",
+      "normalized": {},
+      "normalized_output_deterministic": true,
+      "raw_output_deterministic": true,
+      "runs": [
+        {
+          "measurement": {
+            "command": [
+              "/usr/local/bin/mibdump",
+              "--destination-format=json",
+              "--destination-directory=/tmp/bakeoff-work/pysmi/missing-import/1",
+              "--mib-borrower=/tmp/bakeoff-work/pysmi/empty-borrower",
+              "--generate-mib-texts",
+              "--rebuild",
+              "--mib-source=file://<BAKEOFF_ROOT>/corpus",
+              "--mib-source=file:///opt/standard-mibs/ietf",
+              "--mib-source=file:///opt/standard-mibs/iana",
+              "MIBVENDOR-MISSING-IMPORT-MIB"
+            ],
+            "peak_child_rss_kib_so_far": 43768,
+            "returncode": 79,
+            "system_cpu_seconds": 0.166373,
+            "timed_out": false,
+            "user_cpu_seconds": 1.658716,
+            "wall_seconds": 1.830335
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "measurement": {
+            "command": [
+              "/usr/local/bin/mibdump",
+              "--destination-format=json",
+              "--destination-directory=/tmp/bakeoff-work/pysmi/missing-import/2",
+              "--mib-borrower=/tmp/bakeoff-work/pysmi/empty-borrower",
+              "--generate-mib-texts",
+              "--rebuild",
+              "--mib-source=file://<BAKEOFF_ROOT>/corpus",
+              "--mib-source=file:///opt/standard-mibs/ietf",
+              "--mib-source=file:///opt/standard-mibs/iana",
+              "MIBVENDOR-MISSING-IMPORT-MIB"
+            ],
+            "peak_child_rss_kib_so_far": 43768,
+            "returncode": 79,
+            "system_cpu_seconds": 0.137902,
+            "timed_out": false,
+            "user_cpu_seconds": 1.490943,
+            "wall_seconds": 1.631176
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "success": false,
+      "timed_out": false
+    },
+    {
+      "diagnostics": "Created/updated MIBs: \nPre-compiled MIBs borrowed: \nUp to date MIBs: \nSource MIB repositories: file://<BAKEOFF_ROOT>/corpus, file:///opt/standard-mibs/ietf, file:///opt/standard-mibs/iana\nBorrow missing/failed MIBs from: \nExisting/compiled MIB locations: \nCompiled MIBs destination directory: /tmp/bakeoff-work/pysmi/truncated-input/1\nMIBs excluded from code generation: RFC-1212, RFC-1215, RFC1065-SMI, RFC1155-SMI, RFC1158-MIB, RFC1213-MIB, SNMPv2-CONF, SNMPv2-SMI, SNMPv2-TC, SNMPv2-TM\nMIBs to compile: MIBVENDOR-TRUNCATED-MIB\nDestination format: json\nCustom destination template: None\nParser grammar cache directory: not used\nAlso compile all relevant MIBs: yes\nRebuild MIBs regardless of age: yes\nDry run mode: no\nCreate/update MIBs: yes\nByte-compile Python modules: no (optimization level no)\nIgnore compilation errors: no\nGenerate OID->MIB index: no\nGenerate texts in MIBs: yes\nKeep original texts layout: no\nTry various file names while searching for MIB module: yes\nMissing source MIBs: \nIgnored MIBs: \nFailed MIBs: MIBVENDOR-TRUNCATED-MIB (Bad grammar near offset 601 at MIB MIBVENDOR-TRUNCATED-MIB, line 21)\n",
+      "expectation_met": true,
+      "expected": "failure",
+      "feature_checks": {},
+      "id": "truncated-input",
+      "module": "MIBVENDOR-TRUNCATED-MIB",
+      "normalized": {},
+      "normalized_output_deterministic": true,
+      "raw_output_deterministic": true,
+      "runs": [
+        {
+          "measurement": {
+            "command": [
+              "/usr/local/bin/mibdump",
+              "--destination-format=json",
+              "--destination-directory=/tmp/bakeoff-work/pysmi/truncated-input/1",
+              "--mib-borrower=/tmp/bakeoff-work/pysmi/empty-borrower",
+              "--generate-mib-texts",
+              "--rebuild",
+              "--mib-source=file://<BAKEOFF_ROOT>/corpus",
+              "--mib-source=file:///opt/standard-mibs/ietf",
+              "--mib-source=file:///opt/standard-mibs/iana",
+              "MIBVENDOR-TRUNCATED-MIB"
+            ],
+            "peak_child_rss_kib_so_far": 43768,
+            "returncode": 79,
+            "system_cpu_seconds": 0.15412,
+            "timed_out": false,
+            "user_cpu_seconds": 1.612251,
+            "wall_seconds": 1.767773
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "measurement": {
+            "command": [
+              "/usr/local/bin/mibdump",
+              "--destination-format=json",
+              "--destination-directory=/tmp/bakeoff-work/pysmi/truncated-input/2",
+              "--mib-borrower=/tmp/bakeoff-work/pysmi/empty-borrower",
+              "--generate-mib-texts",
+              "--rebuild",
+              "--mib-source=file://<BAKEOFF_ROOT>/corpus",
+              "--mib-source=file:///opt/standard-mibs/ietf",
+              "--mib-source=file:///opt/standard-mibs/iana",
+              "MIBVENDOR-TRUNCATED-MIB"
+            ],
+            "peak_child_rss_kib_so_far": 43768,
+            "returncode": 79,
+            "system_cpu_seconds": 0.142303,
+            "timed_out": false,
+            "user_cpu_seconds": 1.607426,
+            "wall_seconds": 1.752885
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "success": false,
+      "timed_out": false
+    },
+    {
+      "diagnostics": "Created/updated MIBs: \nPre-compiled MIBs borrowed: \nUp to date MIBs: \nSource MIB repositories: file://<BAKEOFF_ROOT>/corpus, file:///opt/standard-mibs/ietf, file:///opt/standard-mibs/iana\nBorrow missing/failed MIBs from: \nExisting/compiled MIB locations: \nCompiled MIBs destination directory: /tmp/bakeoff-work/pysmi/malformed-nesting/1\nMIBs excluded from code generation: RFC-1212, RFC-1215, RFC1065-SMI, RFC1155-SMI, RFC1158-MIB, RFC1213-MIB, SNMPv2-CONF, SNMPv2-SMI, SNMPv2-TC, SNMPv2-TM\nMIBs to compile: MIBVENDOR-MALFORMED-NESTING-MIB\nDestination format: json\nCustom destination template: None\nParser grammar cache directory: not used\nAlso compile all relevant MIBs: yes\nRebuild MIBs regardless of age: yes\nDry run mode: no\nCreate/update MIBs: yes\nByte-compile Python modules: no (optimization level no)\nIgnore compilation errors: no\nGenerate OID->MIB index: no\nGenerate texts in MIBs: yes\nKeep original texts layout: no\nTry various file names while searching for MIB module: yes\nMissing source MIBs: \nIgnored MIBs: \nFailed MIBs: MIBVENDOR-MALFORMED-NESTING-MIB (Bad grammar near offset 577 at MIB MIBVENDOR-MALFORMED-NESTING-MIB, line 18)\n",
+      "expectation_met": true,
+      "expected": "failure",
+      "feature_checks": {},
+      "id": "malformed-nesting",
+      "module": "MIBVENDOR-MALFORMED-NESTING-MIB",
+      "normalized": {},
+      "normalized_output_deterministic": true,
+      "raw_output_deterministic": true,
+      "runs": [
+        {
+          "measurement": {
+            "command": [
+              "/usr/local/bin/mibdump",
+              "--destination-format=json",
+              "--destination-directory=/tmp/bakeoff-work/pysmi/malformed-nesting/1",
+              "--mib-borrower=/tmp/bakeoff-work/pysmi/empty-borrower",
+              "--generate-mib-texts",
+              "--rebuild",
+              "--mib-source=file://<BAKEOFF_ROOT>/corpus",
+              "--mib-source=file:///opt/standard-mibs/ietf",
+              "--mib-source=file:///opt/standard-mibs/iana",
+              "MIBVENDOR-MALFORMED-NESTING-MIB"
+            ],
+            "peak_child_rss_kib_so_far": 43768,
+            "returncode": 79,
+            "system_cpu_seconds": 0.12593,
+            "timed_out": false,
+            "user_cpu_seconds": 1.483178,
+            "wall_seconds": 1.610823
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "measurement": {
+            "command": [
+              "/usr/local/bin/mibdump",
+              "--destination-format=json",
+              "--destination-directory=/tmp/bakeoff-work/pysmi/malformed-nesting/2",
+              "--mib-borrower=/tmp/bakeoff-work/pysmi/empty-borrower",
+              "--generate-mib-texts",
+              "--rebuild",
+              "--mib-source=file://<BAKEOFF_ROOT>/corpus",
+              "--mib-source=file:///opt/standard-mibs/ietf",
+              "--mib-source=file:///opt/standard-mibs/iana",
+              "MIBVENDOR-MALFORMED-NESTING-MIB"
+            ],
+            "peak_child_rss_kib_so_far": 43768,
+            "returncode": 79,
+            "system_cpu_seconds": 0.166519,
+            "timed_out": false,
+            "user_cpu_seconds": 1.738855,
+            "wall_seconds": 1.907081
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "success": false,
+      "timed_out": false
+    }
+  ],
+  "collision": {
+    "diagnostics": "Created/updated MIBs: MIBVENDOR-COLLISION-A-MIB, MIBVENDOR-COLLISION-B-MIB\nPre-compiled MIBs borrowed: \nUp to date MIBs: SNMPv2-CONF, SNMPv2-SMI, SNMPv2-TC\nSource MIB repositories: file://<BAKEOFF_ROOT>/corpus, file:///opt/standard-mibs/ietf, file:///opt/standard-mibs/iana\nBorrow missing/failed MIBs from: \nExisting/compiled MIB locations: \nCompiled MIBs destination directory: /tmp/bakeoff-work/pysmi/collision-combined\nMIBs excluded from code generation: RFC-1212, RFC-1215, RFC1065-SMI, RFC1155-SMI, RFC1158-MIB, RFC1213-MIB, SNMPv2-CONF, SNMPv2-SMI, SNMPv2-TC, SNMPv2-TM\nMIBs to compile: MIBVENDOR-COLLISION-A-MIB, MIBVENDOR-COLLISION-B-MIB\nDestination format: json\nCustom destination template: None\nParser grammar cache directory: not used\nAlso compile all relevant MIBs: yes\nRebuild MIBs regardless of age: yes\nDry run mode: no\nCreate/update MIBs: yes\nByte-compile Python modules: no (optimization level no)\nIgnore compilation errors: no\nGenerate OID->MIB index: no\nGenerate texts in MIBs: yes\nKeep original texts layout: no\nTry various file names while searching for MIB module: yes\nMissing source MIBs: \nIgnored MIBs: \nFailed MIBs: \n",
+    "measurement": {
+      "command": [
+        "/usr/local/bin/mibdump",
+        "--destination-format=json",
+        "--destination-directory=/tmp/bakeoff-work/pysmi/collision-combined",
+        "--mib-borrower=/tmp/bakeoff-work/pysmi/empty-borrower",
+        "--generate-mib-texts",
+        "--rebuild",
+        "--mib-source=file://<BAKEOFF_ROOT>/corpus",
+        "--mib-source=file:///opt/standard-mibs/ietf",
+        "--mib-source=file:///opt/standard-mibs/iana",
+        "MIBVENDOR-COLLISION-A-MIB",
+        "MIBVENDOR-COLLISION-B-MIB"
+      ],
+      "peak_child_rss_kib_so_far": 43768,
+      "returncode": 0,
+      "system_cpu_seconds": 0.173977,
+      "timed_out": false,
+      "user_cpu_seconds": 1.351828,
+      "wall_seconds": 1.52731
+    },
+    "module_qualified_preserved": true,
+    "resolved": {
+      "MIBVENDOR-COLLISION-A-MIB": "1.3.6.1.4.1.99998.1",
+      "MIBVENDOR-COLLISION-B-MIB": "1.3.6.1.4.1.99997.1"
+    },
+    "success": true
+  },
+  "corpus": {
+    "cases": 9,
+    "invalid_cases": 3,
+    "license": "CC0-1.0",
+    "sha256": "2acab8c0f030bf2c9052e8da03a2125929f8c0f27cc676ff49e1ee80c282b54a",
+    "valid_cases": 6
+  },
+  "execution_mode": "container",
+  "host": {
+    "machine": "x86_64",
+    "platform": "Linux-6.8.0-41-generic-x86_64-with-glibc2.36",
+    "python": "3.12.11"
+  },
+  "schema_version": 1,
+  "started_at": "2026-07-13T15:59:44.123907+00:00",
+  "summary": {
+    "container_image_bytes": 58086701,
+    "expectations_met": 9,
+    "expectations_total": 9,
+    "field_fidelity_passed": 10,
+    "field_fidelity_total": 10,
+    "installed_footprint_bytes": 47273822,
+    "invalid_rejected": 3,
+    "invalid_total": 3,
+    "normalized_deterministic_cases": 9,
+    "peak_child_rss_kib": 43768,
+    "raw_deterministic_cases": 3,
+    "timeout_cases": 0,
+    "total_measured_wall_seconds": 32.830195,
+    "total_system_cpu_seconds": 2.873786,
+    "total_user_cpu_seconds": 29.881022,
+    "valid_parse_success": 6,
+    "valid_parse_total": 6
+  },
+  "version": "2.0.0"
+}
