@@ -58,7 +58,7 @@ test("search classifications preserve ranking, instances, and explicit failure s
 test("prototype records expose bounded trust and release metadata", () => {
   for (const record of records) {
     assert.equal(record.rightsTier, "A — mibvendor-authored metadata and paraphrase");
-    assert.equal(record.dataRelease, "alpha-intelligence-2026-07-14.1");
+    assert.equal(record.dataRelease, "rights-cleared-2026-07-14.1");
     assert.match(record.sourceChecked, /^\d{4}-\d{2}-\d{2}$/);
     assert.ok(record.parseStatus);
     assert.deepEqual(record.rightsScopes, ["metadata", "rendered text", "API output"]);

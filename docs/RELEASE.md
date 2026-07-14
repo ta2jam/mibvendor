@@ -38,13 +38,16 @@ VPS is also not production completion.
 
 ## Current Phase 0 boundary
 
-`v0.1.0-alpha.13` publishes research artifacts, provisional parser-neutral
-foundation contracts with RFC 8785 content addressing, measured UX golden-task
-coverage, and a bounded public-alpha intelligence API. The API includes the
-contact-free IANA PEN snapshot, pinned Net-SNMP `sysObjectID` evidence,
-structured object semantics, dependency graph states, batch resolution, RFC
-9457 failures, and per-client protective rate limiting. It does not authorize a
-production database, unknown-rights vendor MIB publication, broad product-model
+`v0.2.0-alpha.1` publishes a rights-cleared MIB catalog plus the existing
+research and bounded public-alpha intelligence API. The active immutable data
+release contains 110 redistributable IETF/IANA/Net-SNMP modules, 5,392 parsed
+OID nodes, file/source checksums, retained notices, fail-closed raw downloads,
+and 23 reviewed source decisions. No vendor source is approved for metadata
+extraction; 19 vendor families and legacy IETF remain directory-only with
+content quarantined. The API also includes the contact-free IANA PEN snapshot,
+pinned Net-SNMP `sysObjectID` evidence, dependency states, batch resolution,
+RFC 9457 failures, and per-client rate limiting. It does not authorize a
+production database, unknown-rights vendor content, broad product-model
 coverage, or a stable/SLA-backed API claim. The application binds only to
 `127.0.0.1:3001`; host-level Caddy and Cloudflare own the public edge. GitHub
 independently verifies the public origin every 15 minutes, and a hardened VPS

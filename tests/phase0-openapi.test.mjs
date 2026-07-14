@@ -24,6 +24,11 @@ const expectedOperations = {
   "/v1/resolve:batch": ["post"],
   "/v1/search": ["get"],
   "/v1/objects/{objectId}": ["get"],
+  "/v1/modules": ["get"],
+  "/v1/modules/{moduleId}": ["get"],
+  "/v1/modules/{moduleId}/raw": ["get"],
+  "/v1/sources": ["get"],
+  "/v1/sources/{sourceId}": ["get"],
   "/v1/enterprises/{enterpriseNumber}": ["get"],
   "/v1/sys-object-ids/{oid}": ["get"],
   "/v1/modules/{moduleId}/dependencies": ["get"],
@@ -76,8 +81,8 @@ test("OpenAPI bounds and trust fields match the executable probe", () => {
     MAX_QUERY_LENGTH,
   );
   assert.equal(schemas.BatchResponse.properties.results.maxItems, MAX_BATCH_SIZE);
-  assert.equal(schemas.Provenance.properties.publication_status.const, "public-alpha-synthetic");
-  assert.equal(schemas.Provenance.properties.rights_tier.const, "A");
+  assert.deepEqual(schemas.Provenance.properties.publication_mode.enum, ["redistributable", "metadata-only"]);
+  assert.deepEqual(schemas.Provenance.properties.rights_tier.enum, ["A", "B"]);
   assert.equal(schemas.RegistrySource.properties.rights.const, "CC0-1.0");
   assert.ok(schemas.MibObject.required.includes("description"));
   assert.ok(schemas.MibObject.required.includes("relationships"));
@@ -94,23 +99,29 @@ test("OpenAPI bounds and trust fields match the executable probe", () => {
 test("every documented operation is reachable with its documented media type", async () => {
   await withServer(async (base) => {
     const requests = [
-      ["/v1/data-release", {}],
+      ["/v1/data-release", {}, "application/json"],
       ["/v1/resolve:batch", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ data_release: DATA_RELEASE, oids: ["1.3.6.1.2.1.1.3.0"] }),
-      }],
-      ["/v1/search?q=uptime", {}],
-      ["/v1/objects/snmpv2-mib--sysuptime", {}],
-      ["/v1/enterprises/8072", {}],
-      ["/v1/sys-object-ids/1.3.6.1.4.1.8072.3.2.10", {}],
-      ["/v1/modules/IF-MIB/dependencies", {}],
+      }, "application/json"],
+      ["/v1/search?q=uptime", {}, "application/json"],
+      ["/v1/objects/snmpv2-mib--sysuptime", {}, "application/json"],
+      ["/v1/modules?q=BFD", {}, "application/json"],
+      ["/v1/modules/BFD-STD-MIB", {}, "application/json"],
+      ["/v1/modules/BFD-STD-MIB/raw", {}, "text/plain; charset=utf-8"],
+      ["/v1/sources", {}, "application/json"],
+      ["/v1/sources/cisco", {}, "application/json"],
+      ["/v1/enterprises/8072", {}, "application/json"],
+      ["/v1/sys-object-ids/1.3.6.1.4.1.8072.3.2.10", {}, "application/json"],
+      ["/v1/modules/IF-MIB/dependencies", {}, "application/json"],
     ];
-    for (const [path, options] of requests) {
+    for (const [path, options, contentType] of requests) {
       const response = await fetch(`${base}${path}`, options);
       assert.equal(response.status, 200, path);
-      assert.equal(response.headers.get("content-type"), "application/json", path);
-      await response.json();
+      assert.equal(response.headers.get("content-type"), contentType, path);
+      if (contentType === "application/json") await response.json();
+      else await response.text();
     }
   });
 });

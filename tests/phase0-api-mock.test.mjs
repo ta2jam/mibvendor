@@ -51,9 +51,9 @@ test("search and exact object responses expose structured intelligence and prove
     const searchResponse = await fetch(`${base}/v1/search?q=interface%20status`);
     const search = await searchResponse.json();
     assert.equal(search.results[0].symbol, "ifOperStatus");
-    assert.equal(search.results[0].provenance.rights_tier, "A");
-    assert.equal(search.results[0].provenance.publication_status, "public-alpha-synthetic");
-    assert.ok(search.results[0].provenance.scopes.includes("API output"));
+    assert.equal(search.results[0].provenance.rights_tier, "B");
+    assert.equal(search.results[0].provenance.publication_mode, "metadata-only");
+    assert.equal(search.results[0].provenance.raw_download, false);
 
     const objectResponse = await fetch(`${base}/v1/objects/if-mib--ifoperstatus`);
     const object = await objectResponse.json();
@@ -117,6 +117,28 @@ test("module dependencies distinguish graph states", async () => {
     assert.deepEqual(body.missing, ["SNMPv2-CONF", "SNMPv2-SMI", "SNMPv2-TC"]);
     assert.deepEqual(body.cyclic, []);
     assert.equal(body.status, "partial");
+  });
+});
+
+test("module and source catalogs enforce raw redistribution boundaries", async () => {
+  await withServer(async (base) => {
+    const modules = await (await fetch(`${base}/v1/modules?q=BFD&limit=10`)).json();
+    const bfd = modules.results.find((module) => module.id === "BFD-STD-MIB");
+    assert.equal(bfd.publication_mode, "redistributable");
+    assert.equal(bfd.raw_download, true);
+    assert.match(bfd.artifact_sha256, /^[0-9a-f]{64}$/);
+
+    const rawResponse = await fetch(`${base}${bfd.raw_url}`);
+    assert.equal(rawResponse.status, 200);
+    assert.equal(rawResponse.headers.get("x-content-sha256"), bfd.artifact_sha256);
+    assert.match(rawResponse.headers.get("link"), /rel="license"/);
+    assert.match(await rawResponse.text(), /BFD-STD-MIB DEFINITIONS ::= BEGIN/);
+
+    const cisco = await (await fetch(`${base}/v1/sources/cisco`)).json();
+    assert.equal(cisco.source.publication_mode, "directory-only");
+    assert.equal(cisco.source.content_intake, "quarantine");
+    assert.deepEqual(cisco.source.public_fields, ["publisher", "official_source_url", "rights_state"]);
+    assert.equal(cisco.source.public_fields.includes("checksum"), false);
   });
 });
 

@@ -1,0 +1,3093 @@
+{
+  "schema_version": 1,
+  "data_release": "rights-cleared-2026-07-14.1",
+  "generated_at": "2026-07-14T14:20:20Z",
+  "policy": "fail-closed",
+  "inventory_scope": "All modules extracted from post-2008 IETF-stream RFCs whose RFC-index title or abstract identifies MIB/managed-object content, all 20 IANA-maintained MIB registry files linked by the IANA protocol index, and all Net-SNMP/UCD/LM-Sensors project MIB files in the pinned Net-SNMP release. IANA current files supersede same-name RFC extracts.",
+  "source_snapshots": {
+    "ietf_rfc_index": {
+      "url": "https://www.rfc-editor.org/rfc-index.xml",
+      "sha256": "84e9ea7c683155c0ff928751d4e5c7ab90bcb63cdc5ee17fe26987f368b6ee2a",
+      "candidate_rfc_count": 79,
+      "approved_rfc_count": 65,
+      "quarantined_rfcs": [
+        {
+          "rfc": 5427,
+          "reason": "missing-code-component-license-notice"
+        },
+        {
+          "rfc": 5428,
+          "reason": "missing-code-component-license-notice"
+        },
+        {
+          "rfc": 5488,
+          "reason": "missing-code-component-license-notice"
+        },
+        {
+          "rfc": 5519,
+          "reason": "missing-code-component-license-notice"
+        },
+        {
+          "rfc": 5525,
+          "reason": "missing-code-component-license-notice"
+        },
+        {
+          "rfc": 5542,
+          "reason": "missing-code-component-license-notice"
+        },
+        {
+          "rfc": 5591,
+          "reason": "missing-code-component-license-notice"
+        },
+        {
+          "rfc": 5592,
+          "reason": "missing-code-component-license-notice"
+        },
+        {
+          "rfc": 5601,
+          "reason": "missing-code-component-license-notice"
+        },
+        {
+          "rfc": 5602,
+          "reason": "missing-code-component-license-notice"
+        },
+        {
+          "rfc": 5603,
+          "reason": "missing-code-component-license-notice"
+        },
+        {
+          "rfc": 5604,
+          "reason": "missing-code-component-license-notice"
+        },
+        {
+          "rfc": 5605,
+          "reason": "missing-code-component-license-notice"
+        },
+        {
+          "rfc": 5643,
+          "reason": "missing-code-component-license-notice"
+        }
+      ]
+    },
+    "iana_protocol_index": {
+      "url": "https://www.iana.org/protocols?level=1",
+      "sha256": "ec70c02ef8c91911ed26b23476164aaeebccfac803bed1b2316694de89eef892",
+      "linked_mib_count": 20
+    },
+    "net_snmp": {
+      "tag": "v5.9.5.2",
+      "commit": "319bbd0bb36547992c0e1302fef278c6f49d0c80",
+      "license_sha256": "ed869ea395a1f125819a56676385ab0557a21507764bf56f2943302011381e59"
+    }
+  },
+  "counts": {
+    "modules": 110,
+    "resolved_objects": 5392,
+    "publishers": {
+      "IETF": 72,
+      "IANA": 20,
+      "Net-SNMP": 18
+    },
+    "publication_modes": {
+      "redistributable": 110,
+      "metadata-only": 0,
+      "directory-only": 20
+    }
+  },
+  "modules": [
+    {
+      "id": "BATTERY-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7577.txt",
+      "source_revision": "RFC 7577",
+      "source_sha256": "547486ef146fe646ffa3840804fc70767272c682fd9b3f78f17771407ab6cb4e",
+      "artifact_sha256": "d8d4cf1274f3ddee2e89452ec7ff6dd8d6c20cf2d4d24c837551a01c632e3f73",
+      "raw_path": "mibs/redistributable/ietf-post-2008/BATTERY-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2015-06-15",
+      "dependencies": [
+        "ENTITY-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 40,
+      "resolved_oid_count": 40
+    },
+    {
+      "id": "BFD-STD-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7331.txt",
+      "source_revision": "RFC 7331",
+      "source_sha256": "7932d06c2bdd442c0735b98bf7b483522545e404e65ac49bb3aaaee2d1f5e096",
+      "artifact_sha256": "f552001502c3ef04f83829df124862b9101819bb547eac9d8512b5ac431ed58f",
+      "raw_path": "mibs/redistributable/ietf-post-2008/BFD-STD-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2014-08-12",
+      "dependencies": [
+        "BFD-TC-STD-MIB",
+        "DIFFSERV-MIB",
+        "IANA-BFD-TC-STD-MIB",
+        "IF-MIB",
+        "INET-ADDRESS-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 79,
+      "resolved_oid_count": 79
+    },
+    {
+      "id": "BFD-TC-STD-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7330.txt",
+      "source_revision": "RFC 7330",
+      "source_sha256": "827d9fa22746cbbb4a319fffc8f2b2e4bebf04bab854adab09e1ca23c499110e",
+      "artifact_sha256": "7d56fc0a598f90bb113b850cbb1e25479457847f685055b076a861f7c65bcfb4",
+      "raw_path": "mibs/redistributable/ietf-post-2008/BFD-TC-STD-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2014-08-12",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "BGP-MPLS-LAYER3-VPN-MULTICAST-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc8503.txt",
+      "source_revision": "RFC 8503",
+      "source_sha256": "724488db1d34c1ccc64f5ee793856e4b1b3b24dc00541cd01c57ffd098202c2d",
+      "artifact_sha256": "e15f2a546805520bdb0d2192b9e7348343e99c1874af177875421280a09485e3",
+      "raw_path": "mibs/redistributable/ietf-post-2008/BGP-MPLS-LAYER3-VPN-MULTICAST-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2018-12-14",
+      "dependencies": [
+        "IANA-RTPROTO-MIB",
+        "IF-MIB",
+        "INET-ADDRESS-MIB",
+        "L2L3-VPN-MULTICAST-TC-MIB",
+        "MPLS-L3VPN-STD-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 116,
+      "resolved_oid_count": 116
+    },
+    {
+      "id": "CAPWAP-BASE-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5833.txt",
+      "source_revision": "RFC 5833",
+      "source_sha256": "7cbc31aa82d639de51c032a8d4abbd6b8d299703b287f5b8d61a86dcffcb52b7",
+      "artifact_sha256": "86f05a5c785f5c9bcdfa1e2f69822ea59a0fb03ac1d5f623fb24f9124d6c3406",
+      "raw_path": "mibs/redistributable/ietf-post-2008/CAPWAP-BASE-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2010-04-30",
+      "dependencies": [
+        "ENTITY-MIB",
+        "IF-MIB",
+        "INET-ADDRESS-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC",
+        "SYSAPPL-MIB"
+      ],
+      "declared_oid_count": 148,
+      "resolved_oid_count": 148
+    },
+    {
+      "id": "CAPWAP-DOT11-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5834.txt",
+      "source_revision": "RFC 5834",
+      "source_sha256": "92666f8c5c7d0376a0c8cab7609c06540b856fe19d70de1465e437c7a09a39dd",
+      "artifact_sha256": "099fa7816b3fe4e3bb5616400ea57954bff5541b91b89b9185d1a9c6922dc448",
+      "raw_path": "mibs/redistributable/ietf-post-2008/CAPWAP-DOT11-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2010-04-30",
+      "dependencies": [
+        "CAPWAP-BASE-MIB",
+        "IF-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 17,
+      "resolved_oid_count": 17
+    },
+    {
+      "id": "DSLite-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7870.txt",
+      "source_revision": "RFC 7870",
+      "source_sha256": "a1cbd47de0275fe0cf8049cb6d9ea4db797af8a03e8284e6284b6bad1754bf98",
+      "artifact_sha256": "abd22e04993165e1de8b25f3ffe4dd7736418e6a8053eed43054278cc77b93e8",
+      "raw_path": "mibs/redistributable/ietf-post-2008/DSLite-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2016-05-11",
+      "dependencies": [
+        "IF-MIB",
+        "INET-ADDRESS-MIB",
+        "NATV2-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI"
+      ],
+      "declared_oid_count": 51,
+      "resolved_oid_count": 51
+    },
+    {
+      "id": "DVB-RCS-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5728.txt",
+      "source_revision": "RFC 5728",
+      "source_sha256": "59d4c7ec348ed4fc22b91673b9c16c8975b26c0fc892e43d7edabde0213b390d",
+      "artifact_sha256": "9244127c4498114b749461b574bf751e4cf2314dcb5f105f3ad3f634e9d72c98",
+      "raw_path": "mibs/redistributable/ietf-post-2008/DVB-RCS-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2009-07-20",
+      "dependencies": [
+        "DIFFSERV-DSCP-TC",
+        "INET-ADDRESS-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC",
+        "URI-TC-MIB"
+      ],
+      "declared_oid_count": 195,
+      "resolved_oid_count": 195
+    },
+    {
+      "id": "ENERGY-OBJECT-CONTEXT-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7461.txt",
+      "source_revision": "RFC 7461",
+      "source_sha256": "dc080a33f19201f11b1bdb4ca3fd0cce1f4118ea01344cf4affbfb3fad842f55",
+      "artifact_sha256": "4b977f0ae6acb5523e418b000c2f643f6e7859d5b5eb4a1adf1988ea8da965ec",
+      "raw_path": "mibs/redistributable/ietf-post-2008/ENERGY-OBJECT-CONTEXT-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2015-02-09",
+      "dependencies": [
+        "ENTITY-MIB",
+        "IANA-ENERGY-RELATION-MIB",
+        "INET-ADDRESS-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC",
+        "UUID-TC-MIB"
+      ],
+      "declared_oid_count": 29,
+      "resolved_oid_count": 29
+    },
+    {
+      "id": "ENERGY-OBJECT-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7460.txt",
+      "source_revision": "RFC 7460",
+      "source_sha256": "1ab8ab4ce1f02ac800696f216a29b03ea48dbb41db6f0007e89b8cea6ade4102",
+      "artifact_sha256": "44d50d8ded23a61c853748571e19f1c5d5f64add7081d31bc0c19ae97c4eccc4",
+      "raw_path": "mibs/redistributable/ietf-post-2008/ENERGY-OBJECT-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2015-02-09",
+      "dependencies": [
+        "ENTITY-MIB",
+        "IANAPowerStateSet-MIB",
+        "RMON-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 51,
+      "resolved_oid_count": 51
+    },
+    {
+      "id": "ENTITY-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6933.txt",
+      "source_revision": "RFC 6933",
+      "source_sha256": "abc183a1bc88af1e9aaeecbfb4a265b2b1f368bfe3d477ca6a117628cd7013fd",
+      "artifact_sha256": "5305bb53ebe29e9665ce285a953de815f3b9e067d6822618b71d0c190b608b7f",
+      "raw_path": "mibs/redistributable/ietf-post-2008/ENTITY-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2013-04-05",
+      "dependencies": [
+        "IANA-ENTITY-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC",
+        "UUID-TC-MIB"
+      ],
+      "declared_oid_count": 54,
+      "resolved_oid_count": 54
+    },
+    {
+      "id": "FLOAT-TC-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6340.txt",
+      "source_revision": "RFC 6340",
+      "source_sha256": "4bed0b9b90fcdc2521b89fde1a6276f169427cb89a64b8a1037a6e084b2f931d",
+      "artifact_sha256": "c8a61a0edb5149342d6f08c565f19af6add11bb4a0d0e5c4af881353567e0bb2",
+      "raw_path": "mibs/redistributable/ietf-post-2008/FLOAT-TC-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2011-07-27",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "FORCES-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5813.txt",
+      "source_revision": "RFC 5813",
+      "source_sha256": "eb44696b6ba72594d20cd9c0ff7f5213ad820cf83b2848fd4469fa6d23df2580",
+      "artifact_sha256": "2c49661816847b235960125db5a3310cf844fbcb2f051f005d831931533f950b",
+      "raw_path": "mibs/redistributable/ietf-post-2008/FORCES-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2010-03-10",
+      "dependencies": [
+        "RMON2-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 24,
+      "resolved_oid_count": 24
+    },
+    {
+      "id": "G9981-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6768.txt",
+      "source_revision": "RFC 6768",
+      "source_sha256": "bdb02272db36acc9a4b66e74f30af0aded69918003ee065e6652f01e99eac45e",
+      "artifact_sha256": "3e7a90766ac5df1a34bf475a5dde21f6b393dae226c5ae4fae07864561b62aa6",
+      "raw_path": "mibs/redistributable/ietf-post-2008/G9981-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2013-02-20",
+      "dependencies": [
+        "HC-PerfHist-TC-MIB",
+        "IF-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 55,
+      "resolved_oid_count": 55
+    },
+    {
+      "id": "G9982-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6767.txt",
+      "source_revision": "RFC 6767",
+      "source_sha256": "bd22e1ca322428d669b512de50286358708963983a8bacc9673c8dc5660b4f14",
+      "artifact_sha256": "080ee9e014383cd5dee9de3292cec43e9cb3d776db36f4c95c7df3683263706d",
+      "raw_path": "mibs/redistributable/ietf-post-2008/G9982-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2013-02-20",
+      "dependencies": [
+        "HC-PerfHist-TC-MIB",
+        "IF-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 86,
+      "resolved_oid_count": 86
+    },
+    {
+      "id": "G9983-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6766.txt",
+      "source_revision": "RFC 6766",
+      "source_sha256": "4dcd3e4af0794aa825370fdc8c5aae635738ce9e35ac6c4a1f8cf94bee4f8d63",
+      "artifact_sha256": "6aa5853504f72eeca9dc6bb8ee64e851f595e412ed9092b0ea3dc50c51f7b257",
+      "raw_path": "mibs/redistributable/ietf-post-2008/G9983-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2013-02-20",
+      "dependencies": [
+        "HC-PerfHist-TC-MIB",
+        "IF-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 97,
+      "resolved_oid_count": 97
+    },
+    {
+      "id": "GBOND-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6765.txt",
+      "source_revision": "RFC 6765",
+      "source_sha256": "acd7fa99ea86277f62166ec94a08ed2c1eaae20022fa59989acdee61f891cb7f",
+      "artifact_sha256": "ce6529584b66b9f2672c9693d834ee6f2632d85d0efe04b8d19b19d1a0cabb2d",
+      "raw_path": "mibs/redistributable/ietf-post-2008/GBOND-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2013-02-20",
+      "dependencies": [
+        "HC-PerfHist-TC-MIB",
+        "IANA-GBOND-TC-MIB",
+        "IF-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 90,
+      "resolved_oid_count": 90
+    },
+    {
+      "id": "IANA-ADDRESS-FAMILY-NUMBERS-MIB",
+      "publisher": "IANA",
+      "source_id": "iana-maintained-mibs",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.iana.org/assignments/ianaaddressfamilynumbers-mib/ianaaddressfamilynumbers-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "source_sha256": "199cb8484daf5a99e1ca01ce7dfc169f4221d1eccdf5ce712e293786d80753fa",
+      "artifact_sha256": "199cb8484daf5a99e1ca01ce7dfc169f4221d1eccdf5ce712e293786d80753fa",
+      "raw_path": "mibs/redistributable/iana-maintained-mibs/IANA-ADDRESS-FAMILY-NUMBERS-MIB.mib",
+      "license": {
+        "spdx": "CC0-1.0",
+        "name": "IANA Protocol Registries CC0 1.0",
+        "url": "https://www.iana.org/help/licensing-terms",
+        "notice_required": true
+      },
+      "revision": "2021-10-19",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "IANA-BFD-TC-STD-MIB",
+      "publisher": "IANA",
+      "source_id": "iana-maintained-mibs",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.iana.org/assignments/ianabfdtcstd-mib/ianabfdtcstd-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "source_sha256": "5617e0077c1e21cce1e3fc318cd2d2d1ff49c495c7b8f405f226141f3176d02d",
+      "artifact_sha256": "5617e0077c1e21cce1e3fc318cd2d2d1ff49c495c7b8f405f226141f3176d02d",
+      "raw_path": "mibs/redistributable/iana-maintained-mibs/IANA-BFD-TC-STD-MIB.mib",
+      "license": {
+        "spdx": "CC0-1.0",
+        "name": "IANA Protocol Registries CC0 1.0",
+        "url": "https://www.iana.org/help/licensing-terms",
+        "notice_required": true
+      },
+      "revision": "2025-11-25",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "IANA-CHARSET-MIB",
+      "publisher": "IANA",
+      "source_id": "iana-maintained-mibs",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.iana.org/assignments/ianacharset-mib/ianacharset-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "source_sha256": "55d3553194e108eb3f036e1cc6f8ebd10695a0301255f99b7b0308274ccc70cc",
+      "artifact_sha256": "55d3553194e108eb3f036e1cc6f8ebd10695a0301255f99b7b0308274ccc70cc",
+      "raw_path": "mibs/redistributable/iana-maintained-mibs/IANA-CHARSET-MIB.mib",
+      "license": {
+        "spdx": "CC0-1.0",
+        "name": "IANA Protocol Registries CC0 1.0",
+        "url": "https://www.iana.org/help/licensing-terms",
+        "notice_required": true
+      },
+      "revision": "2021-01-04",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "IANA-ENERGY-RELATION-MIB",
+      "publisher": "IANA",
+      "source_id": "iana-maintained-mibs",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.iana.org/assignments/ianaenergyrelation-mib/ianaenergyrelation-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "source_sha256": "45686b94086fe1fe7b154f3cbe7e68e441a69302f4d0ba5a9e0ab9f1225d8f2a",
+      "artifact_sha256": "45686b94086fe1fe7b154f3cbe7e68e441a69302f4d0ba5a9e0ab9f1225d8f2a",
+      "raw_path": "mibs/redistributable/iana-maintained-mibs/IANA-ENERGY-RELATION-MIB.mib",
+      "license": {
+        "spdx": "CC0-1.0",
+        "name": "IANA Protocol Registries CC0 1.0",
+        "url": "https://www.iana.org/help/licensing-terms",
+        "notice_required": true
+      },
+      "revision": "2015-02-09",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "IANA-ENTITY-MIB",
+      "publisher": "IANA",
+      "source_id": "iana-maintained-mibs",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.iana.org/assignments/ianaentity-mib/ianaentity-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "source_sha256": "545cf9190c57fc58fc8bb87ab41b260a25635c0a0c0a5d0c8095eaabae77952e",
+      "artifact_sha256": "545cf9190c57fc58fc8bb87ab41b260a25635c0a0c0a5d0c8095eaabae77952e",
+      "raw_path": "mibs/redistributable/iana-maintained-mibs/IANA-ENTITY-MIB.mib",
+      "license": {
+        "spdx": "CC0-1.0",
+        "name": "IANA Protocol Registries CC0 1.0",
+        "url": "https://www.iana.org/help/licensing-terms",
+        "notice_required": true
+      },
+      "revision": "2015-07-16",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "IANA-FINISHER-MIB",
+      "publisher": "IANA",
+      "source_id": "iana-maintained-mibs",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.iana.org/assignments/ianafinisher-mib/ianafinisher-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "source_sha256": "a6c473c5745044f6522cc7f6c80734ac82eaaae8b20e8446d7a156b087e1df89",
+      "artifact_sha256": "a6c473c5745044f6522cc7f6c80734ac82eaaae8b20e8446d7a156b087e1df89",
+      "raw_path": "mibs/redistributable/iana-maintained-mibs/IANA-FINISHER-MIB.mib",
+      "license": {
+        "spdx": "CC0-1.0",
+        "name": "IANA Protocol Registries CC0 1.0",
+        "url": "https://www.iana.org/help/licensing-terms",
+        "notice_required": true
+      },
+      "revision": "2014-05-22",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "IANA-GBOND-TC-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6765.txt",
+      "source_revision": "RFC 6765",
+      "source_sha256": "acd7fa99ea86277f62166ec94a08ed2c1eaae20022fa59989acdee61f891cb7f",
+      "artifact_sha256": "1cbb39884a4407306a100f056711a388efe38989e4eb0028619e8400ca12864f",
+      "raw_path": "mibs/redistributable/ietf-post-2008/IANA-GBOND-TC-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2013-02-20",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "IANA-GMPLS-TC-MIB",
+      "publisher": "IANA",
+      "source_id": "iana-maintained-mibs",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.iana.org/assignments/ianagmplstc-mib/ianagmplstc-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "source_sha256": "ec9fd0940660498e032bb7fe49857f37c82f2a0f2196164ab6767fc564fc1fdd",
+      "artifact_sha256": "ec9fd0940660498e032bb7fe49857f37c82f2a0f2196164ab6767fc564fc1fdd",
+      "raw_path": "mibs/redistributable/iana-maintained-mibs/IANA-GMPLS-TC-MIB.mib",
+      "license": {
+        "spdx": "CC0-1.0",
+        "name": "IANA Protocol Registries CC0 1.0",
+        "url": "https://www.iana.org/help/licensing-terms",
+        "notice_required": true
+      },
+      "revision": "2015-11-04",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "IANA-IPPM-METRICS-REGISTRY-MIB",
+      "publisher": "IANA",
+      "source_id": "iana-maintained-mibs",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.iana.org/assignments/ianaippmmetricsregistry-mib/ianaippmmetricsregistry-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "source_sha256": "8a1b332cc387ec0301c32932aa2234a9fc246d590546d7aa1993f53a7542d08b",
+      "artifact_sha256": "8a1b332cc387ec0301c32932aa2234a9fc246d590546d7aa1993f53a7542d08b",
+      "raw_path": "mibs/redistributable/iana-maintained-mibs/IANA-IPPM-METRICS-REGISTRY-MIB.mib",
+      "license": {
+        "spdx": "CC0-1.0",
+        "name": "IANA Protocol Registries CC0 1.0",
+        "url": "https://www.iana.org/help/licensing-terms",
+        "notice_required": true
+      },
+      "revision": "2015-08-14",
+      "dependencies": [
+        "SNMPv2-SMI"
+      ],
+      "declared_oid_count": 85,
+      "resolved_oid_count": 85
+    },
+    {
+      "id": "IANA-ITU-ALARM-TC-MIB",
+      "publisher": "IANA",
+      "source_id": "iana-maintained-mibs",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.iana.org/assignments/ianaitualarmtc-mib/ianaitualarmtc-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "source_sha256": "ed61aad5eba4648e48ef04165b44c537f190c1bd15ff14a7d1768aaae9b8a6ce",
+      "artifact_sha256": "ed61aad5eba4648e48ef04165b44c537f190c1bd15ff14a7d1768aaae9b8a6ce",
+      "raw_path": "mibs/redistributable/iana-maintained-mibs/IANA-ITU-ALARM-TC-MIB.mib",
+      "license": {
+        "spdx": "CC0-1.0",
+        "name": "IANA Protocol Registries CC0 1.0",
+        "url": "https://www.iana.org/help/licensing-terms",
+        "notice_required": true
+      },
+      "revision": "2014-05-22",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "IANA-LANGUAGE-MIB",
+      "publisher": "IANA",
+      "source_id": "iana-maintained-mibs",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.iana.org/assignments/ianalanguage-mib/ianalanguage-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "source_sha256": "fdc2329b9d311ce17bdc4bb69d3054bdff08a88ab8afa60e1e1744e1eca770eb",
+      "artifact_sha256": "fdc2329b9d311ce17bdc4bb69d3054bdff08a88ab8afa60e1e1744e1eca770eb",
+      "raw_path": "mibs/redistributable/iana-maintained-mibs/IANA-LANGUAGE-MIB.mib",
+      "license": {
+        "spdx": "CC0-1.0",
+        "name": "IANA Protocol Registries CC0 1.0",
+        "url": "https://www.iana.org/help/licensing-terms",
+        "notice_required": true
+      },
+      "revision": "2014-05-22",
+      "dependencies": [
+        "SNMPv2-SMI"
+      ],
+      "declared_oid_count": 8,
+      "resolved_oid_count": 8
+    },
+    {
+      "id": "IANA-MALLOC-MIB",
+      "publisher": "IANA",
+      "source_id": "iana-maintained-mibs",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.iana.org/assignments/ianamalloc-mib/ianamalloc-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "source_sha256": "64adefc9840b104566558d8110f39e342dff5f2d9153959b9ce43bab27e251e2",
+      "artifact_sha256": "64adefc9840b104566558d8110f39e342dff5f2d9153959b9ce43bab27e251e2",
+      "raw_path": "mibs/redistributable/iana-maintained-mibs/IANA-MALLOC-MIB.mib",
+      "license": {
+        "spdx": "CC0-1.0",
+        "name": "IANA Protocol Registries CC0 1.0",
+        "url": "https://www.iana.org/help/licensing-terms",
+        "notice_required": true
+      },
+      "revision": "2014-05-22",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "IANA-MAU-MIB",
+      "publisher": "IANA",
+      "source_id": "iana-maintained-mibs",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.iana.org/assignments/ianamau-mib/ianamau-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "source_sha256": "b9f77d5cccf93e6221f6f7376a95f7b39be863e04b788a8834974f033dde411d",
+      "artifact_sha256": "b9f77d5cccf93e6221f6f7376a95f7b39be863e04b788a8834974f033dde411d",
+      "raw_path": "mibs/redistributable/iana-maintained-mibs/IANA-MAU-MIB.mib",
+      "license": {
+        "spdx": "CC0-1.0",
+        "name": "IANA Protocol Registries CC0 1.0",
+        "url": "https://www.iana.org/help/licensing-terms",
+        "notice_required": true
+      },
+      "revision": "2024-04-02",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 228,
+      "resolved_oid_count": 228
+    },
+    {
+      "id": "IANA-OLSRv2-LINK-METRIC-TYPE-MIB",
+      "publisher": "IANA",
+      "source_id": "iana-maintained-mibs",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.iana.org/assignments/ianaolsrv2linkmetrictype-mib/ianaolsrv2linkmetrictype-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "source_sha256": "61ad094eb2921e4df615ed41f15f3baf39898dbe3e6e56992047779c6b51e506",
+      "artifact_sha256": "61ad094eb2921e4df615ed41f15f3baf39898dbe3e6e56992047779c6b51e506",
+      "raw_path": "mibs/redistributable/iana-maintained-mibs/IANA-OLSRv2-LINK-METRIC-TYPE-MIB.mib",
+      "license": {
+        "spdx": "CC0-1.0",
+        "name": "IANA Protocol Registries CC0 1.0",
+        "url": "https://www.iana.org/help/licensing-terms",
+        "notice_required": true
+      },
+      "revision": "2014-04-09",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "IANA-PRINTER-MIB",
+      "publisher": "IANA",
+      "source_id": "iana-maintained-mibs",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.iana.org/assignments/ianaprinter-mib/ianaprinter-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "source_sha256": "2c14edf82df3644292faabf825db91bdd9e335a5596ade9a7e0d51d3f96fe5c4",
+      "artifact_sha256": "2c14edf82df3644292faabf825db91bdd9e335a5596ade9a7e0d51d3f96fe5c4",
+      "raw_path": "mibs/redistributable/iana-maintained-mibs/IANA-PRINTER-MIB.mib",
+      "license": {
+        "spdx": "CC0-1.0",
+        "name": "IANA Protocol Registries CC0 1.0",
+        "url": "https://www.iana.org/help/licensing-terms",
+        "notice_required": true
+      },
+      "revision": "2024-02-06",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "IANA-RTPROTO-MIB",
+      "publisher": "IANA",
+      "source_id": "iana-maintained-mibs",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.iana.org/assignments/ianaiprouteprotocol-mib/ianaiprouteprotocol-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "source_sha256": "899410c559dd2e7ca9846ec8cc3c0e84c5f9f4c66c8b43db09d2178912eba677",
+      "artifact_sha256": "899410c559dd2e7ca9846ec8cc3c0e84c5f9f4c66c8b43db09d2178912eba677",
+      "raw_path": "mibs/redistributable/iana-maintained-mibs/IANA-RTPROTO-MIB.mib",
+      "license": {
+        "spdx": "CC0-1.0",
+        "name": "IANA Protocol Registries CC0 1.0",
+        "url": "https://www.iana.org/help/licensing-terms",
+        "notice_required": true
+      },
+      "revision": "2016-04-25",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "IANA-SMF-MIB",
+      "publisher": "IANA",
+      "source_id": "iana-maintained-mibs",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.iana.org/assignments/ianasmf-mib/ianasmf-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "source_sha256": "6afc0513390635c0e4f05f355b22c2d7dd9a9889a135b3e5a044817b2da48cbe",
+      "artifact_sha256": "6afc0513390635c0e4f05f355b22c2d7dd9a9889a135b3e5a044817b2da48cbe",
+      "raw_path": "mibs/redistributable/iana-maintained-mibs/IANA-SMF-MIB.mib",
+      "license": {
+        "spdx": "CC0-1.0",
+        "name": "IANA Protocol Registries CC0 1.0",
+        "url": "https://www.iana.org/help/licensing-terms",
+        "notice_required": true
+      },
+      "revision": "2014-08-14",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "IANA-STORAGE-MEDIA-TYPE-MIB",
+      "publisher": "IANA",
+      "source_id": "iana-maintained-mibs",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.iana.org/assignments/ianastoragemediatype-mib/ianastoragemediatype-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "source_sha256": "91715eb50e48ab5b20b091ad1d330a72cee43bef3685933b709e34a81421334b",
+      "artifact_sha256": "91715eb50e48ab5b20b091ad1d330a72cee43bef3685933b709e34a81421334b",
+      "raw_path": "mibs/redistributable/iana-maintained-mibs/IANA-STORAGE-MEDIA-TYPE-MIB.mib",
+      "license": {
+        "spdx": "CC0-1.0",
+        "name": "IANA Protocol Registries CC0 1.0",
+        "url": "https://www.iana.org/help/licensing-terms",
+        "notice_required": true
+      },
+      "revision": "2016-06-17",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "IANAifType-MIB",
+      "publisher": "IANA",
+      "source_id": "iana-maintained-mibs",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.iana.org/assignments/ianaiftype-mib/ianaiftype-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "source_sha256": "c676192edc492eb068c3aa2755991c34c061e103ddd12e6653795b3813b82a59",
+      "artifact_sha256": "c676192edc492eb068c3aa2755991c34c061e103ddd12e6653795b3813b82a59",
+      "raw_path": "mibs/redistributable/iana-maintained-mibs/IANAifType-MIB.mib",
+      "license": {
+        "spdx": "CC0-1.0",
+        "name": "IANA Protocol Registries CC0 1.0",
+        "url": "https://www.iana.org/help/licensing-terms",
+        "notice_required": true
+      },
+      "revision": "2026-03-17",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "IANAPowerStateSet-MIB",
+      "publisher": "IANA",
+      "source_id": "iana-maintained-mibs",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.iana.org/assignments/ianapowerstateset-mib/ianapowerstateset-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "source_sha256": "f679ba1680227d59b555b30a80248ea72990678ecf174cc1e8c45729f3cd1560",
+      "artifact_sha256": "f679ba1680227d59b555b30a80248ea72990678ecf174cc1e8c45729f3cd1560",
+      "raw_path": "mibs/redistributable/iana-maintained-mibs/IANAPowerStateSet-MIB.mib",
+      "license": {
+        "spdx": "CC0-1.0",
+        "name": "IANA Protocol Registries CC0 1.0",
+        "url": "https://www.iana.org/help/licensing-terms",
+        "notice_required": true
+      },
+      "revision": "2015-02-09",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "IANATn3270eTC-MIB",
+      "publisher": "IANA",
+      "source_id": "iana-maintained-mibs",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.iana.org/assignments/ianatn3270etc-mib/ianatn3270etc-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "source_sha256": "b6d46da82a0cab1d9ff1ad9905b9b86cd74633d9dbf1861e42aa88b6411d450f",
+      "artifact_sha256": "b6d46da82a0cab1d9ff1ad9905b9b86cd74633d9dbf1861e42aa88b6411d450f",
+      "raw_path": "mibs/redistributable/iana-maintained-mibs/IANATn3270eTC-MIB.mib",
+      "license": {
+        "spdx": "CC0-1.0",
+        "name": "IANA Protocol Registries CC0 1.0",
+        "url": "https://www.iana.org/help/licensing-terms",
+        "notice_required": true
+      },
+      "revision": "2014-05-22",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "IFCP-MGMT-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6173.txt",
+      "source_revision": "RFC 6173",
+      "source_sha256": "d225850e0996b715e65b359459965586169be148a78ff92f4709ac73a4235a1b",
+      "artifact_sha256": "1b573fef246f94a05e4c17c9e9d8cad29aacc5116a3dabfa93dbcc4bf516a60e",
+      "raw_path": "mibs/redistributable/ietf-post-2008/IFCP-MGMT-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2011-03-09",
+      "dependencies": [
+        "ENTITY-MIB",
+        "FC-MGMT-MIB",
+        "HCNUM-TC",
+        "IF-MIB",
+        "INET-ADDRESS-MIB",
+        "RMON2-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 63,
+      "resolved_oid_count": 63
+    },
+    {
+      "id": "IP-TRAFFIC-FLOW-SECURITY-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc9349.txt",
+      "source_revision": "RFC 9349",
+      "source_sha256": "240196e6550545c8a107c79287c6bcdcae6be95e4ec0e5c8be423f1657ff7569",
+      "artifact_sha256": "b29d1fcb63df88299cdbede17cba9ef62d4bb881c708ea08b6ba2a6d703b6770",
+      "raw_path": "mibs/redistributable/ietf-post-2008/IP-TRAFFIC-FLOW-SECURITY-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2023-01-31",
+      "dependencies": [
+        "HCNUM-TC",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 52,
+      "resolved_oid_count": 52
+    },
+    {
+      "id": "IPFIX-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6615.txt",
+      "source_revision": "RFC 6615",
+      "source_sha256": "2408a9824d1f23860c61013ad313c3489ca8105c606310cc181418aaaed42ad0",
+      "artifact_sha256": "df7ab2edb9442e1c2cd8667947ec7724cf911125839d18956a50f17602936e73",
+      "raw_path": "mibs/redistributable/ietf-post-2008/IPFIX-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2012-06-11",
+      "dependencies": [
+        "ENTITY-MIB",
+        "IF-MIB",
+        "INET-ADDRESS-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 87,
+      "resolved_oid_count": 87
+    },
+    {
+      "id": "IPFIX-SELECTOR-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6615.txt",
+      "source_revision": "RFC 6615",
+      "source_sha256": "2408a9824d1f23860c61013ad313c3489ca8105c606310cc181418aaaed42ad0",
+      "artifact_sha256": "1813035ef71f765a90a28b2b8cb8c9352c13dc5ca63db78f563ae0c2bfd862b3",
+      "raw_path": "mibs/redistributable/ietf-post-2008/IPFIX-SELECTOR-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2012-06-11",
+      "dependencies": [
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 8,
+      "resolved_oid_count": 8
+    },
+    {
+      "id": "IPV6-ICMP-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc8096.txt",
+      "source_revision": "RFC 8096",
+      "source_sha256": "6a4586d3b1bbeb5848db6a55cef7d3fdc9eda3a7181bfa6ae785e0e83bec16e5",
+      "artifact_sha256": "f3a0026112dce2d74da9daad348c9952ee2c895f2b75e8ba2f166a364f16b2e8",
+      "raw_path": "mibs/redistributable/ietf-post-2008/IPV6-ICMP-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2017-02-22",
+      "dependencies": [
+        "IPV6-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI"
+      ],
+      "declared_oid_count": 41,
+      "resolved_oid_count": 41
+    },
+    {
+      "id": "IPV6-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc8096.txt",
+      "source_revision": "RFC 8096",
+      "source_sha256": "6a4586d3b1bbeb5848db6a55cef7d3fdc9eda3a7181bfa6ae785e0e83bec16e5",
+      "artifact_sha256": "0dcf58d7637b018ffabb6968ee7b23415f72e1de49e13063f9576b1fa2c1d663",
+      "raw_path": "mibs/redistributable/ietf-post-2008/IPV6-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2017-02-22",
+      "dependencies": [
+        "IPV6-TC",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 88,
+      "resolved_oid_count": 88
+    },
+    {
+      "id": "IPV6-TC",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc8096.txt",
+      "source_revision": "RFC 8096",
+      "source_sha256": "6a4586d3b1bbeb5848db6a55cef7d3fdc9eda3a7181bfa6ae785e0e83bec16e5",
+      "artifact_sha256": "4575d0b2a4fa840cb5d11d2fee0fec147695cf38192de7e436aa375154bc6a61",
+      "raw_path": "mibs/redistributable/ietf-post-2008/IPV6-TC.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": null,
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 0,
+      "resolved_oid_count": 0
+    },
+    {
+      "id": "IPV6-TCP-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc8096.txt",
+      "source_revision": "RFC 8096",
+      "source_sha256": "6a4586d3b1bbeb5848db6a55cef7d3fdc9eda3a7181bfa6ae785e0e83bec16e5",
+      "artifact_sha256": "ee8a0c3418c830fc588067f0b607521f89da26424aadf99e20e0a6c008f267ac",
+      "raw_path": "mibs/redistributable/ietf-post-2008/IPV6-TCP-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2017-02-22",
+      "dependencies": [
+        "IPV6-TC",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI"
+      ],
+      "declared_oid_count": 13,
+      "resolved_oid_count": 13
+    },
+    {
+      "id": "IPV6-UDP-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc8096.txt",
+      "source_revision": "RFC 8096",
+      "source_sha256": "6a4586d3b1bbeb5848db6a55cef7d3fdc9eda3a7181bfa6ae785e0e83bec16e5",
+      "artifact_sha256": "d2dcd810905c99cb7e319f0f0a5ff2ec94b1642a23892ab87c67f7f522e34949",
+      "raw_path": "mibs/redistributable/ietf-post-2008/IPV6-UDP-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2017-02-22",
+      "dependencies": [
+        "IPV6-TC",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI"
+      ],
+      "declared_oid_count": 10,
+      "resolved_oid_count": 10
+    },
+    {
+      "id": "ISCSI-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7147.txt",
+      "source_revision": "RFC 7147",
+      "source_sha256": "2b2324a9cdfbce42b66b5da6bb6e949645d7e1f9dc40231332f12c6e87a51ed0",
+      "artifact_sha256": "d8a930485a9a354b1f4da86e0c9cf483c22955f15b69b939ffa69c61404b92cc",
+      "raw_path": "mibs/redistributable/ietf-post-2008/ISCSI-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2014-02-18",
+      "dependencies": [
+        "INET-ADDRESS-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 209,
+      "resolved_oid_count": 209
+    },
+    {
+      "id": "L2L3-VPN-MULTICAST-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc8502.txt",
+      "source_revision": "RFC 8502",
+      "source_sha256": "6412ca380cbe40044852dfab80a2892a6744564b250c9784ee91fafe199836db",
+      "artifact_sha256": "e15d5d812797a1d4986993401c9a25227823333bc59473314f9a3bf510a80970",
+      "raw_path": "mibs/redistributable/ietf-post-2008/L2L3-VPN-MULTICAST-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2018-12-14",
+      "dependencies": [
+        "L2L3-VPN-MULTICAST-TC-MIB",
+        "MPLS-TC-STD-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 13,
+      "resolved_oid_count": 13
+    },
+    {
+      "id": "L2L3-VPN-MULTICAST-TC-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc8502.txt",
+      "source_revision": "RFC 8502",
+      "source_sha256": "6412ca380cbe40044852dfab80a2892a6744564b250c9784ee91fafe199836db",
+      "artifact_sha256": "f2605e75e1c22d423c78e537cbf80d39517a9e421f61ac5129c70079462ffeec",
+      "raw_path": "mibs/redistributable/ietf-post-2008/L2L3-VPN-MULTICAST-TC-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2018-12-14",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "LISP-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7052.txt",
+      "source_revision": "RFC 7052",
+      "source_sha256": "c93a3114798a39b5f7ccd9e6971dea383858e19de6156717f8717f7fe2b71116",
+      "artifact_sha256": "6019a42cdaa46f58678cb9c76c7c69a7a4b68d0dfa34b0aade7be86204405332",
+      "raw_path": "mibs/redistributable/ietf-post-2008/LISP-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2013-10-21",
+      "dependencies": [
+        "IANA-ADDRESS-FAMILY-NUMBERS-MIB",
+        "MPLS-L3VPN-STD-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 152,
+      "resolved_oid_count": 152
+    },
+    {
+      "id": "LM-SENSORS-MIB",
+      "publisher": "Net-SNMP",
+      "source_id": "net-snmp",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/LM-SENSORS-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "source_sha256": "baf6ad80ce6bfa9b1b28b60d5023adaffbb612ac2cd5f29266277238b0fb3494",
+      "artifact_sha256": "baf6ad80ce6bfa9b1b28b60d5023adaffbb612ac2cd5f29266277238b0fb3494",
+      "raw_path": "mibs/redistributable/net-snmp/LM-SENSORS-MIB.mib",
+      "license": {
+        "spdx": "LicenseRef-Net-SNMP",
+        "name": "Net-SNMP BSD-family notices",
+        "url": "https://github.com/net-snmp/net-snmp/blob/319bbd0bb36547992c0e1302fef278c6f49d0c80/COPYING",
+        "notice_required": true
+      },
+      "revision": "2024-11-23",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC",
+        "UCD-SNMP-MIB"
+      ],
+      "declared_oid_count": 23,
+      "resolved_oid_count": 23
+    },
+    {
+      "id": "LOWPAN-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7388.txt",
+      "source_revision": "RFC 7388",
+      "source_sha256": "41246166a775b490569624e4681dbe2c679f514b9c5e667f79500103b6bf0332",
+      "artifact_sha256": "f79f26c2b2f50013dc7e9e007358a89f1d103424720ebb6ab0b3e863a5c15f93",
+      "raw_path": "mibs/redistributable/ietf-post-2008/LOWPAN-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2014-10-10",
+      "dependencies": [
+        "IF-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI"
+      ],
+      "declared_oid_count": 67,
+      "resolved_oid_count": 67
+    },
+    {
+      "id": "MAP-E-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc8389.txt",
+      "source_revision": "RFC 8389",
+      "source_sha256": "d5cbb106c13a223ff0f9c7dbc259ca20a26593ec4406e855c5e7398347e740d4",
+      "artifact_sha256": "9f7c65753e90ad37bf11ac3bb7ef18d167efa70b92d77c9010414d96da452811",
+      "raw_path": "mibs/redistributable/ietf-post-2008/MAP-E-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2018-11-26",
+      "dependencies": [
+        "IF-MIB",
+        "INET-ADDRESS-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 24,
+      "resolved_oid_count": 24
+    },
+    {
+      "id": "MPLS-FRR-FACILITY-STD-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6445.txt",
+      "source_revision": "RFC 6445",
+      "source_sha256": "07b841fb97e7ed6a7212c147ff3352aa2521b61ef7e8905e271270dbdcaaebdc",
+      "artifact_sha256": "5b46fc859c74db4ee1961fc0222bce16f230d884eb39a355f0f45860738d3f18",
+      "raw_path": "mibs/redistributable/ietf-post-2008/MPLS-FRR-FACILITY-STD-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2011-11-03",
+      "dependencies": [
+        "IF-MIB",
+        "MPLS-FRR-GENERAL-STD-MIB",
+        "MPLS-TC-STD-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 27,
+      "resolved_oid_count": 27
+    },
+    {
+      "id": "MPLS-FRR-GENERAL-STD-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6445.txt",
+      "source_revision": "RFC 6445",
+      "source_sha256": "07b841fb97e7ed6a7212c147ff3352aa2521b61ef7e8905e271270dbdcaaebdc",
+      "artifact_sha256": "eaeefb32476d618cb23bdaadffe08f504c521312c4947c986749ab0af1dc4aa4",
+      "raw_path": "mibs/redistributable/ietf-post-2008/MPLS-FRR-GENERAL-STD-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2011-11-03",
+      "dependencies": [
+        "IF-MIB",
+        "MPLS-TC-STD-MIB",
+        "MPLS-TE-STD-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 26,
+      "resolved_oid_count": 26
+    },
+    {
+      "id": "MPLS-FRR-ONE2ONE-STD-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6445.txt",
+      "source_revision": "RFC 6445",
+      "source_sha256": "07b841fb97e7ed6a7212c147ff3352aa2521b61ef7e8905e271270dbdcaaebdc",
+      "artifact_sha256": "9d0a2608fbcfe7edb71be769c181c6b958d3454071e4c4f737c457df5e83c1ae",
+      "raw_path": "mibs/redistributable/ietf-post-2008/MPLS-FRR-ONE2ONE-STD-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2011-11-03",
+      "dependencies": [
+        "INET-ADDRESS-MIB",
+        "MPLS-FRR-GENERAL-STD-MIB",
+        "MPLS-TC-STD-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 25,
+      "resolved_oid_count": 25
+    },
+    {
+      "id": "MPLS-ID-STD-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7453.txt",
+      "source_revision": "RFC 7453",
+      "source_sha256": "91f0aa5ca3e4478f227dccbb5c3ec85757bf2d9ae181469aad3cd4d285cb4359",
+      "artifact_sha256": "206b71434f1cb980579a7702e75d8dd0c36306267c8fc7ce0629b38e770d1ae9",
+      "raw_path": "mibs/redistributable/ietf-post-2008/MPLS-ID-STD-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2015-02-02",
+      "dependencies": [
+        "MPLS-TC-EXT-STD-MIB",
+        "MPLS-TC-STD-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI"
+      ],
+      "declared_oid_count": 10,
+      "resolved_oid_count": 10
+    },
+    {
+      "id": "MPLS-LPS-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc8150.txt",
+      "source_revision": "RFC 8150",
+      "source_sha256": "dd4e0fbbfb7c5deff38d6848c255956eb1ccac851302225c271d2eb07df75e0f",
+      "artifact_sha256": "0f939a92d8102711868413324f87bd42b3e9aed7325124fc3fcd382b24796767",
+      "raw_path": "mibs/redistributable/ietf-post-2008/MPLS-LPS-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2017-04-04",
+      "dependencies": [
+        "DIFFSERV-MIB",
+        "MPLS-OAM-ID-STD-MIB",
+        "MPLS-TC-STD-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 58,
+      "resolved_oid_count": 58
+    },
+    {
+      "id": "MPLS-LSR-EXT-STD-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7453.txt",
+      "source_revision": "RFC 7453",
+      "source_sha256": "91f0aa5ca3e4478f227dccbb5c3ec85757bf2d9ae181469aad3cd4d285cb4359",
+      "artifact_sha256": "5fdca52e836f6a1a9ebb44202b92caa7f7f59f89654da6294f02aaa27032c345",
+      "raw_path": "mibs/redistributable/ietf-post-2008/MPLS-LSR-EXT-STD-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2015-02-02",
+      "dependencies": [
+        "MPLS-LSR-STD-MIB",
+        "MPLS-TC-STD-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 10,
+      "resolved_oid_count": 10
+    },
+    {
+      "id": "MPLS-OAM-ID-STD-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7697.txt",
+      "source_revision": "RFC 7697",
+      "source_sha256": "0cd10edb7ebc99dc5fb06b28eec0bd0329112b93a43dc02a48d2c6971efba2f3",
+      "artifact_sha256": "8c8b2d760826fdba1fdb46d116ac00a047b3f961f3446d3aa326091881cd6284",
+      "raw_path": "mibs/redistributable/ietf-post-2008/MPLS-OAM-ID-STD-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2016-01-07",
+      "dependencies": [
+        "DIFFSERV-MIB",
+        "IF-MIB",
+        "MPLS-TC-STD-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 38,
+      "resolved_oid_count": 38
+    },
+    {
+      "id": "MPLS-TC-EXT-STD-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7453.txt",
+      "source_revision": "RFC 7453",
+      "source_sha256": "91f0aa5ca3e4478f227dccbb5c3ec85757bf2d9ae181469aad3cd4d285cb4359",
+      "artifact_sha256": "769f38d0ae0bf8f8803e532687b36444da6847f88d882c60ac6a5890a31b1b2b",
+      "raw_path": "mibs/redistributable/ietf-post-2008/MPLS-TC-EXT-STD-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2015-02-02",
+      "dependencies": [
+        "MPLS-TC-STD-MIB",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "MPLS-TE-EXT-STD-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7453.txt",
+      "source_revision": "RFC 7453",
+      "source_sha256": "91f0aa5ca3e4478f227dccbb5c3ec85757bf2d9ae181469aad3cd4d285cb4359",
+      "artifact_sha256": "01257e70e776c7b7e74e465d412437f61d4d8ae3f1f89e6f4f6aab5d02382f34",
+      "raw_path": "mibs/redistributable/ietf-post-2008/MPLS-TE-EXT-STD-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2015-02-02",
+      "dependencies": [
+        "DIFFSERV-MIB",
+        "MPLS-TC-EXT-STD-MIB",
+        "MPLS-TC-STD-MIB",
+        "MPLS-TE-STD-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 36,
+      "resolved_oid_count": 36
+    },
+    {
+      "id": "NAT-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7658.txt",
+      "source_revision": "RFC 7658",
+      "source_sha256": "312bcc4dafc9ff89173cd0cf2ae339b39f749cfa4cd845611d9592dbea653c54",
+      "artifact_sha256": "b147f6cc8aa3b182894f69f5ac4547e503318ca4c0c37e0c81ec17be46f8c9eb",
+      "raw_path": "mibs/redistributable/ietf-post-2008/NAT-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2015-10-02",
+      "dependencies": [
+        "IF-MIB",
+        "INET-ADDRESS-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 114,
+      "resolved_oid_count": 114
+    },
+    {
+      "id": "NATV2-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7659.txt",
+      "source_revision": "RFC 7659",
+      "source_sha256": "936d336076883d57ddfe7e210bc96c5b2197d041881db0c1e6749414eed04c37",
+      "artifact_sha256": "a7dc422d41991f7cb700f07168f9b93c813004bd4e4e0ed86e396c9b5b3519e8",
+      "raw_path": "mibs/redistributable/ietf-post-2008/NATV2-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2015-10-02",
+      "dependencies": [
+        "INET-ADDRESS-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 123,
+      "resolved_oid_count": 123
+    },
+    {
+      "id": "NET-SNMP-AGENT-MIB",
+      "publisher": "Net-SNMP",
+      "source_id": "net-snmp",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/NET-SNMP-AGENT-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "source_sha256": "028439714ce4774c7ec4fc03225249b185aa17a6920de5857f052b3eba5c1ad7",
+      "artifact_sha256": "028439714ce4774c7ec4fc03225249b185aa17a6920de5857f052b3eba5c1ad7",
+      "raw_path": "mibs/redistributable/net-snmp/NET-SNMP-AGENT-MIB.mib",
+      "license": {
+        "spdx": "LicenseRef-Net-SNMP",
+        "name": "Net-SNMP BSD-family notices",
+        "url": "https://github.com/net-snmp/net-snmp/blob/319bbd0bb36547992c0e1302fef278c6f49d0c80/COPYING",
+        "notice_required": true
+      },
+      "revision": "2010-03-17",
+      "dependencies": [
+        "NET-SNMP-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 48,
+      "resolved_oid_count": 48
+    },
+    {
+      "id": "NET-SNMP-EXAMPLES-MIB",
+      "publisher": "Net-SNMP",
+      "source_id": "net-snmp",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/NET-SNMP-EXAMPLES-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "source_sha256": "ebb99136429fc5e75208928333e9ec44437a63bedb396b807c53d0372f7b9099",
+      "artifact_sha256": "ebb99136429fc5e75208928333e9ec44437a63bedb396b807c53d0372f7b9099",
+      "raw_path": "mibs/redistributable/net-snmp/NET-SNMP-EXAMPLES-MIB.mib",
+      "license": {
+        "spdx": "LicenseRef-Net-SNMP",
+        "name": "Net-SNMP BSD-family notices",
+        "url": "https://github.com/net-snmp/net-snmp/blob/319bbd0bb36547992c0e1302fef278c6f49d0c80/COPYING",
+        "notice_required": true
+      },
+      "revision": "2004-06-15",
+      "dependencies": [
+        "INET-ADDRESS-MIB",
+        "NET-SNMP-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 25,
+      "resolved_oid_count": 25
+    },
+    {
+      "id": "NET-SNMP-EXTEND-MIB",
+      "publisher": "Net-SNMP",
+      "source_id": "net-snmp",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/NET-SNMP-EXTEND-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "source_sha256": "ad05abc5ec39107a140d46e4e62e3fc0cf38eb26c1abe634fd7e9a7c7715e64e",
+      "artifact_sha256": "ad05abc5ec39107a140d46e4e62e3fc0cf38eb26c1abe634fd7e9a7c7715e64e",
+      "raw_path": "mibs/redistributable/net-snmp/NET-SNMP-EXTEND-MIB.mib",
+      "license": {
+        "spdx": "LicenseRef-Net-SNMP",
+        "name": "Net-SNMP BSD-family notices",
+        "url": "https://github.com/net-snmp/net-snmp/blob/319bbd0bb36547992c0e1302fef278c6f49d0c80/COPYING",
+        "notice_required": true
+      },
+      "revision": "2010-03-17",
+      "dependencies": [
+        "NET-SNMP-AGENT-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 25,
+      "resolved_oid_count": 25
+    },
+    {
+      "id": "NET-SNMP-MIB",
+      "publisher": "Net-SNMP",
+      "source_id": "net-snmp",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/NET-SNMP-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "source_sha256": "b0460053145ec563a026ccc7e792ab9ebb370c6aab3d57a9f95f3964cdd9d399",
+      "artifact_sha256": "b0460053145ec563a026ccc7e792ab9ebb370c6aab3d57a9f95f3964cdd9d399",
+      "raw_path": "mibs/redistributable/net-snmp/NET-SNMP-MIB.mib",
+      "license": {
+        "spdx": "LicenseRef-Net-SNMP",
+        "name": "Net-SNMP BSD-family notices",
+        "url": "https://github.com/net-snmp/net-snmp/blob/319bbd0bb36547992c0e1302fef278c6f49d0c80/COPYING",
+        "notice_required": true
+      },
+      "revision": "2002-01-30",
+      "dependencies": [
+        "SNMPv2-SMI"
+      ],
+      "declared_oid_count": 14,
+      "resolved_oid_count": 14
+    },
+    {
+      "id": "NET-SNMP-MONITOR-MIB",
+      "publisher": "Net-SNMP",
+      "source_id": "net-snmp",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/NET-SNMP-MONITOR-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "source_sha256": "a37b33bdf17f27b071880246b8889ee9fd84014443b1d2477ea942a1ea2587bc",
+      "artifact_sha256": "a37b33bdf17f27b071880246b8889ee9fd84014443b1d2477ea942a1ea2587bc",
+      "raw_path": "mibs/redistributable/net-snmp/NET-SNMP-MONITOR-MIB.mib",
+      "license": {
+        "spdx": "LicenseRef-Net-SNMP",
+        "name": "Net-SNMP BSD-family notices",
+        "url": "https://github.com/net-snmp/net-snmp/blob/319bbd0bb36547992c0e1302fef278c6f49d0c80/COPYING",
+        "notice_required": true
+      },
+      "revision": "2002-02-09",
+      "dependencies": [
+        "NET-SNMP-MIB",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 5,
+      "resolved_oid_count": 5
+    },
+    {
+      "id": "NET-SNMP-PASS-MIB",
+      "publisher": "Net-SNMP",
+      "source_id": "net-snmp",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/NET-SNMP-PASS-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "source_sha256": "635c2c26ca7c603f7dce5eb161a4f64e2be14ade4d1a614e8cabfcb019f940f5",
+      "artifact_sha256": "635c2c26ca7c603f7dce5eb161a4f64e2be14ade4d1a614e8cabfcb019f940f5",
+      "raw_path": "mibs/redistributable/net-snmp/NET-SNMP-PASS-MIB.mib",
+      "license": {
+        "spdx": "LicenseRef-Net-SNMP",
+        "name": "Net-SNMP BSD-family notices",
+        "url": "https://github.com/net-snmp/net-snmp/blob/319bbd0bb36547992c0e1302fef278c6f49d0c80/COPYING",
+        "notice_required": true
+      },
+      "revision": null,
+      "dependencies": [
+        "NET-SNMP-EXAMPLES-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-SMI"
+      ],
+      "declared_oid_count": 14,
+      "resolved_oid_count": 14
+    },
+    {
+      "id": "NET-SNMP-PERIODIC-NOTIFY-MIB",
+      "publisher": "Net-SNMP",
+      "source_id": "net-snmp",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/NET-SNMP-PERIODIC-NOTIFY-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "source_sha256": "f89bf9d0e8bc91ede16f1403b053d7b88ea49153925ab57eace87b9ad9e29007",
+      "artifact_sha256": "f89bf9d0e8bc91ede16f1403b053d7b88ea49153925ab57eace87b9ad9e29007",
+      "raw_path": "mibs/redistributable/net-snmp/NET-SNMP-PERIODIC-NOTIFY-MIB.mib",
+      "license": {
+        "spdx": "LicenseRef-Net-SNMP",
+        "name": "Net-SNMP BSD-family notices",
+        "url": "https://github.com/net-snmp/net-snmp/blob/319bbd0bb36547992c0e1302fef278c6f49d0c80/COPYING",
+        "notice_required": true
+      },
+      "revision": "2011-04-20",
+      "dependencies": [
+        "NET-SNMP-MIB",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 11,
+      "resolved_oid_count": 11
+    },
+    {
+      "id": "NET-SNMP-SYSTEM-MIB",
+      "publisher": "Net-SNMP",
+      "source_id": "net-snmp",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/NET-SNMP-SYSTEM-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "source_sha256": "5d85781828d215922fec813523de16c6d160db17edbca0c687153cdbd8ea97a7",
+      "artifact_sha256": "5d85781828d215922fec813523de16c6d160db17edbca0c687153cdbd8ea97a7",
+      "raw_path": "mibs/redistributable/net-snmp/NET-SNMP-SYSTEM-MIB.mib",
+      "license": {
+        "spdx": "LicenseRef-Net-SNMP",
+        "name": "Net-SNMP BSD-family notices",
+        "url": "https://github.com/net-snmp/net-snmp/blob/319bbd0bb36547992c0e1302fef278c6f49d0c80/COPYING",
+        "notice_required": true
+      },
+      "revision": "2002-02-09",
+      "dependencies": [
+        "NET-SNMP-MIB",
+        "NET-SNMP-TC",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 6,
+      "resolved_oid_count": 6
+    },
+    {
+      "id": "NET-SNMP-TC",
+      "publisher": "Net-SNMP",
+      "source_id": "net-snmp",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/NET-SNMP-TC.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "source_sha256": "bf111deffcc7c36262d2e47ff8fd7d49eee8a3f1bdad6236367660da6854a233",
+      "artifact_sha256": "bf111deffcc7c36262d2e47ff8fd7d49eee8a3f1bdad6236367660da6854a233",
+      "raw_path": "mibs/redistributable/net-snmp/NET-SNMP-TC.mib",
+      "license": {
+        "spdx": "LicenseRef-Net-SNMP",
+        "name": "Net-SNMP BSD-family notices",
+        "url": "https://github.com/net-snmp/net-snmp/blob/319bbd0bb36547992c0e1302fef278c6f49d0c80/COPYING",
+        "notice_required": true
+      },
+      "revision": "2002-02-12",
+      "dependencies": [
+        "NET-SNMP-MIB",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 29,
+      "resolved_oid_count": 29
+    },
+    {
+      "id": "NET-SNMP-VACM-MIB",
+      "publisher": "Net-SNMP",
+      "source_id": "net-snmp",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/NET-SNMP-VACM-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "source_sha256": "b484c6887ce4c06be4ae9c6365ea8b111d65ce2f8c1eb5c9b80f23762759a738",
+      "artifact_sha256": "b484c6887ce4c06be4ae9c6365ea8b111d65ce2f8c1eb5c9b80f23762759a738",
+      "raw_path": "mibs/redistributable/net-snmp/NET-SNMP-VACM-MIB.mib",
+      "license": {
+        "spdx": "LicenseRef-Net-SNMP",
+        "name": "Net-SNMP BSD-family notices",
+        "url": "https://github.com/net-snmp/net-snmp/blob/319bbd0bb36547992c0e1302fef278c6f49d0c80/COPYING",
+        "notice_required": true
+      },
+      "revision": "2006-08-27",
+      "dependencies": [
+        "NET-SNMP-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMP-VIEW-BASED-ACM-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 8,
+      "resolved_oid_count": 8
+    },
+    {
+      "id": "NHDP-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7939.txt",
+      "source_revision": "RFC 7939",
+      "source_sha256": "60c166f2734782df0b44d9db2f03785715d7baf5a39713612497dc46e6a17e83",
+      "artifact_sha256": "7169a623b638d2d94470068b339a916cba74a71df0d06fa8eb37c2539cdbe30b",
+      "raw_path": "mibs/redistributable/ietf-post-2008/NHDP-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2016-07-12",
+      "dependencies": [
+        "FLOAT-TC-MIB",
+        "IF-MIB",
+        "INET-ADDRESS-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 115,
+      "resolved_oid_count": 115
+    },
+    {
+      "id": "NTPv4-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5907.txt",
+      "source_revision": "RFC 5907",
+      "source_sha256": "809da307a1925ab8725f3a98086ed1379957cc14912f7d4013f2a940110d551d",
+      "artifact_sha256": "056d547a26babc65fbf7b84fa0b271067b5c8e1e4d4559f13a3ce56e8cd8b537",
+      "raw_path": "mibs/redistributable/ietf-post-2008/NTPv4-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2010-05-17",
+      "dependencies": [
+        "INET-ADDRESS-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC",
+        "SYSAPPL-MIB"
+      ],
+      "declared_oid_count": 67,
+      "resolved_oid_count": 67
+    },
+    {
+      "id": "OLSRv2-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7184.txt",
+      "source_revision": "RFC 7184",
+      "source_sha256": "c7e0f5009634eed9506182105671b1ac3f098eeaffc0a2da0a8602af7585a4c8",
+      "artifact_sha256": "c956af3a1fe8a55aa0d6887bd27c23aa68d79eb31f5d81b372ddf97df3c2579c",
+      "raw_path": "mibs/redistributable/ietf-post-2008/OLSRv2-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2014-04-09",
+      "dependencies": [
+        "IANA-OLSRv2-LINK-METRIC-TYPE-MIB",
+        "INET-ADDRESS-MIB",
+        "NHDP-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 135,
+      "resolved_oid_count": 135
+    },
+    {
+      "id": "PCE-PCEP-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7420.txt",
+      "source_revision": "RFC 7420",
+      "source_sha256": "d5c498b133e0249ba485345624f56f7a9792a5d0b59537f7f07aa1f4aedeaf5f",
+      "artifact_sha256": "85d8a8b107bfc05976e9c6746368bbbf5de252a0ade6fe2e0e46d2360583d29b",
+      "raw_path": "mibs/redistributable/ietf-post-2008/PCE-PCEP-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2014-12-17",
+      "dependencies": [
+        "INET-ADDRESS-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 143,
+      "resolved_oid_count": 143
+    },
+    {
+      "id": "PMIPV6-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6475.txt",
+      "source_revision": "RFC 6475",
+      "source_sha256": "5457f4e587b1bb9bbd568da2c64df531c5648939df50e0359ea1931623c4f4ba",
+      "artifact_sha256": "7e1599df8da9bf84d48527df44145687fb87c07c51ecfb3948e20f9cf8ad1aad",
+      "raw_path": "mibs/redistributable/ietf-post-2008/PMIPV6-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2012-05-07",
+      "dependencies": [
+        "INET-ADDRESS-MIB",
+        "IP-MIB",
+        "MOBILEIPV6-MIB",
+        "PMIPV6-TC-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 112,
+      "resolved_oid_count": 112
+    },
+    {
+      "id": "PMIPV6-TC-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6475.txt",
+      "source_revision": "RFC 6475",
+      "source_sha256": "5457f4e587b1bb9bbd568da2c64df531c5648939df50e0359ea1931623c4f4ba",
+      "artifact_sha256": "d524853b1952aaa1a15cc8392b2e614e07105d3530fd6f35140ae4a93bedb8d3",
+      "raw_path": "mibs/redistributable/ietf-post-2008/PMIPV6-TC-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2012-05-07",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "POWER-ATTRIBUTES-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7460.txt",
+      "source_revision": "RFC 7460",
+      "source_sha256": "1ab8ab4ce1f02ac800696f216a29b03ea48dbb41db6f0007e89b8cea6ade4102",
+      "artifact_sha256": "f2de587ac41ef777ba1de5c168d8a940972f4663b19af2d338a14ad5da58cb22",
+      "raw_path": "mibs/redistributable/ietf-post-2008/POWER-ATTRIBUTES-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2015-02-09",
+      "dependencies": [
+        "ENERGY-OBJECT-MIB",
+        "ENTITY-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI"
+      ],
+      "declared_oid_count": 35,
+      "resolved_oid_count": 35
+    },
+    {
+      "id": "PSAMP-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6727.txt",
+      "source_revision": "RFC 6727",
+      "source_sha256": "b85a3cb06801cf46a25952726f78e9bfc10f9b2ad4dd13729c5cdc6a3e459838",
+      "artifact_sha256": "d93e1dffc9be269033eef30a7da58502559d4c866b33c1f0ded2666711d387a6",
+      "raw_path": "mibs/redistributable/ietf-post-2008/PSAMP-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2012-09-05",
+      "dependencies": [
+        "APPLICATION-MIB",
+        "FLOAT-TC-MIB",
+        "IPFIX-SELECTOR-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 48,
+      "resolved_oid_count": 48
+    },
+    {
+      "id": "PTPBASE-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc8173.txt",
+      "source_revision": "RFC 8173",
+      "source_sha256": "2e5bd86deda14edb0de774f78d4a5d344a41f3bc79ddb96ad3c629ff14908149",
+      "artifact_sha256": "67931d9566f5b3f8ce05992a5dde4814f48e82d51a95cdecb0b4c5855c219ca5",
+      "raw_path": "mibs/redistributable/ietf-post-2008/PTPBASE-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2017-05-30",
+      "dependencies": [
+        "IF-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 163,
+      "resolved_oid_count": 163
+    },
+    {
+      "id": "PW-CEP-STD-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6240.txt",
+      "source_revision": "RFC 6240",
+      "source_sha256": "338a67184932bcb39569ef88860f85266292f48fbb442b3bf53b573f135fe090",
+      "artifact_sha256": "285caba72782f1aa8ebeb37eaca6a134da9afbc082b7b35f09c6f07cab828a2b",
+      "raw_path": "mibs/redistributable/ietf-post-2008/PW-CEP-STD-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2011-05-16",
+      "dependencies": [
+        "HC-PerfHist-TC-MIB",
+        "IF-MIB",
+        "PW-STD-MIB",
+        "PW-TC-STD-MIB",
+        "PerfHist-TC-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 129,
+      "resolved_oid_count": 129
+    },
+    {
+      "id": "RBRIDGE-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6850.txt",
+      "source_revision": "RFC 6850",
+      "source_sha256": "8aad8d311f9c0d7842b28e0f38a3e8b752887057b7fc20877d3bc5f3c118b779",
+      "artifact_sha256": "c4a1643e3d4d403f32eba6f7030f2192985b8be5b184ba4f339404cdca52e523",
+      "raw_path": "mibs/redistributable/ietf-post-2008/RBRIDGE-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2013-01-07",
+      "dependencies": [
+        "BRIDGE-MIB",
+        "IF-MIB",
+        "INET-ADDRESS-MIB",
+        "Q-BRIDGE-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 119,
+      "resolved_oid_count": 119
+    },
+    {
+      "id": "RPKI-ROUTER-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6945.txt",
+      "source_revision": "RFC 6945",
+      "source_sha256": "b888dabedad442b94a2bb786cd24451ae89a8df95e774c6a213b870d47a48aee",
+      "artifact_sha256": "8ba1e2691d75b2eaff1bd8ca874611696fe3b2794722d1f8f2b6939c243f6f76",
+      "raw_path": "mibs/redistributable/ietf-post-2008/RPKI-ROUTER-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2013-05-01",
+      "dependencies": [
+        "INET-ADDRESS-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC",
+        "SYSAPPL-MIB"
+      ],
+      "declared_oid_count": 52,
+      "resolved_oid_count": 52
+    },
+    {
+      "id": "SMF-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7367.txt",
+      "source_revision": "RFC 7367",
+      "source_sha256": "27a4dfbef0d9d0208961db80710d2fab0815d8174d748c6458b002822bf79bc3",
+      "artifact_sha256": "64056ad295a022163ac68a4edd007f9722dc2a61b14df90241dd90751ca17fec",
+      "raw_path": "mibs/redistributable/ietf-post-2008/SMF-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2014-10-10",
+      "dependencies": [
+        "IANA-SMF-MIB",
+        "IF-MIB",
+        "INET-ADDRESS-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 88,
+      "resolved_oid_count": 88
+    },
+    {
+      "id": "SNMP-TLS-TM-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc9456.txt",
+      "source_revision": "RFC 9456",
+      "source_sha256": "76bb3c76bdd6b8d0fe426fd68a9100da712c72e9d43f816951cb24a511050c10",
+      "artifact_sha256": "118437bbfce27343c4732790c88d44a0941684b6ca14bbb9bea443ce4bd0af97",
+      "raw_path": "mibs/redistributable/ietf-post-2008/SNMP-TLS-TM-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2023-11-08",
+      "dependencies": [
+        "SNMP-FRAMEWORK-MIB",
+        "SNMP-TARGET-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 57,
+      "resolved_oid_count": 57
+    },
+    {
+      "id": "SNMP-USM-HMAC-SHA2-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7860.txt",
+      "source_revision": "RFC 7860",
+      "source_sha256": "5e5e497766baa89df6e98b578df4227b3503440e49f3f15afb698b92aea14c86",
+      "artifact_sha256": "8b4b6bbc0b46961ab8083dbea1b9d45da61a7202b5041c0104a10091334de9e3",
+      "raw_path": "mibs/redistributable/ietf-post-2008/SNMP-USM-HMAC-SHA2-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2016-04-18",
+      "dependencies": [
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-SMI"
+      ],
+      "declared_oid_count": 5,
+      "resolved_oid_count": 5
+    },
+    {
+      "id": "SNMP-VACM-AAA-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6065.txt",
+      "source_revision": "RFC 6065",
+      "source_sha256": "b15aabb6c76d46a6f626c9a527d273390c3401b184906ae1dc9c669c148a604f",
+      "artifact_sha256": "eb33e4fb6f6698b6e95599a98fca953408feece9c159f4425a599dfd275890fc",
+      "raw_path": "mibs/redistributable/ietf-post-2008/SNMP-VACM-AAA-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2010-12-09",
+      "dependencies": [
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI"
+      ],
+      "declared_oid_count": 11,
+      "resolved_oid_count": 11
+    },
+    {
+      "id": "SOFTWIRE-MESH-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7856.txt",
+      "source_revision": "RFC 7856",
+      "source_sha256": "62be30a65ef45b4e0164a3e66f4b77db23376e268c4e60ec18e379eb8f283cf9",
+      "artifact_sha256": "c44e980ef941b3ac861c9baed5078639130e42bb46a18d84e426e1bebc6b232e",
+      "raw_path": "mibs/redistributable/ietf-post-2008/SOFTWIRE-MESH-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2016-05-11",
+      "dependencies": [
+        "IANAifType-MIB",
+        "IF-MIB",
+        "INET-ADDRESS-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI"
+      ],
+      "declared_oid_count": 20,
+      "resolved_oid_count": 20
+    },
+    {
+      "id": "SYSLOG-MSG-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5676.txt",
+      "source_revision": "RFC 5676",
+      "source_sha256": "3c14c128ff26b4b9b90b68740581fedf9a07e19c26fd84433eb5576617e90410",
+      "artifact_sha256": "5e6c0e9d54ca514d586cbfde246e803af6e8a98e41f013dacc2b7e90053c38cd",
+      "raw_path": "mibs/redistributable/ietf-post-2008/SYSLOG-MSG-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2009-08-13",
+      "dependencies": [
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC",
+        "SYSLOG-TC-MIB"
+      ],
+      "declared_oid_count": 29,
+      "resolved_oid_count": 29
+    },
+    {
+      "id": "TED-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6825.txt",
+      "source_revision": "RFC 6825",
+      "source_sha256": "26dea34d77bbd58cefbf1ae28b49847656226313b7daa5df4d68bc582dbf4f88",
+      "artifact_sha256": "7376689edf39c5d340f9261a0950f4e268ed9393948344658b9431581561810b",
+      "raw_path": "mibs/redistributable/ietf-post-2008/TED-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2012-12-21",
+      "dependencies": [
+        "FLOAT-TC-MIB",
+        "IANA-GMPLS-TC-MIB",
+        "INET-ADDRESS-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 68,
+      "resolved_oid_count": 68
+    },
+    {
+      "id": "TRILL-OAM-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7784.txt",
+      "source_revision": "RFC 7784",
+      "source_sha256": "e1540a94e2c06215580e62ec804eaa9b0e9226d144110c3f5e21ebdafc379e7d",
+      "artifact_sha256": "83680f0cfc6d2227b65e354353d72dc0b825fa9f3669c6ad44a78136a2d74e3c",
+      "raw_path": "mibs/redistributable/ietf-post-2008/TRILL-OAM-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2016-01-14",
+      "dependencies": [
+        "IEEE8021-CFM-MIB",
+        "LLDP-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 100,
+      "resolved_oid_count": 100
+    },
+    {
+      "id": "UCD-DEMO-MIB",
+      "publisher": "Net-SNMP",
+      "source_id": "net-snmp",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/UCD-DEMO-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "source_sha256": "beec022a6249db64b52a075583260a9533bc9410aacc0a10a8ee8d9b8e4010ff",
+      "artifact_sha256": "beec022a6249db64b52a075583260a9533bc9410aacc0a10a8ee8d9b8e4010ff",
+      "raw_path": "mibs/redistributable/net-snmp/UCD-DEMO-MIB.mib",
+      "license": {
+        "spdx": "LicenseRef-Net-SNMP",
+        "name": "Net-SNMP BSD-family notices",
+        "url": "https://github.com/net-snmp/net-snmp/blob/319bbd0bb36547992c0e1302fef278c6f49d0c80/COPYING",
+        "notice_required": true
+      },
+      "revision": "9912-09-00",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "UCD-SNMP-MIB"
+      ],
+      "declared_oid_count": 7,
+      "resolved_oid_count": 7
+    },
+    {
+      "id": "UCD-DISKIO-MIB",
+      "publisher": "Net-SNMP",
+      "source_id": "net-snmp",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/UCD-DISKIO-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "source_sha256": "8b21cceebb67846d9949bef85f1c884c391e8aac17fee8d52f5fd065a3804daf",
+      "artifact_sha256": "8b21cceebb67846d9949bef85f1c884c391e8aac17fee8d52f5fd065a3804daf",
+      "raw_path": "mibs/redistributable/net-snmp/UCD-DISKIO-MIB.mib",
+      "license": {
+        "spdx": "LicenseRef-Net-SNMP",
+        "name": "Net-SNMP BSD-family notices",
+        "url": "https://github.com/net-snmp/net-snmp/blob/319bbd0bb36547992c0e1302fef278c6f49d0c80/COPYING",
+        "notice_required": true
+      },
+      "revision": "2016-04-04",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC",
+        "UCD-SNMP-MIB"
+      ],
+      "declared_oid_count": 15,
+      "resolved_oid_count": 15
+    },
+    {
+      "id": "UCD-DLMOD-MIB",
+      "publisher": "Net-SNMP",
+      "source_id": "net-snmp",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/UCD-DLMOD-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "source_sha256": "dd338b316f49db70a54febdc3d62a3993644497dc83289bc8f45736e4d8f098a",
+      "artifact_sha256": "dd338b316f49db70a54febdc3d62a3993644497dc83289bc8f45736e4d8f098a",
+      "raw_path": "mibs/redistributable/net-snmp/UCD-DLMOD-MIB.mib",
+      "license": {
+        "spdx": "LicenseRef-Net-SNMP",
+        "name": "Net-SNMP BSD-family notices",
+        "url": "https://github.com/net-snmp/net-snmp/blob/319bbd0bb36547992c0e1302fef278c6f49d0c80/COPYING",
+        "notice_required": true
+      },
+      "revision": "2000-01-26",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC",
+        "UCD-SNMP-MIB"
+      ],
+      "declared_oid_count": 9,
+      "resolved_oid_count": 9
+    },
+    {
+      "id": "UCD-IPFILTER-MIB",
+      "publisher": "Net-SNMP",
+      "source_id": "net-snmp",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/UCD-IPFILTER-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "source_sha256": "b246f5fd93fc20f087dcbec67824c0cfd949cfa9698c08e3198becdb8d79bd8e",
+      "artifact_sha256": "b246f5fd93fc20f087dcbec67824c0cfd949cfa9698c08e3198becdb8d79bd8e",
+      "raw_path": "mibs/redistributable/net-snmp/UCD-IPFILTER-MIB.mib",
+      "license": {
+        "spdx": "LicenseRef-Net-SNMP",
+        "name": "Net-SNMP BSD-family notices",
+        "url": "https://github.com/net-snmp/net-snmp/blob/319bbd0bb36547992c0e1302fef278c6f49d0c80/COPYING",
+        "notice_required": true
+      },
+      "revision": "2000-01-26",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "UCD-SNMP-MIB"
+      ],
+      "declared_oid_count": 23,
+      "resolved_oid_count": 23
+    },
+    {
+      "id": "UCD-IPFWACC-MIB",
+      "publisher": "Net-SNMP",
+      "source_id": "net-snmp",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/UCD-IPFWACC-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "source_sha256": "9d53b4077f2aba8fd3f40c7367526abcb1d25069fcfe1433d004b2afb9a20b09",
+      "artifact_sha256": "9d53b4077f2aba8fd3f40c7367526abcb1d25069fcfe1433d004b2afb9a20b09",
+      "raw_path": "mibs/redistributable/net-snmp/UCD-IPFWACC-MIB.mib",
+      "license": {
+        "spdx": "LicenseRef-Net-SNMP",
+        "name": "Net-SNMP BSD-family notices",
+        "url": "https://github.com/net-snmp/net-snmp/blob/319bbd0bb36547992c0e1302fef278c6f49d0c80/COPYING",
+        "notice_required": true
+      },
+      "revision": "9912-16-00",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC",
+        "UCD-SNMP-MIB"
+      ],
+      "declared_oid_count": 29,
+      "resolved_oid_count": 29
+    },
+    {
+      "id": "UCD-SNMP-MIB",
+      "publisher": "Net-SNMP",
+      "source_id": "net-snmp",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/UCD-SNMP-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "source_sha256": "7ee1e98fc2554475bf2c8fb11885e6eb8a54c2d55dc492bd9226723de26ff9fd",
+      "artifact_sha256": "7ee1e98fc2554475bf2c8fb11885e6eb8a54c2d55dc492bd9226723de26ff9fd",
+      "raw_path": "mibs/redistributable/net-snmp/UCD-SNMP-MIB.mib",
+      "license": {
+        "spdx": "LicenseRef-Net-SNMP",
+        "name": "Net-SNMP BSD-family notices",
+        "url": "https://github.com/net-snmp/net-snmp/blob/319bbd0bb36547992c0e1302fef278c6f49d0c80/COPYING",
+        "notice_required": true
+      },
+      "revision": "2020-08-21",
+      "dependencies": [
+        "HCNUM-TC",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 181,
+      "resolved_oid_count": 181
+    },
+    {
+      "id": "UCD-SNMP-MIB-OLD",
+      "publisher": "Net-SNMP",
+      "source_id": "net-snmp",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/UCD-SNMP-MIB-OLD.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "source_sha256": "7fef2eda0aab05ee9cc2bfc985442cc18def604878946420bf9dab54aa39f014",
+      "artifact_sha256": "7fef2eda0aab05ee9cc2bfc985442cc18def604878946420bf9dab54aa39f014",
+      "raw_path": "mibs/redistributable/net-snmp/UCD-SNMP-MIB-OLD.mib",
+      "license": {
+        "spdx": "LicenseRef-Net-SNMP",
+        "name": "Net-SNMP BSD-family notices",
+        "url": "https://github.com/net-snmp/net-snmp/blob/319bbd0bb36547992c0e1302fef278c6f49d0c80/COPYING",
+        "notice_required": true
+      },
+      "revision": null,
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC",
+        "UCD-SNMP-MIB"
+      ],
+      "declared_oid_count": 35,
+      "resolved_oid_count": 35
+    },
+    {
+      "id": "UUID-TC-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6933.txt",
+      "source_revision": "RFC 6933",
+      "source_sha256": "abc183a1bc88af1e9aaeecbfb4a265b2b1f368bfe3d477ca6a117628cd7013fd",
+      "artifact_sha256": "2ef85256789a90ac58392bf5f04580732ecfafc3322c9bb8170f17766d1d2755",
+      "raw_path": "mibs/redistributable/ietf-post-2008/UUID-TC-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2013-04-05",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "VDSL2-LINE-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5650.txt",
+      "source_revision": "RFC 5650",
+      "source_sha256": "641f31cf7d38a39f31433985ef8d8111cd0eb70f736c857460017320bce4109b",
+      "artifact_sha256": "a889059e4b0aa47d9b63cc310957b1ca4c404f525cc39fbd143e02797b86ff38",
+      "raw_path": "mibs/redistributable/ietf-post-2008/VDSL2-LINE-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2009-09-30",
+      "dependencies": [
+        "HC-PerfHist-TC-MIB",
+        "IF-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC",
+        "VDSL2-LINE-TC-MIB"
+      ],
+      "declared_oid_count": 395,
+      "resolved_oid_count": 395
+    },
+    {
+      "id": "VDSL2-LINE-TC-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5650.txt",
+      "source_revision": "RFC 5650",
+      "source_sha256": "641f31cf7d38a39f31433985ef8d8111cd0eb70f736c857460017320bce4109b",
+      "artifact_sha256": "ae7fa6abb6adbb0d1900073dd91d010b79afb06d758ef91126e79841b538d968",
+      "raw_path": "mibs/redistributable/ietf-post-2008/VDSL2-LINE-TC-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2009-09-30",
+      "dependencies": [
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 1,
+      "resolved_oid_count": 1
+    },
+    {
+      "id": "VM-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7666.txt",
+      "source_revision": "RFC 7666",
+      "source_sha256": "891459a6598b9848f0054c68f26145cb1d4c4cd5e7c773300b5656c8decf3365",
+      "artifact_sha256": "3e8db9f7bb22978b6bb78d5e8a0afa786394f1823498f5b48d8f8b771c586fea",
+      "raw_path": "mibs/redistributable/ietf-post-2008/VM-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2015-10-12",
+      "dependencies": [
+        "IANA-STORAGE-MEDIA-TYPE-MIB",
+        "IF-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC",
+        "UUID-TC-MIB"
+      ],
+      "declared_oid_count": 90,
+      "resolved_oid_count": 90
+    },
+    {
+      "id": "VPLS-BGP-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7257.txt",
+      "source_revision": "RFC 7257",
+      "source_sha256": "4a5065e7138d54275ba4229cccb713f54e7c9073f293a21c12c81df82616ae04",
+      "artifact_sha256": "139794721d0525ea43999434d3ac81559586680c89336e36d689042320f7a8eb",
+      "raw_path": "mibs/redistributable/ietf-post-2008/VPLS-BGP-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2014-05-19",
+      "dependencies": [
+        "PW-STD-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC",
+        "VPLS-GENERIC-MIB"
+      ],
+      "declared_oid_count": 19,
+      "resolved_oid_count": 19
+    },
+    {
+      "id": "VPLS-GENERIC-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7257.txt",
+      "source_revision": "RFC 7257",
+      "source_sha256": "4a5065e7138d54275ba4229cccb713f54e7c9073f293a21c12c81df82616ae04",
+      "artifact_sha256": "9a99c51ced9fd51f36986fa796b5cdf70aab1bb6e4af437efb58213b2c762bde",
+      "raw_path": "mibs/redistributable/ietf-post-2008/VPLS-GENERIC-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2014-05-19",
+      "dependencies": [
+        "PW-STD-MIB",
+        "SNMP-FRAMEWORK-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC",
+        "VPN-TC-STD-MIB"
+      ],
+      "declared_oid_count": 52,
+      "resolved_oid_count": 52
+    },
+    {
+      "id": "VPLS-LDP-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7257.txt",
+      "source_revision": "RFC 7257",
+      "source_sha256": "4a5065e7138d54275ba4229cccb713f54e7c9073f293a21c12c81df82616ae04",
+      "artifact_sha256": "c6a90922d1abcc74bd1ff1a36ad74f227a162ef1b20d5d400823307c124092f4",
+      "raw_path": "mibs/redistributable/ietf-post-2008/VPLS-LDP-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2014-05-19",
+      "dependencies": [
+        "PW-STD-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC",
+        "VPLS-GENERIC-MIB"
+      ],
+      "declared_oid_count": 13,
+      "resolved_oid_count": 13
+    },
+    {
+      "id": "VRRPV3-MIB",
+      "publisher": "IETF",
+      "source_id": "ietf-post-2008",
+      "publication_mode": "redistributable",
+      "raw_download": true,
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6527.txt",
+      "source_revision": "RFC 6527",
+      "source_sha256": "ef171e64076deeda04104ae42ef182587d31a8c7058db0bc69db035167f69ae6",
+      "artifact_sha256": "d69fb621a4306584bb544fb42e37869c3e1e9a4b37875ddf0dc260dc4b6e5a7f",
+      "raw_path": "mibs/redistributable/ietf-post-2008/VRRPV3-MIB.mib",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "IETF Trust Revised BSD License",
+        "url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+        "notice_required": true
+      },
+      "revision": "2012-02-12",
+      "dependencies": [
+        "IF-MIB",
+        "INET-ADDRESS-MIB",
+        "SNMPv2-CONF",
+        "SNMPv2-SMI",
+        "SNMPv2-TC"
+      ],
+      "declared_oid_count": 48,
+      "resolved_oid_count": 48
+    }
+  ]
+}

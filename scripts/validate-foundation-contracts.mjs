@@ -312,7 +312,7 @@ function validateGolden(golden, issues) {
 
 function validateCoverage(coverage, golden, issues) {
   if (coverage.status !== "provisional_phase0_open") issues.push("prototype coverage must remain provisional while Phase 0 is open");
-  if (!/^0\.1\.0-alpha\.\d+$/.test(coverage.prototype_release ?? "")) issues.push("prototype coverage requires an alpha release identifier");
+  if (!/^0\.\d+\.\d+-alpha\.\d+$/.test(coverage.prototype_release ?? "")) issues.push("prototype coverage requires an alpha release identifier");
   const expectedIds = golden.tasks.map((task) => task.id);
   const actualIds = coverage.tasks?.map((task) => task.id) ?? [];
   if (!jsonEqual(actualIds, expectedIds)) issues.push("prototype coverage IDs must exactly match the golden task order");

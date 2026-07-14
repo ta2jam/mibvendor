@@ -83,8 +83,14 @@ import os
 document = json.loads(os.environ["DATA_RELEASE_JSON"])
 if document.get("status") != "public-alpha":
     raise SystemExit("API is not reporting public-alpha status")
-if document.get("object_count") != 6:
-    raise SystemExit("unexpected public object count")
+if document.get("object_count", 0) < 5000:
+    raise SystemExit("unexpectedly small public object count")
+if document.get("module_count") != 110 or document.get("redistributable_module_count") != 110:
+    raise SystemExit("rights-cleared module inventory mismatch")
+if document.get("directory_only_source_count") != 20:
+    raise SystemExit("directory-only source inventory mismatch")
+if document.get("production_data") is not True:
+    raise SystemExit("active rights-cleared data is not marked production")
 if document.get("enterprise_count", 0) < 60000:
     raise SystemExit("IANA PEN snapshot is unexpectedly small")
 expected = os.environ.get("EXPECTED_DATA_RELEASE", "")
@@ -98,13 +104,22 @@ sys_boundary_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.2.999999")
 sys_restricted_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.9.999999")
 object_json=$(request "$ORIGIN/v1/objects/if-mib--ifoperstatus")
 dependencies_json=$(request "$ORIGIN/v1/modules/IF-MIB/dependencies")
+module_json=$(request "$ORIGIN/v1/modules/BFD-STD-MIB")
+source_json=$(request "$ORIGIN/v1/sources/cisco")
+raw_headers="$tmp_dir/raw.headers"
+raw_mib="$tmp_dir/BFD-STD-MIB.mib"
+request --dump-header "$raw_headers" --output "$raw_mib" "$ORIGIN/v1/modules/BFD-STD-MIB/raw"
+grep -Eiq '^x-content-sha256:[[:space:]]*[0-9a-f]{64}' "$raw_headers" || fail "raw MIB checksum header is missing"
+grep -Eiq '^link:.*rel="license".*rel="original"' "$raw_headers" || fail "raw MIB license/source links are missing"
+grep -q 'BFD-STD-MIB DEFINITIONS ::= BEGIN' "$raw_mib" || fail "raw MIB body is wrong"
 batch_json=$(request --request POST --header 'content-type: application/json' \
     --data '{"oids":["1.3.6.1.2.1.2.2.1.8.7","bad"]}' "$ORIGIN/v1/resolve:batch")
 openapi_json=$(request "$ORIGIN/openapi.json")
 
 ENTERPRISE_JSON=$enterprise_json SYS_EXACT_JSON=$sys_exact_json \
 SYS_BOUNDARY_JSON=$sys_boundary_json SYS_RESTRICTED_JSON=$sys_restricted_json OBJECT_JSON=$object_json \
-DEPENDENCIES_JSON=$dependencies_json BATCH_JSON=$batch_json OPENAPI_JSON=$openapi_json \
+DEPENDENCIES_JSON=$dependencies_json MODULE_JSON=$module_json SOURCE_JSON=$source_json \
+BATCH_JSON=$batch_json OPENAPI_JSON=$openapi_json \
 python3 - <<'PY'
 import json
 import os
@@ -132,6 +147,16 @@ assert obj["description"]["status"] == "available"
 deps = json.loads(os.environ["DEPENDENCIES_JSON"])
 for key in ("direct", "transitive", "missing", "cyclic"):
     assert isinstance(deps[key], list)
+
+module = json.loads(os.environ["MODULE_JSON"])["module"]
+assert module["id"] == "BFD-STD-MIB" and module["raw_download"] is True
+assert module["publication_mode"] == "redistributable"
+assert len(module["artifact_sha256"]) == 64
+
+source = json.loads(os.environ["SOURCE_JSON"])["source"]
+assert source["id"] == "cisco" and source["publication_mode"] == "directory-only"
+assert source["content_intake"] == "quarantine"
+assert set(source["public_fields"]) == {"publisher", "official_source_url", "rights_state"}
 
 batch = json.loads(os.environ["BATCH_JSON"])["results"]
 assert batch[0]["instance_suffix"] == [7] and batch[1]["status"] == "invalid"

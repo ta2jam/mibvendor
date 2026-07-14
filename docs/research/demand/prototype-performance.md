@@ -25,3 +25,23 @@ definitions, and average OID depth `d`, time is `O(L × N × d)` and memory is
 implementation must stream/chunk parsing, deduplicate numeric OIDs before
 bounded server batches, and use indexed resolver probes. Its target and memory
 ceiling must be remeasured with real mixed walks before Phase 3 exits.
+
+## Rights-cleared API catalog baseline
+
+Measured: 2026-07-14
+
+Runtime: local Node.js process on macOS arm64
+
+Catalog: 5,398 searchable records, including 5,392 rights-cleared parsed nodes
+
+One maximum-size `POST /v1/resolve:batch` request resolved 1,000 OIDs in 6.1 ms
+and returned 1,340,558 bytes. Process RSS was 105,696 KiB before the request and
+109,360 KiB after it. This is a warm-process observation, not an SLA. The
+resolver uses a numeric-prefix index, so one OID lookup is `O(d)` in OID depth;
+a batch is `O(B × d)` for `B` OIDs. Response serialization and response bytes,
+not lookup work, dominate the maximum batch's transient memory and energy cost.
+
+The production container limit is therefore 192 MiB. A 128 MiB limit left less
+than 20 MiB of measured headroom before accounting for Linux/container runtime
+differences and concurrent responses. Production RSS and container health must
+still be checked after deployment.

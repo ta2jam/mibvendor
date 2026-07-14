@@ -24,8 +24,10 @@ application/database scaffolding.
 
 A bounded public-alpha slice now exposes enterprise lookup, evidence-limited
 `sysObjectID` lookup, structured object details, module dependency states, and
-batch resolution. This is validation infrastructure, not evidence that Phases
-1–4 or the Phase 0 demand/rights gates are complete.
+batch resolution. The rights-cleared slice also exposes 110 manifest-bound raw
+modules, 5,392 parsed OID nodes, file/source checksums, four publication modes,
+and fail-closed source decisions. This is validation infrastructure, not
+evidence that Phases 1–4 or the Phase 0 demand/vendor-rights gates are complete.
 
 ## Phase 1 — public foundation
 

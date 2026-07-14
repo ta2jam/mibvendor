@@ -1,14 +1,23 @@
 import {
   DATA_RELEASE,
+  DIRECTORY_ONLY_SOURCE_COUNT,
   ENTERPRISE_COUNT,
   IANA_PEN_SOURCE,
+  MIB_MODULE_COUNT,
+  REDISTRIBUTABLE_MODULE_COUNT,
   SYS_OBJECT_ID_COUNT,
   findObject,
+  findModule,
+  findSource,
+  listModules,
+  listSources,
   lookupEnterprise,
   lookupSysObjectId,
   moduleDependencies,
   objectRecords,
   publicObject,
+  publicModule,
+  rawModule,
   resolveObject,
   searchObjects
 } from "./intelligence.mjs";
@@ -20,6 +29,7 @@ export const MAX_OID_LENGTH = 512;
 export const MAX_QUERY_LENGTH = 200;
 export const RATE_LIMIT = 120;
 export const RATE_WINDOW_SECONDS = 60;
+export const MAX_MODULE_PAGE_SIZE = 100;
 
 function writeJson(response, status, body, headers = {}) {
   response.writeHead(status, {
@@ -100,12 +110,40 @@ export function createApiHandler() {
       writeJson(response, 200, {
         data_release: DATA_RELEASE,
         status: "public-alpha",
-        production_data: false,
+        production_data: true,
         object_count: objectRecords.length,
         enterprise_count: ENTERPRISE_COUNT,
         sys_object_id_count: SYS_OBJECT_ID_COUNT,
+        module_count: MIB_MODULE_COUNT,
+        redistributable_module_count: REDISTRIBUTABLE_MODULE_COUNT,
+        directory_only_source_count: DIRECTORY_ONLY_SOURCE_COUNT,
         enterprise_registry: IANA_PEN_SOURCE
       });
+      return true;
+    }
+
+    if (request.method === "GET" && url.pathname === "/v1/modules") {
+      const query = url.searchParams.get("q") ?? "";
+      const publisher = url.searchParams.get("publisher") ?? "";
+      const limit = Number(url.searchParams.get("limit") ?? 50);
+      const cursor = Number(url.searchParams.get("cursor") ?? 0);
+      if (query.length > MAX_QUERY_LENGTH || publisher.length > 64 || !Number.isInteger(limit) || limit < 1 || limit > MAX_MODULE_PAGE_SIZE || !Number.isInteger(cursor) || cursor < 0) {
+        problem(response, 422, "https://mibvendor.io/problems/invalid-module-query", "Invalid module query", `q is at most ${MAX_QUERY_LENGTH} characters; limit is 1-${MAX_MODULE_PAGE_SIZE}; cursor is a non-negative integer`);
+        return true;
+      }
+      writeJson(response, 200, { data_release: DATA_RELEASE, query, publisher, cursor, limit, ...listModules({ query, publisher, limit, cursor }) });
+      return true;
+    }
+
+    if (request.method === "GET" && url.pathname === "/v1/sources") {
+      const mode = url.searchParams.get("mode") ?? "";
+      const allowedModes = new Set(["", "redistributable", "metadata-only", "directory-only"]);
+      if (!allowedModes.has(mode)) {
+        problem(response, 422, "https://mibvendor.io/problems/invalid-source-mode", "Invalid source mode", "Use redistributable, metadata-only, or directory-only");
+        return true;
+      }
+      const results = listSources({ mode });
+      writeJson(response, 200, { data_release: DATA_RELEASE, mode: mode || null, total: results.length, results });
       return true;
     }
 
@@ -157,6 +195,55 @@ export function createApiHandler() {
         return true;
       }
       writeJson(response, 200, { data_release: DATA_RELEASE, object: publicObject(record) });
+      return true;
+    }
+
+    const rawModuleMatch = url.pathname.match(/^\/v1\/modules\/([^/]+)\/raw$/);
+    if (request.method === "GET" && rawModuleMatch) {
+      const moduleId = decodeURIComponent(rawModuleMatch[1]);
+      const module = findModule(moduleId);
+      if (!module) {
+        problem(response, 404, "https://mibvendor.io/problems/module-not-found", "Module not found", "No module has this id in the active rights-cleared release");
+        return true;
+      }
+      if (!module.raw_download || module.publication_mode !== "redistributable") {
+        problem(response, 451, "https://mibvendor.io/problems/raw-unavailable-due-to-rights", "Raw MIB unavailable due to rights", "Use the official source URL in the module metadata; mibvendor does not redistribute this file");
+        return true;
+      }
+      const raw = rawModule(moduleId);
+      response.writeHead(200, {
+        "content-type": "text/plain; charset=utf-8",
+        "content-length": raw.bytes.length,
+        "content-disposition": `attachment; filename="${module.id}.mib"`,
+        "cache-control": "public, max-age=86400, immutable",
+        "access-control-allow-origin": "*",
+        "x-content-type-options": "nosniff",
+        "x-content-sha256": module.artifact_sha256,
+        "link": `<${module.license.url}>; rel="license", <${module.source_url}>; rel="original"`
+      });
+      response.end(raw.bytes);
+      return true;
+    }
+
+    const moduleMatch = url.pathname.match(/^\/v1\/modules\/([^/]+)$/);
+    if (request.method === "GET" && moduleMatch) {
+      const module = findModule(decodeURIComponent(moduleMatch[1]));
+      if (!module) {
+        problem(response, 404, "https://mibvendor.io/problems/module-not-found", "Module not found", "No module has this id in the active rights-cleared release");
+        return true;
+      }
+      writeJson(response, 200, { data_release: DATA_RELEASE, module: publicModule(module) });
+      return true;
+    }
+
+    const sourceMatch = url.pathname.match(/^\/v1\/sources\/([^/]+)$/);
+    if (request.method === "GET" && sourceMatch) {
+      const source = findSource(decodeURIComponent(sourceMatch[1]));
+      if (!source) {
+        problem(response, 404, "https://mibvendor.io/problems/source-not-found", "Source not found", "No reviewed source has this id");
+        return true;
+      }
+      writeJson(response, 200, { data_release: DATA_RELEASE, source });
       return true;
     }
 

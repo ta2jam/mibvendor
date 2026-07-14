@@ -3,7 +3,7 @@ import { createServer } from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { createApiHandler } from "./src/api.mjs";
+import { DATA_RELEASE, createApiHandler } from "./src/api.mjs";
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(projectRoot, "prototype");
@@ -72,28 +72,36 @@ function serveOpenApi(request, response) {
 export function createMibvendorServer() {
   const apiHandler = createApiHandler();
   return createServer(async (request, response) => {
-    const url = new URL(request.url ?? "/", `http://${request.headers.host ?? "127.0.0.1"}`);
-    if (request.method === "GET" && url.pathname === "/healthz") {
-      response.writeHead(200, { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store" });
-      response.end("ok\n");
-      return;
+    try {
+      const url = new URL(request.url ?? "/", `http://${request.headers.host ?? "127.0.0.1"}`);
+      if (request.method === "GET" && url.pathname === "/healthz") {
+        response.writeHead(200, { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store" });
+        response.end("ok\n");
+        return;
+      }
+      if (request.method === "GET" && url.pathname === "/version") {
+        response.writeHead(200, { "content-type": "application/json", "cache-control": "no-store" });
+        response.end(JSON.stringify({
+          schema_version: 1,
+          version: process.env.APP_VERSION ?? "development",
+          commit: process.env.VCS_REF ?? "development",
+          data_release: process.env.DATA_RELEASE ?? DATA_RELEASE
+        }));
+        return;
+      }
+      if (new Set(["GET", "HEAD"]).has(request.method) && url.pathname === "/openapi.json") {
+        serveOpenApi(request, response);
+        return;
+      }
+      if (await apiHandler(request, response, url)) return;
+      serveStatic(request, response, url);
+    } catch {
+      if (response.headersSent) response.destroy();
+      else {
+        response.writeHead(400, { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store" });
+        response.end("Bad request\n");
+      }
     }
-    if (request.method === "GET" && url.pathname === "/version") {
-      response.writeHead(200, { "content-type": "application/json", "cache-control": "no-store" });
-      response.end(JSON.stringify({
-        schema_version: 1,
-        version: process.env.APP_VERSION ?? "development",
-        commit: process.env.VCS_REF ?? "development",
-        data_release: process.env.DATA_RELEASE ?? "alpha-intelligence-2026-07-14.1"
-      }));
-      return;
-    }
-    if (new Set(["GET", "HEAD"]).has(request.method) && url.pathname === "/openapi.json") {
-      serveOpenApi(request, response);
-      return;
-    }
-    if (await apiHandler(request, response, url)) return;
-    serveStatic(request, response, url);
   });
 }
 

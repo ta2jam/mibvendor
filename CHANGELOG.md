@@ -3,6 +3,32 @@
 All notable changes are documented here. The project uses Semantic Versioning
 while it is pre-1.0; research releases may remain unstable.
 
+## [0.2.0-alpha.1] - 2026-07-14
+
+### Added
+
+- Added a fail-closed four-mode source policy: `redistributable`,
+  `metadata-only`, `directory-only`, and `quarantine`.
+- Added 110 manifest-bound redistributable MIB modules: 72 file-reviewed IETF,
+  all 20 IANA-maintained MIBs, and 18 pinned Net-SNMP project modules.
+- Added 5,392 parsed OID nodes with syntax, access, status, description,
+  revision, dependencies, source and artifact SHA-256, and license provenance.
+- Added module/source catalog APIs and raw download responses with checksum,
+  license, and original-source headers.
+- Added a website MIB catalog, publication-mode explanation, and full-corpus
+  primary OID search.
+- Added deterministic catalog validation for paths, checksums, notices, scope
+  approval, source completeness, and unmanifested raw files.
+
+### Changed
+
+- Reclassified the six pre-existing, independently authored legacy-standard
+  records as metadata-only with raw download disabled.
+- Quarantined 14 IETF candidate RFCs whose required code-component notice was
+  not established, and kept all reviewed vendor content outside public output.
+- Updated README, website API docs, OpenAPI 3.1, source governance, Phase 0,
+  roadmap, release contract, and third-party notices for the new data release.
+
 ## [0.1.0-alpha.13] - 2026-07-14
 
 ### Fixed
@@ -207,6 +233,7 @@ while it is pre-1.0; research releases may remain unstable.
   evidence cannot be marked complete.
 - Repository checks and CI without production MIB data.
 
+[0.2.0-alpha.1]: https://github.com/ta2jam/mibvendor/releases/tag/v0.2.0-alpha.1
 [0.1.0-alpha.13]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.13
 [0.1.0-alpha.12]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.12
 [0.1.0-alpha.11]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.11

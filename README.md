@@ -28,13 +28,17 @@ It provides:
 - evidence-bounded `sysObjectID` lookup with explicit exact,
   `enterprise_only`, `not_found`, and `unavailable_due_to_rights` states;
 - direct, transitive, missing, and cyclic module-dependency states;
+- a rights-cleared MIB catalog with source, revision, license, SHA-256, and
+  raw-download availability;
 - browser-local decoding of numeric `snmpwalk` output.
 
-The MIB object corpus is deliberately small while Phase 0 demand and
-vendor-rights gates remain open. The PEN registry is complete for the bundled
-IANA snapshot; exact `sysObjectID` coverage currently contains only
-rights-approved Net-SNMP agent-platform records. Unsupported vendors are not
-converted into guessed products or models.
+The active data release contains 110 redistributable modules and 5,392 parsed
+OID nodes: 72 file-reviewed IETF modules, all 20 MIB files directly linked from
+IANA's maintained-MIB registry group, and 18 Net-SNMP/UCD/LM-Sensors project
+modules from pinned Net-SNMP tag `v5.9.5.2`. Fourteen IETF candidate RFCs were
+quarantined because the required code-component notice was not established.
+The PEN registry remains complete for the bundled IANA snapshot. Unsupported
+vendors are not converted into guessed products or models.
 
 ## Use it safely
 
@@ -61,6 +65,10 @@ availability SLA. Every successful response identifies its immutable
 |---|---|---|
 | `GET` | `/v1/search?q=interface+status` | Ranked object discovery |
 | `GET` | `/v1/objects/{objectId}` | Structured object intelligence |
+| `GET` | `/v1/modules?q=BFD` | Rights-cleared MIB module catalog |
+| `GET` | `/v1/modules/{moduleId}` | License, provenance, checksums, dependencies |
+| `GET` | `/v1/modules/{moduleId}/raw` | Raw file only when redistribution is approved |
+| `GET` | `/v1/sources` | Reviewed publication modes and rights scopes |
 | `GET` | `/v1/enterprises/{number}` | IANA PEN assignment |
 | `GET` | `/v1/sys-object-ids/{oid}` | Exact identity or PEN boundary |
 | `GET` | `/v1/modules/{module}/dependencies` | Dependency graph states |
@@ -85,17 +93,34 @@ machine-readable contract. Alpha limits may tighten to contain abuse; clients
 must read `RateLimit-*` and `Retry-After` headers instead of assuming a fixed
 quota.
 
+Raw responses include `X-Content-SHA256` plus `Link` relations for the license
+and original source. A missing raw endpoint is not an invitation to obtain or
+republish the file indirectly; follow the module/source metadata to the
+publisher's official location.
+
 ## Data trust
 
-Public availability is not redistribution permission. mibvendor reviews
-metadata indexing, rendered text, API output, raw download, and bulk export as
-separate rights scopes. Unknown-rights vendor material does not enter public
-results merely because it can be downloaded elsewhere.
+Public availability is not redistribution permission. mibvendor applies four
+fail-closed publication modes:
+
+- `redistributable`: parsed metadata, rendered text, API output, raw download,
+  and export are approved, with the required notice retained;
+- `metadata-only`: only explicitly approved derived fields may be public;
+- `directory-only`: only publisher, official source URL, and rights state are
+  shown; no vendor OID, symbol, syntax, description, or file checksum is
+  extracted;
+- `quarantine`: no source content reaches a public response.
+
+There are currently no vendor sources approved for `metadata-only`. The 19
+reviewed vendor families and legacy IETF class remain directory-only and their
+content intake remains quarantined. Public download or a factual-looking OID is
+not treated as permission.
 
 The IANA PEN snapshot retains only number and organization fields and records
-its source date and SHA-256. Exact Net-SNMP identities are pinned to a specific
-upstream revision. Object records expose source, revision, parse status, rights
-tier, and output scopes.
+its source date and SHA-256. Exact Net-SNMP identities and raw project MIBs are
+pinned to a specific upstream revision. Every raw module is manifest-bound to
+its original-source SHA-256, served-artifact SHA-256, license, dependencies,
+revision, and immutable data release.
 
 Current validation boundaries remain published in the
 [Phase 0 status](docs/PHASE-0.md) and [product definition](docs/PRODUCT.md).

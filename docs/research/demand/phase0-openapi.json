@@ -3,8 +3,8 @@
   "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
   "info": {
     "title": "mibvendor Public Alpha API",
-    "version": "0.1.0-alpha.13",
-    "description": "Source-aware OID, enterprise-number, sysObjectID, object-semantics, and module-dependency intelligence. The corpus is intentionally small while Phase 0 demand and vendor-rights gates remain open."
+    "version": "0.2.0-alpha.1",
+    "description": "Source-aware OID intelligence plus a fail-closed MIB source catalog. Raw files are served only for rights-cleared IETF, IANA, and Net-SNMP modules; unapproved vendor sources remain directory-only."
   },
   "x-mibvendor-status": "public-alpha",
   "servers": [{ "url": "https://mibvendor.io", "description": "Official public service" }],
@@ -52,6 +52,72 @@
         "parameters": [{ "$ref": "#/components/parameters/ObjectId" }],
         "responses": {
           "200": { "description": "Complete available object intelligence", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ObjectResponse" } } } },
+          "404": { "$ref": "#/components/responses/Problem" },
+          "429": { "$ref": "#/components/responses/Problem" }
+        }
+      }
+    },
+    "/v1/modules": {
+      "get": {
+        "operationId": "listModules",
+        "summary": "List rights-cleared MIB modules with provenance, checksums, and publication mode",
+        "parameters": [
+          { "name": "q", "in": "query", "schema": { "type": "string", "maxLength": 200 } },
+          { "name": "publisher", "in": "query", "schema": { "type": "string", "maxLength": 64 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50 } },
+          { "name": "cursor", "in": "query", "schema": { "type": "integer", "minimum": 0, "default": 0 } }
+        ],
+        "responses": {
+          "200": { "description": "Paginated module catalog", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ModuleListResponse" } } } },
+          "422": { "$ref": "#/components/responses/Problem" },
+          "429": { "$ref": "#/components/responses/Problem" }
+        }
+      }
+    },
+    "/v1/modules/{moduleId}": {
+      "get": {
+        "operationId": "getModule",
+        "summary": "Get one module's rights, source, checksums, dependency names, and raw availability",
+        "parameters": [{ "$ref": "#/components/parameters/ModuleId" }],
+        "responses": {
+          "200": { "description": "Module metadata", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ModuleResponse" } } } },
+          "404": { "$ref": "#/components/responses/Problem" },
+          "429": { "$ref": "#/components/responses/Problem" }
+        }
+      }
+    },
+    "/v1/modules/{moduleId}/raw": {
+      "get": {
+        "operationId": "downloadRawModule",
+        "summary": "Download a raw MIB only when redistribution is explicitly approved",
+        "parameters": [{ "$ref": "#/components/parameters/ModuleId" }],
+        "responses": {
+          "200": { "description": "Rights-cleared raw MIB with checksum and license headers", "headers": { "X-Content-SHA256": { "schema": { "type": "string", "pattern": "^[0-9a-f]{64}$" } }, "Link": { "schema": { "type": "string" } } }, "content": { "text/plain": { "schema": { "type": "string" } } } },
+          "404": { "$ref": "#/components/responses/Problem" },
+          "451": { "$ref": "#/components/responses/Problem" },
+          "429": { "$ref": "#/components/responses/Problem" }
+        }
+      }
+    },
+    "/v1/sources": {
+      "get": {
+        "operationId": "listSources",
+        "summary": "List reviewed source families and their fail-closed publication modes",
+        "parameters": [{ "name": "mode", "in": "query", "schema": { "type": "string", "enum": ["redistributable", "metadata-only", "directory-only"] } }],
+        "responses": {
+          "200": { "description": "Reviewed source catalog", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SourceListResponse" } } } },
+          "422": { "$ref": "#/components/responses/Problem" },
+          "429": { "$ref": "#/components/responses/Problem" }
+        }
+      }
+    },
+    "/v1/sources/{sourceId}": {
+      "get": {
+        "operationId": "getSource",
+        "summary": "Inspect one source family's publication decision and scope evidence",
+        "parameters": [{ "name": "sourceId", "in": "path", "required": true, "schema": { "type": "string", "maxLength": 128 } }],
+        "responses": {
+          "200": { "description": "Source rights decision", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SourceResponse" } } } },
           "404": { "$ref": "#/components/responses/Problem" },
           "429": { "$ref": "#/components/responses/Problem" }
         }
@@ -106,18 +172,21 @@
       "Problem": { "description": "RFC 9457-compatible machine-distinguishable failure", "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } }
     },
     "schemas": {
-      "DataReleaseId": { "type": "string", "const": "alpha-intelligence-2026-07-14.1" },
+      "DataReleaseId": { "type": "string", "const": "rights-cleared-2026-07-14.1" },
       "DataRelease": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["data_release", "status", "production_data", "object_count", "enterprise_count", "sys_object_id_count", "enterprise_registry"],
+        "required": ["data_release", "status", "production_data", "object_count", "enterprise_count", "sys_object_id_count", "module_count", "redistributable_module_count", "directory_only_source_count", "enterprise_registry"],
         "properties": {
           "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
           "status": { "const": "public-alpha" },
-          "production_data": { "const": false },
+          "production_data": { "const": true },
           "object_count": { "type": "integer", "minimum": 0 },
           "enterprise_count": { "type": "integer", "minimum": 60000 },
           "sys_object_id_count": { "type": "integer", "minimum": 0 },
+          "module_count": { "type": "integer", "minimum": 100 },
+          "redistributable_module_count": { "type": "integer", "minimum": 100 },
+          "directory_only_source_count": { "type": "integer", "minimum": 1 },
           "enterprise_registry": { "$ref": "#/components/schemas/RegistrySource" }
         }
       },
@@ -180,7 +249,7 @@
           "access": { "type": ["string", "null"] },
           "status": { "type": ["string", "null"] },
           "description": { "$ref": "#/components/schemas/Description" },
-          "revision": { "type": "string", "format": "date" },
+          "revision": { "type": ["string", "null"], "format": "date" },
           "relationships": { "$ref": "#/components/schemas/Relationships" },
           "provenance": { "$ref": "#/components/schemas/Provenance" }
         }
@@ -188,8 +257,9 @@
       "Syntax": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["base", "textual_convention", "display_hint", "units", "constraints", "enums", "bits"],
+        "required": ["raw", "base", "textual_convention", "display_hint", "units", "constraints", "enums", "bits"],
         "properties": {
+          "raw": { "type": ["string", "null"] },
           "base": { "type": "string" },
           "textual_convention": { "type": ["string", "null"] },
           "display_hint": { "type": ["string", "null"] },
@@ -203,7 +273,7 @@
         "type": "object",
         "additionalProperties": false,
         "required": ["status", "text"],
-        "properties": { "status": { "type": "string", "enum": ["available", "unavailable_due_to_rights"] }, "text": { "type": ["string", "null"] } }
+        "properties": { "status": { "type": "string", "enum": ["available", "not-provided", "unavailable_due_to_rights"] }, "text": { "type": ["string", "null"] } }
       },
       "Relationships": {
         "type": "object",
@@ -220,16 +290,15 @@
       },
       "Provenance": {
         "type": "object",
-        "additionalProperties": false,
-        "required": ["source", "source_url", "source_checked", "parse_status", "publication_status", "rights_tier", "scopes"],
+        "additionalProperties": true,
+        "required": ["source", "source_url", "parse_status", "publication_mode", "raw_download", "rights_tier"],
         "properties": {
-          "source": { "type": "string" },
-          "source_url": { "type": "string", "format": "uri" },
-          "source_checked": { "type": "string", "format": "date" },
+          "source": { "type": ["string", "null"] },
+          "source_url": { "type": ["string", "null"], "format": "uri" },
           "parse_status": { "type": "string" },
-          "publication_status": { "const": "public-alpha-synthetic" },
-          "rights_tier": { "const": "A" },
-          "scopes": { "type": "array", "contains": { "const": "API output" } }
+          "publication_mode": { "type": "string", "enum": ["redistributable", "metadata-only"] },
+          "raw_download": { "type": "boolean" },
+          "rights_tier": { "type": "string", "enum": ["A", "B"] }
         }
       },
       "RegistrySource": {
@@ -309,6 +378,93 @@
         "additionalProperties": false,
         "required": ["data_release", "result"],
         "properties": { "data_release": { "$ref": "#/components/schemas/DataReleaseId" }, "result": { "$ref": "#/components/schemas/SysObjectIdResult" } }
+      },
+      "License": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["spdx", "name", "url", "notice_required"],
+        "properties": {
+          "spdx": { "type": "string" },
+          "name": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
+          "notice_required": { "type": "boolean" }
+        }
+      },
+      "Module": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "publisher", "publication_mode", "raw_download", "raw_url", "source_url", "source_revision", "source_sha256", "artifact_sha256", "revision", "license", "dependencies", "declared_oid_count", "resolved_oid_count"],
+        "properties": {
+          "id": { "type": "string" },
+          "publisher": { "type": "string", "enum": ["IETF", "IANA", "Net-SNMP"] },
+          "publication_mode": { "const": "redistributable" },
+          "raw_download": { "const": true },
+          "raw_url": { "type": "string" },
+          "source_url": { "type": "string", "format": "uri" },
+          "source_revision": { "type": "string" },
+          "source_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "artifact_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "revision": { "type": ["string", "null"], "format": "date" },
+          "license": { "$ref": "#/components/schemas/License" },
+          "dependencies": { "type": "array", "items": { "type": "string" } },
+          "declared_oid_count": { "type": "integer", "minimum": 0 },
+          "resolved_oid_count": { "type": "integer", "minimum": 0 }
+        }
+      },
+      "ModuleResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["data_release", "module"],
+        "properties": { "data_release": { "$ref": "#/components/schemas/DataReleaseId" }, "module": { "$ref": "#/components/schemas/Module" } }
+      },
+      "ModuleListResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["data_release", "query", "publisher", "cursor", "limit", "total", "next_cursor", "results"],
+        "properties": {
+          "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
+          "query": { "type": "string" },
+          "publisher": { "type": "string" },
+          "cursor": { "type": "integer", "minimum": 0 },
+          "limit": { "type": "integer", "minimum": 1, "maximum": 100 },
+          "total": { "type": "integer", "minimum": 0 },
+          "next_cursor": { "type": ["integer", "null"], "minimum": 0 },
+          "results": { "type": "array", "items": { "$ref": "#/components/schemas/Module" } }
+        }
+      },
+      "Source": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["id", "publisher", "official_source_url", "rights_evidence_url", "checked_at", "publication_mode", "content_intake", "scopes", "public_fields", "reason"],
+        "properties": {
+          "id": { "type": "string" },
+          "publisher": { "type": "string" },
+          "official_source_url": { "type": "string", "format": "uri" },
+          "rights_evidence_url": { "type": "string", "format": "uri" },
+          "checked_at": { "type": "string", "format": "date" },
+          "publication_mode": { "type": "string", "enum": ["redistributable", "metadata-only", "directory-only"] },
+          "content_intake": { "type": "string", "enum": ["approved", "quarantine"] },
+          "scopes": { "type": "object" },
+          "public_fields": { "type": "array", "items": { "type": "string" } },
+          "reason": { "type": "string" }
+        }
+      },
+      "SourceResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["data_release", "source"],
+        "properties": { "data_release": { "$ref": "#/components/schemas/DataReleaseId" }, "source": { "$ref": "#/components/schemas/Source" } }
+      },
+      "SourceListResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["data_release", "mode", "total", "results"],
+        "properties": {
+          "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
+          "mode": { "type": ["string", "null"] },
+          "total": { "type": "integer", "minimum": 0 },
+          "results": { "type": "array", "items": { "$ref": "#/components/schemas/Source" } }
+        }
       },
       "DependenciesResponse": {
         "type": "object",

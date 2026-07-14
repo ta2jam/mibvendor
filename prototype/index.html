@@ -13,6 +13,7 @@
       <a class="brand" href="./" aria-label="mibvendor home">mib<span>vendor</span></a>
       <nav aria-label="Primary navigation">
         <a href="#search">OID search</a>
+        <a href="#catalog">MIB catalog</a>
         <a href="#decoder">Walk decoder</a>
         <a href="#intelligence">Identity lookup</a>
         <a href="#safe-use">Safe use</a>
@@ -81,6 +82,37 @@
         <article id="object-detail" class="detail-panel" aria-live="polite">
           <p>Search for an object to see its operational context.</p>
         </article>
+      </section>
+
+      <section id="catalog" class="catalog-section" aria-labelledby="catalog-title">
+        <div class="section-intro">
+          <div>
+            <p class="eyebrow">Rights-cleared source catalog</p>
+            <h2 id="catalog-title">Use the MIB. See why it can—or cannot—be served.</h2>
+          </div>
+          <p>Raw download appears only when file-level evidence permits redistribution. Unknown vendor material stays out of the public corpus; an official-source link is not treated as a license.</p>
+        </div>
+
+        <div id="catalog-stats" class="catalog-stats" aria-live="polite">
+          <span><strong>Loading</strong> active data release</span>
+        </div>
+
+        <form id="catalog-search" class="catalog-search" role="search">
+          <label for="catalog-query">Module name</label>
+          <div class="search-row">
+            <input id="catalog-query" type="search" autocomplete="off" value="BFD" maxlength="200" placeholder="Try BFD, IANA, NET-SNMP, or MPLS">
+            <button type="submit">Find modules</button>
+          </div>
+        </form>
+
+        <div id="catalog-results" class="catalog-results" aria-live="polite"></div>
+
+        <div class="rights-legend" aria-label="Publication modes">
+          <span><strong>Redistributable</strong> Raw file, parsed objects, checksum, license, and official source.</span>
+          <span><strong>Metadata-only</strong> Parsed fields only when that separate scope is explicitly approved.</span>
+          <span><strong>Directory-only</strong> Publisher and official source link only; no extracted vendor content.</span>
+          <span><strong>Quarantine</strong> No public content while evidence is missing or denies the requested scope.</span>
+        </div>
       </section>
 
       <section id="intelligence" class="intelligence-section" aria-labelledby="intelligence-title">
@@ -233,6 +265,9 @@
             <ul class="endpoint-list">
               <li><span class="method get">GET</span><code>/v1/search?q=interface+status</code><small>Ranked discovery</small></li>
               <li><span class="method get">GET</span><code>/v1/objects/{objectId}</code><small>Object semantics and provenance</small></li>
+              <li><span class="method get">GET</span><code>/v1/modules?q=BFD</code><small>Rights-cleared module catalog</small></li>
+              <li><span class="method get">GET</span><code>/v1/modules/{module}/raw</code><small>Licensed raw MIB download</small></li>
+              <li><span class="method get">GET</span><code>/v1/sources</code><small>Publication mode and rights scopes</small></li>
               <li><span class="method get">GET</span><code>/v1/enterprises/{number}</code><small>IANA PEN lookup</small></li>
               <li><span class="method get">GET</span><code>/v1/sys-object-ids/{oid}</code><small>Evidence-bounded identity</small></li>
               <li><span class="method get">GET</span><code>/v1/modules/{module}/dependencies</code><small>Dependency graph states</small></li>
@@ -311,9 +346,10 @@
         <p class="eyebrow">Data trust</p>
         <h2 id="research-title">Every answer should say where it came from.</h2>
         <p>
-          mibvendor keeps source, revision, parse status, and rights scope in the
-          result model. Unknown-rights vendor material is not promoted into the
-          public service merely because it is available elsewhere.
+          mibvendor keeps source, revision, source and artifact checksums,
+          parse status, license, and publication mode in the result model.
+          Unknown-rights vendor material is directory-only and its content stays
+          quarantined; being downloadable elsewhere changes nothing.
         </p>
       </section>
     </main>

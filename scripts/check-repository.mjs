@@ -40,6 +40,7 @@ for (const required of [
   "docs/foundation/prototype-golden-coverage.json",
   "docs/decisions/0005-provisional-foundation-contracts.md",
   "docs/decisions/0006-rfc8785-content-addressing.md",
+  "docs/decisions/0007-fail-closed-mib-publication.md",
   "contracts/source-snapshot.schema.json",
   "contracts/canonical-module.schema.json",
   "contracts/data-release.schema.json",
@@ -68,6 +69,11 @@ for (const required of [
   "src/intelligence.mjs",
   "server.mjs",
   "data/iana-private-enterprise-numbers.json",
+  "data/mib-catalog.json",
+  "data/mib-objects.json",
+  "data/source-catalog.json",
+  "scripts/update-mib-catalog.mjs",
+  "scripts/validate-mib-catalog.mjs",
   "scripts/update-iana-pen.mjs",
   "THIRD_PARTY_NOTICES.md"
 ]) {
@@ -124,7 +130,7 @@ for (const requiredMonitorBoundary of [
     failures.push(`Production monitor is missing boundary: ${requiredMonitorBoundary}`);
   }
 }
-if (!productionMonitor.includes("EXPECTED_DATA_RELEASE: alpha-intelligence-2026-07-14.1")) {
+if (!productionMonitor.includes("EXPECTED_DATA_RELEASE: rights-cleared-2026-07-14.1")) {
   failures.push("Production monitor and runtime data release differ");
 }
 
@@ -257,6 +263,7 @@ for (const file of allFiles) {
   if (!disallowedExtensions.has(path.extname(file).toLowerCase())) continue;
   const relative = path.relative(root, file);
   const allowedFixture = relative.startsWith(path.join("experiments", "parser-bakeoff", "fixtures", "redistributable"))
+    || relative.startsWith(path.join("data", "mibs", "redistributable"))
     || (
       relative.startsWith(path.join("experiments", "parser-bakeoff", "corpus", "MIBVENDOR-"))
       && await exists(path.join("experiments", "parser-bakeoff", "corpus", "LICENSE.md"))
@@ -288,7 +295,9 @@ for (const requiredDeveloperCopy of [
   "/v1/resolve:batch",
   "/v1/enterprises/{number}",
   "/v1/sys-object-ids/{oid}",
-  "OpenAPI 3.1 specification"
+  "OpenAPI 3.1 specification",
+  "/v1/modules/{module}/raw",
+  "/v1/sources"
 ]) {
   if (!prototypeHtml.includes(requiredDeveloperCopy)) failures.push(`Prototype is missing developer-preview copy: ${requiredDeveloperCopy}`);
 }

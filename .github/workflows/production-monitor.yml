@@ -22,7 +22,7 @@ jobs:
         env:
           ORIGIN: https://mibvendor.io
           EXPECTED_COMMIT: ${{ github.sha }}
-          EXPECTED_DATA_RELEASE: alpha-intelligence-2026-07-14.1
+          EXPECTED_DATA_RELEASE: rights-cleared-2026-07-14.1
         run: |
           EXPECTED_VERSION=$(tr -d '\n' < VERSION)
           export EXPECTED_VERSION

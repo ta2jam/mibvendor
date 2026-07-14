@@ -1,0 +1,530 @@
+{
+  "schema_version": 1,
+  "data_release": "rights-cleared-2026-07-14.1",
+  "sources": [
+    {
+      "id": "arista",
+      "publisher": "Arista Networks EOS proprietary MIBs",
+      "official_source_url": "https://www.arista.com/en/support/product-documentation/arista-snmp-mibs",
+      "rights_evidence_url": "https://www.arista.com/en/terms-of-use",
+      "checked_at": "2026-07-13",
+      "publication_mode": "directory-only",
+      "content_intake": "quarantine",
+      "scopes": {
+        "metadata_index": "unknown",
+        "rendered_text": "denied",
+        "api_output": "denied",
+        "raw_download": "denied",
+        "bulk_export": "denied"
+      },
+      "public_fields": [
+        "publisher",
+        "official_source_url",
+        "rights_state"
+      ],
+      "reason": "The source page offers proprietary MIB downloads. Arista's terms say no site information may be copied, reproduced, modified, published, uploaded, posted, transmitted, or distributed without prior written permission."
+    },
+    {
+      "id": "aruba-hpe",
+      "publisher": "Aruba HPE AOS-CX and ArubaOS MIBs",
+      "official_source_url": "https://www.arubanetworks.com/techdocs/AOS-CX/10.11/PDF/snmp_mib.pdf",
+      "rights_evidence_url": "https://www.arubanetworks.com/techdocs/AOS-CX/10.11/PDF/snmp_mib.pdf",
+      "checked_at": "2026-07-13",
+      "publication_mode": "directory-only",
+      "content_intake": "quarantine",
+      "scopes": {
+        "metadata_index": "unknown",
+        "rendered_text": "unknown",
+        "api_output": "unknown",
+        "raw_download": "unknown",
+        "bulk_export": "unknown"
+      },
+      "public_fields": [
+        "publisher",
+        "official_source_url",
+        "rights_state"
+      ],
+      "reason": "The guide directs users to the Service Portal and carries HPE copyright and commercial-software notices; it does not state a MIB-specific public redistribution license."
+    },
+    {
+      "id": "cisco",
+      "publisher": "Cisco enterprise MIBs",
+      "official_source_url": "https://github.com/cisco/cisco-mibs",
+      "rights_evidence_url": "https://www.cisco.com/c/en/us/about/legal/terms-conditions.html",
+      "checked_at": "2026-07-13",
+      "publication_mode": "directory-only",
+      "content_intake": "quarantine",
+      "scopes": {
+        "metadata_index": "unknown",
+        "rendered_text": "denied",
+        "api_output": "denied",
+        "raw_download": "denied",
+        "bulk_export": "denied"
+      },
+      "public_fields": [
+        "publisher",
+        "official_source_url",
+        "rights_state"
+      ],
+      "reason": "The public repository had no detected LICENSE (GitHub API license=null on 2026-07-13). Cisco's site terms grant only limited internal viewing and say Software Content requires its own specified license; reproduction or distribution is not granted by default."
+    },
+    {
+      "id": "dell",
+      "publisher": "Dell OpenManage and iDRAC MIBs",
+      "official_source_url": "https://www.dell.com/support/home/en-us/drivers/driversdetails?driverid=19crr",
+      "rights_evidence_url": "https://www.dell.com/en-us/lp/legal/site-terms-of-use",
+      "checked_at": "2026-07-13",
+      "publication_mode": "directory-only",
+      "content_intake": "quarantine",
+      "scopes": {
+        "metadata_index": "unknown",
+        "rendered_text": "denied",
+        "api_output": "denied",
+        "raw_download": "denied",
+        "bulk_export": "denied"
+      },
+      "public_fields": [
+        "publisher",
+        "official_source_url",
+        "rights_state"
+      ],
+      "reason": "Dell grants a limited personal non-commercial site-content license; its copyright page prohibits commercial/public display and mirroring without permission. No separate license is advertised on the download page."
+    },
+    {
+      "id": "eaton",
+      "publisher": "Eaton Network-M3 UPS ATS and sensor MIBs",
+      "official_source_url": "https://www.eaton.com/content/dam/eaton/products/backup-power-ups-surge-it-power-distribution/power-management-software-connectivity/eaton-gigabit-network-card/network-m3/resources/eaton-network-m3-user-guide.pdf",
+      "rights_evidence_url": "https://www.eaton.com/us/en-us/company/policies-and-statements/terms-and-conditions.html",
+      "checked_at": "2026-07-13",
+      "publication_mode": "directory-only",
+      "content_intake": "quarantine",
+      "scopes": {
+        "metadata_index": "unknown",
+        "rendered_text": "denied",
+        "api_output": "denied",
+        "raw_download": "denied",
+        "bulk_export": "denied"
+      },
+      "public_fields": [
+        "publisher",
+        "official_source_url",
+        "rights_state"
+      ],
+      "reason": "Eaton limits site materials to personal non-commercial download and expressly prohibits software reproduction or redistribution outside its accompanying license; no MIB-specific public license was found."
+    },
+    {
+      "id": "extreme-networks",
+      "publisher": "Extreme Networks EOS EXOS and related MIBs",
+      "official_source_url": "https://www.extremenetworks.com/support/policies",
+      "rights_evidence_url": "https://www.extremenetworks.com/about-extreme-networks/company/legal",
+      "checked_at": "2026-07-13",
+      "publication_mode": "directory-only",
+      "content_intake": "quarantine",
+      "scopes": {
+        "metadata_index": "unknown",
+        "rendered_text": "unknown",
+        "api_output": "unknown",
+        "raw_download": "unknown",
+        "bulk_export": "unknown"
+      },
+      "public_fields": [
+        "publisher",
+        "official_source_url",
+        "rights_state"
+      ],
+      "reason": "Extreme documents public EOS downloads and authenticated EXOS downloads, but its legal page and MIB source page do not provide a clear MIB-specific public redistribution grant."
+    },
+    {
+      "id": "f5",
+      "publisher": "F5 BIG-IP enterprise MIBs",
+      "official_source_url": "https://my.f5.com/manage/s/article/K13322",
+      "rights_evidence_url": "https://www.f5.com/company/policies/terms-of-use",
+      "checked_at": "2026-07-13",
+      "publication_mode": "directory-only",
+      "content_intake": "quarantine",
+      "scopes": {
+        "metadata_index": "unknown",
+        "rendered_text": "denied",
+        "api_output": "denied",
+        "raw_download": "denied",
+        "bulk_export": "denied"
+      },
+      "public_fields": [
+        "publisher",
+        "official_source_url",
+        "rights_state"
+      ],
+      "reason": "F5's terms grant a limited informational-use license and prohibit reproduction, modification, distribution, transmission, or republication unless expressly permitted in writing."
+    },
+    {
+      "id": "fortinet",
+      "publisher": "Fortinet FortiGate and Fortinet Core MIBs",
+      "official_source_url": "https://docs.fortinet.com/document/fortigate/7.2.10/administration-guide/608160/mib-files",
+      "rights_evidence_url": "https://www.fortinet.com/corporate/about-us/legal",
+      "checked_at": "2026-07-13",
+      "publication_mode": "directory-only",
+      "content_intake": "quarantine",
+      "scopes": {
+        "metadata_index": "unknown",
+        "rendered_text": "denied",
+        "api_output": "denied",
+        "raw_download": "denied",
+        "bulk_export": "denied"
+      },
+      "public_fields": [
+        "publisher",
+        "official_source_url",
+        "rights_state"
+      ],
+      "reason": "Fortinet authorizes copying only for non-commercial internal support of Fortinet products and prohibits public or commercial reproduction, distribution, publication, transmission, and derivative works without written permission."
+    },
+    {
+      "id": "huawei",
+      "publisher": "Huawei enterprise network product MIBs",
+      "official_source_url": "https://info.support.huawei.com/enterprise/en/doc/EDOC1100306132/e704d4b7/mib-example",
+      "rights_evidence_url": "https://www.huawei.com/en/legal",
+      "checked_at": "2026-07-13",
+      "publication_mode": "directory-only",
+      "content_intake": "quarantine",
+      "scopes": {
+        "metadata_index": "unknown",
+        "rendered_text": "denied",
+        "api_output": "denied",
+        "raw_download": "denied",
+        "bulk_export": "denied"
+      },
+      "public_fields": [
+        "publisher",
+        "official_source_url",
+        "rights_state"
+      ],
+      "reason": "Huawei states that software rights are retained and site content may not be reproduced, modified, promoted, distributed, mirrored, or stored in an information-retrieval system without prior written consent."
+    },
+    {
+      "id": "iana-maintained-mibs",
+      "publisher": "IANA maintained MIB registries and directly linked MIB files",
+      "official_source_url": "https://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml",
+      "rights_evidence_url": "https://www.iana.org/help/licensing-terms",
+      "checked_at": "2026-07-13",
+      "publication_mode": "redistributable",
+      "content_intake": "approved",
+      "scopes": {
+        "metadata_index": "approved",
+        "rendered_text": "approved",
+        "api_output": "approved",
+        "raw_download": "approved",
+        "bulk_export": "approved"
+      },
+      "public_fields": [
+        "module",
+        "oid",
+        "symbol",
+        "syntax",
+        "access",
+        "description",
+        "source_url",
+        "checksum",
+        "raw_file"
+      ],
+      "reason": "IANA and IETF dedicate applicable rights in Protocol Registries to CC0. Individual IANA MIB files can also carry an IETF Trust notice tied to an RFC; retain that notice and apply the corresponding code-component license."
+    },
+    {
+      "id": "ietf-legacy-pre-2008",
+      "publisher": "IETF legacy MIB code components published before 2008-11-10",
+      "official_source_url": "https://www.rfc-editor.org/",
+      "rights_evidence_url": "https://trustee.ietf.org/documents/trust-legal-provisions/copyright-policy-and-tlp-faq/",
+      "checked_at": "2026-07-13",
+      "publication_mode": "directory-only",
+      "content_intake": "quarantine",
+      "scopes": {
+        "metadata_index": "unknown",
+        "rendered_text": "unknown",
+        "api_output": "unknown",
+        "raw_download": "unknown",
+        "bulk_export": "unknown"
+      },
+      "public_fields": [
+        "publisher",
+        "official_source_url",
+        "rights_state"
+      ],
+      "reason": "The IETF Trust FAQ describes different rules for March 2005 to 2008-11-10 and still earlier material; the current BSD statement cannot safely be applied to every legacy MIB as a class."
+    },
+    {
+      "id": "ietf-post-2008",
+      "publisher": "IETF MIB code components published on or after 2008-11-10",
+      "official_source_url": "https://www.rfc-editor.org/",
+      "rights_evidence_url": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+      "checked_at": "2026-07-13",
+      "publication_mode": "redistributable",
+      "content_intake": "approved",
+      "scopes": {
+        "metadata_index": "approved",
+        "rendered_text": "approved",
+        "api_output": "approved",
+        "raw_download": "approved",
+        "bulk_export": "approved"
+      },
+      "public_fields": [
+        "module",
+        "oid",
+        "symbol",
+        "syntax",
+        "access",
+        "description",
+        "source_url",
+        "checksum",
+        "raw_file"
+      ],
+      "reason": "TLP section 4 licenses code components under the Revised BSD License; the IETF Trust FAQ explicitly includes MIBs and says the open license applies to IETF documents published on or after 2008-11-10. Preserve the BSD notice or permitted legend and record the source RFC."
+    },
+    {
+      "id": "juniper",
+      "publisher": "Juniper Networks Junos enterprise MIBs",
+      "official_source_url": "https://www.juniper.net/documentation/us/en/software/junos/network-mgmt/topics/topic-map/understand-snmp-implementation-in-junos-os.html",
+      "rights_evidence_url": "https://www.juniper.net/us/en/legal-notices.html",
+      "checked_at": "2026-07-13",
+      "publication_mode": "directory-only",
+      "content_intake": "quarantine",
+      "scopes": {
+        "metadata_index": "unknown",
+        "rendered_text": "denied",
+        "api_output": "denied",
+        "raw_download": "denied",
+        "bulk_export": "denied"
+      },
+      "public_fields": [
+        "publisher",
+        "official_source_url",
+        "rights_state"
+      ],
+      "reason": "Juniper documents public download and compilation, but its legal notice says site content is protected and reproduction, modification, distribution, republication, display, or performance beyond resource use is prohibited."
+    },
+    {
+      "id": "mikrotik",
+      "publisher": "MikroTik RouterOS MIB",
+      "official_source_url": "https://help.mikrotik.com/docs/spaces/ROS/pages/8978519/SNMP",
+      "rights_evidence_url": "https://help.mikrotik.com/docs/spaces/ROS/pages/8978519/SNMP",
+      "checked_at": "2026-07-13",
+      "publication_mode": "directory-only",
+      "content_intake": "quarantine",
+      "scopes": {
+        "metadata_index": "unknown",
+        "rendered_text": "unknown",
+        "api_output": "unknown",
+        "raw_download": "unknown",
+        "bulk_export": "unknown"
+      },
+      "public_fields": [
+        "publisher",
+        "official_source_url",
+        "rights_state"
+      ],
+      "reason": "MikroTik publishes a direct official download path and identifies MIKROTIK-MIB, but the reviewed source page does not state permission to republish, transform, expose by API, or bulk export it."
+    },
+    {
+      "id": "net-snmp",
+      "publisher": "Net-SNMP project MIB modules",
+      "official_source_url": "https://github.com/net-snmp/net-snmp/tree/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs",
+      "rights_evidence_url": "https://github.com/net-snmp/net-snmp/blob/319bbd0bb36547992c0e1302fef278c6f49d0c80/COPYING",
+      "checked_at": "2026-07-14",
+      "publication_mode": "redistributable",
+      "content_intake": "approved",
+      "scopes": {
+        "metadata_index": "approved",
+        "rendered_text": "approved",
+        "api_output": "approved",
+        "raw_download": "approved",
+        "bulk_export": "approved"
+      },
+      "public_fields": [
+        "module",
+        "oid",
+        "symbol",
+        "syntax",
+        "access",
+        "description",
+        "source_url",
+        "checksum",
+        "raw_file"
+      ],
+      "reason": "The pinned upstream package grants BSD-family permission to use, copy, modify, and distribute its software and documentation subject to retained notices. mibvendor retains the complete pinned COPYING file and excludes unrelated RFC/vendor copies from this source class."
+    },
+    {
+      "id": "netapp",
+      "publisher": "NetApp ONTAP custom MIB and traps.dat",
+      "official_source_url": "https://docs.netapp.com/us-en/ontap/networking/manage_snmp_on_the_cluster_cluster_administrators_only_overview.html",
+      "rights_evidence_url": "https://www.netapp.com/company/legal/copyright/",
+      "checked_at": "2026-07-13",
+      "publication_mode": "directory-only",
+      "content_intake": "quarantine",
+      "scopes": {
+        "metadata_index": "unknown",
+        "rendered_text": "denied",
+        "api_output": "denied",
+        "raw_download": "denied",
+        "bulk_export": "denied"
+      },
+      "public_fields": [
+        "publisher",
+        "official_source_url",
+        "rights_state"
+      ],
+      "reason": "NetApp's copyright notice limits documents to informational non-commercial use and expressly prohibits copying software to another server for further reproduction or redistribution; the ONTAP page gives access but no MIB-specific exception."
+    },
+    {
+      "id": "nokia",
+      "publisher": "Nokia SR OS and VSR MIBs",
+      "official_source_url": "https://documentation.nokia.com/sr/25-7/7x50-shared/vsim-installation-setup/vsim-overview-vsim-installation-and-setup.html",
+      "rights_evidence_url": "https://www.nokia.com/sites/default/files/2026-01/eula_december-2025.pdf",
+      "checked_at": "2026-07-13",
+      "publication_mode": "directory-only",
+      "content_intake": "quarantine",
+      "scopes": {
+        "metadata_index": "unknown",
+        "rendered_text": "denied",
+        "api_output": "denied",
+        "raw_download": "denied",
+        "bulk_export": "denied"
+      },
+      "public_fields": [
+        "publisher",
+        "official_source_url",
+        "rights_state"
+      ],
+      "reason": "Nokia documents MIBs as a component of an entitled software package. The reviewed EULA describes use in support of internal business operations and no public MIB redistribution grant was identified."
+    },
+    {
+      "id": "palo-alto-networks",
+      "publisher": "Palo Alto Networks enterprise SNMP MIBs",
+      "official_source_url": "https://docs.paloaltonetworks.com/resources/snmp-mib-files",
+      "rights_evidence_url": "https://www.paloaltonetworks.com/legal-notices/terms-of-use",
+      "checked_at": "2026-07-13",
+      "publication_mode": "directory-only",
+      "content_intake": "quarantine",
+      "scopes": {
+        "metadata_index": "unknown",
+        "rendered_text": "denied",
+        "api_output": "denied",
+        "raw_download": "denied",
+        "bulk_export": "denied"
+      },
+      "public_fields": [
+        "publisher",
+        "official_source_url",
+        "rights_state"
+      ],
+      "reason": "Palo Alto Networks grants a personal non-commercial internal-use copy and prohibits modification, commercial/public use, transfer, or reproduction and distribution without prior written permission."
+    },
+    {
+      "id": "qnap",
+      "publisher": "QNAP QES and QNE NAS MIBs",
+      "official_source_url": "https://docs.qnap.com/operating-system/qes/2.1.x/qes2.1.x-ug-04-en-us.pdf",
+      "rights_evidence_url": "https://www.qnap.com/en/legal/qnap-software-terms-of-use",
+      "checked_at": "2026-07-13",
+      "publication_mode": "directory-only",
+      "content_intake": "quarantine",
+      "scopes": {
+        "metadata_index": "unknown",
+        "rendered_text": "unknown",
+        "api_output": "unknown",
+        "raw_download": "unknown",
+        "bulk_export": "unknown"
+      },
+      "public_fields": [
+        "publisher",
+        "official_source_url",
+        "rights_state"
+      ],
+      "reason": "QNAP documents device-local MIB download. Its software terms are non-distributable, but the reviewed pages do not establish whether NAS.mib has a separate license; no public redistribution grant was found."
+    },
+    {
+      "id": "schneider-apc",
+      "publisher": "Schneider Electric APC PowerNet MIB",
+      "official_source_url": "https://www.se.com/us/en/download/document/APC_POWERNETMIB_EN/",
+      "rights_evidence_url": "https://www.se.com/uk/en/about-us/legal/terms-of-use",
+      "checked_at": "2026-07-13",
+      "publication_mode": "directory-only",
+      "content_intake": "quarantine",
+      "scopes": {
+        "metadata_index": "unknown",
+        "rendered_text": "denied",
+        "api_output": "denied",
+        "raw_download": "denied",
+        "bulk_export": "denied"
+      },
+      "public_fields": [
+        "publisher",
+        "official_source_url",
+        "rights_state"
+      ],
+      "reason": "Schneider's terms state site content is proprietary, other use is prohibited, systematic extraction is forbidden, and no copyright transfer or grant is implied."
+    },
+    {
+      "id": "synology",
+      "publisher": "Synology DSM SRM and APM MIBs",
+      "official_source_url": "https://global.download.synology.com/download/Document/Software/DeveloperGuide/Firmware/DSM/All/enu/Synology_DiskStation_MIB_Guide.pdf",
+      "rights_evidence_url": "https://www.synology.com/en-us/company/legal/terms_conditions",
+      "checked_at": "2026-07-13",
+      "publication_mode": "directory-only",
+      "content_intake": "quarantine",
+      "scopes": {
+        "metadata_index": "unknown",
+        "rendered_text": "unknown",
+        "api_output": "unknown",
+        "raw_download": "unknown",
+        "bulk_export": "unknown"
+      },
+      "public_fields": [
+        "publisher",
+        "official_source_url",
+        "rights_state"
+      ],
+      "reason": "The official guide links the MIB set, while Synology's site terms reserve rights in site materials. No MIB-specific redistribution license was found on the reviewed guide or legal page."
+    },
+    {
+      "id": "vertiv",
+      "publisher": "Vertiv Geist rack power MIBs",
+      "official_source_url": "https://www.vertiv.com/48ef3d/globalassets/shared/vertiv-geist-power-distribution-upgradeable-installeruser-guide_01.pdf",
+      "rights_evidence_url": "https://www.vertiv.com/en-us/terms-of-use/",
+      "checked_at": "2026-07-13",
+      "publication_mode": "directory-only",
+      "content_intake": "quarantine",
+      "scopes": {
+        "metadata_index": "unknown",
+        "rendered_text": "denied",
+        "api_output": "denied",
+        "raw_download": "denied",
+        "bulk_export": "denied"
+      },
+      "public_fields": [
+        "publisher",
+        "official_source_url",
+        "rights_state"
+      ],
+      "reason": "Vertiv permits document use only for informational non-commercial or personal use and says documents may not be copied or posted on a network computer or broadcast; no MIB-specific exception was found."
+    },
+    {
+      "id": "vmware-broadcom",
+      "publisher": "VMware vSphere NSX and vCenter MIBs distributed by Broadcom",
+      "official_source_url": "https://knowledge.broadcom.com/external/article/313538/snmp-mib-module-file-download.html",
+      "rights_evidence_url": "https://www.broadcom.com/company/legal/terms-of-use",
+      "checked_at": "2026-07-13",
+      "publication_mode": "directory-only",
+      "content_intake": "quarantine",
+      "scopes": {
+        "metadata_index": "unknown",
+        "rendered_text": "unknown",
+        "api_output": "unknown",
+        "raw_download": "unknown",
+        "bulk_export": "unknown"
+      },
+      "public_fields": [
+        "publisher",
+        "official_source_url",
+        "rights_state"
+      ],
+      "reason": "The KB explicitly provides a current MIB ZIP and points to entitled support downloads, but no MIB-specific public redistribution license was visible in the reviewed primary pages."
+    }
+  ]
+}

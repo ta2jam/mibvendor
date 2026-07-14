@@ -1,6 +1,6 @@
 # Source governance
 
-Status: provisional; Phase 0 rights gate open
+Status: implemented for the rights-cleared public core; vendor permission gate open
 
 Every acquired artifact becomes an immutable source snapshot. A snapshot binds
 the source identity, official URL, acquisition time, artifact and notice hashes,
@@ -27,3 +27,15 @@ Rights revocation changes the active pointer to a safe release. Historical
 manifests remain audit records, but inaccessible material must not be served.
 Vendor text and raw artifacts must not appear in diagnostics, logs, commits, or
 unapproved public output.
+
+The public runtime maps these tiers to four explicit publication modes:
+`redistributable`, `metadata-only`, `directory-only`, and `quarantine`. Raw
+downloads require `raw_download=approved` on both the source and module manifest
+row. `directory-only` exposes no derived MIB fields; even a vendor file checksum
+is withheld because producing it would require acquiring and processing content
+without an approved metadata scope.
+
+The executable gate is `scripts/validate-mib-catalog.mjs`. It verifies all raw
+paths remain below the approved directory, source and served SHA-256 values,
+license/notice mapping, source scopes, manifest completeness, object ownership,
+and the absence of unmanifested MIB files.

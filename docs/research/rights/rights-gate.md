@@ -1,6 +1,6 @@
 # FAZ 0 veri hakları ve provenance gate'i
 
-Kontrol tarihi: 2026-07-13
+Kontrol tarihi: 2026-07-14
 
 Bu çalışma hukuki görüş değildir. Ürün için ihtiyatlı yayın politikasını tanımlar. Bir dosyanın indirilebilir olması, onu yeniden yayınlama veya ondan ticari bir API üretme izni olarak kabul edilmez. Tek tek OID ve sembollerin olgusal niteliği de veri tabanı, derleme, sözleşme ve kaynak erişim koşullarını ortadan kaldırdığı varsayımıyla kullanılmaz.
 
@@ -8,12 +8,14 @@ Bu çalışma hukuki görüş değildir. Ürün için ihtiyatlı yayın politika
 
 Gate yalnız dar bir standartlar çekirdeği için geçildi. Vendor korpusu için geçilmedi.
 
-- Kamuya açılabilecek ilk çekirdek: koşulları doğrulanmış IETF MIB code component'leri ve doğrudan IANA Protocol Registry verisi/MIB'leri.
+- Kamuya açılan çekirdek: dosya bazında koşulları doğrulanmış IETF MIB code component'leri, doğrudan IANA Protocol Registry MIB'leri ve sabitlenmiş Net-SNMP proje MIB'leri.
 - Vendor aileleri: 19 aile incelendi; hiçbirine mevcut kanıtla A veya B verilmedi.
 - Tier B şu anda boş. Kamuya metadata koymak için de `metadata_index` kapsamının açıkça onaylanması gerekir.
 - `unknown` kamuya açık korpusa giremez. `denied` ise ancak kaynağa özgü yazılı izin veya ayrı bir kontrol eden lisansla yeniden değerlendirilebilir.
 
-Kanonik satır bazlı kayıt [rights-matrix.csv](./rights-matrix.csv) dosyasındadır. Matris 22 kaynak ailesi içerir: 2 Tier A; 19 vendor ailesi ve legacy IETF sınıfından oluşan 20 Tier Q.
+Kanonik satır bazlı kayıt [rights-matrix.csv](./rights-matrix.csv) dosyasındadır. Matris 23 kaynak ailesi içerir: 3 Tier A; 19 vendor ailesi ve legacy IETF sınıfından oluşan 20 Tier Q. Uygulama karşılıkları `redistributable`, `metadata-only`, `directory-only` ve `quarantine` olarak yayınlanır.
+
+Aktif `rights-cleared-2026-07-14.1` veri sürümü 110 ham modül ve 5.392 çözümlenmiş OID düğümü içerir: 72 IETF, 20 IANA ve 18 Net-SNMP. IETF envanterindeki 14 aday RFC notice kontrolünü geçemediği için manifestte gerekçesiyle karantinadadır; metinleri repoya veya API'a girmez.
 
 ## Kamu çekirdeğinin kabul koşulları
 
@@ -42,12 +44,23 @@ IANA MIB kabulü şu şekilde sınırlandırılır:
 - Üçüncü taraf bağlantıları CC0 kabul edilmez.
 - Registry kaydı ile ham MIB aynı provenance kaydında fakat ayrı `rights_basis` alanlarıyla tutulur.
 
+### Net-SNMP
+
+Yalnız `v5.9.5.2` etiketinin `319bbd0bb36547992c0e1302fef278c6f49d0c80` commit'inde bulunan 18 Net-SNMP/UCD/LM-Sensors proje modülü kabul edilir. Paket içindeki kopyalanmış RFC MIB'leri bu sınıfa dahil edilmez. Tam `COPYING` dosyası sabitlenmiş checksum ile birlikte tutulur; ham yanıt lisans ve orijinal kaynak `Link` başlıklarını taşır.
+
 ## Tier uygulaması
 
 - **A:** Tam kamu içeriği. Beş kapsam da `approved`: `metadata_index`, `rendered_text`, `api_output`, `raw_download`, `bulk_export`.
 - **B:** Yalnız kamu metadata'sı. `metadata_index` açıkça `approved` olmalı; diğer kapsamlar kamuya verilmez. Şu an kaynak yok.
 - **Q:** Kamu çıktısı olmayan araştırma/QA adayı. Q, indirme veya otomasyon izni değildir; kaynak ToS ve erişim koşulları ayrıca uygulanır.
 - **P:** Kullanıcının kendi yetkili kaynağından getirdiği MIB/walk verisinin yerel işlenmesi. Varsayılan tasarım: tarayıcı/CLI içinde parse, sunucuya ham dosya gönderme yok, saklama yok, kamu korpusuna merge yok.
+
+API/UI yayın modları tier'ların daha açık çalışma zamanı karşılığıdır:
+
+- `redistributable`: A; ham dosya dahil yalnız onaylı scope'lar.
+- `metadata-only`: B; yalnız ayrı ayrı onaylanmış alanlar. Şu an vendor kaynağı yok.
+- `directory-only`: kaynak adı, resmi URL ve rights state; içerikten çıkarılmış alan yok.
+- `quarantine`: ingest edilen veya aday içeriğin hiçbir kamu çıktısı yok.
 
 ## Açık engeller
 
@@ -107,3 +120,4 @@ Hak kontrolünün çalışma zamanı maliyeti artifact başına sabit sayıda al
 - Notice fixture: attribution veya license notice kaybedilen IETF/IANA artifact'i aktive edilmemeli.
 - URL fixture: yalnız HTTPS primary source kabul edilmeli.
 - Release diff: rights URL veya notice değişirse otomatik aktivasyon durmalı ve manuel inceleme gerektirmeli.
+- Katalog bütünlüğü: `node scripts/validate-mib-catalog.mjs`; her raw dosyanın manifest, artifact checksum, kaynak scope'u ve notice koşulu doğrulanmalı.

@@ -16,6 +16,8 @@ It must let a user:
 4. distinguish PEN assignment, exact `sysObjectID` evidence, and unsupported
    device identity;
 5. consume the same resolution and provenance model through a versioned API.
+6. distinguish redistributable, metadata-only, directory-only, and quarantined
+   sources without mistaking a download link for permission.
 
 The web UI has first product priority. The data model and immutable release
 contract are foundational because both UI and API depend on them.
@@ -50,18 +52,19 @@ approval for another.
 
 A dependency-free Node.js public-alpha runtime currently serves the static UI
 and bounded API from one process. It uses no production database and loads only
-reviewed immutable snapshots. This is intentionally smaller than the later
-data-engine hypothesis:
+reviewed immutable snapshots: 110 raw modules, 5,392 parsed OID nodes, the IANA
+PEN registry, and the bounded `sysObjectID` set. This remains smaller than the
+later data-engine hypothesis:
 
 - Next.js and TypeScript for UI and route handlers;
 - PostgreSQL for immutable source/module releases and active release state;
 - importer and resolver commands in the same repository;
 - CDN/edge cache for public reads.
 
-No production importer/database stack is selected until parser, corpus, demand,
-and target workloads pass Phase 0. Exact OID resolution uses integer
-subidentifier arrays.
-Given OID depth `d` and `N` indexed definitions, ancestor resolution is roughly
-`O(d log N)` with one bounded query; exact lookup is `O(log N)` and children are
-`O(log N + k)`. SNMP permits up to 128 subidentifiers, so no design may assume a
-depth near 20.
+No database stack is selected until parser, corpus, demand, and target workloads
+pass Phase 0. The current in-memory resolver hashes each known numeric prefix;
+exact/ancestor resolution is `O(d)` time for OID depth `d` and `O(N)` index
+memory for `N` definitions. Text search is currently `O(N*t)` for `t` query
+tokens. SNMP permits up to 128 subidentifiers, so no design may assume a depth
+near 20. Measured latency and memory, not dataset size alone, decide when a
+database/search index is justified.

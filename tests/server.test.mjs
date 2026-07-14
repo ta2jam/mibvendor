@@ -26,7 +26,7 @@ test("production server exposes UI, health, version, OpenAPI, and API on one ori
     assert.equal(await (await fetch(`${base}/healthz`)).text(), "ok\n");
     const version = await (await fetch(`${base}/version`)).json();
     assert.equal(version.schema_version, 1);
-    assert.equal(version.data_release, "alpha-intelligence-2026-07-14.1");
+    assert.equal(version.data_release, "rights-cleared-2026-07-14.1");
 
     const specification = await (await fetch(`${base}/openapi.json`)).json();
     assert.equal(specification["x-mibvendor-status"], "public-alpha");
@@ -35,6 +35,14 @@ test("production server exposes UI, health, version, OpenAPI, and API on one ori
     assert.equal(enterprise.status, 200);
     assert.equal(enterprise.headers.get("access-control-allow-origin"), "*");
     assert.equal((await enterprise.json()).enterprise.organization, "net-snmp");
+
+    const module = await fetch(`${base}/v1/modules/BFD-STD-MIB`);
+    assert.equal(module.status, 200);
+    assert.equal((await module.json()).module.raw_download, true);
+
+    const raw = await fetch(`${base}/v1/modules/BFD-STD-MIB/raw`);
+    assert.equal(raw.status, 200);
+    assert.match(raw.headers.get("content-disposition"), /BFD-STD-MIB\.mib/);
   });
 });
 
@@ -43,6 +51,18 @@ test("static server rejects traversal and unsupported methods", async () => {
     assert.equal((await fetch(`${base}/.release.json`)).status, 404);
     assert.equal((await fetch(`${base}/..%2Fpackage.json`)).status, 404);
     assert.equal((await fetch(`${base}/app.js`, { method: "POST" })).status, 405);
+  });
+});
+
+test("malformed percent-encoded paths fail without terminating the server", async () => {
+  await withServer(async (base) => {
+    const malformed = await fetch(`${base}/v1/modules/%`);
+    assert.equal(malformed.status, 400);
+    assert.equal(await malformed.text(), "Bad request\n");
+
+    const health = await fetch(`${base}/healthz`);
+    assert.equal(health.status, 200);
+    assert.equal(await health.text(), "ok\n");
   });
 });
 

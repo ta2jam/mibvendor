@@ -293,6 +293,7 @@ h2 {
 .results-panel,
 .detail-panel,
 .decoder-section,
+.catalog-section,
 .intelligence-section,
 .safety-section,
 .developer-section,
@@ -570,6 +571,113 @@ textarea,
   background: #102a23;
   font-size: 0.76rem;
   white-space: pre-wrap;
+}
+
+.catalog-section {
+  margin-bottom: 1.2rem;
+  padding: clamp(1.3rem, 4vw, 2.2rem);
+}
+
+.catalog-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin-top: 1.2rem;
+}
+
+.catalog-stats span,
+.rights-legend span {
+  border: 1px solid var(--line);
+  border-radius: 0.7rem;
+  padding: 0.75rem;
+  color: var(--muted);
+  background: var(--paper);
+  font-size: 0.72rem;
+}
+
+.catalog-stats strong,
+.rights-legend strong {
+  display: block;
+  margin-bottom: 0.15rem;
+  color: var(--ink);
+  font-size: 0.85rem;
+}
+
+.catalog-search {
+  max-width: 760px;
+  margin-top: 1rem;
+}
+
+.catalog-search > label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 800;
+}
+
+.catalog-results {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.module-card {
+  display: grid;
+  gap: 0.55rem;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 0.8rem;
+  padding: 0.9rem;
+  background: var(--surface);
+}
+
+.module-card header,
+.module-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.module-card h3 {
+  margin: 0;
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+
+.module-card p,
+.module-card small {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.7rem;
+  overflow-wrap: anywhere;
+}
+
+.module-card code {
+  font-size: 0.66rem;
+}
+
+.module-actions a {
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.rights-badge {
+  border: 1px solid #9ac9ba;
+  border-radius: 999px;
+  padding: 0.2rem 0.45rem;
+  color: var(--brand-dark);
+  background: var(--brand-soft);
+  font-size: 0.62rem;
+  font-weight: 800;
+}
+
+.rights-legend {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin-top: 1rem;
 }
 
 .intelligence-section {
@@ -1151,7 +1259,10 @@ footer p {
   .developer-grid,
   .detail-columns,
   .safety-grid,
-  .intelligence-grid {
+  .intelligence-grid,
+  .catalog-results,
+  .catalog-stats,
+  .rights-legend {
     grid-template-columns: 1fr;
   }
 

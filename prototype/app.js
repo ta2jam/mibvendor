@@ -16,6 +16,10 @@ const sysObjectIdForm = document.querySelector("#sysobjectid-form");
 const sysObjectIdResult = document.querySelector("#sysobjectid-result");
 const dependencyForm = document.querySelector("#dependency-form");
 const dependencyResult = document.querySelector("#dependency-result");
+const catalogForm = document.querySelector("#catalog-search");
+const catalogQuery = document.querySelector("#catalog-query");
+const catalogResults = document.querySelector("#catalog-results");
+const catalogStats = document.querySelector("#catalog-stats");
 
 function escapeHtml(value) {
   return String(value)
@@ -55,7 +59,9 @@ function renderDetail(record, resultCount, resolved = null) {
     ? `<p><strong>Table:</strong> ${escapeHtml(record.table)} · <strong>Row:</strong> ${escapeHtml(record.parent)} · <strong>Index:</strong> ${escapeHtml(record.index)}</p><p>Query one row at <code>${escapeHtml(record.oid)}.&lt;${escapeHtml(record.index)}&gt;</code>, or walk the base column for all rows. Example index 7: <code>${escapeHtml(record.oid)}.7</code>.</p>`
     : record.kind === "scalar"
       ? `<p>This is a scalar. Query its single instance by appending <strong>.0</strong>.</p>`
-      : `<p>This is a notification, not a pollable object. Inspect its related varbind objects.</p>`;
+      : record.kind === "notification" || record.kind === "notification-type"
+        ? `<p>This is a notification, not a pollable object. Inspect its related varbind objects.</p>`
+        : `<p>This node provides structure or identity in the module OID tree.</p>`;
   const enumContext = record.enumValues.length
     ? `<div class="enum-list" aria-label="Enumerated values">${record.enumValues.map((value) => `<code>${escapeHtml(value)}</code>`).join("")}</div>`
     : "";
@@ -129,6 +135,53 @@ function renderDetail(record, resultCount, resolved = null) {
   `;
 }
 
+function apiObjectToRecord(object, dataRelease) {
+  const relationships = object.relationships ?? {};
+  const syntax = object.syntax ?? {};
+  const provenance = object.provenance ?? {};
+  const kind = object.kind === "object-type" && object.access && object.access !== "not-accessible" ? "column" : object.kind;
+  const command = kind === "notification" || kind === "notification-type"
+    ? "# Notification OID; inspect its varbind objects instead of polling this OID."
+    : `snmpget -v2c -c <community> <host> ${object.oid}${kind === "scalar" ? ".0" : ".<instance>"}`;
+  return {
+    module: object.module,
+    symbol: object.symbol,
+    oid: object.oid,
+    kind,
+    access: object.access ?? "not applicable",
+    status: object.status ?? "not specified",
+    syntax: syntax.raw ?? syntax.base ?? "not specified",
+    syntaxDetail: {
+      base: syntax.base ?? "not specified",
+      textualConvention: syntax.textual_convention ?? null,
+      displayHint: syntax.display_hint ?? null,
+      units: syntax.units ?? null,
+      constraints: syntax.constraints ?? [],
+      enums: syntax.enums ?? {},
+      bits: syntax.bits ?? {}
+    },
+    revision: object.revision ?? "not specified",
+    source: provenance.source ?? "Source catalog",
+    sourceUrl: provenance.source_url ?? "#catalog",
+    sourceChecked: provenance.source_checked ?? provenance.source_revision ?? "active release",
+    parseStatus: provenance.parse_status ?? "normalized",
+    publicationStatus: provenance.publication_mode ?? "metadata-only",
+    rightsTier: provenance.rights_tier ?? "rights reviewed",
+    rightsScopes: provenance.raw_download ? ["metadata", "API output", "raw download"] : ["metadata", "API output"],
+    dataRelease,
+    parent: relationships.parent ?? null,
+    table: relationships.table ?? null,
+    row: relationships.row ?? null,
+    index: relationships.indexes?.[0] ?? null,
+    notificationObjects: relationships.notification_objects ?? [],
+    related: [],
+    intent: [],
+    description: object.description?.text ?? "No description is present in the approved source module.",
+    enumValues: Object.entries(syntax.enums ?? {}).map(([number, name]) => `${name}(${number})`),
+    command
+  };
+}
+
 async function requestJson(path, output) {
   output.innerHTML = '<span class="lookup-loading">Loading…</span>';
   try {
@@ -185,6 +238,54 @@ dependencyForm.addEventListener("submit", async (event) => {
     ${row("Cyclic", body.cyclic)}`;
 });
 
+function renderCatalogModules(body) {
+  if (!body.results.length) {
+    catalogResults.innerHTML = '<div class="search-state"><strong>No rights-cleared module match</strong><span>Try a module fragment such as IANA, BFD, MPLS, or NET-SNMP.</span></div>';
+    return;
+  }
+  catalogResults.innerHTML = body.results.map((module) => `
+    <article class="module-card">
+      <header>
+        <h3>${escapeHtml(module.id)}</h3>
+        <span class="rights-badge">${escapeHtml(module.publication_mode)}</span>
+      </header>
+      <p>${escapeHtml(module.publisher)} · ${module.resolved_oid_count.toLocaleString()} resolved OID nodes · revision ${escapeHtml(module.revision ?? "not specified")}</p>
+      <small>Artifact SHA-256 <code>${escapeHtml(module.artifact_sha256.slice(0, 16))}…</code></small>
+      <small>${escapeHtml(module.license.name)}</small>
+      <div class="module-actions">
+        <a href="/v1/modules/${encodeURIComponent(module.id)}">Metadata</a>
+        <a href="${escapeHtml(module.source_url)}">Official source</a>
+        ${module.raw_download ? `<a href="${escapeHtml(module.raw_url)}">Download licensed MIB</a>` : ""}
+      </div>
+    </article>`).join("");
+}
+
+async function loadCatalog(query = "") {
+  catalogResults.innerHTML = '<span class="lookup-loading">Loading rights-cleared modules…</span>';
+  try {
+    const [releaseResponse, modulesResponse] = await Promise.all([
+      fetch("/v1/data-release", { headers: { accept: "application/json" } }),
+      fetch(`/v1/modules?q=${encodeURIComponent(query)}&limit=12`, { headers: { accept: "application/json" } })
+    ]);
+    const release = await releaseResponse.json();
+    const body = await modulesResponse.json();
+    if (!releaseResponse.ok || !modulesResponse.ok) throw new Error(body.detail ?? "Catalog request failed");
+    catalogStats.innerHTML = `
+      <span><strong>${release.redistributable_module_count.toLocaleString()}</strong>redistributable MIB modules</span>
+      <span><strong>${release.object_count.toLocaleString()}</strong>searchable OID records</span>
+      <span><strong>${release.directory_only_source_count.toLocaleString()}</strong>directory-only sources</span>
+      <span><strong>${escapeHtml(release.data_release)}</strong>immutable data release</span>`;
+    renderCatalogModules(body);
+  } catch (error) {
+    catalogResults.innerHTML = `<span class="unresolved">${escapeHtml(error.message)}</span>`;
+  }
+}
+
+catalogForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  loadCatalog(catalogQuery.value.trim());
+});
+
 function renderSearchState(title, copy) {
   searchResults.innerHTML = `<div class="search-state"><strong>${escapeHtml(title)}</strong><span>${escapeHtml(copy)}</span></div>`;
 }
@@ -218,28 +319,36 @@ function renderMatches(view) {
   renderDetail(view.matches[0].record, view.matches.length, view.resolved);
 }
 
-function runSearch(query) {
-  const view = classifySearchQuery(query, records);
-  if (view.state !== "matches") {
+async function runSearch(query) {
+  const normalized = String(query).trim();
+  if (!normalized) {
     objectPath.innerHTML = "";
-    if (view.state === "invalid-oid") {
-      renderSearchState("Invalid numeric OID", "Use dot-separated non-negative integers, for example 1.3.6.1.2.1.1.3.0.");
-    } else if (view.state === "unknown-oid") {
-      renderSearchState("Valid OID, unknown in this release", "The syntax is valid, but no known object prefix exists in the six-record prototype dataset.");
-    } else if (view.state === "empty") {
-      renderSearchState("Enter a task, symbol, module, or OID", "Results will keep module, kind, and numeric OID visible.");
-    } else {
-      renderSearchState("No match in this release", "Try a precise symbol, module-qualified name, numeric OID, or monitoring task.");
-    }
-    detail.innerHTML = `
-      <div class="detail-header">
-        <div><p class="eyebrow">No selected object</p><h2>${escapeHtml(query || "Search required")}</h2></div>
-      </div>
-      <p>This public alpha contains six standards-derived prototype records. It will not invent a vendor, device identity, or substitute OID.</p>
-    `;
+    renderSearchState("Enter a task, symbol, module, or OID", "Results will keep module, kind, numeric OID, source, and publication mode visible.");
     return;
   }
-  renderMatches(view);
+  if (/^\.?\d/.test(normalized) && !parseOid(normalized)) {
+    objectPath.innerHTML = "";
+    renderSearchState("Invalid numeric OID", "Use dot-separated non-negative integers, for example 1.3.6.1.2.1.1.3.0.");
+    return;
+  }
+  searchResults.innerHTML = '<span class="lookup-loading">Searching the active OID release…</span>';
+  try {
+    const response = await fetch(`/v1/search?q=${encodeURIComponent(normalized)}`, { headers: { accept: "application/json" } });
+    const body = await response.json();
+    if (!response.ok) throw new Error(body.detail ?? `Search failed with HTTP ${response.status}`);
+    if (!body.results.length) {
+      objectPath.innerHTML = "";
+      renderSearchState("No match in this release", "Try a precise symbol, module-qualified name, numeric OID, or monitoring task. Unknown-rights content is not substituted.");
+      detail.innerHTML = `<div class="detail-header"><div><p class="eyebrow">No selected object</p><h2>${escapeHtml(normalized)}</h2></div></div><p>The active release does not invent a vendor, device identity, or substitute OID.</p>`;
+      return;
+    }
+    const matches = body.results.map((object) => ({ record: apiObjectToRecord(object, body.data_release), matchKind: "related" }));
+    renderMatches({ matches, resolved: null });
+  } catch (error) {
+    const fallback = classifySearchQuery(normalized, records);
+    if (fallback.state === "matches") renderMatches(fallback);
+    else renderSearchState("Search unavailable", error.message);
+  }
 }
 
 searchForm.addEventListener("submit", (event) => {
@@ -292,3 +401,4 @@ document.querySelector("#clear-button").addEventListener("click", () => {
 });
 
 runSearch(queryInput.value);
+loadCatalog(catalogQuery.value);
