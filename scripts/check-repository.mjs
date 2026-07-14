@@ -101,7 +101,6 @@ for (const requiredCopy of [
 ]) {
   if (!readme.includes(requiredCopy)) failures.push(`README is missing required service copy: ${requiredCopy}`);
 }
-
 if (await exists(".github/workflows/pages.yml")) {
   failures.push("GitHub Pages workflow must remain disabled; production runs on the VPS");
 }
@@ -273,6 +272,15 @@ for (const requiredCopy of [
   "open source on GitHub"
 ]) {
   if (!prototypeHtml.includes(requiredCopy)) failures.push(`Prototype is missing required trust copy: ${requiredCopy}`);
+}
+for (const requiredDeveloperCopy of [
+  "Developer API Preview",
+  "Contract preview · Not released",
+  "not a live API",
+  "/v1/resolve:batch",
+  "View OpenAPI research preview"
+]) {
+  if (!prototypeHtml.includes(requiredDeveloperCopy)) failures.push(`Prototype is missing developer-preview copy: ${requiredDeveloperCopy}`);
 }
 
 if (failures.length) {

@@ -15,6 +15,7 @@
         <a href="#search">OID search</a>
         <a href="#decoder">Walk decoder</a>
         <a href="#safe-use">Safe use</a>
+        <a href="#developers">API preview</a>
       </nav>
       <span class="alpha-badge">Public alpha</span>
     </header>
@@ -166,6 +167,96 @@
             </thead>
             <tbody id="walk-results"></tbody>
           </table>
+        </div>
+      </section>
+
+      <section id="developers" class="developer-section" aria-labelledby="developer-title">
+        <div class="developer-heading">
+          <div>
+            <p class="eyebrow">Developer API Preview</p>
+            <h2 id="developer-title">Resolve OIDs without uploading raw walks.</h2>
+          </div>
+          <span class="api-status">Contract preview · Not released</span>
+        </div>
+
+        <p class="developer-lede">
+          This is a proposed public contract, not a live API. Authentication,
+          production rate limits, availability targets, and the launch date are
+          not committed yet.
+        </p>
+
+        <div class="developer-grid">
+          <div class="endpoint-panel">
+            <h3>Core preview endpoints</h3>
+            <ul class="endpoint-list">
+              <li><span class="method get">GET</span><code>/v1/search?q=interface+status</code><small>Ranked discovery</small></li>
+              <li><span class="method get">GET</span><code>/v1/objects/{objectId}</code><small>Object semantics and provenance</small></li>
+              <li><span class="method post">POST</span><code>/v1/resolve:batch</code><small>Order-preserving OID resolution</small></li>
+              <li><span class="method get">GET</span><code>/v1/data-release</code><small>Active immutable release</small></li>
+            </ul>
+
+            <h3>Preview contract</h3>
+            <ul class="contract-list">
+              <li>HTTPS JSON under a versioned <code>/v1</code> namespace.</li>
+              <li>Every response identifies its immutable <code>data_release</code>.</li>
+              <li>Batch order and duplicate inputs are preserved.</li>
+              <li>Invalid OIDs and valid-but-not-found OIDs remain distinct.</li>
+              <li>Errors use RFC 9457 <code>application/problem+json</code>.</li>
+            </ul>
+
+            <div class="preview-limits" aria-label="Experimental contract limits">
+              <span><strong>1,000</strong> OIDs / batch</span>
+              <span><strong>64 KiB</strong> request body</span>
+              <span><strong>200</strong> search characters</span>
+            </div>
+            <p class="preview-note">Experimental probe limits, not a production SLA.</p>
+          </div>
+
+          <div class="example-panel" aria-label="Synthetic batch resolution example">
+            <div class="code-heading">
+              <span>Proposed request</span>
+              <code>POST /v1/resolve:batch</code>
+            </div>
+            <pre class="api-code"><code>{
+  "data_release": "&lt;immutable-release-id&gt;",
+  "oids": [
+    "1.3.6.1.2.1.2.2.1.8.7",
+    "1.3.6.1.4.1.999999.1.0"
+  ]
+}</code></pre>
+
+            <div class="code-heading response-heading">
+              <span>Synthetic response</span>
+              <code>200 application/json</code>
+            </div>
+            <pre class="api-code"><code>{
+  "data_release": "&lt;immutable-release-id&gt;",
+  "results": [
+    {
+      "input": "1.3.6.1.2.1.2.2.1.8.7",
+      "status": "resolved",
+      "object": {
+        "module": "IF-MIB",
+        "symbol": "ifOperStatus",
+        "oid": "1.3.6.1.2.1.2.2.1.8"
+      },
+      "instance_suffix": [7]
+    },
+    {
+      "input": "1.3.6.1.4.1.999999.1.0",
+      "status": "not_found"
+    }
+  ]
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="developer-footer">
+          <p><strong>Safe input:</strong> send bounded numeric OIDs only. Do not send raw walks, credentials, hostnames, serial numbers, or customer identifiers.</p>
+          <div class="developer-links">
+            <a href="https://github.com/ta2jam/mibvendor/blob/main/docs/research/demand/phase0-openapi.json">View OpenAPI research preview</a>
+            <a href="#safe-use">API status and safety</a>
+          </div>
         </div>
       </section>
 

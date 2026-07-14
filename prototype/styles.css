@@ -294,6 +294,7 @@ h2 {
 .detail-panel,
 .decoder-section,
 .safety-section,
+.developer-section,
 .research-section {
   border: 1px solid var(--line);
   border-radius: 1.15rem;
@@ -642,6 +643,238 @@ textarea,
   padding: clamp(1.3rem, 4vw, 2.2rem);
 }
 
+.developer-section {
+  margin-bottom: 1.2rem;
+  padding: clamp(1.3rem, 4vw, 2.2rem);
+}
+
+.developer-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.developer-heading h2 {
+  max-width: 680px;
+  margin-bottom: 0.5rem;
+}
+
+.developer-lede {
+  max-width: 780px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.developer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.endpoint-panel,
+.example-panel {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  padding: 1rem;
+  background: var(--paper);
+}
+
+.endpoint-panel h3 {
+  margin-bottom: 0.65rem;
+  font-size: 0.88rem;
+}
+
+.endpoint-panel h3:not(:first-child) {
+  margin-top: 1.25rem;
+}
+
+.endpoint-list,
+.contract-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.endpoint-list {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.endpoint-list li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.1rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 0.65rem;
+  padding: 0.65rem;
+  background: var(--surface);
+}
+
+.endpoint-list code {
+  overflow-wrap: anywhere;
+  color: var(--ink);
+  font-size: 0.74rem;
+  font-weight: 720;
+}
+
+.endpoint-list small {
+  grid-column: 2;
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+
+.method {
+  align-self: start;
+  border-radius: 0.35rem;
+  padding: 0.13rem 0.32rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.62rem;
+  font-weight: 850;
+}
+
+.method.get {
+  color: var(--brand-dark);
+  background: var(--brand-soft);
+}
+
+.method.post {
+  color: #734400;
+  background: var(--warning-soft);
+}
+
+.contract-list {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.contract-list li {
+  position: relative;
+  padding-left: 1rem;
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.contract-list li::before {
+  position: absolute;
+  top: 0.45rem;
+  left: 0;
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 50%;
+  background: var(--brand);
+  content: "";
+}
+
+.preview-limits {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4rem;
+  margin-top: 1rem;
+}
+
+.preview-limits span {
+  border-radius: 0.55rem;
+  padding: 0.55rem;
+  color: var(--muted);
+  background: var(--surface);
+  font-size: 0.66rem;
+  text-align: center;
+}
+
+.preview-limits strong {
+  display: block;
+  color: var(--ink);
+  font-size: 0.78rem;
+}
+
+.preview-note {
+  margin: 0.5rem 0 0;
+  color: var(--muted);
+  font-size: 0.66rem;
+  text-align: center;
+}
+
+.example-panel {
+  color: #d8fff4;
+  background: #102a23;
+}
+
+.code-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.55rem;
+}
+
+.code-heading span {
+  color: #8de6cc;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.code-heading code {
+  color: #bcd0ca;
+  font-size: 0.68rem;
+}
+
+.response-heading {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgb(188 208 202 / 20%);
+}
+
+.api-code {
+  overflow-x: auto;
+  max-height: 22rem;
+  margin: 0;
+  border-radius: 0.65rem;
+  padding: 0.8rem;
+  color: #d8fff4;
+  background: #0b211b;
+  font-size: 0.7rem;
+  line-height: 1.55;
+  white-space: pre;
+}
+
+.developer-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+  border: 1px solid #e0c385;
+  border-radius: 0.8rem;
+  padding: 0.9rem;
+  background: var(--warning-soft);
+}
+
+.developer-footer p {
+  max-width: 700px;
+  margin: 0;
+  color: #684b16;
+  font-size: 0.75rem;
+}
+
+.developer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.developer-links a {
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
 .section-intro {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
@@ -810,6 +1043,7 @@ footer p {
   .workspace,
   .section-intro,
   .decoder-grid,
+  .developer-grid,
   .detail-columns,
   .safety-grid {
     grid-template-columns: 1fr;
@@ -867,6 +1101,10 @@ footer p {
 
   .decoder-actions {
     flex-direction: column;
+  }
+
+  .preview-limits {
+    grid-template-columns: 1fr;
   }
 }
 

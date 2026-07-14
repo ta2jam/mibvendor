@@ -3,6 +3,24 @@
 All notable changes are documented here. The project uses Semantic Versioning
 while it is pre-1.0; research releases may remain unstable.
 
+## [0.1.0-alpha.11] - 2026-07-14
+
+### Added
+
+- Added a compact Developer API Preview below the primary web and walk-decoder
+  workflows without promoting API content into the first viewport.
+- Documented the four core proposed endpoints, immutable release behavior,
+  order-preserving batch semantics, distinct invalid/not-found states, RFC 9457
+  errors, experimental limits, and prohibited sensitive inputs.
+- Added a synthetic request/response example and a clearly labeled link to the
+  OpenAPI research contract.
+
+### Changed
+
+- Kept the unreleased API visibly non-runnable: no production curl command, API
+  key claim, authentication promise, rate-limit promise, or availability SLA is
+  shown.
+
 ## [0.1.0-alpha.10] - 2026-07-14
 
 ### Added
@@ -153,6 +171,7 @@ while it is pre-1.0; research releases may remain unstable.
   evidence cannot be marked complete.
 - Repository checks and CI without production MIB data.
 
+[0.1.0-alpha.11]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.11
 [0.1.0-alpha.10]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.10
 [0.1.0-alpha.9]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.9
 [0.1.0-alpha.8]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.8

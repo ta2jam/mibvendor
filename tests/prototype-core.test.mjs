@@ -127,3 +127,23 @@ test("public page states safe-use and API availability boundaries", async () => 
   assert.match(html, /Ranked, not hidden/);
   assert.doesNotMatch(html, /community string[^<]*value|SNMPv3 credential[^<]*value/i);
 });
+
+test("developer preview is useful without presenting an unreleased API as live", async () => {
+  const html = await readFile(new URL("../prototype/index.html", import.meta.url), "utf8");
+  assert.match(html, /id="developers"/);
+  assert.match(html, /Contract preview · Not released/);
+  assert.match(html, /This is a proposed public contract, not a live API/);
+  for (const endpoint of [
+    "/v1/search?q=interface+status",
+    "/v1/objects/{objectId}",
+    "/v1/resolve:batch",
+    "/v1/data-release"
+  ]) assert.ok(html.includes(endpoint), `missing developer endpoint ${endpoint}`);
+  assert.match(html, /1,000/);
+  assert.match(html, /64 KiB/);
+  assert.match(html, /200/);
+  assert.match(html, /application\/problem\+json/);
+  assert.match(html, /View OpenAPI research preview/);
+  assert.doesNotMatch(html, /curl\s+https:\/\/mibvendor\.io\/v1/);
+  assert.doesNotMatch(html, /Get (?:an )?API key/i);
+});
