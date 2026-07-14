@@ -1,5 +1,14 @@
+const standardsTrust = {
+  sourceChecked: "2026-07-13",
+  parseStatus: "Synthetic fixture — not parser output",
+  rightsTier: "A — approved standards seed",
+  rightsScopes: ["metadata", "rendered text", "API output"],
+  dataRelease: "phase0-synthetic-1"
+};
+
 export const records = [
   {
+    ...standardsTrust,
     module: "IF-MIB",
     symbol: "ifOperStatus",
     oid: "1.3.6.1.2.1.2.2.1.8",
@@ -15,9 +24,11 @@ export const records = [
     related: ["linkDown", "linkUp", "ifAdminStatus"],
     intent: ["interface status", "port state", "link state"],
     description: "Current operational state of an interface.",
+    enumValues: ["up(1)", "down(2)", "testing(3)", "unknown(4)", "dormant(5)", "notPresent(6)", "lowerLayerDown(7)"],
     command: "snmpget -v2c -c <community> <host> 1.3.6.1.2.1.2.2.1.8.<ifIndex>"
   },
   {
+    ...standardsTrust,
     module: "IF-MIB",
     symbol: "ifDescr",
     oid: "1.3.6.1.2.1.2.2.1.2",
@@ -33,9 +44,11 @@ export const records = [
     related: ["ifName", "ifAlias", "ifOperStatus"],
     intent: ["interface description", "port description", "interface name"],
     description: "Human-readable information about an interface.",
+    enumValues: [],
     command: "snmpwalk -v2c -c <community> <host> 1.3.6.1.2.1.2.2.1.2"
   },
   {
+    ...standardsTrust,
     module: "IF-MIB",
     symbol: "ifName",
     oid: "1.3.6.1.2.1.31.1.1.1.1",
@@ -51,9 +64,11 @@ export const records = [
     related: ["ifDescr", "ifAlias", "ifOperStatus"],
     intent: ["interface name", "port name"],
     description: "Textual name of an interface assigned by the local device.",
+    enumValues: [],
     command: "snmpwalk -v2c -c <community> <host> 1.3.6.1.2.1.31.1.1.1.1"
   },
   {
+    ...standardsTrust,
     module: "SNMPv2-MIB",
     symbol: "sysUpTime",
     oid: "1.3.6.1.2.1.1.3",
@@ -69,9 +84,11 @@ export const records = [
     related: ["sysName", "sysDescr", "coldStart"],
     intent: ["uptime", "device uptime", "restart time"],
     description: "Time since the network management portion was last initialized.",
+    enumValues: [],
     command: "snmpget -v2c -c <community> <host> 1.3.6.1.2.1.1.3.0"
   },
   {
+    ...standardsTrust,
     module: "HOST-RESOURCES-MIB",
     symbol: "hrProcessorLoad",
     oid: "1.3.6.1.2.1.25.3.3.1.2",
@@ -87,9 +104,11 @@ export const records = [
     related: ["hrDeviceDescr", "hrSystemUptime"],
     intent: ["processor load", "cpu usage", "cpu load"],
     description: "One-minute average percentage of processor busy time.",
+    enumValues: [],
     command: "snmpwalk -v2c -c <community> <host> 1.3.6.1.2.1.25.3.3.1.2"
   },
   {
+    ...standardsTrust,
     module: "IF-MIB",
     symbol: "linkDown",
     oid: "1.3.6.1.6.3.1.1.5.3",
@@ -105,6 +124,7 @@ export const records = [
     related: ["ifIndex", "ifAdminStatus", "ifOperStatus"],
     intent: ["link down trap", "interface down notification"],
     description: "Signals that an interface entered the down state.",
+    enumValues: [],
     command: "# Notification OID; inspect its varbind objects instead of polling this OID."
   }
 ];

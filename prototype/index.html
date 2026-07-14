@@ -57,14 +57,24 @@
       </section>
 
       <section class="workspace" aria-label="OID result workspace">
-        <aside class="tree-panel" aria-labelledby="tree-title">
-          <div class="panel-heading">
-            <p class="eyebrow">Path</p>
-            <h2 id="tree-title">Object tree</h2>
-          </div>
-          <ol id="object-path" class="object-path"></ol>
-          <p class="tree-note">Only the active path is expanded in this prototype.</p>
-        </aside>
+        <div class="sidebar-stack">
+          <aside class="results-panel" aria-labelledby="results-title">
+            <div class="panel-heading">
+              <p class="eyebrow">Ranked, not hidden</p>
+              <h2 id="results-title">Search results</h2>
+            </div>
+            <div id="search-results" aria-live="polite"></div>
+          </aside>
+
+          <aside class="tree-panel" aria-labelledby="tree-title">
+            <div class="panel-heading">
+              <p class="eyebrow">Path</p>
+              <h2 id="tree-title">Active object path</h2>
+            </div>
+            <ol id="object-path" class="object-path"></ol>
+            <p class="tree-note">Only the active path is expanded in this prototype.</p>
+          </aside>
+        </div>
 
         <article id="object-detail" class="detail-panel" aria-live="polite">
           <p>Search for an object to see its operational context.</p>

@@ -54,6 +54,7 @@ export async function loadFoundation(root = ROOT) {
     schemas,
     examples,
     golden: await readJson(path.join(root, "docs", "foundation", "ux-golden-tasks.json")),
+    coverage: await readJson(path.join(root, "docs", "foundation", "prototype-golden-coverage.json")),
   };
 }
 
@@ -309,6 +310,22 @@ function validateGolden(golden, issues) {
   }
 }
 
+function validateCoverage(coverage, golden, issues) {
+  if (coverage.status !== "provisional_phase0_open") issues.push("prototype coverage must remain provisional while Phase 0 is open");
+  if (!/^0\.1\.0-alpha\.\d+$/.test(coverage.prototype_release ?? "")) issues.push("prototype coverage requires an alpha release identifier");
+  const expectedIds = golden.tasks.map((task) => task.id);
+  const actualIds = coverage.tasks?.map((task) => task.id) ?? [];
+  if (!jsonEqual(actualIds, expectedIds)) issues.push("prototype coverage IDs must exactly match the golden task order");
+  for (const task of coverage.tasks ?? []) {
+    if (!["implemented", "partial", "not-implemented"].includes(task.status)) issues.push(`${task.id}: invalid coverage status`);
+    if (!Array.isArray(task.evidence)) issues.push(`${task.id}: coverage evidence must be an array`);
+    if (["implemented", "partial"].includes(task.status) && (!task.evidence?.length || task.evidence.some((item) => typeof item !== "string" || !item.trim()))) {
+      issues.push(`${task.id}: claimed coverage requires non-empty evidence`);
+    }
+    if (task.status === "not-implemented" && task.evidence?.length) issues.push(`${task.id}: not-implemented coverage cannot claim evidence`);
+  }
+}
+
 export function validateFoundation(bundle) {
   const issues = [];
   const schemaIds = new Set();
@@ -339,13 +356,16 @@ export function validateFoundation(bundle) {
   if (bundle.examples.pointer.active_release !== bundle.examples.release.release_id) issues.push("active pointer does not target the example release");
   validateAdapter(bundle.examples.adapterFailure, issues);
   validateGolden(bundle.golden, issues);
+  validateCoverage(bundle.coverage, bundle.golden, issues);
 
   if (issues.length) throw new FoundationValidationError(issues);
+  const coverageCounts = Object.fromEntries(["implemented", "partial", "not-implemented"].map((status) => [status, bundle.coverage.tasks.filter((task) => task.status === status).length]));
   return {
     schemas: bundle.schemas.size,
     examples: Object.keys(bundle.examples).length,
     objects: bundle.examples.canonical.module.objects.length,
     goldenTasks: bundle.golden.tasks.length,
+    coverage: coverageCounts,
   };
 }
 
@@ -356,7 +376,7 @@ export async function run(root = ROOT) {
 if (import.meta.url === new URL(process.argv[1], "file:").href) {
   try {
     const result = await run();
-    console.log(`Foundation contracts passed (${result.schemas} schemas, ${result.examples} examples, ${result.objects} objects, ${result.goldenTasks} golden tasks).`);
+    console.log(`Foundation contracts passed (${result.schemas} schemas, ${result.examples} examples, ${result.objects} objects, ${result.goldenTasks} golden tasks; coverage ${result.coverage.implemented} implemented, ${result.coverage.partial} partial, ${result.coverage["not-implemented"]} not implemented).`);
   } catch (error) {
     if (error instanceof FoundationValidationError) {
       for (const issue of error.issues) console.error(`ERROR: ${issue}`);

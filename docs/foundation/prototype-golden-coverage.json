@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "status": "provisional_phase0_open",
+  "prototype_release": "0.1.0-alpha.10",
+  "tasks": [
+    { "id": "G01", "status": "implemented", "evidence": ["tests/prototype-core.test.mjs: search classifications preserve ranking, instances, and explicit failure states", "prototype/index.html: search-results"] },
+    { "id": "G02", "status": "implemented", "evidence": ["tests/prototype-core.test.mjs: task, symbol, module-qualified, and numeric queries resolve", "prototype/app.js: enum-list"] },
+    { "id": "G03", "status": "partial", "evidence": ["Module-qualified exact search is tested; a collision fixture and explicit ambiguity chooser are not implemented."] },
+    { "id": "G04", "status": "implemented", "evidence": ["tests/prototype-core.test.mjs: search classifications preserve ranking, instances, and explicit failure states", "prototype/app.js: Query instance"] },
+    { "id": "G05", "status": "implemented", "evidence": ["tests/prototype-core.test.mjs: resolveOid chooses the longest actual ancestor and preserves the instance"] },
+    { "id": "G06", "status": "implemented", "evidence": ["tests/prototype-core.test.mjs: search classifications preserve ranking, instances, and explicit failure states"] },
+    { "id": "G07", "status": "implemented", "evidence": ["prototype/app.js: table, row, index, row-query template, and base-column guidance"] },
+    { "id": "G08", "status": "implemented", "evidence": ["prototype/app.js: notification is marked non-pollable and related varbind objects are listed"] },
+    { "id": "G09", "status": "not-implemented", "evidence": [] },
+    { "id": "G10", "status": "not-implemented", "evidence": [] },
+    { "id": "G11", "status": "not-implemented", "evidence": [] },
+    { "id": "G12", "status": "partial", "evidence": ["Source, source-check date, synthetic-fixture parse status, rights tier, scopes, and data release are visible; an authoritative acquisition timestamp is not claimed."] },
+    { "id": "G13", "status": "not-implemented", "evidence": [] },
+    { "id": "G14", "status": "partial", "evidence": ["Walk-line diagnostics are bounded; module parse diagnostics are not exposed in the prototype."] },
+    { "id": "G15", "status": "implemented", "evidence": ["tests/prototype-core.test.mjs: walk parsing resolves table rows, scalar instances, and unknown OIDs"] },
+    { "id": "G16", "status": "implemented", "evidence": ["tests/prototype-core.test.mjs: walk parsing reports unsupported lines without inventing rows", "tests/prototype-core.test.mjs: browser prototype contains no network transport primitive"] },
+    { "id": "G17", "status": "implemented", "evidence": ["docs/research/demand/prototype-performance.md", "tests/prototype-core.test.mjs: walk parsing enforces byte and line bounds"] },
+    { "id": "G18", "status": "partial", "evidence": ["Native controls, skip link, focus-visible styles, and focus-preserving result selection exist; browser accessibility QA is not recorded."] },
+    { "id": "G19", "status": "implemented", "evidence": ["prototype/data.mjs: numeric commands contain explicit community, host, and index placeholders"] },
+    { "id": "G20", "status": "partial", "evidence": ["Results expose an immutable prototype data-release ID; release comparison UI is not implemented."] }
+  ]
+}

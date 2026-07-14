@@ -26,7 +26,14 @@ test("foundation schemas, examples, semantics, and golden tasks pass", () => {
     examples: 5,
     objects: 2,
     goldenTasks: 20,
+    coverage: { implemented: 11, partial: 5, "not-implemented": 4 },
   });
+});
+
+test("prototype coverage cannot claim an implemented task without evidence", () => {
+  const bundle = clone(baseline);
+  bundle.coverage.tasks[0].evidence = [];
+  rejectsWith(bundle, "claimed coverage requires non-empty evidence");
 });
 
 test("canonical OID text and arcs cannot drift", () => {

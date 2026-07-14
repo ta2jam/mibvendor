@@ -1,10 +1,11 @@
 import { records } from "./data.mjs";
-import { parseOid, parseWalk, searchRecords } from "./core.mjs";
+import { classifySearchQuery, parseOid, parseWalk } from "./core.mjs";
 
 const queryInput = document.querySelector("#query");
 const searchForm = document.querySelector("#search");
 const detail = document.querySelector("#object-detail");
 const objectPath = document.querySelector("#object-path");
+const searchResults = document.querySelector("#search-results");
 const walkInput = document.querySelector("#walk-input");
 const walkResults = document.querySelector("#walk-results");
 const walkCaption = document.querySelector("#walk-caption");
@@ -31,13 +32,30 @@ function renderPath(record) {
     .join("");
 }
 
-function renderDetail(record, resultCount) {
+const matchLabels = {
+  "module-qualified": "Exact module + symbol",
+  "exact-symbol": "Exact symbol",
+  "numeric-exact": "Exact numeric OID",
+  "numeric-instance": "Resolved object instance",
+  "task-intent": "Monitoring task match",
+  symbol: "Symbol match",
+  related: "Related context"
+};
+
+function renderDetail(record, resultCount, resolved = null) {
   renderPath(record);
+  const instance = resolved?.instance?.length ? resolved.instance.join(".") : null;
   const tableContext = record.table
-    ? `<p><strong>${escapeHtml(record.table)}</strong> uses <strong>${escapeHtml(record.index)}</strong>. Append an actual index to the column OID for a scalar instance, or walk the base column.</p>`
+    ? `<p><strong>Table:</strong> ${escapeHtml(record.table)} · <strong>Row:</strong> ${escapeHtml(record.parent)} · <strong>Index:</strong> ${escapeHtml(record.index)}</p><p>Query one row at <code>${escapeHtml(record.oid)}.&lt;${escapeHtml(record.index)}&gt;</code>, or walk the base column for all rows. Example index 7: <code>${escapeHtml(record.oid)}.7</code>.</p>`
     : record.kind === "scalar"
       ? `<p>This is a scalar. Query its single instance by appending <strong>.0</strong>.</p>`
       : `<p>This is a notification, not a pollable object. Inspect its related varbind objects.</p>`;
+  const enumContext = record.enumValues.length
+    ? `<div class="enum-list" aria-label="Enumerated values">${record.enumValues.map((value) => `<code>${escapeHtml(value)}</code>`).join("")}</div>`
+    : "";
+  const instanceFact = instance
+    ? `<div class="fact"><dt>Query instance</dt><dd>${escapeHtml(instance)}${record.kind === "scalar" && instance === "0" ? " · scalar" : ""}</dd></div>`
+    : `<div class="fact"><dt>Instance</dt><dd>${record.kind === "scalar" ? ".0 required" : record.table ? `${escapeHtml(record.index)} required` : "Not pollable"}</dd></div>`;
 
   detail.innerHTML = `
     <div class="detail-header">
@@ -53,15 +71,20 @@ function renderDetail(record, resultCount) {
     </div>
     <dl class="fact-grid">
       <div class="fact"><dt>OID</dt><dd class="oid-value">${escapeHtml(record.oid)}</dd></div>
+      ${instanceFact}
       <div class="fact"><dt>Access</dt><dd>${escapeHtml(record.access)}</dd></div>
       <div class="fact"><dt>Revision</dt><dd>${escapeHtml(record.revision)}</dd></div>
       <div class="fact"><dt>Source</dt><dd><a href="${escapeHtml(record.sourceUrl)}">${escapeHtml(record.source)}</a></dd></div>
+      <div class="fact"><dt>Parse status</dt><dd>${escapeHtml(record.parseStatus)}</dd></div>
+      <div class="fact"><dt>Rights</dt><dd>${escapeHtml(record.rightsTier)}</dd></div>
+      <div class="fact"><dt>Data release</dt><dd>${escapeHtml(record.dataRelease)}</dd></div>
     </dl>
     <div class="detail-columns">
       <section class="context-card">
         <h3>What it means</h3>
         <p>${escapeHtml(record.description)}</p>
         <p><strong>Syntax:</strong> ${escapeHtml(record.syntax)}</p>
+        ${enumContext}
       </section>
       <section class="context-card">
         <h3>Instance and table context</h3>
@@ -75,23 +98,74 @@ function renderDetail(record, resultCount) {
         <h3>Related objects</h3>
         <ul>${record.related.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
       </section>
+      <section class="context-card provenance-card">
+        <h3>Why this result is available</h3>
+        <p>Source checked ${escapeHtml(record.sourceChecked)}. Rights tier ${escapeHtml(record.rightsTier)} permits: ${record.rightsScopes.map(escapeHtml).join(", ")}.</p>
+        <p>Prototype data release: <code>${escapeHtml(record.dataRelease)}</code>.</p>
+      </section>
+      <section class="context-card verification-card">
+        <h3>Before using it</h3>
+        <p>A MIB definition does not prove that a device or firmware exposes the object. Test the numeric target against an authorized device and verify the returned type and index.</p>
+      </section>
     </div>
   `;
 }
 
+function renderSearchState(title, copy) {
+  searchResults.innerHTML = `<div class="search-state"><strong>${escapeHtml(title)}</strong><span>${escapeHtml(copy)}</span></div>`;
+}
+
+function selectMatch(view, activeIndex) {
+  searchResults.querySelectorAll("[data-result-index]").forEach((button) => {
+    const active = Number(button.dataset.resultIndex) === activeIndex;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-current", String(active));
+  });
+  renderDetail(view.matches[activeIndex].record, view.matches.length, activeIndex === 0 ? view.resolved : null);
+}
+
+function renderMatches(view) {
+  searchResults.innerHTML = `<ol class="result-list">${view.matches.map(({ record, matchKind }, index) => `
+    <li>
+      <button type="button" class="result-button${index === 0 ? " is-active" : ""}" data-result-index="${index}" aria-current="${index === 0 ? "true" : "false"}">
+        <span class="result-reason">${escapeHtml(matchLabels[matchKind] ?? "Related context")}</span>
+        <strong>${escapeHtml(record.symbol)}</strong>
+        <span>${escapeHtml(record.module)} · ${escapeHtml(record.kind)}</span>
+        <code>${escapeHtml(record.oid)}</code>
+      </button>
+    </li>`).join("")}</ol>`;
+
+  searchResults.querySelectorAll("[data-result-index]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const index = Number(button.dataset.resultIndex);
+      selectMatch(view, index);
+    });
+  });
+  renderDetail(view.matches[0].record, view.matches.length, view.resolved);
+}
+
 function runSearch(query) {
-  const matches = searchRecords(query, records);
-  if (!matches.length) {
+  const view = classifySearchQuery(query, records);
+  if (view.state !== "matches") {
     objectPath.innerHTML = "";
+    if (view.state === "invalid-oid") {
+      renderSearchState("Invalid numeric OID", "Use dot-separated non-negative integers, for example 1.3.6.1.2.1.1.3.0.");
+    } else if (view.state === "unknown-oid") {
+      renderSearchState("Valid OID, unknown in this release", "The syntax is valid, but no known object prefix exists in the six-record prototype dataset.");
+    } else if (view.state === "empty") {
+      renderSearchState("Enter a task, symbol, module, or OID", "Results will keep module, kind, and numeric OID visible.");
+    } else {
+      renderSearchState("No match in this release", "Try a precise symbol, module-qualified name, numeric OID, or monitoring task.");
+    }
     detail.innerHTML = `
       <div class="detail-header">
-        <div><p class="eyebrow">No mock match</p><h2>${escapeHtml(query)}</h2></div>
+        <div><p class="eyebrow">No selected object</p><h2>${escapeHtml(query || "Search required")}</h2></div>
       </div>
-      <p>This public alpha contains six standards-derived mock records. Production results must also show module revision, source, parse status, and rights scope.</p>
+      <p>This public alpha contains six standards-derived prototype records. It will not invent a vendor, device identity, or substitute OID.</p>
     `;
     return;
   }
-  renderDetail(matches[0], matches.length);
+  renderMatches(view);
 }
 
 searchForm.addEventListener("submit", (event) => {

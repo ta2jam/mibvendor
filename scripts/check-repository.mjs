@@ -37,6 +37,7 @@ for (const required of [
   "docs/foundation/release-model.md",
   "docs/foundation/parser-adapter.md",
   "docs/foundation/ux-golden-tasks.json",
+  "docs/foundation/prototype-golden-coverage.json",
   "docs/decisions/0005-provisional-foundation-contracts.md",
   "docs/decisions/0006-rfc8785-content-addressing.md",
   "contracts/source-snapshot.schema.json",
@@ -72,6 +73,10 @@ const version = (await readFile(path.join(root, "VERSION"), "utf8")).trim();
 const packageJson = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
 if (packageJson.version !== version) {
   failures.push(`VERSION (${version}) and package.json (${packageJson.version}) differ`);
+}
+const prototypeCoverage = JSON.parse(await readFile(path.join(root, "docs", "foundation", "prototype-golden-coverage.json"), "utf8"));
+if (prototypeCoverage.prototype_release !== version) {
+  failures.push(`Prototype coverage release (${prototypeCoverage.prototype_release}) and VERSION (${version}) differ`);
 }
 
 const readme = await readFile(path.join(root, "README.md"), "utf8");

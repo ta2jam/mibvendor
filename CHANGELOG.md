@@ -3,6 +3,26 @@
 All notable changes are documented here. The project uses Semantic Versioning
 while it is pre-1.0; research releases may remain unstable.
 
+## [0.1.0-alpha.10] - 2026-07-14
+
+### Added
+
+- Added ranked search-result navigation that keeps match reason, module, kind,
+  and numeric OID visible instead of silently selecting one result.
+- Added explicit invalid-OID, valid-but-unknown-OID, empty-query, and text
+  no-match states.
+- Added visible instance suffix, table/row/index guidance, enum meanings,
+  provenance, rights scope, parse status, immutable data release, and device
+  verification boundaries to object results.
+- Added machine-checked coverage accounting for all 20 UX golden tasks: 11
+  implemented, 5 partial, and 4 not implemented.
+
+### Fixed
+
+- Corrected table-column guidance that incorrectly described indexed rows as
+  scalar instances.
+- Preserved keyboard focus when selecting a different ranked result.
+
 ## [0.1.0-alpha.9] - 2026-07-14
 
 ### Added
@@ -133,6 +153,7 @@ while it is pre-1.0; research releases may remain unstable.
   evidence cannot be marked complete.
 - Repository checks and CI without production MIB data.
 
+[0.1.0-alpha.10]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.10
 [0.1.0-alpha.9]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.9
 [0.1.0-alpha.8]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.8
 [0.1.0-alpha.7]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.7

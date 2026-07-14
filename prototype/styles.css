@@ -290,6 +290,7 @@ h2 {
 }
 
 .tree-panel,
+.results-panel,
 .detail-panel,
 .decoder-section,
 .safety-section,
@@ -301,13 +302,84 @@ h2 {
 }
 
 .tree-panel,
+.results-panel,
 .detail-panel {
   padding: 1.4rem;
+}
+
+.sidebar-stack {
+  display: grid;
+  align-content: start;
+  gap: 1.2rem;
 }
 
 .panel-heading h2 {
   margin-bottom: 1.2rem;
   font-size: 1.2rem;
+}
+
+.result-list {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.result-button {
+  display: grid;
+  gap: 0.12rem;
+  width: 100%;
+  min-height: 0;
+  border-color: var(--line);
+  border-radius: 0.72rem;
+  padding: 0.75rem;
+  color: var(--ink);
+  background: var(--paper);
+  text-align: left;
+}
+
+.result-button:hover,
+.result-button.is-active {
+  border-color: #87b9aa;
+  color: var(--ink);
+  background: var(--brand-soft);
+}
+
+.result-button strong {
+  font-size: 0.86rem;
+}
+
+.result-button span,
+.result-button code {
+  overflow-wrap: anywhere;
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+
+.result-button .result-reason {
+  color: var(--brand-dark);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.search-state {
+  display: grid;
+  gap: 0.25rem;
+  border-radius: 0.72rem;
+  padding: 0.85rem;
+  background: var(--paper);
+}
+
+.search-state strong {
+  font-size: 0.82rem;
+}
+
+.search-state span {
+  color: var(--muted);
+  font-size: 0.74rem;
 }
 
 .object-path {
@@ -393,9 +465,32 @@ textarea,
 
 .fact-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
   gap: 0.6rem;
   margin: 1.2rem 0;
+}
+
+.enum-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.enum-list code {
+  border-radius: 0.4rem;
+  padding: 0.2rem 0.4rem;
+  color: var(--brand-dark);
+  background: var(--brand-soft);
+  font-size: 0.7rem;
+}
+
+.provenance-card {
+  background: var(--brand-soft);
+}
+
+.verification-card {
+  border-color: #e0c385;
+  background: var(--warning-soft);
 }
 
 .fact {

@@ -15,6 +15,8 @@ that Phase 1 has started or passed:
 - `contracts/parser-adapter.schema.json` bounds parser success and failure.
 - `ux-golden-tasks.json` fixes 20 provisional user outcomes across beginners,
   experts, and API/tool developers.
+- `prototype-golden-coverage.json` records implemented, partial, and missing
+  prototype behavior without treating documents as observed user success.
 
 The checked-in examples are synthetic contract fixtures with reproducible
 RFC 8785/SHA-256 content addresses. They contain no vendor text and grant no

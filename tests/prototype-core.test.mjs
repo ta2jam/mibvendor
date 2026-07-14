@@ -6,6 +6,7 @@ import { records } from "../prototype/data.mjs";
 import {
   MAX_WALK_BYTES,
   MAX_WALK_LINES,
+  classifySearchQuery,
   oidStartsWith,
   parseOid,
   parseWalk,
@@ -36,6 +37,32 @@ test("task, symbol, module-qualified, and numeric queries resolve", () => {
   assert.equal(searchRecords("IF-MIB::ifOperStatus", records)[0].symbol, "ifOperStatus");
   assert.equal(searchRecords("1.3.6.1.2.1.1.3.0", records)[0].symbol, "sysUpTime");
   assert.equal(searchRecords("processor load", records)[0].symbol, "hrProcessorLoad");
+});
+
+test("search classifications preserve ranking, instances, and explicit failure states", () => {
+  const task = classifySearchQuery("interface status", records);
+  assert.equal(task.state, "matches");
+  assert.equal(task.matches[0].record.symbol, "ifOperStatus");
+  assert.equal(task.matches[0].matchKind, "task-intent");
+  assert.ok(task.matches.length > 1);
+
+  const instance = classifySearchQuery("1.3.6.1.2.1.2.2.1.8.7", records);
+  assert.equal(instance.matches[0].matchKind, "numeric-instance");
+  assert.deepEqual(instance.resolved.instance, [7]);
+
+  assert.equal(classifySearchQuery("1.3.nope", records).state, "invalid-oid");
+  assert.equal(classifySearchQuery("1.3.6.1.4.1.999999.1.0", records).state, "unknown-oid");
+  assert.equal(classifySearchQuery("", records).state, "empty");
+});
+
+test("prototype records expose bounded trust and release metadata", () => {
+  for (const record of records) {
+    assert.equal(record.rightsTier, "A — approved standards seed");
+    assert.equal(record.dataRelease, "phase0-synthetic-1");
+    assert.match(record.sourceChecked, /^\d{4}-\d{2}-\d{2}$/);
+    assert.ok(record.parseStatus);
+    assert.deepEqual(record.rightsScopes, ["metadata", "rendered text", "API output"]);
+  }
 });
 
 test("walk parsing resolves table rows, scalar instances, and unknown OIDs", () => {
@@ -96,5 +123,7 @@ test("public page states safe-use and API availability boundaries", async () => 
   assert.match(html, /Not released/);
   assert.match(html, /https:\/\/mibvendor\.io\/v1/);
   assert.match(html, /open source on GitHub/);
+  assert.match(html, /id="search-results"/);
+  assert.match(html, /Ranked, not hidden/);
   assert.doesNotMatch(html, /community string[^<]*value|SNMPv3 credential[^<]*value/i);
 });

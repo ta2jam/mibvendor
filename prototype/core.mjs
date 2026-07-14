@@ -53,7 +53,7 @@ function normalizeSearchText(value) {
     .trim();
 }
 
-export function searchRecords(query, records) {
+export function rankSearchRecords(query, records) {
   const normalized = normalizeSearchText(query);
   if (!normalized) {
     return [];
@@ -62,7 +62,12 @@ export function searchRecords(query, records) {
   const numeric = parseOid(normalized);
   if (numeric) {
     const resolved = resolveOid(normalized, records);
-    return resolved?.record ? [resolved.record] : [];
+    if (!resolved?.record) return [];
+    return [{
+      record: resolved.record,
+      score: 100,
+      matchKind: resolved.instance.length ? "numeric-instance" : "numeric-exact"
+    }];
   }
 
   const tokens = normalized.split(/\s+/);
@@ -82,20 +87,66 @@ export function searchRecords(query, records) {
       ].join(" "));
 
       let score = 0;
-      if (symbol === normalized) score += 100;
-      if (`${module} ${symbol}` === normalized) score += 90;
-      if (record.oid === normalized) score += 100;
-      if (symbol.includes(normalized)) score += 50;
-      if (intents.includes(normalized)) score += 80;
-      else if (intents.some((intent) => intent.includes(normalized))) score += 40;
+      let matchKind = "related";
+      if (symbol === normalized) {
+        score += 100;
+        matchKind = "exact-symbol";
+      }
+      if (`${module} ${symbol}` === normalized) {
+        score += 110;
+        matchKind = "module-qualified";
+      }
+      if (symbol.includes(normalized)) {
+        score += 50;
+        if (matchKind === "related") matchKind = "symbol";
+      }
+      if (intents.includes(normalized)) {
+        score += 80;
+        if (matchKind === "related") matchKind = "task-intent";
+      } else if (intents.some((intent) => intent.includes(normalized))) {
+        score += 40;
+        if (matchKind === "related") matchKind = "task-intent";
+      }
       for (const token of tokens) {
         if (haystack.includes(token)) score += 10;
       }
-      return { record, score };
+      return { record, score, matchKind };
     })
     .filter(({ score }) => score > 0)
     .sort((a, b) => b.score - a.score || a.record.oid.localeCompare(b.record.oid, "en", { numeric: true }))
-    .map(({ record }) => record);
+    .slice(0, 20);
+}
+
+export function searchRecords(query, records) {
+  return rankSearchRecords(query, records).map(({ record }) => record);
+}
+
+export function classifySearchQuery(query, records) {
+  const text = String(query).trim();
+  if (!text) return { state: "empty", matches: [], resolved: null };
+
+  if (/^\.?\d/.test(text)) {
+    const oid = parseOid(text);
+    if (!oid) return { state: "invalid-oid", matches: [], resolved: null };
+    const resolved = resolveOid(text, records);
+    if (!resolved.record) return { state: "unknown-oid", matches: [], resolved };
+    return {
+      state: "matches",
+      matches: [{
+        record: resolved.record,
+        score: 100,
+        matchKind: resolved.instance.length ? "numeric-instance" : "numeric-exact"
+      }],
+      resolved
+    };
+  }
+
+  const matches = rankSearchRecords(text, records);
+  return {
+    state: matches.length ? "matches" : "no-match",
+    matches,
+    resolved: null
+  };
 }
 
 export function parseWalk(text, records, limits = {}) {
