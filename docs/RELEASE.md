@@ -38,7 +38,7 @@ VPS is also not production completion.
 
 ## Current Phase 0 boundary
 
-`v0.1.0-alpha.12` publishes research artifacts, provisional parser-neutral
+`v0.1.0-alpha.13` publishes research artifacts, provisional parser-neutral
 foundation contracts with RFC 8785 content addressing, measured UX golden-task
 coverage, and a bounded public-alpha intelligence API. The API includes the
 contact-free IANA PEN snapshot, pinned Net-SNMP `sysObjectID` evidence,

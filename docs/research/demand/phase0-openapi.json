@@ -3,7 +3,7 @@
   "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
   "info": {
     "title": "mibvendor Public Alpha API",
-    "version": "0.1.0-alpha.12",
+    "version": "0.1.0-alpha.13",
     "description": "Source-aware OID, enterprise-number, sysObjectID, object-semantics, and module-dependency intelligence. The corpus is intentionally small while Phase 0 demand and vendor-rights gates remain open."
   },
   "x-mibvendor-status": "public-alpha",

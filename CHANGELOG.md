@@ -3,6 +3,14 @@
 All notable changes are documented here. The project uses Semantic Versioning
 while it is pre-1.0; research releases may remain unstable.
 
+## [0.1.0-alpha.13] - 2026-07-14
+
+### Fixed
+
+- Synchronized the scheduled production monitor with the new immutable
+  `alpha-intelligence-2026-07-14.1` data release and added a repository drift
+  assertion so a stale monitor expectation fails before publication.
+
 ## [0.1.0-alpha.12] - 2026-07-14
 
 ### Added
@@ -199,6 +207,7 @@ while it is pre-1.0; research releases may remain unstable.
   evidence cannot be marked complete.
 - Repository checks and CI without production MIB data.
 
+[0.1.0-alpha.13]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.13
 [0.1.0-alpha.12]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.12
 [0.1.0-alpha.11]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.11
 [0.1.0-alpha.10]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.10

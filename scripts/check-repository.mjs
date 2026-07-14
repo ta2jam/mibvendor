@@ -124,6 +124,9 @@ for (const requiredMonitorBoundary of [
     failures.push(`Production monitor is missing boundary: ${requiredMonitorBoundary}`);
   }
 }
+if (!productionMonitor.includes("EXPECTED_DATA_RELEASE: alpha-intelligence-2026-07-14.1")) {
+  failures.push("Production monitor and runtime data release differ");
+}
 
 const arm64ParserWorkflow = await readFile(path.join(root, ".github", "workflows", "parser-arm64.yml"), "utf8");
 for (const requiredArm64Boundary of [
