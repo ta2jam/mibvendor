@@ -12,10 +12,10 @@ it. Every criterion needs a dated artifact or observation.
 | Task demand | At least 30 participant-derived tasks | `docs/research/demand/` | 41 desk candidates; 0 participant-derived |
 | Material loss | At least 5 observed users lose material time | `docs/research/demand/` | 2 public anecdotes with duration; 0 observed participants |
 | Repeat use | At least 3 participants return for a second task | `docs/research/demand/` | 0 observed returns |
-| API demand | 3 concrete integrations validated with builders | `docs/research/demand/` | 3 executable hypotheses; 0 external integrations |
+| API demand | 3 concrete integrations validated with builders | `docs/research/demand/` | Live bounded public-alpha contract; 0 external integrations |
 | Rights | Viable approved Tier A/B seed plus one vendor path | `docs/research/rights/` | Narrow IETF/IANA Tier A seed; 0 approved vendor paths |
 | Parser | One canonical parser selected from reproducible measurements | `experiments/parser-bakeoff/` | PySMI provisional; pinned Linux amd64 and native arm64 containers pass 9 synthetic cases with identical normalized evidence; rights-approved 100-case gate open |
-| Prototype | Public task prototype available for sessions | `prototype/` | Passed: [mibvendor.io](https://mibvendor.io) is the production origin; local-only walk decoding and 50,000-line baseline verified |
+| Prototype | Public task prototype available for sessions | `prototype/` | Passed: [mibvendor.io](https://mibvendor.io) is the production origin; local walk decoding, PEN/sysObjectID intelligence, dependency states, and 50,000-line baseline verified |
 
 ## Decision rule
 

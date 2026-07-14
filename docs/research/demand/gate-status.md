@@ -14,7 +14,7 @@ The desk-research deliverables are prepared. The demand-validation gate is **not
 | 4 API/tool-developer interviews | 0 completed. | Not met. |
 | At least 5 users demonstrate material time loss | 0 qualified interviewed users. Desk evidence includes two explicit strong duration reports: almost two days for 47 items and weeks of investigation; several other blocked/struggle reports lack credible time measurement. | Not met. Public anecdotes cannot be counted as our five validated users. |
 | At least 3 users repeat-use the prototype for a real task | No prototype sessions or observed returns. | Not met. Stated intent would not count. |
-| 3 real API integration scenarios | Three contract hypotheses and a machine-checked local OpenAPI 3.1 probe are documented; zero has been exercised or accepted by an external integrator. | Probe prepared; real-integration criterion not met. |
+| 3 real API integration scenarios | Three contract hypotheses and a machine-checked live public-alpha OpenAPI 3.1 service are documented; zero has been exercised or accepted by an external integrator. | Public endpoint prepared; real-integration criterion not met. |
 
 ## What desk evidence does support
 

@@ -46,19 +46,25 @@ test("batch resolution preserves order, duplicates, instances, and unknown state
   });
 });
 
-test("search and exact object responses expose release and provenance", async () => {
+test("search and exact object responses expose structured intelligence and provenance", async () => {
   await withServer(async (base) => {
     const searchResponse = await fetch(`${base}/v1/search?q=interface%20status`);
     const search = await searchResponse.json();
     assert.equal(search.results[0].symbol, "ifOperStatus");
-    assert.equal(search.results[0].provenance.rights_tier, "Q");
-    assert.equal(search.results[0].provenance.publication_status, "prototype_only");
-    assert.deepEqual(search.results[0].provenance.scopes, []);
+    assert.equal(search.results[0].provenance.rights_tier, "A");
+    assert.equal(search.results[0].provenance.publication_status, "public-alpha-synthetic");
+    assert.ok(search.results[0].provenance.scopes.includes("API output"));
 
     const objectResponse = await fetch(`${base}/v1/objects/if-mib--ifoperstatus`);
     const object = await objectResponse.json();
     assert.equal(object.data_release, DATA_RELEASE);
     assert.equal(object.object.oid, "1.3.6.1.2.1.2.2.1.8");
+    assert.equal(object.object.syntax.base, "INTEGER");
+    assert.equal(object.object.syntax.enums["1"], "up");
+    assert.equal(object.object.access, "read-only");
+    assert.equal(object.object.status, "current");
+    assert.equal(object.object.description.status, "available");
+    assert.equal(object.object.relationships.row, "ifEntry");
   });
 });
 
@@ -76,12 +82,41 @@ test("oversized batches return stable problem details", async () => {
   });
 });
 
-test("release changes remain explicitly synthetic and optional", async () => {
+test("enterprise and sysObjectID lookup separate registry identity from exact evidence", async () => {
   await withServer(async (base) => {
-    const response = await fetch(`${base}/v1/releases/${DATA_RELEASE}/changes?since=older`);
+    const enterpriseResponse = await fetch(`${base}/v1/enterprises/9`);
+    const enterprise = await enterpriseResponse.json();
+    assert.equal(enterpriseResponse.status, 200);
+    assert.equal(enterprise.enterprise.organization, "ciscoSystems");
+    assert.match(enterprise.enterprise.caveat, /does not prove/i);
+
+    const exact = await (await fetch(`${base}/v1/sys-object-ids/1.3.6.1.4.1.8072.3.2.10`)).json();
+    assert.equal(exact.result.status, "resolved");
+    assert.equal(exact.result.match.product_family, "Net-SNMP agent");
+    assert.equal(exact.result.match.platform, "Linux");
+    assert.equal(exact.result.match.model, null);
+
+    const boundary = await (await fetch(`${base}/v1/sys-object-ids/1.3.6.1.4.1.2.999999`)).json();
+    assert.equal(boundary.result.status, "enterprise_only");
+    assert.equal(boundary.result.match, null);
+    assert.match(boundary.result.caveat, /no product or model/i);
+
+    const restricted = await (await fetch(`${base}/v1/sys-object-ids/1.3.6.1.4.1.9.999999`)).json();
+    assert.equal(restricted.result.status, "unavailable_due_to_rights");
+    assert.equal(restricted.result.rights.api_output, "denied");
+  });
+});
+
+test("module dependencies distinguish graph states", async () => {
+  await withServer(async (base) => {
+    const response = await fetch(`${base}/v1/modules/IF-MIB/dependencies`);
     const body = await response.json();
-    assert.deepEqual(body.changes, []);
-    assert.match(body.note, /unvalidated/i);
+    assert.equal(response.status, 200);
+    assert.deepEqual(body.direct, ["SNMPv2-CONF", "SNMPv2-SMI", "SNMPv2-TC"]);
+    assert.deepEqual(body.transitive, []);
+    assert.deepEqual(body.missing, ["SNMPv2-CONF", "SNMPv2-SMI", "SNMPv2-TC"]);
+    assert.deepEqual(body.cyclic, []);
+    assert.equal(body.status, "partial");
   });
 });
 

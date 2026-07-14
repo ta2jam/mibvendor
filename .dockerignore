@@ -1,7 +1,15 @@
 *
 !Dockerfile
 !VERSION
-!deploy/
-!deploy/nginx.conf
+!package.json
+!server.mjs
+!src/
+!src/**
+!data/
+!data/**
 !prototype/
 !prototype/**
+!docs/
+!docs/research/
+!docs/research/demand/
+!docs/research/demand/phase0-openapi.json

@@ -3,6 +3,34 @@
 All notable changes are documented here. The project uses Semantic Versioning
 while it is pre-1.0; research releases may remain unstable.
 
+## [0.1.0-alpha.12] - 2026-07-14
+
+### Added
+
+- Released the bounded public-alpha API at `https://mibvendor.io/v1` with
+  same-origin CORS, RFC 9457 failures, immutable data-release identity, and a
+  120-request-per-minute in-memory protective limit.
+- Added a contact-free 66,266-record IANA Private Enterprise Number snapshot
+  with upstream date, retrieval time, SHA-256, CC0 provenance, and a
+  reproducible refresh command.
+- Added exact rights-approved Net-SNMP `sysObjectID` agent-platform mappings;
+  unsupported enterprise OIDs return `enterprise_only` rather than invented
+  products or models.
+- Added structured object syntax, access, status, descriptions, constraints,
+  units, enums, table/row/index relations, and notification objects.
+- Added direct, transitive, missing, and cyclic module-dependency response
+  fields plus interactive PEN, `sysObjectID`, and dependency lookup cards.
+- Published the live OpenAPI 3.1 contract and third-party data notices.
+
+### Changed
+
+- Replaced the static nginx runtime with a pinned, dependency-free Node.js
+  modular monolith serving the existing UI and API from the same isolated
+  loopback-bound container.
+- Updated the README, product definition, Phase 0 evidence boundary, roadmap,
+  release contract, mini API documentation, and production verification for
+  the public-alpha service.
+
 ## [0.1.0-alpha.11] - 2026-07-14
 
 ### Added
@@ -171,6 +199,7 @@ while it is pre-1.0; research releases may remain unstable.
   evidence cannot be marked complete.
 - Repository checks and CI without production MIB data.
 
+[0.1.0-alpha.12]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.12
 [0.1.0-alpha.11]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.11
 [0.1.0-alpha.10]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.10
 [0.1.0-alpha.9]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.9

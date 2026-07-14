@@ -13,7 +13,9 @@ It must let a user:
 2. understand scalar, table, index, notification, and revision context;
 3. turn existing walk output into named, grouped, readable rows without sending
    raw values to the server;
-4. consume the same resolution and provenance model through a stable API.
+4. distinguish PEN assignment, exact `sysObjectID` evidence, and unsupported
+   device identity;
+5. consume the same resolution and provenance model through a versioned API.
 
 The web UI has first product priority. The data model and immutable release
 contract are foundational because both UI and API depend on them.
@@ -25,7 +27,7 @@ contract are foundational because both UI and API depend on them.
 - redistributing vendor MIB text or files without approved scope;
 - accounts, billing, dashboards, a message queue, microservices, or a separate
   search engine before measurements justify them;
-- claiming device identity from an OID or MIB module.
+- claiming a manufacturer, product, or model without exact source evidence.
 
 ## Corpus tiers
 
@@ -44,17 +46,21 @@ The five independent scopes are `metadata_index`, `rendered_text`,
 `api_output`, `raw_download`, and `bulk_export`. Approval for one never implies
 approval for another.
 
-## Technical direction after the Phase 0 gate
+## Technical direction
 
-A low-dependency modular monolith is the current hypothesis:
+A dependency-free Node.js public-alpha runtime currently serves the static UI
+and bounded API from one process. It uses no production database and loads only
+reviewed immutable snapshots. This is intentionally smaller than the later
+data-engine hypothesis:
 
 - Next.js and TypeScript for UI and route handlers;
 - PostgreSQL for immutable source/module releases and active release state;
 - importer and resolver commands in the same repository;
 - CDN/edge cache for public reads.
 
-No production stack is selected until parser, corpus, demand, and target
-workloads pass Phase 0. Exact OID resolution uses integer subidentifier arrays.
+No production importer/database stack is selected until parser, corpus, demand,
+and target workloads pass Phase 0. Exact OID resolution uses integer
+subidentifier arrays.
 Given OID depth `d` and `N` indexed definitions, ancestor resolution is roughly
 `O(d log N)` with one bounded query; exact lookup is `O(log N)` and children are
 `O(log N + k)`. SNMP permits up to 128 subidentifiers, so no design may assume a

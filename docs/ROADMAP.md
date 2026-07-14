@@ -22,6 +22,11 @@ Parser-neutral contracts and UX golden tasks may be prepared provisionally
 while Phase 0 is open. They do not change gate status or authorize production
 application/database scaffolding.
 
+A bounded public-alpha slice now exposes enterprise lookup, evidence-limited
+`sysObjectID` lookup, structured object details, module dependency states, and
+batch resolution. This is validation infrastructure, not evidence that Phases
+1–4 or the Phase 0 demand/rights gates are complete.
+
 ## Phase 1 — public foundation
 
 - freeze source governance, canonical intermediate schema, immutable release

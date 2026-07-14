@@ -1,4 +1,4 @@
-FROM nginxinc/nginx-unprivileged:stable-alpine@sha256:b3f2436575bd5be7386518084d842dac414ab4962712afa31e99e0942a56e3b2
+FROM node:22-alpine@sha256:16e22a550f3863206a3f701448c45f7912c6896a62de43add43bb9c86130c3e2
 
 ARG APP_VERSION
 ARG VCS_REF
@@ -10,14 +10,19 @@ LABEL org.opencontainers.image.title="mibvendor" \
       org.opencontainers.image.revision="${VCS_REF}" \
       io.mibvendor.data-release="${DATA_RELEASE}"
 
-USER root
-RUN rm -rf /usr/share/nginx/html/*
-COPY --chown=101:101 prototype/ /usr/share/nginx/html/
-COPY --chown=101:101 VERSION /usr/share/nginx/html/version.txt
-COPY --chown=101:101 deploy/nginx.conf /etc/nginx/conf.d/default.conf
-RUN printf '{"schema_version":1,"version":"%s","commit":"%s","data_release":"%s"}\n' "$APP_VERSION" "$VCS_REF" "$DATA_RELEASE" \
-      > /usr/share/nginx/html/.release.json \
-    && chown 101:101 /usr/share/nginx/html/.release.json
+ENV NODE_ENV=production \
+    PORT=8080 \
+    APP_VERSION="${APP_VERSION}" \
+    VCS_REF="${VCS_REF}" \
+    DATA_RELEASE="${DATA_RELEASE}"
+
+WORKDIR /app
+COPY --chown=101:101 server.mjs VERSION package.json ./
+COPY --chown=101:101 src/ ./src/
+COPY --chown=101:101 data/ ./data/
+COPY --chown=101:101 prototype/ ./prototype/
+COPY --chown=101:101 docs/research/demand/phase0-openapi.json ./docs/research/demand/phase0-openapi.json
 
 USER 101:101
 EXPOSE 8080
+CMD ["node", "server.mjs"]

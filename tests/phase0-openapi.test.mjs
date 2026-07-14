@@ -20,13 +20,13 @@ const packageDocument = JSON.parse(
 );
 
 const expectedOperations = {
-  "/health": ["get"],
   "/v1/data-release": ["get"],
   "/v1/resolve:batch": ["post"],
   "/v1/search": ["get"],
   "/v1/objects/{objectId}": ["get"],
+  "/v1/enterprises/{enterpriseNumber}": ["get"],
+  "/v1/sys-object-ids/{oid}": ["get"],
   "/v1/modules/{moduleId}/dependencies": ["get"],
-  "/v1/releases/{release}/changes": ["get"],
 };
 
 async function withServer(callback) {
@@ -41,14 +41,13 @@ async function withServer(callback) {
   }
 }
 
-test("OpenAPI surface is exact, local-only, and explicitly synthetic", () => {
+test("OpenAPI surface is exact and explicitly public alpha", () => {
   assert.equal(specification.openapi, "3.1.0");
   assert.equal(specification.info.version, packageDocument.version);
-  assert.equal(specification["x-mibvendor-status"], "phase0-synthetic-unvalidated");
+  assert.equal(specification["x-mibvendor-status"], "public-alpha");
   assert.deepEqual(specification.security, []);
   assert.deepEqual(Object.keys(specification.paths), Object.keys(expectedOperations));
-  assert.match(specification.servers[0].url, /^http:\/\/127\.0\.0\.1:/);
-  assert.match(specification.info.description, /not hosted/i);
+  assert.equal(specification.servers[0].url, "https://mibvendor.io");
 
   const operationIds = new Set();
   for (const [path, methods] of Object.entries(expectedOperations)) {
@@ -77,10 +76,12 @@ test("OpenAPI bounds and trust fields match the executable probe", () => {
     MAX_QUERY_LENGTH,
   );
   assert.equal(schemas.BatchResponse.properties.results.maxItems, MAX_BATCH_SIZE);
-  assert.equal(schemas.Provenance.properties.publication_status.const, "prototype_only");
-  assert.equal(schemas.Provenance.properties.rights_tier.const, "Q");
-  assert.equal(schemas.Provenance.properties.scopes.maxItems, 0);
-  assert.equal(schemas.ChangesResponse.properties.changes.maxItems, 0);
+  assert.equal(schemas.Provenance.properties.publication_status.const, "public-alpha-synthetic");
+  assert.equal(schemas.Provenance.properties.rights_tier.const, "A");
+  assert.equal(schemas.RegistrySource.properties.rights.const, "CC0-1.0");
+  assert.ok(schemas.MibObject.required.includes("description"));
+  assert.ok(schemas.MibObject.required.includes("relationships"));
+  assert.deepEqual(schemas.DependenciesResponse.required, ["data_release", "module", "status", "direct", "transitive", "missing", "cyclic", "diagnostics"]);
 
   for (const [name, schema] of Object.entries(schemas)) {
     if (!schema.required) continue;
@@ -93,7 +94,6 @@ test("OpenAPI bounds and trust fields match the executable probe", () => {
 test("every documented operation is reachable with its documented media type", async () => {
   await withServer(async (base) => {
     const requests = [
-      ["/health", {}],
       ["/v1/data-release", {}],
       ["/v1/resolve:batch", {
         method: "POST",
@@ -102,8 +102,9 @@ test("every documented operation is reachable with its documented media type", a
       }],
       ["/v1/search?q=uptime", {}],
       ["/v1/objects/snmpv2-mib--sysuptime", {}],
+      ["/v1/enterprises/8072", {}],
+      ["/v1/sys-object-ids/1.3.6.1.4.1.8072.3.2.10", {}],
       ["/v1/modules/IF-MIB/dependencies", {}],
-      [`/v1/releases/${DATA_RELEASE}/changes?since=older&cursor=ignored`, {}],
     ];
     for (const [path, options] of requests) {
       const response = await fetch(`${base}${path}`, options);

@@ -53,7 +53,6 @@ for (const required of [
   "deploy/mibvendor-health",
   "deploy/mibvendor-health.service",
   "deploy/mibvendor-health.timer",
-  "deploy/nginx.conf",
   ".github/workflows/production-monitor.yml",
   ".github/workflows/parser-arm64.yml",
   "experiments/parser-bakeoff/.dockerignore",
@@ -64,7 +63,13 @@ for (const required of [
   "docs/research/rights/permission-requests.json",
   "prototype/index.html",
   "prototype/app.js",
-  "prototype/core.mjs"
+  "prototype/core.mjs",
+  "src/api.mjs",
+  "src/intelligence.mjs",
+  "server.mjs",
+  "data/iana-private-enterprise-numbers.json",
+  "scripts/update-iana-pen.mjs",
+  "THIRD_PARTY_NOTICES.md"
 ]) {
   if (!await exists(required)) failures.push(`Missing required file: ${required}`);
 }
@@ -95,8 +100,8 @@ if (readme.includes("ta2jam.github.io/mibvendor")) {
 for (const requiredCopy of [
   "## Use the web application",
   "## Use it safely",
-  "## API status",
-  "The public mibvendor API is not released yet",
+  "## Public alpha API",
+  "The public API is live at `https://mibvendor.io/v1`",
   "open source on GitHub"
 ]) {
   if (!readme.includes(requiredCopy)) failures.push(`README is missing required service copy: ${requiredCopy}`);
@@ -268,17 +273,19 @@ for (const requiredCopy of [
   "Local walk parsing",
   "No device connections",
   "Public API",
-  "Not released",
+  "Live public alpha",
   "open source on GitHub"
 ]) {
   if (!prototypeHtml.includes(requiredCopy)) failures.push(`Prototype is missing required trust copy: ${requiredCopy}`);
 }
 for (const requiredDeveloperCopy of [
-  "Developer API Preview",
-  "Contract preview · Not released",
-  "not a live API",
+  "Developer API",
+  "Live public alpha",
+  "no availability SLA yet",
   "/v1/resolve:batch",
-  "View OpenAPI research preview"
+  "/v1/enterprises/{number}",
+  "/v1/sys-object-ids/{oid}",
+  "OpenAPI 3.1 specification"
 ]) {
   if (!prototypeHtml.includes(requiredDeveloperCopy)) failures.push(`Prototype is missing developer-preview copy: ${requiredDeveloperCopy}`);
 }

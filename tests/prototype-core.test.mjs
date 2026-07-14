@@ -57,11 +57,14 @@ test("search classifications preserve ranking, instances, and explicit failure s
 
 test("prototype records expose bounded trust and release metadata", () => {
   for (const record of records) {
-    assert.equal(record.rightsTier, "A — approved standards seed");
-    assert.equal(record.dataRelease, "phase0-synthetic-1");
+    assert.equal(record.rightsTier, "A — mibvendor-authored metadata and paraphrase");
+    assert.equal(record.dataRelease, "alpha-intelligence-2026-07-14.1");
     assert.match(record.sourceChecked, /^\d{4}-\d{2}-\d{2}$/);
     assert.ok(record.parseStatus);
     assert.deepEqual(record.rightsScopes, ["metadata", "rendered text", "API output"]);
+    assert.equal(record.publicationStatus, "public-alpha-synthetic");
+    assert.equal(record.status, "current");
+    assert.ok(record.syntaxDetail.base);
   }
 });
 
@@ -104,14 +107,18 @@ test("walk parsing enforces byte and line bounds", () => {
   assert.equal(MAX_WALK_LINES, 50_000);
 });
 
-test("browser prototype contains no network transport primitive", async () => {
+test("walk decoding remains local while intelligence lookups use same-origin API paths", async () => {
   const sources = await Promise.all([
     readFile(new URL("../prototype/app.js", import.meta.url), "utf8"),
     readFile(new URL("../prototype/core.mjs", import.meta.url), "utf8"),
     readFile(new URL("../prototype/data.mjs", import.meta.url), "utf8")
   ]);
-  const joined = sources.join("\n");
-  assert.doesNotMatch(joined, /\bfetch\s*\(/);
+  const [app, core, data] = sources;
+  const joined = [app, core, data].join("\n");
+  assert.match(app, /fetch\(path/);
+  assert.doesNotMatch(app, /fetch\([^)]*walk/i);
+  const decoderHandler = app.slice(app.indexOf('document.querySelector("#decode-button")'), app.indexOf('document.querySelector("#clear-button")'));
+  assert.doesNotMatch(decoderHandler, /fetch|requestJson/);
   assert.doesNotMatch(joined, /XMLHttpRequest|WebSocket|sendBeacon/);
 });
 
@@ -120,7 +127,7 @@ test("public page states safe-use and API availability boundaries", async () => 
   assert.match(html, /Local walk parsing/);
   assert.match(html, /No device connections/);
   assert.match(html, /Public API/);
-  assert.match(html, /Not released/);
+  assert.match(html, /Live public alpha/);
   assert.match(html, /https:\/\/mibvendor\.io\/v1/);
   assert.match(html, /open source on GitHub/);
   assert.match(html, /id="search-results"/);
@@ -128,14 +135,17 @@ test("public page states safe-use and API availability boundaries", async () => 
   assert.doesNotMatch(html, /community string[^<]*value|SNMPv3 credential[^<]*value/i);
 });
 
-test("developer preview is useful without presenting an unreleased API as live", async () => {
+test("developer mini documentation matches the live public alpha", async () => {
   const html = await readFile(new URL("../prototype/index.html", import.meta.url), "utf8");
   assert.match(html, /id="developers"/);
-  assert.match(html, /Contract preview · Not released/);
-  assert.match(html, /This is a proposed public contract, not a live API/);
+  assert.match(html, /Live public alpha/);
+  assert.match(html, /no availability SLA yet/);
   for (const endpoint of [
     "/v1/search?q=interface+status",
     "/v1/objects/{objectId}",
+    "/v1/enterprises/{number}",
+    "/v1/sys-object-ids/{oid}",
+    "/v1/modules/{module}/dependencies",
     "/v1/resolve:batch",
     "/v1/data-release"
   ]) assert.ok(html.includes(endpoint), `missing developer endpoint ${endpoint}`);
@@ -143,7 +153,7 @@ test("developer preview is useful without presenting an unreleased API as live",
   assert.match(html, /64 KiB/);
   assert.match(html, /200/);
   assert.match(html, /application\/problem\+json/);
-  assert.match(html, /View OpenAPI research preview/);
-  assert.doesNotMatch(html, /curl\s+https:\/\/mibvendor\.io\/v1/);
+  assert.match(html, /OpenAPI 3\.1 specification/);
+  assert.match(html, /120/);
   assert.doesNotMatch(html, /Get (?:an )?API key/i);
 });

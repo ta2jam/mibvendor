@@ -38,13 +38,16 @@ VPS is also not production completion.
 
 ## Current Phase 0 boundary
 
-`v0.1.0-alpha.11` publishes research artifacts, provisional parser-neutral
+`v0.1.0-alpha.12` publishes research artifacts, provisional parser-neutral
 foundation contracts with RFC 8785 content addressing, measured UX golden-task
-coverage, a truthful developer API preview, a synthetic local API probe, and
-the static public alpha at `mibvendor.io` through an isolated VPS container. It
-does not authorize a production database, vendor MIB publication, or public
-API. The application binds only to `127.0.0.1:3001`; host-level Caddy and
-Cloudflare own the public edge. GitHub independently verifies the public origin
-every 15 minutes, and a hardened VPS timer checks the container, loopback bind,
-release identity, public/local health, Caddy, and root-disk threshold every five
+coverage, and a bounded public-alpha intelligence API. The API includes the
+contact-free IANA PEN snapshot, pinned Net-SNMP `sysObjectID` evidence,
+structured object semantics, dependency graph states, batch resolution, RFC
+9457 failures, and per-client protective rate limiting. It does not authorize a
+production database, unknown-rights vendor MIB publication, broad product-model
+coverage, or a stable/SLA-backed API claim. The application binds only to
+`127.0.0.1:3001`; host-level Caddy and Cloudflare own the public edge. GitHub
+independently verifies the public origin every 15 minutes, and a hardened VPS
+timer checks the container, loopback bind, release identity, public/local
+health, Caddy, disk threshold, and representative API results every five
 minutes.

@@ -28,6 +28,8 @@ cross-document invariants, content addresses, rights fail-closed behavior, OID
 consistency, and the golden-task set. Contract validation is linear outside JCS
 object-key sorting; digest construction is O(n + sum(k log k)).
 
-No production database, production importer, public API, or third-party vendor
-data is authorized by these documents. The binding gate remains
+These documents do not authorize a production database/importer, stable API
+claim, or unknown-rights vendor data. A separately bounded public-alpha API now
+serves only the reviewed synthetic object set, IANA CC0 PEN registry fields,
+and pinned BSD-family Net-SNMP identity records. The binding gate remains
 [Phase 0](../PHASE-0.md).

@@ -10,6 +10,12 @@ const walkInput = document.querySelector("#walk-input");
 const walkResults = document.querySelector("#walk-results");
 const walkCaption = document.querySelector("#walk-caption");
 const decoderSummary = document.querySelector("#decoder-summary");
+const enterpriseForm = document.querySelector("#enterprise-form");
+const enterpriseResult = document.querySelector("#enterprise-result");
+const sysObjectIdForm = document.querySelector("#sysobjectid-form");
+const sysObjectIdResult = document.querySelector("#sysobjectid-result");
+const dependencyForm = document.querySelector("#dependency-form");
+const dependencyResult = document.querySelector("#dependency-result");
 
 function escapeHtml(value) {
   return String(value)
@@ -53,6 +59,15 @@ function renderDetail(record, resultCount, resolved = null) {
   const enumContext = record.enumValues.length
     ? `<div class="enum-list" aria-label="Enumerated values">${record.enumValues.map((value) => `<code>${escapeHtml(value)}</code>`).join("")}</div>`
     : "";
+  const syntaxFacts = [
+    record.syntaxDetail.textualConvention && `<span><strong>TC</strong> ${escapeHtml(record.syntaxDetail.textualConvention)}</span>`,
+    record.syntaxDetail.displayHint && `<span><strong>Display hint</strong> ${escapeHtml(record.syntaxDetail.displayHint)}</span>`,
+    record.syntaxDetail.units && `<span><strong>Units</strong> ${escapeHtml(record.syntaxDetail.units)}</span>`,
+    ...record.syntaxDetail.constraints.map((value) => `<span><strong>Constraint</strong> ${escapeHtml(value)}</span>`)
+  ].filter(Boolean).join("");
+  const notificationContext = record.notificationObjects.length
+    ? `<p><strong>Notification objects:</strong> ${record.notificationObjects.map(escapeHtml).join(", ")}</p>`
+    : "";
   const instanceFact = instance
     ? `<div class="fact"><dt>Query instance</dt><dd>${escapeHtml(instance)}${record.kind === "scalar" && instance === "0" ? " · scalar" : ""}</dd></div>`
     : `<div class="fact"><dt>Instance</dt><dd>${record.kind === "scalar" ? ".0 required" : record.table ? `${escapeHtml(record.index)} required` : "Not pollable"}</dd></div>`;
@@ -73,6 +88,7 @@ function renderDetail(record, resultCount, resolved = null) {
       <div class="fact"><dt>OID</dt><dd class="oid-value">${escapeHtml(record.oid)}</dd></div>
       ${instanceFact}
       <div class="fact"><dt>Access</dt><dd>${escapeHtml(record.access)}</dd></div>
+      <div class="fact"><dt>Status</dt><dd>${escapeHtml(record.status)}</dd></div>
       <div class="fact"><dt>Revision</dt><dd>${escapeHtml(record.revision)}</dd></div>
       <div class="fact"><dt>Source</dt><dd><a href="${escapeHtml(record.sourceUrl)}">${escapeHtml(record.source)}</a></dd></div>
       <div class="fact"><dt>Parse status</dt><dd>${escapeHtml(record.parseStatus)}</dd></div>
@@ -83,7 +99,8 @@ function renderDetail(record, resultCount, resolved = null) {
       <section class="context-card">
         <h3>What it means</h3>
         <p>${escapeHtml(record.description)}</p>
-        <p><strong>Syntax:</strong> ${escapeHtml(record.syntax)}</p>
+        <p><strong>Syntax:</strong> ${escapeHtml(record.syntaxDetail.base)}</p>
+        ${syntaxFacts ? `<div class="syntax-facts">${syntaxFacts}</div>` : ""}
         ${enumContext}
       </section>
       <section class="context-card">
@@ -97,6 +114,7 @@ function renderDetail(record, resultCount, resolved = null) {
       <section class="context-card">
         <h3>Related objects</h3>
         <ul>${record.related.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+        ${notificationContext}
       </section>
       <section class="context-card provenance-card">
         <h3>Why this result is available</h3>
@@ -110,6 +128,62 @@ function renderDetail(record, resultCount, resolved = null) {
     </div>
   `;
 }
+
+async function requestJson(path, output) {
+  output.innerHTML = '<span class="lookup-loading">Loading…</span>';
+  try {
+    const response = await fetch(path, { headers: { accept: "application/json" } });
+    const body = await response.json();
+    if (!response.ok) throw new Error(body.detail ?? `Request failed with HTTP ${response.status}`);
+    return body;
+  } catch (error) {
+    output.innerHTML = `<span class="unresolved">${escapeHtml(error.message)}</span>`;
+    return null;
+  }
+}
+
+enterpriseForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const number = document.querySelector("#enterprise-number").value.trim();
+  const body = await requestJson(`/v1/enterprises/${encodeURIComponent(number)}`, enterpriseResult);
+  if (!body) return;
+  const enterprise = body.enterprise;
+  enterpriseResult.innerHTML = `
+    <strong>${escapeHtml(enterprise.organization)}</strong>
+    <code>${escapeHtml(enterprise.oid)}</code>
+    <span>PEN ${escapeHtml(enterprise.number)} · ${escapeHtml(enterprise.registry_status)}</span>
+    <small>${escapeHtml(enterprise.caveat)}</small>`;
+});
+
+sysObjectIdForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const oid = document.querySelector("#sysobjectid").value.trim();
+  const body = await requestJson(`/v1/sys-object-ids/${encodeURIComponent(oid)}`, sysObjectIdResult);
+  if (!body) return;
+  const result = body.result;
+  const identity = result.match
+    ? `<strong>${escapeHtml(result.match.product_family)} · ${escapeHtml(result.match.platform)}</strong><span>Exact match · ${escapeHtml(result.match.confidence)} confidence</span>`
+    : result.status === "unavailable_due_to_rights"
+      ? `<strong>${escapeHtml(result.enterprise.organization)}</strong><span>Exact mapping unavailable due to source rights</span>`
+    : result.enterprise
+      ? `<strong>${escapeHtml(result.enterprise.organization)}</strong><span>Enterprise boundary only · no product match</span>`
+      : `<strong>No identity match</strong><span>The OID is valid but unsupported in this release.</span>`;
+  sysObjectIdResult.innerHTML = `${identity}<code>${escapeHtml(result.normalized_oid)}</code>${result.caveat ? `<small>${escapeHtml(result.caveat)}</small>` : ""}`;
+});
+
+dependencyForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const moduleName = document.querySelector("#module-name").value.trim();
+  const body = await requestJson(`/v1/modules/${encodeURIComponent(moduleName)}/dependencies`, dependencyResult);
+  if (!body) return;
+  const row = (label, values) => `<span><strong>${label}</strong> ${values.length ? values.map(escapeHtml).join(", ") : "none"}</span>`;
+  dependencyResult.innerHTML = `
+    <strong>${escapeHtml(body.module)} · ${escapeHtml(body.status)}</strong>
+    ${row("Direct", body.direct)}
+    ${row("Transitive", body.transitive)}
+    ${row("Missing", body.missing)}
+    ${row("Cyclic", body.cyclic)}`;
+});
 
 function renderSearchState(title, copy) {
   searchResults.innerHTML = `<div class="search-state"><strong>${escapeHtml(title)}</strong><span>${escapeHtml(copy)}</span></div>`;

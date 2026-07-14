@@ -58,6 +58,17 @@ PY
 }
 
 check_version "$(curl --fail --silent --show-error --connect-timeout 3 --max-time 8 http://127.0.0.1:3001/version)" 
+api_release=$(curl --fail --silent --show-error --connect-timeout 3 --max-time 8 http://127.0.0.1:3001/v1/data-release)
+API_RELEASE_JSON=$api_release EXPECTED_DATA_RELEASE=$DATA_RELEASE python3 - <<'PY'
+import json
+import os
+
+document = json.loads(os.environ["API_RELEASE_JSON"])
+if document.get("data_release") != os.environ["EXPECTED_DATA_RELEASE"]:
+    raise SystemExit("API release mismatch")
+if document.get("status") != "public-alpha" or document.get("enterprise_count", 0) < 60000:
+    raise SystemExit("API intelligence corpus is unhealthy")
+PY
 [ "$(curl --fail --silent --show-error --retry 1 --connect-timeout 5 --max-time 15 "$origin/healthz")" = ok ] \
     || fail "public health endpoint failed"
 check_version "$(curl --fail --silent --show-error --retry 1 --connect-timeout 5 --max-time 15 "$origin/version")"

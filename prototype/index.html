@@ -14,8 +14,9 @@
       <nav aria-label="Primary navigation">
         <a href="#search">OID search</a>
         <a href="#decoder">Walk decoder</a>
+        <a href="#intelligence">Identity lookup</a>
         <a href="#safe-use">Safe use</a>
-        <a href="#developers">API preview</a>
+        <a href="#developers">API</a>
       </nav>
       <span class="alpha-badge">Public alpha</span>
     </header>
@@ -82,6 +83,48 @@
         </article>
       </section>
 
+      <section id="intelligence" class="intelligence-section" aria-labelledby="intelligence-title">
+        <div class="section-intro">
+          <div>
+            <p class="eyebrow">Identity without invention</p>
+            <h2 id="intelligence-title">Move from an OID to defensible context.</h2>
+          </div>
+          <p>Registry ownership, agent identity, and hardware model are different claims. mibvendor keeps them separate and shows the evidence boundary.</p>
+        </div>
+
+        <div class="intelligence-grid">
+          <form id="enterprise-form" class="lookup-card">
+            <label for="enterprise-number">Enterprise number</label>
+            <p>Look up the current IANA PEN assignee. Contact names and email addresses are not stored.</p>
+            <div class="lookup-row">
+              <input id="enterprise-number" inputmode="numeric" value="9" pattern="[0-9]+" maxlength="10" required>
+              <button type="submit">Look up PEN</button>
+            </div>
+            <div id="enterprise-result" class="lookup-result" aria-live="polite">Try PEN 9 or 8072.</div>
+          </form>
+
+          <form id="sysobjectid-form" class="lookup-card">
+            <label for="sysobjectid">sysObjectID value</label>
+            <p>Exact rights-approved matches identify only what the source proves. A PEN-only result never becomes a model guess.</p>
+            <div class="lookup-row">
+              <input id="sysobjectid" value="1.3.6.1.4.1.8072.3.2.10" maxlength="512" required>
+              <button type="submit">Resolve identity</button>
+            </div>
+            <div id="sysobjectid-result" class="lookup-result" aria-live="polite">Try the Net-SNMP Linux agent OID.</div>
+          </form>
+
+          <form id="dependency-form" class="lookup-card">
+            <label for="module-name">Module dependencies</label>
+            <p>Direct, transitive, missing, and cyclic states remain separate so parser failures are diagnosable.</p>
+            <div class="lookup-row">
+              <input id="module-name" value="IF-MIB" maxlength="128" required>
+              <button type="submit">Inspect graph</button>
+            </div>
+            <div id="dependency-result" class="lookup-result" aria-live="polite">Inspect the public alpha dependency closure.</div>
+          </form>
+        </div>
+      </section>
+
       <section id="safe-use" class="safety-section" aria-labelledby="safe-use-title">
         <div class="section-intro safety-heading">
           <div>
@@ -114,9 +157,9 @@
             <div>
               <div class="card-title-row">
                 <h3>Public API</h3>
-                <span class="api-status">Not released</span>
+                <span class="api-status live">Public alpha</span>
               </div>
-              <p>When available, use only <code>https://mibvendor.io/v1</code>. Send bounded numeric OID batches—not raw walks, credentials, hostnames, or serial numbers.</p>
+              <p>Use only <code>https://mibvendor.io/v1</code>. Send bounded numeric OID batches—not raw walks, credentials, hostnames, serial numbers, or customer identifiers.</p>
             </div>
           </article>
         </div>
@@ -173,34 +216,37 @@
       <section id="developers" class="developer-section" aria-labelledby="developer-title">
         <div class="developer-heading">
           <div>
-            <p class="eyebrow">Developer API Preview</p>
+            <p class="eyebrow">Developer API</p>
             <h2 id="developer-title">Resolve OIDs without uploading raw walks.</h2>
           </div>
-          <span class="api-status">Contract preview · Not released</span>
+          <span class="api-status live">Live public alpha</span>
         </div>
 
         <p class="developer-lede">
-          This is a proposed public contract, not a live API. Authentication,
-          production rate limits, availability targets, and the launch date are
-          not committed yet.
+          The API is live without authentication during public alpha. It is
+          release-pinned and rate-limited, but has no availability SLA yet.
         </p>
 
         <div class="developer-grid">
           <div class="endpoint-panel">
-            <h3>Core preview endpoints</h3>
+            <h3>Core endpoints</h3>
             <ul class="endpoint-list">
               <li><span class="method get">GET</span><code>/v1/search?q=interface+status</code><small>Ranked discovery</small></li>
               <li><span class="method get">GET</span><code>/v1/objects/{objectId}</code><small>Object semantics and provenance</small></li>
+              <li><span class="method get">GET</span><code>/v1/enterprises/{number}</code><small>IANA PEN lookup</small></li>
+              <li><span class="method get">GET</span><code>/v1/sys-object-ids/{oid}</code><small>Evidence-bounded identity</small></li>
+              <li><span class="method get">GET</span><code>/v1/modules/{module}/dependencies</code><small>Dependency graph states</small></li>
               <li><span class="method post">POST</span><code>/v1/resolve:batch</code><small>Order-preserving OID resolution</small></li>
               <li><span class="method get">GET</span><code>/v1/data-release</code><small>Active immutable release</small></li>
             </ul>
 
-            <h3>Preview contract</h3>
+            <h3>Public alpha contract</h3>
             <ul class="contract-list">
               <li>HTTPS JSON under a versioned <code>/v1</code> namespace.</li>
               <li>Every response identifies its immutable <code>data_release</code>.</li>
               <li>Batch order and duplicate inputs are preserved.</li>
               <li>Invalid OIDs and valid-but-not-found OIDs remain distinct.</li>
+              <li>PEN ownership never silently becomes a device-model claim.</li>
               <li>Errors use RFC 9457 <code>application/problem+json</code>.</li>
             </ul>
 
@@ -208,13 +254,14 @@
               <span><strong>1,000</strong> OIDs / batch</span>
               <span><strong>64 KiB</strong> request body</span>
               <span><strong>200</strong> search characters</span>
+              <span><strong>120</strong> requests / minute</span>
             </div>
-            <p class="preview-note">Experimental probe limits, not a production SLA.</p>
+            <p class="preview-note">Public alpha limits may tighten during abuse; there is no availability SLA.</p>
           </div>
 
           <div class="example-panel" aria-label="Synthetic batch resolution example">
             <div class="code-heading">
-              <span>Proposed request</span>
+              <span>Request</span>
               <code>POST /v1/resolve:batch</code>
             </div>
             <pre class="api-code"><code>{
@@ -226,7 +273,7 @@
 }</code></pre>
 
             <div class="code-heading response-heading">
-              <span>Synthetic response</span>
+              <span>Public alpha response</span>
               <code>200 application/json</code>
             </div>
             <pre class="api-code"><code>{
@@ -254,7 +301,7 @@
         <div class="developer-footer">
           <p><strong>Safe input:</strong> send bounded numeric OIDs only. Do not send raw walks, credentials, hostnames, serial numbers, or customer identifiers.</p>
           <div class="developer-links">
-            <a href="https://github.com/ta2jam/mibvendor/blob/main/docs/research/demand/phase0-openapi.json">View OpenAPI research preview</a>
+            <a href="/openapi.json">OpenAPI 3.1 specification</a>
             <a href="#safe-use">API status and safety</a>
           </div>
         </div>

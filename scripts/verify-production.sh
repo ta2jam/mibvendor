@@ -45,6 +45,11 @@ done
 health=$(request "$ORIGIN/healthz")
 [ "$health" = "ok" ] || fail "/healthz did not return ok"
 
+api_headers="$tmp_dir/api.headers"
+data_release_json=$(request --dump-header "$api_headers" "$ORIGIN/v1/data-release")
+grep -Eiq '^access-control-allow-origin:[[:space:]]*\*' "$api_headers" || fail "API CORS header is missing"
+grep -Eiq '^ratelimit-limit:[[:space:]]*120' "$api_headers" || fail "API rate-limit header is missing"
+
 version_json=$(request "$ORIGIN/version")
 VERSION_JSON=$version_json EXPECTED_VERSION=$EXPECTED_VERSION \
 EXPECTED_COMMIT=$EXPECTED_COMMIT EXPECTED_DATA_RELEASE=$EXPECTED_DATA_RELEASE \
@@ -69,6 +74,70 @@ for key, env_name in (
     if expected and document.get(key) != expected:
         raise SystemExit(f"{key}={document.get(key)!r}, expected {expected!r}")
 print(f"release={document.get('version')} commit={document.get('commit')} data={document.get('data_release')}")
+PY
+
+DATA_RELEASE_JSON=$data_release_json EXPECTED_DATA_RELEASE=$EXPECTED_DATA_RELEASE python3 - <<'PY'
+import json
+import os
+
+document = json.loads(os.environ["DATA_RELEASE_JSON"])
+if document.get("status") != "public-alpha":
+    raise SystemExit("API is not reporting public-alpha status")
+if document.get("object_count") != 6:
+    raise SystemExit("unexpected public object count")
+if document.get("enterprise_count", 0) < 60000:
+    raise SystemExit("IANA PEN snapshot is unexpectedly small")
+expected = os.environ.get("EXPECTED_DATA_RELEASE", "")
+if expected and document.get("data_release") != expected:
+    raise SystemExit("API data release mismatch")
+PY
+
+enterprise_json=$(request "$ORIGIN/v1/enterprises/8072")
+sys_exact_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.8072.3.2.10")
+sys_boundary_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.2.999999")
+sys_restricted_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.9.999999")
+object_json=$(request "$ORIGIN/v1/objects/if-mib--ifoperstatus")
+dependencies_json=$(request "$ORIGIN/v1/modules/IF-MIB/dependencies")
+batch_json=$(request --request POST --header 'content-type: application/json' \
+    --data '{"oids":["1.3.6.1.2.1.2.2.1.8.7","bad"]}' "$ORIGIN/v1/resolve:batch")
+openapi_json=$(request "$ORIGIN/openapi.json")
+
+ENTERPRISE_JSON=$enterprise_json SYS_EXACT_JSON=$sys_exact_json \
+SYS_BOUNDARY_JSON=$sys_boundary_json SYS_RESTRICTED_JSON=$sys_restricted_json OBJECT_JSON=$object_json \
+DEPENDENCIES_JSON=$dependencies_json BATCH_JSON=$batch_json OPENAPI_JSON=$openapi_json \
+python3 - <<'PY'
+import json
+import os
+
+enterprise = json.loads(os.environ["ENTERPRISE_JSON"])["enterprise"]
+assert enterprise["number"] == 8072 and enterprise["organization"] == "net-snmp"
+assert "email" not in enterprise and "contact" not in enterprise
+
+exact = json.loads(os.environ["SYS_EXACT_JSON"])["result"]
+assert exact["status"] == "resolved" and exact["match"]["platform"] == "Linux"
+assert exact["match"]["model"] is None
+
+boundary = json.loads(os.environ["SYS_BOUNDARY_JSON"])["result"]
+assert boundary["status"] == "enterprise_only" and boundary["match"] is None
+
+restricted = json.loads(os.environ["SYS_RESTRICTED_JSON"])["result"]
+assert restricted["status"] == "unavailable_due_to_rights"
+assert restricted["rights"]["api_output"] == "denied" and restricted["match"] is None
+
+obj = json.loads(os.environ["OBJECT_JSON"])["object"]
+assert obj["syntax"]["enums"]["1"] == "up"
+assert obj["access"] == "read-only" and obj["status"] == "current"
+assert obj["description"]["status"] == "available"
+
+deps = json.loads(os.environ["DEPENDENCIES_JSON"])
+for key in ("direct", "transitive", "missing", "cyclic"):
+    assert isinstance(deps[key], list)
+
+batch = json.loads(os.environ["BATCH_JSON"])["results"]
+assert batch[0]["instance_suffix"] == [7] and batch[1]["status"] == "invalid"
+
+specification = json.loads(os.environ["OPENAPI_JSON"])
+assert specification["x-mibvendor-status"] == "public-alpha"
 PY
 
 http_redirect=$(status_and_location "http://mibvendor.io/healthz")

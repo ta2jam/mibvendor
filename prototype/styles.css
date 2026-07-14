@@ -293,6 +293,7 @@ h2 {
 .results-panel,
 .detail-panel,
 .decoder-section,
+.intelligence-section,
 .safety-section,
 .developer-section,
 .research-section {
@@ -485,6 +486,22 @@ textarea,
   font-size: 0.7rem;
 }
 
+.syntax-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.7rem;
+}
+
+.syntax-facts span {
+  border: 1px solid var(--line);
+  border-radius: 0.45rem;
+  padding: 0.28rem 0.45rem;
+  color: var(--muted);
+  background: var(--paper);
+  font-size: 0.7rem;
+}
+
 .provenance-card {
   background: var(--brand-soft);
 }
@@ -553,6 +570,88 @@ textarea,
   background: #102a23;
   font-size: 0.76rem;
   white-space: pre-wrap;
+}
+
+.intelligence-section {
+  margin-bottom: 1.2rem;
+  padding: clamp(1.3rem, 4vw, 2.2rem);
+}
+
+.intelligence-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-top: 1.2rem;
+}
+
+.lookup-card {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  padding: 1rem;
+  background: var(--paper);
+}
+
+.lookup-card > label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 800;
+}
+
+.lookup-card > p {
+  min-height: 3.8rem;
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.lookup-row {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.lookup-row input {
+  width: 100%;
+  min-width: 0;
+  min-height: 2.8rem;
+  border: 1px solid #b9c8c2;
+  border-radius: 0.65rem;
+  padding: 0.6rem 0.7rem;
+  color: var(--ink);
+  background: var(--surface);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+}
+
+.lookup-result {
+  display: grid;
+  gap: 0.3rem;
+  min-height: 8.6rem;
+  margin-top: 0.75rem;
+  border-top: 1px solid var(--line);
+  padding-top: 0.75rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+.lookup-result strong {
+  color: var(--ink);
+  font-size: 0.86rem;
+}
+
+.lookup-result code {
+  color: var(--brand-dark);
+  font-size: 0.72rem;
+}
+
+.lookup-result small {
+  color: var(--muted);
+  font-size: 0.67rem;
+}
+
+.lookup-loading {
+  color: var(--brand);
+  font-weight: 750;
 }
 
 .safety-section {
@@ -636,6 +735,12 @@ textarea,
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+.api-status.live {
+  border-color: #9ac9ba;
+  color: var(--brand-dark);
+  background: var(--brand-soft);
 }
 
 .decoder-section {
@@ -1045,7 +1150,8 @@ footer p {
   .decoder-grid,
   .developer-grid,
   .detail-columns,
-  .safety-grid {
+  .safety-grid,
+  .intelligence-grid {
     grid-template-columns: 1fr;
   }
 

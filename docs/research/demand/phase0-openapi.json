@@ -2,226 +2,124 @@
   "openapi": "3.1.0",
   "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
   "info": {
-    "title": "mibvendor Phase 0 synthetic API probe",
-    "version": "0.1.0-alpha.11",
-    "description": "Local-only contract probe for external integration research. It contains synthetic prototype records, is not hosted, and is not a supported or production API."
+    "title": "mibvendor Public Alpha API",
+    "version": "0.1.0-alpha.12",
+    "description": "Source-aware OID, enterprise-number, sysObjectID, object-semantics, and module-dependency intelligence. The corpus is intentionally small while Phase 0 demand and vendor-rights gates remain open."
   },
-  "x-mibvendor-status": "phase0-synthetic-unvalidated",
-  "servers": [
-    {
-      "url": "http://127.0.0.1:4010",
-      "description": "Local research probe"
-    }
-  ],
+  "x-mibvendor-status": "public-alpha",
+  "servers": [{ "url": "https://mibvendor.io", "description": "Official public service" }],
   "security": [],
   "paths": {
-    "/health": {
-      "get": {
-        "operationId": "getProbeHealth",
-        "responses": {
-          "200": {
-            "description": "Probe process is healthy",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Health" }
-              }
-            }
-          }
-        }
-      }
-    },
     "/v1/data-release": {
       "get": {
-        "operationId": "getSyntheticDataRelease",
-        "responses": {
-          "200": {
-            "description": "Immutable synthetic release identity",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/DataRelease" }
-              }
-            }
-          }
-        }
+        "operationId": "getDataRelease",
+        "summary": "Inspect the active immutable data release",
+        "responses": { "200": { "description": "Release identity and corpus counts", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DataRelease" } } } } }
       }
     },
     "/v1/resolve:batch": {
       "post": {
-        "operationId": "resolveSyntheticOidBatch",
+        "operationId": "resolveOidBatch",
+        "summary": "Resolve numeric OIDs while preserving order, duplicates, and instance suffixes",
         "x-max-body-bytes": 65536,
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/BatchRequest" }
-            }
-          }
-        },
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BatchRequest" } } } },
         "responses": {
-          "200": {
-            "description": "Order-preserving per-item resolution",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/BatchResponse" }
-              }
-            }
-          },
+          "200": { "description": "Per-item resolution results", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BatchResponse" } } } },
           "400": { "$ref": "#/components/responses/Problem" },
           "409": { "$ref": "#/components/responses/Problem" },
           "413": { "$ref": "#/components/responses/Problem" },
-          "422": { "$ref": "#/components/responses/Problem" }
+          "422": { "$ref": "#/components/responses/Problem" },
+          "429": { "$ref": "#/components/responses/Problem" }
         }
       }
     },
     "/v1/search": {
       "get": {
-        "operationId": "searchSyntheticObjects",
-        "parameters": [
-          {
-            "name": "q",
-            "in": "query",
-            "required": false,
-            "schema": { "type": "string", "maxLength": 200 }
-          }
-        ],
+        "operationId": "searchObjects",
+        "summary": "Search by task, symbol, module, or numeric OID",
+        "parameters": [{ "name": "q", "in": "query", "required": false, "schema": { "type": "string", "maxLength": 200 } }],
         "responses": {
-          "200": {
-            "description": "At most 20 deterministic synthetic matches",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/SearchResponse" }
-              }
-            }
-          },
-          "422": { "$ref": "#/components/responses/Problem" }
+          "200": { "description": "At most 20 deterministic matches", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SearchResponse" } } } },
+          "422": { "$ref": "#/components/responses/Problem" },
+          "429": { "$ref": "#/components/responses/Problem" }
         }
       }
     },
     "/v1/objects/{objectId}": {
       "get": {
-        "operationId": "getSyntheticObject",
-        "parameters": [
-          { "$ref": "#/components/parameters/ObjectId" }
-        ],
+        "operationId": "getObject",
+        "summary": "Get structured syntax, access, status, description, relationships, and provenance",
+        "parameters": [{ "$ref": "#/components/parameters/ObjectId" }],
         "responses": {
-          "200": {
-            "description": "Synthetic object with explicit prototype-only provenance",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ObjectResponse" }
-              }
-            }
-          },
-          "404": { "$ref": "#/components/responses/Problem" }
+          "200": { "description": "Complete available object intelligence", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ObjectResponse" } } } },
+          "404": { "$ref": "#/components/responses/Problem" },
+          "429": { "$ref": "#/components/responses/Problem" }
+        }
+      }
+    },
+    "/v1/enterprises/{enterpriseNumber}": {
+      "get": {
+        "operationId": "getEnterprise",
+        "summary": "Look up an IANA Private Enterprise Number",
+        "parameters": [{ "$ref": "#/components/parameters/EnterpriseNumber" }],
+        "responses": {
+          "200": { "description": "IANA registry assignment with identity caveat", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/EnterpriseResponse" } } } },
+          "404": { "$ref": "#/components/responses/Problem" },
+          "422": { "$ref": "#/components/responses/Problem" },
+          "429": { "$ref": "#/components/responses/Problem" }
+        }
+      }
+    },
+    "/v1/sys-object-ids/{oid}": {
+      "get": {
+        "operationId": "getSysObjectId",
+        "summary": "Resolve an exact rights-approved sysObjectID or return its PEN boundary",
+        "parameters": [{ "$ref": "#/components/parameters/OidPath" }],
+        "responses": {
+          "200": { "description": "Resolved, enterprise-only, or not-found result", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SysObjectIdResponse" } } } },
+          "422": { "$ref": "#/components/responses/Problem" },
+          "429": { "$ref": "#/components/responses/Problem" }
         }
       }
     },
     "/v1/modules/{moduleId}/dependencies": {
       "get": {
-        "operationId": "getSyntheticModuleDependencies",
-        "parameters": [
-          { "$ref": "#/components/parameters/ModuleId" }
-        ],
+        "operationId": "getModuleDependencies",
+        "summary": "Get direct, transitive, missing, and cyclic dependency states",
+        "parameters": [{ "$ref": "#/components/parameters/ModuleId" }],
         "responses": {
-          "200": {
-            "description": "Synthetic direct dependency list",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/DependenciesResponse" }
-              }
-            }
-          },
-          "404": { "$ref": "#/components/responses/Problem" }
-        }
-      }
-    },
-    "/v1/releases/{release}/changes": {
-      "get": {
-        "operationId": "getSyntheticReleaseChanges",
-        "description": "Always returns an empty list. Diff-feed demand is explicitly unvalidated.",
-        "parameters": [
-          { "$ref": "#/components/parameters/Release" },
-          {
-            "name": "since",
-            "in": "query",
-            "required": false,
-            "schema": { "type": "string", "maxLength": 100 }
-          },
-          {
-            "name": "cursor",
-            "in": "query",
-            "required": false,
-            "schema": { "type": "string", "maxLength": 500 }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Empty synthetic change feed",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ChangesResponse" }
-              }
-            }
-          }
+          "200": { "description": "Machine-distinguishable dependency graph", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DependenciesResponse" } } } },
+          "404": { "$ref": "#/components/responses/Problem" },
+          "429": { "$ref": "#/components/responses/Problem" }
         }
       }
     }
   },
   "components": {
     "parameters": {
-      "ObjectId": {
-        "name": "objectId",
-        "in": "path",
-        "required": true,
-        "schema": { "type": "string", "pattern": "^[a-z0-9-]+--[a-z0-9-]+$" }
-      },
-      "ModuleId": {
-        "name": "moduleId",
-        "in": "path",
-        "required": true,
-        "schema": { "type": "string", "minLength": 1, "maxLength": 128 }
-      },
-      "Release": {
-        "name": "release",
-        "in": "path",
-        "required": true,
-        "schema": { "type": "string", "minLength": 1, "maxLength": 100 }
-      }
+      "ObjectId": { "name": "objectId", "in": "path", "required": true, "schema": { "type": "string", "pattern": "^[a-z0-9-]+--[a-z0-9-]+$" } },
+      "ModuleId": { "name": "moduleId", "in": "path", "required": true, "schema": { "type": "string", "minLength": 1, "maxLength": 128 } },
+      "EnterpriseNumber": { "name": "enterpriseNumber", "in": "path", "required": true, "schema": { "type": "integer", "minimum": 0, "maximum": 4294967295 } },
+      "OidPath": { "name": "oid", "in": "path", "required": true, "schema": { "$ref": "#/components/schemas/Oid" } }
     },
     "responses": {
-      "Problem": {
-        "description": "Machine-distinguishable request failure",
-        "content": {
-          "application/problem+json": {
-            "schema": { "$ref": "#/components/schemas/Problem" }
-          }
-        }
-      }
+      "Problem": { "description": "RFC 9457-compatible machine-distinguishable failure", "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } }
     },
     "schemas": {
-      "Health": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["status", "mode"],
-        "properties": {
-          "status": { "const": "ok" },
-          "mode": { "const": "phase0-synthetic" }
-        }
-      },
+      "DataReleaseId": { "type": "string", "const": "alpha-intelligence-2026-07-14.1" },
       "DataRelease": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["data_release", "status", "production_data", "object_count"],
+        "required": ["data_release", "status", "production_data", "object_count", "enterprise_count", "sys_object_id_count", "enterprise_registry"],
         "properties": {
           "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
-          "status": { "const": "synthetic" },
+          "status": { "const": "public-alpha" },
           "production_data": { "const": false },
-          "object_count": { "type": "integer", "minimum": 0 }
+          "object_count": { "type": "integer", "minimum": 0 },
+          "enterprise_count": { "type": "integer", "minimum": 60000 },
+          "sys_object_id_count": { "type": "integer", "minimum": 0 },
+          "enterprise_registry": { "$ref": "#/components/schemas/RegistrySource" }
         }
-      },
-      "DataReleaseId": {
-        "type": "string",
-        "const": "phase0-synthetic-1"
       },
       "BatchRequest": {
         "type": "object",
@@ -229,11 +127,7 @@
         "required": ["oids"],
         "properties": {
           "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
-          "oids": {
-            "type": "array",
-            "maxItems": 1000,
-            "items": { "$ref": "#/components/schemas/Oid" }
-          }
+          "oids": { "type": "array", "maxItems": 1000, "items": { "$ref": "#/components/schemas/Oid" } }
         }
       },
       "BatchResponse": {
@@ -242,11 +136,7 @@
         "required": ["data_release", "results"],
         "properties": {
           "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
-          "results": {
-            "type": "array",
-            "maxItems": 1000,
-            "items": { "$ref": "#/components/schemas/ResolveResult" }
-          }
+          "results": { "type": "array", "maxItems": 1000, "items": { "$ref": "#/components/schemas/ResolveResult" } }
         }
       },
       "ResolveResult": {
@@ -255,12 +145,9 @@
         "required": ["input", "status"],
         "properties": {
           "input": { "type": "string" },
-          "status": { "type": "string", "enum": ["resolved", "not_found", "invalid"] },
+          "status": { "type": "string", "enum": ["resolved", "not_found", "invalid", "ambiguous", "unavailable_due_to_rights"] },
           "object": { "$ref": "#/components/schemas/MibObject" },
-          "instance_suffix": {
-            "type": "array",
-            "items": { "type": "integer", "minimum": 0, "maximum": 4294967295 }
-          }
+          "instance_suffix": { "type": "array", "items": { "type": "integer", "minimum": 0, "maximum": 4294967295 } }
         }
       },
       "SearchResponse": {
@@ -270,86 +157,175 @@
         "properties": {
           "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
           "query": { "type": "string" },
-          "results": {
-            "type": "array",
-            "maxItems": 20,
-            "items": { "$ref": "#/components/schemas/MibObject" }
-          }
+          "results": { "type": "array", "maxItems": 20, "items": { "$ref": "#/components/schemas/MibObject" } }
         }
       },
       "ObjectResponse": {
         "type": "object",
         "additionalProperties": false,
         "required": ["data_release", "object"],
-        "properties": {
-          "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
-          "object": { "$ref": "#/components/schemas/MibObject" }
-        }
+        "properties": { "data_release": { "$ref": "#/components/schemas/DataReleaseId" }, "object": { "$ref": "#/components/schemas/MibObject" } }
       },
       "MibObject": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "module", "symbol", "oid", "kind", "syntax", "access", "revision", "semantics", "provenance"],
+        "required": ["id", "module", "symbol", "oid", "kind", "syntax", "access", "status", "description", "revision", "relationships", "provenance"],
         "properties": {
-          "id": { "type": "string", "pattern": "^[a-z0-9-]+--[a-z0-9-]+$" },
+          "id": { "type": "string" },
           "module": { "type": "string" },
           "symbol": { "type": "string" },
           "oid": { "$ref": "#/components/schemas/Oid" },
           "kind": { "type": "string" },
-          "syntax": { "type": "string" },
-          "access": { "type": "string" },
+          "syntax": { "$ref": "#/components/schemas/Syntax" },
+          "access": { "type": ["string", "null"] },
+          "status": { "type": ["string", "null"] },
+          "description": { "$ref": "#/components/schemas/Description" },
           "revision": { "type": "string", "format": "date" },
-          "semantics": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": ["table", "index"],
-            "properties": {
-              "table": { "type": ["string", "null"] },
-              "index": { "type": ["string", "null"] }
-            }
-          },
+          "relationships": { "$ref": "#/components/schemas/Relationships" },
           "provenance": { "$ref": "#/components/schemas/Provenance" }
+        }
+      },
+      "Syntax": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["base", "textual_convention", "display_hint", "units", "constraints", "enums", "bits"],
+        "properties": {
+          "base": { "type": "string" },
+          "textual_convention": { "type": ["string", "null"] },
+          "display_hint": { "type": ["string", "null"] },
+          "units": { "type": ["string", "null"] },
+          "constraints": { "type": "array", "items": { "type": "string" } },
+          "enums": { "type": "object", "additionalProperties": { "type": "string" } },
+          "bits": { "type": "object", "additionalProperties": { "type": "string" } }
+        }
+      },
+      "Description": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["status", "text"],
+        "properties": { "status": { "type": "string", "enum": ["available", "unavailable_due_to_rights"] }, "text": { "type": ["string", "null"] } }
+      },
+      "Relationships": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["parent", "table", "row", "indexes", "augments", "notification_objects"],
+        "properties": {
+          "parent": { "type": ["string", "null"] },
+          "table": { "type": ["string", "null"] },
+          "row": { "type": ["string", "null"] },
+          "indexes": { "type": "array", "items": { "type": "string" } },
+          "augments": { "type": ["string", "null"] },
+          "notification_objects": { "type": "array", "items": { "type": "string" } }
         }
       },
       "Provenance": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["source", "source_url", "publication_status", "rights_tier", "scopes"],
+        "required": ["source", "source_url", "source_checked", "parse_status", "publication_status", "rights_tier", "scopes"],
         "properties": {
           "source": { "type": "string" },
           "source_url": { "type": "string", "format": "uri" },
-          "publication_status": { "const": "prototype_only" },
-          "rights_tier": { "const": "Q" },
-          "scopes": { "type": "array", "maxItems": 0 }
+          "source_checked": { "type": "string", "format": "date" },
+          "parse_status": { "type": "string" },
+          "publication_status": { "const": "public-alpha-synthetic" },
+          "rights_tier": { "const": "A" },
+          "scopes": { "type": "array", "contains": { "const": "API output" } }
         }
+      },
+      "RegistrySource": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["url", "updated", "retrieved_at", "sha256", "rights"],
+        "properties": {
+          "url": { "type": "string", "format": "uri" },
+          "updated": { "type": "string", "format": "date" },
+          "retrieved_at": { "type": "string", "format": "date-time" },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "rights": { "const": "CC0-1.0" }
+        }
+      },
+      "Enterprise": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["number", "oid", "organization", "registry_status", "source", "caveat"],
+        "properties": {
+          "number": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+          "oid": { "$ref": "#/components/schemas/Oid" },
+          "organization": { "type": "string" },
+          "registry_status": { "type": "string", "enum": ["assigned", "reserved"] },
+          "source": { "$ref": "#/components/schemas/RegistrySource" },
+          "caveat": { "type": "string" }
+        }
+      },
+      "EnterpriseResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["data_release", "enterprise"],
+        "properties": { "data_release": { "$ref": "#/components/schemas/DataReleaseId" }, "enterprise": { "$ref": "#/components/schemas/Enterprise" } }
+      },
+      "SysObjectIdMatch": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["oid", "organization", "product_family", "model", "platform", "identity_type", "match_type", "confidence", "provenance"],
+        "properties": {
+          "oid": { "$ref": "#/components/schemas/Oid" },
+          "organization": { "type": "string" },
+          "product_family": { "type": "string" },
+          "model": { "type": ["string", "null"] },
+          "platform": { "type": ["string", "null"] },
+          "identity_type": { "type": "string" },
+          "match_type": { "const": "exact" },
+          "confidence": { "const": "high" },
+          "provenance": { "type": "object" }
+        }
+      },
+      "SysObjectIdResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["input", "normalized_oid", "status", "enterprise", "match"],
+        "properties": {
+          "input": { "type": "string" },
+          "normalized_oid": { "$ref": "#/components/schemas/Oid" },
+          "status": { "type": "string", "enum": ["resolved", "enterprise_only", "not_found", "ambiguous", "unavailable_due_to_rights"] },
+          "enterprise": { "anyOf": [{ "$ref": "#/components/schemas/Enterprise" }, { "type": "null" }] },
+          "match": { "anyOf": [{ "$ref": "#/components/schemas/SysObjectIdMatch" }, { "type": "null" }] },
+          "rights": { "$ref": "#/components/schemas/RightsRestriction" },
+          "caveat": { "type": "string" }
+        }
+      },
+      "RightsRestriction": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_family", "api_output", "checked_at", "detail"],
+        "properties": {
+          "source_family": { "type": "string" },
+          "api_output": { "const": "denied" },
+          "checked_at": { "type": "string", "format": "date" },
+          "detail": { "type": "string" }
+        }
+      },
+      "SysObjectIdResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["data_release", "result"],
+        "properties": { "data_release": { "$ref": "#/components/schemas/DataReleaseId" }, "result": { "$ref": "#/components/schemas/SysObjectIdResult" } }
       },
       "DependenciesResponse": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["data_release", "module", "dependencies"],
+        "required": ["data_release", "module", "status", "direct", "transitive", "missing", "cyclic", "diagnostics"],
         "properties": {
           "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
           "module": { "type": "string" },
-          "dependencies": { "type": "array", "items": { "type": "string" } }
+          "status": { "type": "string", "enum": ["complete", "partial"] },
+          "direct": { "type": "array", "items": { "type": "string" } },
+          "transitive": { "type": "array", "items": { "type": "string" } },
+          "missing": { "type": "array", "items": { "type": "string" } },
+          "cyclic": { "type": "array", "items": { "type": "string" } },
+          "diagnostics": { "type": "array", "items": { "type": "string" } }
         }
       },
-      "ChangesResponse": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["data_release", "since", "changes", "next_cursor", "note"],
-        "properties": {
-          "data_release": { "type": "string" },
-          "since": { "type": ["string", "null"] },
-          "changes": { "type": "array", "maxItems": 0 },
-          "next_cursor": { "type": "null" },
-          "note": { "type": "string", "pattern": "[Uu]nvalidated" }
-        }
-      },
-      "Oid": {
-        "type": "string",
-        "pattern": "^[0-9]+(?:\\.[0-9]+)+$",
-        "maxLength": 512
-      },
+      "Oid": { "type": "string", "pattern": "^[0-9]+(?:\\.[0-9]+)+$", "maxLength": 512 },
       "Problem": {
         "type": "object",
         "additionalProperties": false,

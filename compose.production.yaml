@@ -22,7 +22,7 @@ services:
     security_opt:
       - no-new-privileges:true
     healthcheck:
-      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:8080/healthz"]
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8080/healthz').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
       interval: 15s
       timeout: 5s
       retries: 12
@@ -31,7 +31,7 @@ services:
       resources:
         limits:
           cpus: "0.25"
-          memory: 64M
+          memory: 128M
           pids: 64
     logging:
       driver: local
