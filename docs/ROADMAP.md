@@ -18,6 +18,10 @@ Dates are not commitments. Vendor-rights responses are calendar-dependent.
 Phase 1 cannot start merely because documents exist. See
 [the binding gate](PHASE-0.md).
 
+Parser-neutral contracts and UX golden tasks may be prepared provisionally
+while Phase 0 is open. They do not change gate status or authorize production
+application/database scaffolding.
+
 ## Phase 1 — public foundation
 
 - freeze source governance, canonical intermediate schema, immutable release

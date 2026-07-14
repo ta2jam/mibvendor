@@ -32,6 +32,18 @@ for (const required of [
   "README.md",
   "docs/PHASE-0.md",
   "docs/PRODUCT.md",
+  "docs/foundation/README.md",
+  "docs/foundation/source-governance.md",
+  "docs/foundation/release-model.md",
+  "docs/foundation/parser-adapter.md",
+  "docs/foundation/ux-golden-tasks.json",
+  "docs/decisions/0005-provisional-foundation-contracts.md",
+  "contracts/source-snapshot.schema.json",
+  "contracts/canonical-module.schema.json",
+  "contracts/data-release.schema.json",
+  "contracts/active-release-pointer.schema.json",
+  "contracts/parser-adapter.schema.json",
+  "scripts/validate-foundation-contracts.mjs",
   "Dockerfile",
   "compose.production.yaml",
   "deploy/Caddyfile",
@@ -85,6 +97,9 @@ for (const requiredCopy of [
 
 if (await exists(".github/workflows/pages.yml")) {
   failures.push("GitHub Pages workflow must remain disabled; production runs on the VPS");
+}
+if (await exists(".openai/hosting.json")) {
+  failures.push("OpenAI Sites hosting must remain disabled; production runs on the isolated VPS");
 }
 
 const productionMonitor = await readFile(path.join(root, ".github", "workflows", "production-monitor.yml"), "utf8");

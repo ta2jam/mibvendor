@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "canonical_schema": "mibvendor.canonical/1",
+  "canonical_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+  "source": {
+    "schema_version": 1,
+    "snapshot_id": "src_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "source_id": "mibvendor-example",
+    "tier": "P",
+    "official_url": "https://example.invalid/mibvendor-cc0-fixture",
+    "acquired_at": "2026-07-14T00:00:00Z",
+    "artifact_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "notice_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "parser_use": "approved",
+    "rights": {
+      "decision_id": "rights_mibvendor-example-1",
+      "evidence_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "checked_at": "2026-07-14T00:00:00Z",
+      "expires_at": null,
+      "scopes": {
+        "metadata_index": "denied",
+        "rendered_text": "denied",
+        "api_output": "denied",
+        "raw_download": "denied",
+        "bulk_export": "denied"
+      }
+    }
+  },
+  "module": {
+    "name": "MIBVENDOR-BASE-MIB",
+    "revision": "2026-07-13",
+    "variant_id": "variant_ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "definition_id": "module_9999999999999999999999999999999999999999999999999999999999999999",
+    "parse_status": "parsed",
+    "parser": { "adapter_contract": 1, "name": "fixture", "version": "1" },
+    "imports": [
+      { "module": "SNMPv2-SMI", "symbols": ["MODULE-IDENTITY", "OBJECT-TYPE"] }
+    ],
+    "diagnostics": [],
+    "objects": [
+      {
+        "stable_id": "mibvendor-example/MIBVENDOR-BASE-MIB::mibVendorBase",
+        "definition_id": "object_1111111111111111111111111111111111111111111111111111111111111111",
+        "symbol": "mibVendorBase",
+        "kind": "module-identity",
+        "oid": "1.3.6.1.4.1.99999",
+        "oid_arcs": [1, 3, 6, 1, 4, 1, 99999],
+        "syntax": { "base": "MODULE-IDENTITY", "display_hint": null, "units": null, "constraints": [], "enums": {}, "bits": {} },
+        "access": null,
+        "status": "current",
+        "relationships": { "parent": null, "table": null, "row": null, "indexes": [], "augments": null, "notification_objects": [] }
+      },
+      {
+        "stable_id": "mibvendor-example/MIBVENDOR-BASE-MIB::mvScalar",
+        "definition_id": "object_2222222222222222222222222222222222222222222222222222222222222222",
+        "symbol": "mvScalar",
+        "kind": "scalar",
+        "oid": "1.3.6.1.4.1.99999.1.1",
+        "oid_arcs": [1, 3, 6, 1, 4, 1, 99999, 1, 1],
+        "syntax": { "base": "Integer32", "display_hint": null, "units": null, "constraints": ["0..100"], "enums": {}, "bits": {} },
+        "access": "read-only",
+        "status": "current",
+        "relationships": { "parent": "mibvendor-example/MIBVENDOR-BASE-MIB::mibVendorBase", "table": null, "row": null, "indexes": [], "augments": null, "notification_objects": [] }
+      }
+    ]
+  }
+}

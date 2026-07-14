@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mibvendor.io/schemas/parser-adapter.v1.json",
+  "title": "mibvendor parser adapter result envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["adapter_contract", "adapter", "input", "outcome", "canonical_module", "diagnostics", "metrics"],
+  "properties": {
+    "adapter_contract": { "const": 1 },
+    "adapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version"],
+      "properties": {
+        "name": { "type": "string", "enum": ["pysmi", "libsmi", "net-snmp", "fixture"] },
+        "version": { "type": "string", "minLength": 1, "maxLength": 100 }
+      }
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_snapshot_id", "artifact_sha256", "module_hint"],
+      "properties": {
+        "source_snapshot_id": { "type": "string", "pattern": "^src_[0-9a-f]{64}$" },
+        "artifact_sha256": { "$ref": "#/$defs/sha256" },
+        "module_hint": { "type": ["string", "null"], "pattern": "^[A-Za-z][A-Za-z0-9-]{0,127}$" }
+      }
+    },
+    "outcome": { "type": "string", "enum": ["success", "failure"] },
+    "canonical_module": { "anyOf": [{ "$ref": "canonical-module.schema.json" }, { "type": "null" }] },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["severity", "code", "message", "line", "column"],
+        "properties": {
+          "severity": { "type": "string", "enum": ["info", "warning", "error"] },
+          "code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,79}$" },
+          "message": { "type": "string", "maxLength": 1000 },
+          "line": { "type": ["integer", "null"], "minimum": 1 },
+          "column": { "type": ["integer", "null"], "minimum": 1 }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["wall_ms", "cpu_ms", "peak_rss_kib"],
+      "properties": {
+        "wall_ms": { "type": "integer", "minimum": 0 },
+        "cpu_ms": { "type": "integer", "minimum": 0 },
+        "peak_rss_kib": { "type": "integer", "minimum": 0 }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

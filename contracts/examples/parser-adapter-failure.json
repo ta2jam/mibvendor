@@ -1,0 +1,15 @@
+{
+  "adapter_contract": 1,
+  "adapter": { "name": "fixture", "version": "1" },
+  "input": {
+    "source_snapshot_id": "src_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "artifact_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "module_hint": "MIBVENDOR-BROKEN-MIB"
+  },
+  "outcome": "failure",
+  "canonical_module": null,
+  "diagnostics": [
+    { "severity": "error", "code": "PARSE_FAILED", "message": "Parser rejected the bounded fixture.", "line": 7, "column": 1 }
+  ],
+  "metrics": { "wall_ms": 12, "cpu_ms": 8, "peak_rss_kib": 2048 }
+}

@@ -3,6 +3,25 @@
 All notable changes are documented here. The project uses Semantic Versioning
 while it is pre-1.0; research releases may remain unstable.
 
+## [0.1.0-alpha.8] - 2026-07-14
+
+### Added
+
+- Added provisional, parser-neutral contracts for immutable source snapshots,
+  canonical modules, immutable data releases, the mutable active-release
+  pointer, and parser adapter results.
+- Added 20 machine-checked UX golden tasks across beginner, expert, and
+  API/tool-developer workflows.
+- Added dependency-free schema and semantic validation covering rights
+  fail-closed behavior, OID consistency, stable references, release counts,
+  parser failure boundaries, and cross-document integrity.
+
+### Changed
+
+- Documented source governance, release/rollback semantics, and parser-adapter
+  isolation while explicitly keeping Phase 0 open and production scaffolding
+  blocked.
+
 ## [0.1.0-alpha.7] - 2026-07-14
 
 ### Added
@@ -98,6 +117,7 @@ while it is pre-1.0; research releases may remain unstable.
   evidence cannot be marked complete.
 - Repository checks and CI without production MIB data.
 
+[0.1.0-alpha.8]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.8
 [0.1.0-alpha.7]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.7
 [0.1.0-alpha.6]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.6
 [0.1.0-alpha.5]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.5

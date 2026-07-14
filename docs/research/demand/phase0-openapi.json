@@ -3,7 +3,7 @@
   "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
   "info": {
     "title": "mibvendor Phase 0 synthetic API probe",
-    "version": "0.1.0-alpha.7",
+    "version": "0.1.0-alpha.8",
     "description": "Local-only contract probe for external integration research. It contains synthetic prototype records, is not hosted, and is not a supported or production API."
   },
   "x-mibvendor-status": "phase0-synthetic-unvalidated",

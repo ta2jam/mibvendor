@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mibvendor.io/schemas/canonical-module.v1.json",
+  "title": "mibvendor parser-neutral canonical module",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "canonical_schema", "canonical_sha256", "source", "module"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "canonical_schema": { "const": "mibvendor.canonical/1" },
+    "canonical_sha256": { "$ref": "#/$defs/sha256" },
+    "source": { "$ref": "source-snapshot.schema.json" },
+    "module": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "revision", "variant_id", "definition_id", "parse_status", "parser", "imports", "diagnostics", "objects"],
+      "properties": {
+        "name": { "$ref": "#/$defs/identifier" },
+        "revision": { "type": ["string", "null"], "format": "date" },
+        "variant_id": { "type": "string", "pattern": "^variant_[0-9a-f]{64}$" },
+        "definition_id": { "type": "string", "pattern": "^module_[0-9a-f]{64}$" },
+        "parse_status": { "type": "string", "enum": ["parsed", "parsed_with_warnings", "failed"] },
+        "parser": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["adapter_contract", "name", "version"],
+          "properties": {
+            "adapter_contract": { "const": 1 },
+            "name": { "type": "string", "enum": ["pysmi", "libsmi", "net-snmp", "fixture"] },
+            "version": { "type": "string", "minLength": 1, "maxLength": 100 }
+          }
+        },
+        "imports": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["module", "symbols"],
+            "properties": {
+              "module": { "$ref": "#/$defs/identifier" },
+              "symbols": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/identifier" } }
+            }
+          }
+        },
+        "diagnostics": { "type": "array", "items": { "$ref": "#/$defs/diagnostic" } },
+        "objects": { "type": "array", "items": { "$ref": "#/$defs/object" } }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "identifier": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9-]{0,127}$" },
+    "stableId": { "type": "string", "pattern": "^[a-z0-9-]+/[A-Za-z][A-Za-z0-9-]{0,127}::[A-Za-z][A-Za-z0-9-]{0,127}$" },
+    "diagnostic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["severity", "code", "message", "line", "column"],
+      "properties": {
+        "severity": { "type": "string", "enum": ["info", "warning", "error"] },
+        "code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,79}$" },
+        "message": { "type": "string", "maxLength": 1000 },
+        "line": { "type": ["integer", "null"], "minimum": 1 },
+        "column": { "type": ["integer", "null"], "minimum": 1 }
+      }
+    },
+    "object": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stable_id", "definition_id", "symbol", "kind", "oid", "oid_arcs", "syntax", "access", "status", "relationships"],
+      "properties": {
+        "stable_id": { "$ref": "#/$defs/stableId" },
+        "definition_id": { "type": "string", "pattern": "^object_[0-9a-f]{64}$" },
+        "symbol": { "$ref": "#/$defs/identifier" },
+        "kind": { "type": "string", "enum": ["module-identity", "object-identity", "scalar", "table", "row", "column", "notification", "group", "compliance", "textual-convention", "other"] },
+        "oid": { "type": ["string", "null"], "pattern": "^[0-9]+(?:\\.[0-9]+)*$" },
+        "oid_arcs": { "type": ["array", "null"], "maxItems": 128, "items": { "type": "integer", "minimum": 0, "maximum": 4294967295 } },
+        "syntax": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["base", "display_hint", "units", "constraints", "enums", "bits"],
+          "properties": {
+            "base": { "type": "string", "minLength": 1, "maxLength": 200 },
+            "display_hint": { "type": ["string", "null"], "maxLength": 200 },
+            "units": { "type": ["string", "null"], "maxLength": 200 },
+            "constraints": { "type": "array", "uniqueItems": true, "items": { "type": "string", "maxLength": 200 } },
+            "enums": { "type": "object", "additionalProperties": { "type": "string", "maxLength": 200 } },
+            "bits": { "type": "object", "additionalProperties": { "type": "string", "maxLength": 200 } }
+          }
+        },
+        "access": { "type": ["string", "null"], "enum": ["read-only", "read-write", "read-create", "not-accessible", "accessible-for-notify", null] },
+        "status": { "type": ["string", "null"], "enum": ["current", "deprecated", "obsolete", "mandatory", "optional", null] },
+        "description": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["value", "visibility"],
+          "properties": {
+            "value": { "type": "string", "maxLength": 20000 },
+            "visibility": { "type": "string", "enum": ["public", "internal"] }
+          }
+        },
+        "relationships": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["parent", "table", "row", "indexes", "augments", "notification_objects"],
+          "properties": {
+            "parent": { "type": ["string", "null"] },
+            "table": { "type": ["string", "null"] },
+            "row": { "type": ["string", "null"] },
+            "indexes": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+            "augments": { "type": ["string", "null"] },
+            "notification_objects": { "type": "array", "uniqueItems": true, "items": { "type": "string" } }
+          }
+        }
+      }
+    }
+  }
+}

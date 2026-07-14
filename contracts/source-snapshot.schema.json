@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mibvendor.io/schemas/source-snapshot.v1.json",
+  "title": "mibvendor immutable source snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "snapshot_id", "source_id", "tier", "official_url", "acquired_at", "artifact_sha256", "notice_sha256", "parser_use", "rights"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "snapshot_id": { "type": "string", "pattern": "^src_[0-9a-f]{64}$" },
+    "source_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,79}$" },
+    "tier": { "type": "string", "enum": ["A", "B", "Q", "P"] },
+    "official_url": { "type": "string", "format": "uri", "maxLength": 2048 },
+    "acquired_at": { "type": "string", "format": "date-time" },
+    "artifact_sha256": { "$ref": "#/$defs/sha256" },
+    "notice_sha256": { "$ref": "#/$defs/sha256" },
+    "parser_use": { "type": "string", "enum": ["approved", "denied"] },
+    "rights": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision_id", "evidence_sha256", "checked_at", "expires_at", "scopes"],
+      "properties": {
+        "decision_id": { "type": "string", "pattern": "^rights_[a-z0-9][a-z0-9.-]{2,119}$" },
+        "evidence_sha256": { "$ref": "#/$defs/sha256" },
+        "checked_at": { "type": "string", "format": "date-time" },
+        "expires_at": { "type": ["string", "null"], "format": "date-time" },
+        "scopes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["metadata_index", "rendered_text", "api_output", "raw_download", "bulk_export"],
+          "properties": {
+            "metadata_index": { "$ref": "#/$defs/scope" },
+            "rendered_text": { "$ref": "#/$defs/scope" },
+            "api_output": { "$ref": "#/$defs/scope" },
+            "raw_download": { "$ref": "#/$defs/scope" },
+            "bulk_export": { "$ref": "#/$defs/scope" }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "scope": { "type": "string", "enum": ["approved", "denied", "unknown"] }
+  }
+}

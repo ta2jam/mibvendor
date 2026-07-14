@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "snapshot_id": "src_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "source_id": "mibvendor-example",
+  "tier": "P",
+  "official_url": "https://example.invalid/mibvendor-cc0-fixture",
+  "acquired_at": "2026-07-14T00:00:00Z",
+  "artifact_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "notice_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "parser_use": "approved",
+  "rights": {
+    "decision_id": "rights_mibvendor-example-1",
+    "evidence_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "checked_at": "2026-07-14T00:00:00Z",
+    "expires_at": null,
+    "scopes": {
+      "metadata_index": "denied",
+      "rendered_text": "denied",
+      "api_output": "denied",
+      "raw_download": "denied",
+      "bulk_export": "denied"
+    }
+  }
+}
