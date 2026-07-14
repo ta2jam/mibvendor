@@ -8,7 +8,7 @@
   "properties": {
     "schema_version": { "const": 1 },
     "canonical_schema": { "const": "mibvendor.canonical/1" },
-    "canonical_sha256": { "$ref": "#/$defs/sha256" },
+    "canonical_sha256": { "$ref": "#/$defs/sha256", "description": "SHA-256 of RFC 8785 canonical JSON with root canonical_sha256 omitted" },
     "source": { "$ref": "source-snapshot.schema.json" },
     "module": {
       "type": "object",

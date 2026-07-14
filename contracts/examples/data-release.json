@@ -7,7 +7,7 @@
   "sources": [
     {
       "schema_version": 1,
-      "snapshot_id": "src_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "snapshot_id": "src_89a6f897fd10717158b87ed80f24feb10ea28138512b4b1436dae3cbd03a005f",
       "source_id": "mibvendor-example",
       "tier": "P",
       "official_url": "https://example.invalid/mibvendor-cc0-fixture",
@@ -27,10 +27,10 @@
   "modules": [
     {
       "definition_id": "module_9999999999999999999999999999999999999999999999999999999999999999",
-      "canonical_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-      "source_snapshot_id": "src_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      "canonical_sha256": "9d78cd378e313b0eb4dab21f9d083decbf280b33b42ef1082728b9fb3b0aaab1",
+      "source_snapshot_id": "src_89a6f897fd10717158b87ed80f24feb10ea28138512b4b1436dae3cbd03a005f"
     }
   ],
   "counts": { "sources": 1, "modules": 1, "objects": 2, "warnings": 0, "errors": 0 },
-  "manifest_sha256": "abababababababababababababababababababababababababababababababab"
+  "manifest_sha256": "cf023e8834e42f68a6c87d5c221993591239d6b27fc8cab762968f098404fd93"
 }

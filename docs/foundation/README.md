@@ -16,15 +16,15 @@ that Phase 1 has started or passed:
 - `ux-golden-tasks.json` fixes 20 provisional user outcomes across beginners,
   experts, and API/tool developers.
 
-The checked-in examples are synthetic contract fixtures. Their repeated hash
-values demonstrate field shape and cross-reference rules; they are not claims
-that those fixture documents were content-addressed. The production digest
-projection must be frozen and tested before any real data release.
+The checked-in examples are synthetic contract fixtures with reproducible
+RFC 8785/SHA-256 content addresses. They contain no vendor text and grant no
+public output scope. See the [release model](release-model.md) for the exact
+self-hash projections.
 
 Run `npm run check:foundation` to validate schema structure, examples,
-cross-document invariants, rights fail-closed behavior, OID consistency, and the
-golden-task set. Runtime is O(total contract bytes + objects + tasks); memory is
-linear in those inputs.
+cross-document invariants, content addresses, rights fail-closed behavior, OID
+consistency, and the golden-task set. Contract validation is linear outside JCS
+object-key sorting; digest construction is O(n + sum(k log k)).
 
 No production database, production importer, public API, or third-party vendor
 data is authorized by these documents. The binding gate remains

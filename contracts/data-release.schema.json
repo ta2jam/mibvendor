@@ -38,7 +38,7 @@
         "errors": { "type": "integer", "minimum": 0 }
       }
     },
-    "manifest_sha256": { "$ref": "#/$defs/sha256" }
+    "manifest_sha256": { "$ref": "#/$defs/sha256", "description": "SHA-256 of RFC 8785 canonical JSON with root manifest_sha256 omitted" }
   },
   "$defs": {
     "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }

@@ -3,6 +3,22 @@
 All notable changes are documented here. The project uses Semantic Versioning
 while it is pre-1.0; research releases may remain unstable.
 
+## [0.1.0-alpha.9] - 2026-07-14
+
+### Added
+
+- Added a dependency-free RFC 8785 JSON canonicalizer with strict I-JSON input
+  rejection and SHA-256 helpers.
+- Added exact content-address projections for source snapshots, canonical
+  modules, and immutable data-release manifests.
+- Added official ordering/serialization vectors and mutation tests proving that
+  stale hashes fail validation.
+
+### Changed
+
+- Replaced placeholder fixture hashes with reproducible content-derived hashes
+  and made cross-document source records exact rather than merely referential.
+
 ## [0.1.0-alpha.8] - 2026-07-14
 
 ### Added
@@ -117,6 +133,7 @@ while it is pre-1.0; research releases may remain unstable.
   evidence cannot be marked complete.
 - Repository checks and CI without production MIB data.
 
+[0.1.0-alpha.9]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.9
 [0.1.0-alpha.8]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.8
 [0.1.0-alpha.7]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.7
 [0.1.0-alpha.6]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.6

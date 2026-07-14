@@ -7,7 +7,7 @@
   "required": ["schema_version", "snapshot_id", "source_id", "tier", "official_url", "acquired_at", "artifact_sha256", "notice_sha256", "parser_use", "rights"],
   "properties": {
     "schema_version": { "const": 1 },
-    "snapshot_id": { "type": "string", "pattern": "^src_[0-9a-f]{64}$" },
+    "snapshot_id": { "type": "string", "pattern": "^src_[0-9a-f]{64}$", "description": "src_ plus SHA-256 of RFC 8785 canonical JSON with root snapshot_id omitted" },
     "source_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,79}$" },
     "tier": { "type": "string", "enum": ["A", "B", "Q", "P"] },
     "official_url": { "type": "string", "format": "uri", "maxLength": 2048 },

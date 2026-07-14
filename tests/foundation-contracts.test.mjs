@@ -47,10 +47,30 @@ test("release counts must match immutable contents", () => {
   rejectsWith(bundle, "release.counts.objects");
 });
 
+test("content-addressed records fail after an unhashed mutation", () => {
+  const bundle = clone(baseline);
+  bundle.examples.canonical.module.revision = "2026-07-14";
+  rejectsWith(bundle, "canonical.canonical_sha256");
+});
+
+test("malformed content-addressed records produce validation issues rather than crashes", () => {
+  const bundle = clone(baseline);
+  delete bundle.examples.source.snapshot_id;
+  rejectsWith(bundle, "cannot compute snapshot digest");
+});
+
 test("failed parser adapters cannot publish partial canonical output", () => {
   const bundle = clone(baseline);
   bundle.examples.adapterFailure.canonical_module = bundle.examples.canonical;
   rejectsWith(bundle, "failed adapter result must not carry");
+});
+
+test("successful parser adapters require complete canonical output", () => {
+  const bundle = clone(baseline);
+  bundle.examples.adapterFailure.outcome = "success";
+  bundle.examples.adapterFailure.canonical_module = bundle.examples.canonical;
+  bundle.examples.adapterFailure.diagnostics = [];
+  assert.doesNotThrow(() => validateFoundation(bundle));
 });
 
 test("golden tasks remain an exact ordered set of twenty", () => {

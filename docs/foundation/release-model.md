@@ -12,10 +12,12 @@ rollback, rights revocation, and correction move that pointer; they never edit a
 published release manifest. This gives one atomic operational action and keeps
 audit history intact.
 
-Before real data exists, the digest projection must be frozen. It must define
-canonical JSON serialization, excluded self-hash fields, string normalization,
-and ordering. The same bytes must yield the same SHA-256 across supported
-platforms. The current examples validate hash shape and references only.
+Foundation records use RFC 8785 JSON Canonicalization Scheme and SHA-256. Strings
+are preserved without Unicode normalization, object keys use raw UTF-16 code-unit
+ordering, arrays retain their order, and output bytes are UTF-8. Source snapshots
+exclude root `snapshot_id`, canonical modules exclude root `canonical_sha256`,
+and release manifests exclude root `manifest_sha256` from their own digest. The
+checked-in fixtures carry verified content addresses.
 
 Release construction must fail if counts drift, a module references an absent
 source snapshot, canonical and manifest hashes disagree, or a source lacks the

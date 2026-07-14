@@ -2,6 +2,12 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
+import {
+  canonicalModuleDigest,
+  dataReleaseDigest,
+  sourceSnapshotDigest,
+} from "./canonical-json.mjs";
+
 const ROOT = process.cwd();
 const DRAFT = "https://json-schema.org/draft/2020-12/schema";
 
@@ -200,10 +206,24 @@ function validateSource(source, location, issues) {
   if (source.parser_use === "denied" && source.tier !== "Q") {
     issues.push(`${location}: parser denial requires quarantine tier Q`);
   }
+  try {
+    if (source.snapshot_id !== `src_${sourceSnapshotDigest(source)}`) {
+      issues.push(`${location}: snapshot_id does not match the RFC 8785 content digest`);
+    }
+  } catch (error) {
+    issues.push(`${location}: cannot compute snapshot digest (${error.message})`);
+  }
 }
 
 function validateCanonical(canonical, issues) {
   validateSource(canonical.source, "canonical.source", issues);
+  try {
+    if (canonical.canonical_sha256 !== canonicalModuleDigest(canonical)) {
+      issues.push("canonical.canonical_sha256 does not match the RFC 8785 content digest");
+    }
+  } catch (error) {
+    issues.push(`canonical: cannot compute content digest (${error.message})`);
+  }
   const objects = canonical.module?.objects ?? [];
   const stableIds = objects.map((object) => object.stable_id);
   const definitionIds = objects.map((object) => object.definition_id);
@@ -235,6 +255,11 @@ function validateRelease(release, canonical, issues) {
   if (release.counts.sources !== release.sources.length) issues.push("release.counts.sources does not match sources length");
   if (release.counts.modules !== release.modules.length) issues.push("release.counts.modules does not match modules length");
   if (release.counts.objects !== canonical.module.objects.length) issues.push("release.counts.objects does not match canonical object count");
+  try {
+    if (release.manifest_sha256 !== dataReleaseDigest(release)) issues.push("release.manifest_sha256 does not match the RFC 8785 content digest");
+  } catch (error) {
+    issues.push(`release: cannot compute manifest digest (${error.message})`);
+  }
   const sourceIds = new Set(release.sources.map((source) => source.snapshot_id));
   for (const module of release.modules) {
     if (!sourceIds.has(module.source_snapshot_id)) issues.push(`release module references unknown source snapshot ${module.source_snapshot_id}`);
@@ -307,6 +332,8 @@ export function validateFoundation(bundle) {
   }
 
   validateSource(bundle.examples.source, "examples.source", issues);
+  if (!jsonEqual(bundle.examples.source, bundle.examples.canonical.source)) issues.push("canonical source does not equal the standalone source fixture");
+  if (!jsonEqual(bundle.examples.source, bundle.examples.release.sources[0])) issues.push("release source does not equal the standalone source fixture");
   validateCanonical(bundle.examples.canonical, issues);
   validateRelease(bundle.examples.release, bundle.examples.canonical, issues);
   if (bundle.examples.pointer.active_release !== bundle.examples.release.release_id) issues.push("active pointer does not target the example release");

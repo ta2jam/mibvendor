@@ -2,7 +2,7 @@
   "adapter_contract": 1,
   "adapter": { "name": "fixture", "version": "1" },
   "input": {
-    "source_snapshot_id": "src_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "source_snapshot_id": "src_89a6f897fd10717158b87ed80f24feb10ea28138512b4b1436dae3cbd03a005f",
     "artifact_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
     "module_hint": "MIBVENDOR-BROKEN-MIB"
   },
