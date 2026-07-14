@@ -1,0 +1,366 @@
+{
+  "openapi": "3.1.0",
+  "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
+  "info": {
+    "title": "mibvendor Phase 0 synthetic API probe",
+    "version": "0.1.0-alpha.7",
+    "description": "Local-only contract probe for external integration research. It contains synthetic prototype records, is not hosted, and is not a supported or production API."
+  },
+  "x-mibvendor-status": "phase0-synthetic-unvalidated",
+  "servers": [
+    {
+      "url": "http://127.0.0.1:4010",
+      "description": "Local research probe"
+    }
+  ],
+  "security": [],
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "getProbeHealth",
+        "responses": {
+          "200": {
+            "description": "Probe process is healthy",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Health" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/data-release": {
+      "get": {
+        "operationId": "getSyntheticDataRelease",
+        "responses": {
+          "200": {
+            "description": "Immutable synthetic release identity",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DataRelease" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/resolve:batch": {
+      "post": {
+        "operationId": "resolveSyntheticOidBatch",
+        "x-max-body-bytes": 65536,
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/BatchRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Order-preserving per-item resolution",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BatchResponse" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/Problem" },
+          "409": { "$ref": "#/components/responses/Problem" },
+          "413": { "$ref": "#/components/responses/Problem" },
+          "422": { "$ref": "#/components/responses/Problem" }
+        }
+      }
+    },
+    "/v1/search": {
+      "get": {
+        "operationId": "searchSyntheticObjects",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "maxLength": 200 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "At most 20 deterministic synthetic matches",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SearchResponse" }
+              }
+            }
+          },
+          "422": { "$ref": "#/components/responses/Problem" }
+        }
+      }
+    },
+    "/v1/objects/{objectId}": {
+      "get": {
+        "operationId": "getSyntheticObject",
+        "parameters": [
+          { "$ref": "#/components/parameters/ObjectId" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Synthetic object with explicit prototype-only provenance",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ObjectResponse" }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/Problem" }
+        }
+      }
+    },
+    "/v1/modules/{moduleId}/dependencies": {
+      "get": {
+        "operationId": "getSyntheticModuleDependencies",
+        "parameters": [
+          { "$ref": "#/components/parameters/ModuleId" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Synthetic direct dependency list",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DependenciesResponse" }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/Problem" }
+        }
+      }
+    },
+    "/v1/releases/{release}/changes": {
+      "get": {
+        "operationId": "getSyntheticReleaseChanges",
+        "description": "Always returns an empty list. Diff-feed demand is explicitly unvalidated.",
+        "parameters": [
+          { "$ref": "#/components/parameters/Release" },
+          {
+            "name": "since",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "maxLength": 100 }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "maxLength": 500 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Empty synthetic change feed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ChangesResponse" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "ObjectId": {
+        "name": "objectId",
+        "in": "path",
+        "required": true,
+        "schema": { "type": "string", "pattern": "^[a-z0-9-]+--[a-z0-9-]+$" }
+      },
+      "ModuleId": {
+        "name": "moduleId",
+        "in": "path",
+        "required": true,
+        "schema": { "type": "string", "minLength": 1, "maxLength": 128 }
+      },
+      "Release": {
+        "name": "release",
+        "in": "path",
+        "required": true,
+        "schema": { "type": "string", "minLength": 1, "maxLength": 100 }
+      }
+    },
+    "responses": {
+      "Problem": {
+        "description": "Machine-distinguishable request failure",
+        "content": {
+          "application/problem+json": {
+            "schema": { "$ref": "#/components/schemas/Problem" }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Health": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["status", "mode"],
+        "properties": {
+          "status": { "const": "ok" },
+          "mode": { "const": "phase0-synthetic" }
+        }
+      },
+      "DataRelease": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["data_release", "status", "production_data", "object_count"],
+        "properties": {
+          "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
+          "status": { "const": "synthetic" },
+          "production_data": { "const": false },
+          "object_count": { "type": "integer", "minimum": 0 }
+        }
+      },
+      "DataReleaseId": {
+        "type": "string",
+        "const": "phase0-synthetic-1"
+      },
+      "BatchRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["oids"],
+        "properties": {
+          "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
+          "oids": {
+            "type": "array",
+            "maxItems": 1000,
+            "items": { "$ref": "#/components/schemas/Oid" }
+          }
+        }
+      },
+      "BatchResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["data_release", "results"],
+        "properties": {
+          "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
+          "results": {
+            "type": "array",
+            "maxItems": 1000,
+            "items": { "$ref": "#/components/schemas/ResolveResult" }
+          }
+        }
+      },
+      "ResolveResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["input", "status"],
+        "properties": {
+          "input": { "type": "string" },
+          "status": { "type": "string", "enum": ["resolved", "not_found", "invalid"] },
+          "object": { "$ref": "#/components/schemas/MibObject" },
+          "instance_suffix": {
+            "type": "array",
+            "items": { "type": "integer", "minimum": 0, "maximum": 4294967295 }
+          }
+        }
+      },
+      "SearchResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["data_release", "query", "results"],
+        "properties": {
+          "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
+          "query": { "type": "string" },
+          "results": {
+            "type": "array",
+            "maxItems": 20,
+            "items": { "$ref": "#/components/schemas/MibObject" }
+          }
+        }
+      },
+      "ObjectResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["data_release", "object"],
+        "properties": {
+          "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
+          "object": { "$ref": "#/components/schemas/MibObject" }
+        }
+      },
+      "MibObject": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "module", "symbol", "oid", "kind", "syntax", "access", "revision", "semantics", "provenance"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+--[a-z0-9-]+$" },
+          "module": { "type": "string" },
+          "symbol": { "type": "string" },
+          "oid": { "$ref": "#/components/schemas/Oid" },
+          "kind": { "type": "string" },
+          "syntax": { "type": "string" },
+          "access": { "type": "string" },
+          "revision": { "type": "string", "format": "date" },
+          "semantics": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["table", "index"],
+            "properties": {
+              "table": { "type": ["string", "null"] },
+              "index": { "type": ["string", "null"] }
+            }
+          },
+          "provenance": { "$ref": "#/components/schemas/Provenance" }
+        }
+      },
+      "Provenance": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source", "source_url", "publication_status", "rights_tier", "scopes"],
+        "properties": {
+          "source": { "type": "string" },
+          "source_url": { "type": "string", "format": "uri" },
+          "publication_status": { "const": "prototype_only" },
+          "rights_tier": { "const": "Q" },
+          "scopes": { "type": "array", "maxItems": 0 }
+        }
+      },
+      "DependenciesResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["data_release", "module", "dependencies"],
+        "properties": {
+          "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
+          "module": { "type": "string" },
+          "dependencies": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "ChangesResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["data_release", "since", "changes", "next_cursor", "note"],
+        "properties": {
+          "data_release": { "type": "string" },
+          "since": { "type": ["string", "null"] },
+          "changes": { "type": "array", "maxItems": 0 },
+          "next_cursor": { "type": "null" },
+          "note": { "type": "string", "pattern": "[Uu]nvalidated" }
+        }
+      },
+      "Oid": {
+        "type": "string",
+        "pattern": "^[0-9]+(?:\\.[0-9]+)+$",
+        "maxLength": 512
+      },
+      "Problem": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "title", "status", "detail"],
+        "properties": {
+          "type": { "type": "string", "format": "uri" },
+          "title": { "type": "string" },
+          "status": { "type": "integer", "minimum": 400, "maximum": 599 },
+          "detail": { "type": "string" }
+        }
+      }
+    }
+  }
+}

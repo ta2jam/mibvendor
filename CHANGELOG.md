@@ -3,6 +3,32 @@
 All notable changes are documented here. The project uses Semantic Versioning
 while it is pre-1.0; research releases may remain unstable.
 
+## [0.1.0-alpha.7] - 2026-07-14
+
+### Added
+
+- Added a private 100-case corpus intake gate that verifies category balance,
+  unique files/content, source membership, testing authority evidence, hashes,
+  path containment, and size limits without emitting MIB or evidence contents.
+- Added a machine-checked OpenAPI 3.1 contract for the local-only synthetic API
+  probe, including explicit prototype rights and data-release boundaries.
+
+### Changed
+
+- Excluded private corpus and result material from parser Docker build contexts,
+  with a runtime canary that fails if private material enters an image layer.
+- Made the synthetic API probe reject mismatched releases, invalid item types,
+  oversized bodies, and overlong queries with stable problem responses.
+
+## [0.1.0-alpha.6] - 2026-07-14
+
+### Added
+
+- Added a native Linux arm64 parser reproduction workflow and committed its
+  public provenance and measurements.
+- Added a cross-architecture validator proving identical normalized evidence on
+  Linux amd64 and arm64 for all three provisional parser candidates.
+
 ## [0.1.0-alpha.5] - 2026-07-13
 
 ### Fixed
@@ -72,6 +98,8 @@ while it is pre-1.0; research releases may remain unstable.
   evidence cannot be marked complete.
 - Repository checks and CI without production MIB data.
 
+[0.1.0-alpha.7]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.7
+[0.1.0-alpha.6]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.6
 [0.1.0-alpha.5]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.5
 [0.1.0-alpha.4]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.4
 [0.1.0-alpha.3]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.3

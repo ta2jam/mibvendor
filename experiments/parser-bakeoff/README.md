@@ -53,6 +53,28 @@ Future external fixtures belong under ignored `corpus/private/` unless their
 redistribution scope is explicitly approved. A source being publicly
 downloadable is not approval to commit or republish it. The 100-case result may
 commit only aggregate metrics and diagnostics scrubbed of third-party MIB text.
+Git and the parser Docker build context both exclude `corpus/private/`; private
+fixtures must be mounted read-only at execution time and must never be copied
+into an image layer.
+
+Before any 100-case run, the private manifest and files must pass:
+
+```sh
+./scripts/validate_corpus_intake.py corpus/private/manifest.json \
+  --corpus-dir corpus/private/files \
+  --evidence-dir corpus/private/evidence
+```
+
+The intake requires exactly 20 cases in each planned category, ten two-file
+revision comparison groups, unique files and content hashes, an exact SHA-256
+for every file, a known rights-matrix source, and explicit approved testing
+authority backed by a present, non-symlinked evidence file with an exact
+SHA-256. It reads each corpus file and unique evidence file once, uses `O(N)`
+manifest memory, caps individual MIB files at 10 MiB, evidence files at 5 MiB,
+and the total MIB corpus at 200 MiB. It emits counts only—not filenames,
+diagnostics, evidence contents, or MIB text. Passing intake does not pass the
+parser gate; it only proves that the supplied evidence is eligible to be
+measured.
 
 The nine current cases cover:
 
@@ -135,6 +157,7 @@ constant and energy costs in this small run.
 - `scripts/run_bakeoff.py`: adapters, normalization, metrics, and aggregation.
 - `scripts/validate_results.py`: dependency-free result consistency check.
 - `scripts/validate_multiarch_results.py`: architecture and normalized parity check.
+- `scripts/validate_corpus_intake.py`: private 100-case balance, rights, hash, and path gate.
 - `containers/`: one pinned Dockerfile per candidate.
 - `results/2026-07-13-macos-arm64/`: committed real local run.
 - `results/2026-07-13-linux-amd64/`: committed pinned-container run.

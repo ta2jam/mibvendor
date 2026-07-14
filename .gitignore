@@ -5,4 +5,5 @@ node_modules/
 coverage/
 .local/
 experiments/parser-bakeoff/results/local/
+experiments/parser-bakeoff/corpus/private/
 *.log

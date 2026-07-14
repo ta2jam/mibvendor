@@ -4,6 +4,7 @@ import test from "node:test";
 
 import {
   DATA_RELEASE,
+  MAX_BODY_BYTES,
   MAX_BATCH_SIZE,
   createPhase0ApiMock
 } from "../scripts/phase0-api-mock.mjs";
@@ -81,5 +82,18 @@ test("release changes remain explicitly synthetic and optional", async () => {
     const body = await response.json();
     assert.deepEqual(body.changes, []);
     assert.match(body.note, /unvalidated/i);
+  });
+});
+
+test("request bodies over the documented byte cap are rejected", async () => {
+  await withServer(async (base) => {
+    const response = await fetch(`${base}/v1/resolve:batch`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ oids: ["1".repeat(MAX_BODY_BYTES)] })
+    });
+    const problem = await response.json();
+    assert.equal(response.status, 413);
+    assert.equal(problem.type, "https://mibvendor.io/problems/body-too-large");
   });
 });

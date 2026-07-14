@@ -14,6 +14,8 @@ Files:
 - `consent-privacy.md`: minimal-data consent and handling rules.
 - `scoring-sheet.md`: per-session and aggregate scoring.
 - `api-scenarios.md`: three unvalidated API integration hypotheses expressed as contracts and tests.
+- `phase0-openapi.json`: machine-checked OpenAPI 3.1 contract for the local-only
+  synthetic probe; it is not a hosted or supported public API.
 - `prototype-performance.md`: one reproducible 50,000-line synthetic walk baseline and its limits.
 - `validation-evidence.json`: machine-checked, privacy-minimized participant,
   repeat-use, and external integration evidence register. It intentionally

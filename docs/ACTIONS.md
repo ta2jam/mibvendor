@@ -9,9 +9,9 @@ complete. Order is dependency-driven.
 | 2 | Approve recruitment channels and incentive policy; recruit 4 beginners, 4 experts, and 4 API/tool developers. | All demand gates and comparative UX claims. | Desk evidence remains directional only. |
 | 3 | Schedule/run 12 moderated sessions using one tagged prototype build and enter evidence in the score sheet. | `0/12` interviews and `0/5` material-loss gates. | No claim of validated demand. |
 | 4 | Keep the prototype available for 14 days and have consenting participants use it on a second real task. | `0/3` repeat-use gate; elapsed real use cannot be simulated. | Stated intent is not counted. |
-| 5 | Have at least 3 external tool developers exercise the synthetic API probe and provide code/test artifacts. | `0/3` real API-integration gate. | Contracts remain hypotheses. |
+| 5 | Have at least 3 external tool developers exercise the synthetic API probe and provide code/test artifacts. | `0/3` real API-integration gate. | The local-only probe now has a machine-checked OpenAPI 3.1 contract; external use remains `0/3`, so the contracts are still hypotheses. |
 | 6 | Send first-wave vendor rights requests from an accountable owner identity: Cisco, Juniper, Arista, HPE Aruba, Fortinet, Palo Alto Networks, VMware/Broadcom, NetApp, Dell, Synology. | A vendor-relevant public Tier A/B path. | Public corpus remains the narrow approved standards seed; vendor data stays Q/P. |
-| 7 | Supply or authorize a rights-approved 100-case parser corpus: 20 IETF/IANA, 20 valid vendor, 20 broken vendor, 20 revision-pair, and 20 collision/import cases. | Final canonical parser selection and real-vendor compatibility evidence. | Nine CC0 synthetic cases support only a provisional recommendation. |
+| 7 | Supply or authorize a rights-approved 100-case parser corpus: 20 IETF/IANA, 20 valid vendor, 20 broken vendor, 20 revision-pair, and 20 collision/import cases. | Final canonical parser selection and real-vendor compatibility evidence. | Private intake now rejects unapproved, unbalanced, duplicate, hash-mismatched, oversized, or path-escaping inputs; nine CC0 synthetic cases still support only a provisional recommendation. |
 
 ## Dependency notes
 

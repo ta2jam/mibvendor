@@ -6,7 +6,9 @@ import { resolveOid, searchRecords } from "../prototype/core.mjs";
 
 export const DATA_RELEASE = "phase0-synthetic-1";
 export const MAX_BATCH_SIZE = 1_000;
-const MAX_BODY_BYTES = 64 * 1024;
+export const MAX_BODY_BYTES = 64 * 1024;
+export const MAX_OID_LENGTH = 512;
+export const MAX_QUERY_LENGTH = 200;
 
 function stableId(record) {
   return `${record.module.toLowerCase()}--${record.symbol.toLowerCase()}`;
@@ -93,8 +95,16 @@ export function createPhase0ApiMock() {
           problem(response, 422, "https://mibvendor.io/problems/invalid-batch", "Invalid batch", "oids must be an array");
           return;
         }
+        if (body.data_release !== undefined && body.data_release !== DATA_RELEASE) {
+          problem(response, 409, "https://mibvendor.io/problems/data-release-unavailable", "Data release unavailable", "The Phase 0 probe exposes only its current synthetic release");
+          return;
+        }
         if (body.oids.length > MAX_BATCH_SIZE) {
           problem(response, 413, "https://mibvendor.io/problems/batch-too-large", "Batch too large", `Maximum ${MAX_BATCH_SIZE} OIDs`);
+          return;
+        }
+        if (!body.oids.every((oid) => typeof oid === "string" && oid.length <= MAX_OID_LENGTH)) {
+          problem(response, 422, "https://mibvendor.io/problems/invalid-batch", "Invalid batch", `Every OID must be a string of at most ${MAX_OID_LENGTH} characters`);
           return;
         }
 
@@ -122,6 +132,10 @@ export function createPhase0ApiMock() {
 
     if (request.method === "GET" && url.pathname === "/v1/search") {
       const query = url.searchParams.get("q") ?? "";
+      if (query.length > MAX_QUERY_LENGTH) {
+        problem(response, 422, "https://mibvendor.io/problems/query-too-long", "Query too long", `Maximum ${MAX_QUERY_LENGTH} characters`);
+        return;
+      }
       const results = searchRecords(query, records).slice(0, 20).map(publicObject);
       writeJson(response, 200, { data_release: DATA_RELEASE, query, results });
       return;

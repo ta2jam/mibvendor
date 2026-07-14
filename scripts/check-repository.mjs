@@ -41,8 +41,11 @@ for (const required of [
   "deploy/nginx.conf",
   ".github/workflows/production-monitor.yml",
   ".github/workflows/parser-arm64.yml",
+  "experiments/parser-bakeoff/.dockerignore",
+  "experiments/parser-bakeoff/scripts/validate_corpus_intake.py",
   "scripts/verify-production.sh",
   "docs/research/demand/validation-evidence.json",
+  "docs/research/demand/phase0-openapi.json",
   "docs/research/rights/permission-requests.json",
   "prototype/index.html",
   "prototype/app.js",
@@ -108,6 +111,33 @@ for (const requiredArm64Boundary of [
 ]) {
   if (!arm64ParserWorkflow.includes(requiredArm64Boundary)) {
     failures.push(`Linux arm64 parser workflow is missing boundary: ${requiredArm64Boundary}`);
+  }
+}
+
+const gitignore = await readFile(path.join(root, ".gitignore"), "utf8");
+const parserDockerignore = await readFile(
+  path.join(root, "experiments", "parser-bakeoff", ".dockerignore"),
+  "utf8",
+);
+if (!gitignore.includes("experiments/parser-bakeoff/corpus/private/")) {
+  failures.push("Private parser corpus must be ignored by Git");
+}
+for (const privateBoundary of ["corpus/private/", "corpus/private/**", "results/**"]) {
+  if (!parserDockerignore.includes(privateBoundary)) {
+    failures.push(`Parser Docker context is missing exclusion: ${privateBoundary}`);
+  }
+}
+const parserContainerRunner = await readFile(
+  path.join(root, "experiments", "parser-bakeoff", "scripts", "run_containers.sh"),
+  "utf8",
+);
+for (const canaryBoundary of [
+  ".mibvendor-build-context-canary-$$",
+  "must never enter a parser image layer",
+  "test ! -e /bench/corpus/private/"
+]) {
+  if (!parserContainerRunner.includes(canaryBoundary)) {
+    failures.push(`Parser container runner is missing private-context canary boundary: ${canaryBoundary}`);
   }
 }
 
