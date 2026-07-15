@@ -13,13 +13,15 @@
     "check:license-derived": "node scripts/validate-license-derived-intake.mjs",
     "check:compiled-mibs": "node scripts/validate-compiled-mib-intake.mjs",
     "check:corpus-candidates": "node scripts/validate-corpus-expansion-candidates.mjs",
+    "check:raw-analysis": "node scripts/validate-raw-mib-analysis.mjs",
+    "check:compiled-fidelity": "node scripts/validate-compiled-mib-fidelity.mjs",
     "check:rights-requests": "node scripts/validate-rights-requests.mjs",
     "check:demand": "node scripts/validate-demand-evidence.mjs",
     "check:foundation": "node scripts/validate-foundation-contracts.mjs",
     "check:parser-results": "python3 experiments/parser-bakeoff/scripts/validate_results.py experiments/parser-bakeoff/results/2026-07-13-linux-amd64 && python3 experiments/parser-bakeoff/scripts/validate_results.py experiments/parser-bakeoff/results/2026-07-14-linux-arm64 && python3 experiments/parser-bakeoff/scripts/validate_multiarch_results.py experiments/parser-bakeoff/results/2026-07-13-linux-amd64 experiments/parser-bakeoff/results/2026-07-14-linux-arm64",
     "check:production": "./scripts/verify-production.sh",
     "test": "node --test tests/*.test.mjs",
-    "verify": "npm run check && npm run check:rights && npm run check:mibs && npm run check:sources && npm run check:license-derived && npm run check:compiled-mibs && npm run check:corpus-candidates && npm run check:rights-requests && npm run check:demand && npm run check:foundation && npm run check:parser-results && npm test",
+    "verify": "npm run check && npm run check:rights && npm run check:mibs && npm run check:sources && npm run check:license-derived && npm run check:compiled-mibs && npm run check:corpus-candidates && npm run check:raw-analysis && npm run check:compiled-fidelity && npm run check:rights-requests && npm run check:demand && npm run check:foundation && npm run check:parser-results && npm test",
     "benchmark:prototype": "node scripts/benchmark-walk-prototype.mjs 50000",
     "serve:prototype": "python3 -m http.server 4173 --directory prototype",
     "serve:api-mock": "node scripts/phase0-api-mock.mjs",
@@ -29,7 +31,9 @@
     "update:sources": "node scripts/update-source-discovery.mjs",
     "update:license-derived": "node scripts/update-license-derived-intake.mjs",
     "update:compiled-mibs": "node scripts/update-compiled-mib-intake.mjs",
-    "update:corpus-candidates": "node scripts/update-corpus-expansion-candidates.mjs"
+    "update:corpus-candidates": "node scripts/update-corpus-expansion-candidates.mjs",
+    "update:raw-analysis": "node scripts/update-raw-mib-analysis.mjs",
+    "update:compiled-fidelity": "node scripts/update-compiled-mib-fidelity.mjs"
   },
   "engines": {
     "node": ">=20.9"

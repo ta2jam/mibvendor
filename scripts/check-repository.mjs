@@ -80,6 +80,9 @@ for (const required of [
   "data/compiled-mib-intake.json",
   "data/compiled-mib-objects-staging.json",
   "data/corpus-expansion-candidates.json",
+  "data/raw-mib-analysis.json",
+  "data/raw-mib-objects-staging.json.gz",
+  "data/compiled-mib-fidelity.json",
   "scripts/update-mib-catalog.mjs",
   "scripts/validate-mib-catalog.mjs",
   "scripts/update-source-discovery.mjs",
@@ -90,6 +93,10 @@ for (const required of [
   "scripts/validate-compiled-mib-intake.mjs",
   "scripts/update-corpus-expansion-candidates.mjs",
   "scripts/validate-corpus-expansion-candidates.mjs",
+  "scripts/update-raw-mib-analysis.mjs",
+  "scripts/validate-raw-mib-analysis.mjs",
+  "scripts/update-compiled-mib-fidelity.mjs",
+  "scripts/validate-compiled-mib-fidelity.mjs",
   "scripts/update-iana-pen.mjs",
   "THIRD_PARTY_NOTICES.md"
 ]) {

@@ -464,3 +464,21 @@ with no billing code.
 - DATA-02 remains `in-progress`: the 252 selected raw candidates still need the
   full parser/dependency gate, the 197 selected compiled candidates need field
   fidelity review, and only then can an immutable release be activated.
+
+### 2026-07-15 — DATA-02 parser and fidelity baseline
+
+- Deterministically analyzed all 252 selected raw modules without executing
+  source code or loading system MIBs: 190 static passes, 57 partials, and five
+  empty modules.
+- Resolved 38,045 of 41,733 unique declared objects. Kept 3,688 unresolved
+  objects, eight missing dependency edges across seven modules, and 16 duplicate
+  symbols across five modules explicit; the parser gate remains open.
+- Fixed a parser defect that treated reserved `SYNTAX OBJECT IDENTIFIER` clauses
+  as object declarations. Duplicate legitimate symbols are now excluded from
+  canonical output and retained as diagnostics.
+- Compared raw and compiled output for 47 modules. Of 3,321 union symbols,
+  3,209 have an exact symbol/OID match and none has an OID mismatch; 28 are raw
+  only and 84 compiled only. Exact OID coverage is 96.6275%.
+- Compiled fidelity remains open: only 47 modules are cross-format comparable,
+  one of 2,026 comparable access fields differs, 17 description-presence fields
+  differ, and all 197 selected compiled-only modules lack a raw reference.

@@ -3,6 +3,7 @@ import { execFileSync } from "node:child_process";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import { fileURLToPath } from "node:url";
 
 const root = process.cwd();
 const outputRoot = path.join(root, "data", "mibs", "redistributable");
@@ -92,7 +93,7 @@ async function mapLimit(values, limit, task) {
   return results;
 }
 
-function moduleName(text) {
+export function moduleName(text) {
   return text.match(/^\s*([A-Za-z][A-Za-z0-9-]*)\s+DEFINITIONS(?:\s+IMPLICIT\s+TAGS)?\s*::=\s*BEGIN/m)?.[1] ?? null;
 }
 
@@ -152,7 +153,7 @@ function ietfNotice(rfcNumber, year) {
   return `-- mibvendor redistribution notice\n-- Derived from IETF RFC ${rfcNumber}. Please retain this notice.\n-- Copyright (c) ${year} IETF Trust and the persons identified as the\n-- document authors. All rights reserved.\n-- Redistribution and use in source and binary forms, with or without\n-- modification, are permitted provided that the following conditions are met:\n-- 1. Redistributions of source code must retain the copyright notice, this\n--    list of conditions and the following disclaimer.\n-- 2. Redistributions in binary form must reproduce the copyright notice, this\n--    list of conditions and the following disclaimer in the documentation\n--    and/or other materials provided with the distribution.\n-- 3. Neither the name of Internet Society, IETF or IETF Trust, nor the names\n--    of specific contributors, may be used to endorse or promote products\n--    derived from this software without specific prior written permission.\n-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS AS IS\n-- AND ANY EXPRESS OR IMPLIED WARRANTIES ARE DISCLAIMED. See the complete\n-- Revised BSD terms at ${IETF_LICENSE_URL}\n\n`;
 }
 
-function importsFor(text) {
+export function importsFor(text) {
   const body = text.match(/\bIMPORTS\b([\s\S]*?);/)?.[1] ?? "";
   return [...new Set([...body.matchAll(/\bFROM\s+([A-Za-z][A-Za-z0-9-]*)/g)].map((match) => match[1]))].sort();
 }
@@ -183,7 +184,8 @@ function parseRevision(text) {
   return timestamp ? `${timestamp.slice(0, 4)}-${timestamp.slice(4, 6)}-${timestamp.slice(6, 8)}` : null;
 }
 
-function parseDefinitions(text, module) {
+export function parseDefinitions(text, module) {
+  const reservedSymbols = new Set(["ACCESS", "AUGMENTS", "DEFVAL", "DESCRIPTION", "INDEX", "MAX-ACCESS", "MIN-ACCESS", "REFERENCE", "STATUS", "SYNTAX", "UNITS"]);
   const starts = [...text.matchAll(/^\s*([A-Za-z][A-Za-z0-9-]*)\s+(MODULE-IDENTITY|OBJECT-TYPE|OBJECT\s+IDENTIFIER|OBJECT-IDENTITY|NOTIFICATION-TYPE)\b/gm)];
   return starts.map((match, index) => {
     const block = text.slice(match.index, starts[index + 1]?.index ?? text.length);
@@ -219,10 +221,10 @@ function parseDefinitions(text, module) {
       oid: null,
       oid_resolution: "unresolved"
     };
-  }).filter(Boolean);
+  }).filter((object) => object && !reservedSymbols.has(object.symbol));
 }
 
-function resolveObjects(parsedModules, rawDirectories) {
+export function resolveObjects(parsedModules, rawDirectories, { externalObjects = [], useNetSnmp = true } = {}) {
   const seeds = new Map([
     ["iso", "1"], ["org", "1.3"], ["dod", "1.3.6"], ["internet", "1.3.6.1"],
     ["directory", "1.3.6.1.1"], ["mgmt", "1.3.6.1.2"], ["mib-2", "1.3.6.1.2.1"],
@@ -234,7 +236,7 @@ function resolveObjects(parsedModules, rawDirectories) {
   ]);
   const all = parsedModules.flatMap((item) => item.objects);
   const bySymbol = new Map();
-  for (const object of all) {
+  for (const object of [...all, ...externalObjects]) {
     const values = bySymbol.get(object.symbol) ?? [];
     values.push(object);
     bySymbol.set(object.symbol, values);
@@ -255,7 +257,7 @@ function resolveObjects(parsedModules, rawDirectories) {
     if (!changed) break;
   }
 
-  try {
+  if (useNetSnmp) try {
     const output = execFileSync("snmptranslate", ["-Tz"], {
       encoding: "utf8",
       maxBuffer: 64 * 1024 * 1024,
@@ -550,4 +552,5 @@ async function main() {
   console.log(JSON.stringify(catalog.counts));
 }
 
-await main();
+const invokedPath = process.argv[1] ? path.resolve(process.argv[1]) : null;
+if (invokedPath === fileURLToPath(import.meta.url)) await main();
