@@ -1,6 +1,9 @@
 # Roadmap
 
 Dates are not commitments. Vendor-rights responses are calendar-dependent.
+The ordered implementation status and measurable release outcomes are tracked
+in [WORK-TRACKER.md](WORK-TRACKER.md). That tracker is binding when this roadmap
+and a task status diverge.
 
 ## Phase 0 — validate demand, rights, and parsing
 

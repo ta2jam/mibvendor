@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "provider": "github",
+  "sources": [
+    {
+      "id": "librenms",
+      "repository": "librenms/librenms",
+      "homepage": "https://www.librenms.org/",
+      "source_roles": ["mib-corpus", "device-identity"],
+      "minimum_candidate_count": 6000,
+      "license_files": ["LICENSE.txt"],
+      "candidate_roots": [
+        {
+          "path": "mibs",
+          "kind": "mib-file",
+          "matcher": "all-files",
+          "exclude_names": [".gitignore", ".index", "README", "README.md", "LICENSE", "LICENSE.txt", "COPYING"]
+        },
+        {
+          "path": "resources/definitions/os_detection",
+          "kind": "device-identity-definition",
+          "matcher": "extensions",
+          "extensions": [".yaml", ".yml", ".json"]
+        },
+        {
+          "path": "resources/definitions/os_discovery",
+          "kind": "device-identity-definition",
+          "matcher": "extensions",
+          "extensions": [".yaml", ".yml", ".json"]
+        }
+      ]
+    },
+    {
+      "id": "netdisco-snmp-info",
+      "repository": "netdisco/snmp-info",
+      "homepage": "https://github.com/netdisco/snmp-info",
+      "source_roles": ["device-identity"],
+      "minimum_candidate_count": 140,
+      "license_files": ["LICENSE"],
+      "candidate_roots": [
+        {
+          "path": "lib/SNMP/Info",
+          "kind": "device-identity-definition",
+          "matcher": "extensions",
+          "extensions": [".pm"]
+        }
+      ]
+    },
+    {
+      "id": "netdisco-mibs",
+      "repository": "netdisco/netdisco-mibs",
+      "homepage": "https://github.com/netdisco/netdisco-mibs",
+      "source_roles": ["mib-corpus"],
+      "minimum_candidate_count": 2200,
+      "license_files": [],
+      "candidate_roots": [
+        {
+          "path": "",
+          "kind": "mib-file",
+          "matcher": "extensions",
+          "extensions": [".mib"]
+        }
+      ]
+    },
+    {
+      "id": "erlang-otp-snmp",
+      "repository": "erlang/otp",
+      "homepage": "https://www.erlang.org/",
+      "source_roles": ["mib-corpus"],
+      "minimum_candidate_count": 20,
+      "license_files": ["LICENSE.txt"],
+      "candidate_roots": [
+        {
+          "path": "lib/snmp/mibs",
+          "kind": "mib-file",
+          "matcher": "extensions",
+          "extensions": [".mib"]
+        }
+      ]
+    },
+    {
+      "id": "zabbix",
+      "repository": "zabbix/zabbix",
+      "homepage": "https://www.zabbix.com/",
+      "source_roles": ["monitoring-template"],
+      "minimum_candidate_count": 300,
+      "license_files": ["COPYING"],
+      "candidate_roots": [
+        {
+          "path": "templates",
+          "kind": "monitoring-template",
+          "matcher": "extensions",
+          "extensions": [".yaml", ".yml", ".xml", ".json"]
+        }
+      ]
+    },
+    {
+      "id": "prometheus-snmp-exporter",
+      "repository": "prometheus/snmp_exporter",
+      "homepage": "https://github.com/prometheus/snmp_exporter",
+      "source_roles": ["monitoring-template"],
+      "minimum_candidate_count": 2,
+      "license_files": ["LICENSE", "NOTICE"],
+      "candidate_roots": [
+        {
+          "path": "snmp.yml",
+          "kind": "monitoring-template",
+          "matcher": "exact"
+        },
+        {
+          "path": "generator/generator.yml",
+          "kind": "monitoring-template",
+          "matcher": "exact"
+        }
+      ]
+    },
+    {
+      "id": "net-snmp-upstream",
+      "repository": "net-snmp/net-snmp",
+      "homepage": "https://www.net-snmp.org/",
+      "source_roles": ["mib-corpus"],
+      "minimum_candidate_count": 70,
+      "license_files": ["COPYING"],
+      "candidate_roots": [
+        {
+          "path": "mibs",
+          "kind": "mib-file",
+          "matcher": "mib-names",
+          "extensions": [".mib", ".txt"]
+        }
+      ]
+    }
+  ]
+}

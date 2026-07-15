@@ -30,6 +30,7 @@ for (const required of [
   "LICENSE",
   "VERSION",
   "README.md",
+  "docs/WORK-TRACKER.md",
   "docs/PHASE-0.md",
   "docs/PRODUCT.md",
   "docs/foundation/README.md",
@@ -72,8 +73,12 @@ for (const required of [
   "data/mib-catalog.json",
   "data/mib-objects.json",
   "data/source-catalog.json",
+  "data/source-discovery-registry.json",
+  "data/source-discovery.json",
   "scripts/update-mib-catalog.mjs",
   "scripts/validate-mib-catalog.mjs",
+  "scripts/update-source-discovery.mjs",
+  "scripts/validate-source-discovery.mjs",
   "scripts/update-iana-pen.mjs",
   "THIRD_PARTY_NOTICES.md"
 ]) {
