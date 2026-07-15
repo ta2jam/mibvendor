@@ -5,10 +5,10 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
 
-export function validateRawMibAnalysis(candidateSet, rawIntake, activeCatalog, analysis, objectDocument) {
+export function validateRawMibAnalysis(candidateSet, rawIntake, activeCatalog, aliasDocument, analysis, objectDocument, typeDocument) {
   const failures = [];
-  if (analysis.schema_version !== 1 || objectDocument.schema_version !== 1) failures.push("Raw MIB analysis schema version must be 1");
-  if (analysis.activation_state !== "staged-not-active" || objectDocument.activation_state !== "staged-not-active") failures.push("Raw MIB analysis escaped staging");
+  if (analysis.schema_version !== 2 || objectDocument.schema_version !== 1 || typeDocument.schema_version !== 1) failures.push("Raw MIB analysis schema versions drifted");
+  if (analysis.activation_state !== "staged-not-active" || objectDocument.activation_state !== "staged-not-active" || typeDocument.activation_state !== "staged-not-active") failures.push("Raw MIB analysis escaped staging");
   if (analysis.baseline_data_release !== activeCatalog.data_release) failures.push("Raw MIB analysis baseline drifted");
   if (analysis.parser_security !== "no-source-code-execution-no-system-mib-enrichment") failures.push("Raw MIB analysis security boundary drifted");
   const expectedDigest = createHash("sha256").update(JSON.stringify({ ...analysis, manifest_sha256: null })).digest("hex");
@@ -16,6 +16,19 @@ export function validateRawMibAnalysis(candidateSet, rawIntake, activeCatalog, a
   const selectedRows = candidateSet.modules.filter((module) => module.selected_format === "raw");
   const selectedByModule = new Map(selectedRows.map((module) => [module.module, module]));
   const artifactById = new Map(rawIntake.artifacts.map((artifact) => [artifact.id, artifact]));
+  if (aliasDocument.schema_version !== 1) failures.push("MIB module alias schema version must be 1");
+  const aliasByName = new Map();
+  for (const alias of aliasDocument.aliases ?? []) {
+    if (aliasByName.has(alias.alias)) failures.push(`Duplicate MIB module alias ${alias.alias}`);
+    aliasByName.set(alias.alias, alias);
+    if (!alias.alias || !alias.canonical_module || alias.alias === alias.canonical_module) failures.push(`Invalid MIB module alias ${alias.alias}`);
+    if (!selectedByModule.has(alias.canonical_module)) failures.push(`MIB module alias target is not selected raw ${alias.alias}`);
+    if (selectedByModule.get(alias.canonical_module)?.selected_artifact_id !== alias.canonical_artifact_id) failures.push(`MIB module alias canonical evidence drifted ${alias.alias}`);
+    if (selectedByModule.get(alias.importer_module)?.selected_artifact_id !== alias.importer_artifact_id) failures.push(`MIB module alias importer evidence drifted ${alias.alias}`);
+    if (!artifactById.has(alias.importer_artifact_id) || !artifactById.has(alias.canonical_artifact_id)) failures.push(`MIB module alias artifact evidence missing ${alias.alias}`);
+    if (!alias.evidence?.trim()) failures.push(`MIB module alias evidence missing ${alias.alias}`);
+  }
+  for (const alias of aliasDocument.aliases ?? []) if (aliasByName.has(alias.canonical_module)) failures.push(`Chained MIB module alias is forbidden ${alias.alias}`);
   const moduleByName = new Map();
   for (const module of analysis.modules ?? []) {
     if (moduleByName.has(module.module)) failures.push(`Duplicate raw analysis module ${module.module}`);
@@ -28,8 +41,15 @@ export function validateRawMibAnalysis(candidateSet, rawIntake, activeCatalog, a
     if (module.declared_object_count !== module.resolved_object_count + module.unresolved_object_count) failures.push(`Raw analysis object counts drifted ${module.module}`);
     if (module.duplicate_symbol_count !== module.duplicate_symbols?.length || new Set(module.duplicate_symbols).size !== module.duplicate_symbols?.length) failures.push(`Raw analysis duplicate-symbol counts drifted ${module.module}`);
     if (module.dependency_count !== module.dependencies?.length || module.missing_dependency_count !== module.dependencies?.filter((dependency) => dependency.state === "missing").length) failures.push(`Raw analysis dependency counts drifted ${module.module}`);
-    if ((module.dependencies ?? []).some((dependency) => !new Set(["active", "selected-raw", "selected-compiled", "missing"]).has(dependency.state))) failures.push(`Raw analysis dependency state invalid ${module.module}`);
-    const expectedStatus = module.declared_object_count === 0 ? "static-empty" : module.unresolved_object_count === 0 && module.missing_dependency_count === 0 && module.duplicate_symbol_count === 0 ? "static-pass" : "static-partial";
+    if ((module.dependencies ?? []).some((dependency) => !new Set(["active", "selected-raw", "selected-compiled", "alias-active", "alias-selected-raw", "alias-selected-compiled", "missing"]).has(dependency.state))) failures.push(`Raw analysis dependency state invalid ${module.module}`);
+    for (const dependency of module.dependencies ?? []) {
+      if (dependency.state.startsWith("alias-")) {
+        const alias = aliasByName.get(dependency.module);
+        if (!alias || dependency.resolved_as !== alias.canonical_module) failures.push(`Raw analysis dependency alias drifted ${module.module}:${dependency.module}`);
+      } else if (dependency.resolved_as) failures.push(`Raw analysis direct dependency has alias target ${module.module}:${dependency.module}`);
+    }
+    if (module.semantic_definition_count !== module.declared_object_count + module.textual_convention_count + module.macro_count) failures.push(`Raw analysis semantic-definition counts drifted ${module.module}`);
+    const expectedStatus = module.semantic_definition_count === 0 ? "static-empty" : module.unresolved_object_count === 0 && module.missing_dependency_count === 0 && module.duplicate_symbol_count === 0 ? "static-pass" : "static-partial";
     if (module.parser_status !== expectedStatus) failures.push(`Raw analysis parser status overclaimed ${module.module}`);
   }
   if (moduleByName.size !== selectedByModule.size || [...selectedByModule.keys()].some((module) => !moduleByName.has(module))) failures.push("Raw analysis selected-module coverage drifted");
@@ -46,6 +66,25 @@ export function validateRawMibAnalysis(candidateSet, rawIntake, activeCatalog, a
     if (object.activation_state !== "staged" || object.parser_method !== "deterministic-static-smi-no-external-execution") failures.push(`Raw object escaped staging ${object.id}`);
   }
   for (const module of analysis.modules ?? []) if (module.resolved_object_count !== (resolvedCounts.get(module.module) ?? 0)) failures.push(`Raw resolved object count drifted ${module.module}`);
+  const definitionKeys = new Set();
+  const textualConventionCounts = new Map();
+  const macroCounts = new Map();
+  for (const definition of typeDocument.definitions ?? []) {
+    const module = moduleByName.get(definition.module);
+    if (!module || definition.source_artifact_id !== module.selected_artifact_id || definition.source_id !== module.source_id) failures.push(`Raw type provenance drifted ${definition.module}:${definition.symbol}`);
+    if (!new Set(["textual-convention", "macro"]).has(definition.kind)) failures.push(`Raw type kind invalid ${definition.module}:${definition.symbol}`);
+    if (definition.kind === "textual-convention" && !definition.syntax?.trim()) failures.push(`Raw textual-convention syntax missing ${definition.module}:${definition.symbol}`);
+    const key = `${definition.module}:${definition.kind}:${definition.symbol}`;
+    if (definitionKeys.has(key)) failures.push(`Duplicate raw type ${key}`);
+    definitionKeys.add(key);
+    if (definition.activation_state !== "staged" || definition.parser_method !== "deterministic-static-smi-no-external-execution") failures.push(`Raw type escaped staging ${key}`);
+    const counts = definition.kind === "textual-convention" ? textualConventionCounts : macroCounts;
+    counts.set(definition.module, (counts.get(definition.module) ?? 0) + 1);
+  }
+  for (const module of analysis.modules ?? []) {
+    if (module.textual_convention_count !== (textualConventionCounts.get(module.module) ?? 0)) failures.push(`Raw textual-convention count drifted ${module.module}`);
+    if (module.macro_count !== (macroCounts.get(module.module) ?? 0)) failures.push(`Raw macro count drifted ${module.module}`);
+  }
   const expectedCounts = {
     modules: analysis.modules?.length ?? 0,
     static_pass: analysis.modules?.filter((module) => module.parser_status === "static-pass").length ?? 0,
@@ -54,6 +93,9 @@ export function validateRawMibAnalysis(candidateSet, rawIntake, activeCatalog, a
     declared_objects: analysis.modules?.reduce((sum, module) => sum + module.declared_object_count, 0) ?? 0,
     resolved_objects: objectDocument.objects?.length ?? 0,
     unresolved_objects: analysis.modules?.reduce((sum, module) => sum + module.unresolved_object_count, 0) ?? 0,
+    textual_conventions: analysis.modules?.reduce((sum, module) => sum + module.textual_convention_count, 0) ?? 0,
+    macros: analysis.modules?.reduce((sum, module) => sum + module.macro_count, 0) ?? 0,
+    semantic_definitions: analysis.modules?.reduce((sum, module) => sum + module.semantic_definition_count, 0) ?? 0,
     duplicate_symbols: analysis.modules?.reduce((sum, module) => sum + module.duplicate_symbol_count, 0) ?? 0,
     modules_with_duplicate_symbols: analysis.modules?.filter((module) => module.duplicate_symbol_count > 0).length ?? 0,
     missing_dependency_edges: analysis.modules?.reduce((sum, module) => sum + module.missing_dependency_count, 0) ?? 0,
@@ -68,14 +110,16 @@ export function validateRawMibAnalysis(candidateSet, rawIntake, activeCatalog, a
 const invokedPath = process.argv[1] ? path.resolve(process.argv[1]) : null;
 if (invokedPath === fileURLToPath(import.meta.url)) {
   const root = process.cwd();
-  const [candidateSet, rawIntake, activeCatalog, analysis, objects] = await Promise.all([
+  const [candidateSet, rawIntake, activeCatalog, aliases, analysis, objects, types] = await Promise.all([
     readFile(path.join(root, "data", "corpus-expansion-candidates.json"), "utf8").then(JSON.parse),
     readFile(path.join(root, "data", "license-derived-intake.json"), "utf8").then(JSON.parse),
     readFile(path.join(root, "data", "mib-catalog.json"), "utf8").then(JSON.parse),
+    readFile(path.join(root, "data", "mib-module-aliases.json"), "utf8").then(JSON.parse),
     readFile(path.join(root, "data", "raw-mib-analysis.json"), "utf8").then(JSON.parse),
-    readFile(path.join(root, "data", "raw-mib-objects-staging.json.gz")).then((bytes) => JSON.parse(gunzipSync(bytes)))
+    readFile(path.join(root, "data", "raw-mib-objects-staging.json.gz")).then((bytes) => JSON.parse(gunzipSync(bytes))),
+    readFile(path.join(root, "data", "raw-mib-types-staging.json.gz")).then((bytes) => JSON.parse(gunzipSync(bytes)))
   ]);
-  const failures = validateRawMibAnalysis(candidateSet, rawIntake, activeCatalog, analysis, objects);
+  const failures = validateRawMibAnalysis(candidateSet, rawIntake, activeCatalog, aliases, analysis, objects, types);
   if (failures.length) { for (const failure of failures) console.error(failure); process.exitCode = 1; }
   else console.log(`Raw MIB analysis passed: ${analysis.counts.modules} selected modules, ${analysis.counts.resolved_objects} resolved objects; parser gate ${analysis.parser_gate}.`);
 }

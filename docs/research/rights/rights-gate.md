@@ -25,6 +25,12 @@ nesnesi içerir. Aktif 110 modülle birlikte tekrarlar düşüldüğünde 559 be
 modül adayı vardır; bu sayı production kapsamı veya parser gate başarısı olarak
 sunulmaz.
 
+252 seçili raw adayın deterministik staging analizi 38.045 OID nesnesini,
+1.055 textual convention'ı ve 12 SMI makrosunu çıkardı. İki tarihsel modül adı
+farkı artifact kanıtlı alias olarak kaydedildi; gerçek eksik import sayısı altı,
+çözülemeyen OID sayısı 3.688'dir. Parser gate'i bu nedenle hâlâ açıktır ve bu
+çıktılar aktif kamu veri sürümüne dahil değildir.
+
 - Kamuya açılan çekirdek: dosya bazında koşulları doğrulanmış IETF MIB code component'leri, doğrudan IANA Protocol Registry MIB'leri ve sabitlenmiş Net-SNMP proje MIB'leri.
 - Vendor aileleri: 19 aile incelendi; hiçbirine mevcut kanıtla A veya B verilmedi.
 - Tier B şu anda boş. Kamuya metadata koymak için de `metadata_index` kapsamının açıkça onaylanması gerekir.

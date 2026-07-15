@@ -482,3 +482,20 @@ with no billing code.
 - Compiled fidelity remains open: only 47 modules are cross-format comparable,
   one of 2,026 comparable access fields differs, 17 description-presence fields
   differ, and all 197 selected compiled-only modules lack a raw reference.
+
+### 2026-07-15 — DATA-02 semantic definitions and dependency aliases
+
+- Added deterministic static extraction for 1,055 textual conventions and 12
+  legacy SMI macros without executing source code. Syntax, status, description,
+  and display hints remain staged with artifact-level provenance.
+- Reclassified macro-only and textual-convention-only modules as semantic input,
+  reducing `static-empty` modules from five to one. The remaining empty module,
+  `OPENSS7-O248-MIB`, contains a module shell but no definitions.
+- Added two explicit, artifact-backed import aliases: `RFC-1213` resolves to
+  `RFC1213-MIB`, and `RFC1212` resolves to `RFC-1212`. Aliases do not change
+  canonical module names or inflate corpus counts.
+- Reduced missing dependency edges from eight across seven modules to six
+  across five modules. The remaining CPQ and Microsoft imports are still
+  missing and remain visible; no fallback dependency was inferred.
+- DATA-02 remains `in-progress`: 3,688 OID declarations are unresolved, 16
+  duplicate symbols remain explicit, and the parser gate is still open.

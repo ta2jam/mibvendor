@@ -224,6 +224,41 @@ export function parseDefinitions(text, module) {
   }).filter((object) => object && !reservedSymbols.has(object.symbol));
 }
 
+export function parseTextualConventions(text, module) {
+  const starts = [...text.matchAll(/^[ \t]*([A-Za-z][A-Za-z0-9-]*)\s*::=\s*TEXTUAL-CONVENTION\b/gm)];
+  const definitionCandidates = [...text.matchAll(/^[ \t]*[A-Za-z][A-Za-z0-9-]*\s+(?:(?:MODULE-IDENTITY|OBJECT-TYPE|OBJECT-IDENTITY|NOTIFICATION-TYPE|NOTIFICATION-GROUP|OBJECT-GROUP|MODULE-COMPLIANCE|AGENT-CAPABILITIES|TRAP-TYPE)\b|OBJECT\s+IDENTIFIER\s*::=|::=\s*TEXTUAL-CONVENTION\b)/gm)];
+  const definitionStarts = definitionCandidates.filter((candidate, index) => {
+    if (/::=\s*TEXTUAL-CONVENTION\b/.test(candidate[0])) return true;
+    const block = text.slice(candidate.index, definitionCandidates[index + 1]?.index ?? text.length);
+    return /::=\s*\{/.test(block);
+  }).map((match) => match.index);
+  return starts.map((match) => {
+    const nextDefinition = definitionStarts.find((offset) => offset > match.index);
+    const block = text.slice(match.index, nextDefinition ?? text.length);
+    const syntaxMarker = [...block.matchAll(/\bSYNTAX[ \t]+/g)].at(-1);
+    const syntax = syntaxMarker
+      ? block.slice(syntaxMarker.index + syntaxMarker[0].length).replace(/\n[ \t]*END\b[\s\S]*$/, "").replace(/--[^\n]*/g, " ").replace(/\s+/g, " ").trim()
+      : null;
+    return {
+      module,
+      symbol: match[1],
+      kind: "textual-convention",
+      syntax,
+      status: block.match(/^\s*STATUS\s+([A-Za-z-]+)/m)?.[1] ?? null,
+      description: firstDescription(block),
+      display_hint: block.match(/^\s*DISPLAY-HINT\s+"([^"]*)"/m)?.[1] ?? null
+    };
+  });
+}
+
+export function parseMacros(text, module) {
+  return [...text.matchAll(/^[ \t]*([A-Za-z][A-Za-z0-9-]*)\s+MACRO\s*::=\s*BEGIN\b/gm)].map((match) => ({
+    module,
+    symbol: match[1],
+    kind: "macro"
+  }));
+}
+
 export function resolveObjects(parsedModules, rawDirectories, { externalObjects = [], useNetSnmp = true } = {}) {
   const seeds = new Map([
     ["iso", "1"], ["org", "1.3"], ["dod", "1.3.6"], ["internet", "1.3.6.1"],

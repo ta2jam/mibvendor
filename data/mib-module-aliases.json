@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "aliases": [
+    {
+      "alias": "RFC-1213",
+      "canonical_module": "RFC1213-MIB",
+      "importer_module": "DNS-SERVER-MIB",
+      "evidence": "DNS-SERVER-MIB imports RFC-1213 while the selected RFC 1213 artifact declares RFC1213-MIB",
+      "importer_artifact_id": "osnmpd-mibs:doc/mib/DNS-SERVER-MIB.mib",
+      "canonical_artifact_id": "osnmpd-mibs:doc/mib/RFC-1213.mib"
+    },
+    {
+      "alias": "RFC1212",
+      "canonical_module": "RFC-1212",
+      "importer_module": "SMUX-MIB",
+      "evidence": "SMUX-MIB imports RFC1212 while the selected RFC 1212 artifact declares RFC-1212",
+      "importer_artifact_id": "pandora-open-mibs:pandora_agent/win32/bin/util/mibs/SMUX-MIB.txt",
+      "canonical_artifact_id": "osnmpd-mibs:doc/mib/RFC-1212.mib"
+    }
+  ]
+}
