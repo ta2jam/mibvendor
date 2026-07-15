@@ -1,0 +1,1712 @@
+CET-AGIL-UPS DEFINITIONS ::= BEGIN
+
+IMPORTS
+    MODULE-IDENTITY, OBJECT-TYPE, NOTIFICATION-TYPE, OBJECT-IDENTITY, Counter32, Gauge32, Integer32
+        FROM SNMPv2-SMI
+    DisplayString, TimeStamp, AutonomousType
+        FROM SNMPv2-TC
+    MODULE-COMPLIANCE, OBJECT-GROUP
+        FROM SNMPv2-CONF;
+
+PositiveInteger ::= TEXTUAL-CONVENTION
+    DISPLAY-HINT "d"
+    STATUS       current
+    DESCRIPTION
+            "This data type is a non-zero and non-negative value."
+    SYNTAX       INTEGER (1..2147483647)
+
+NonNegativeInteger ::= TEXTUAL-CONVENTION
+    DISPLAY-HINT "d"
+    STATUS       current
+    DESCRIPTION
+            "This data type is a non-negative value."
+    SYNTAX       INTEGER (0..2147483647)
+
+org         OBJECT IDENTIFIER ::= { iso 3 }  --  "iso" = 1
+dod         OBJECT IDENTIFIER ::= { org 6 }
+internet    OBJECT IDENTIFIER ::= { dod 1 }
+private     OBJECT IDENTIFIER ::= { internet 4 }
+enterprises OBJECT IDENTIFIER ::= { private 1 }
+cetMIB      OBJECT IDENTIFIER ::= { enterprises 12551 }
+
+cetAGILUPS MODULE-IDENTITY
+    LAST-UPDATED "201107221000Z"
+    ORGANIZATION "CE+T"
+    CONTACT-INFO "Construction Electronique + Telecommunication (CE+T)
+
+                           Postal: Rue du charbonnage, 12
+                                       B-4020 Wandre
+                                       BELGIUM
+
+                           Tel: ++3243456742
+
+                           E-mail: n.marique@cet.be"
+    DESCRIPTION "CET MIB file definition for AGIL UPS"
+    ::= { cetMIB 5 }
+
+agilObjects       OBJECT IDENTIFIER ::= { cetAGILUPS 1 }
+
+agilModules       OBJECT IDENTIFIER ::= { agilObjects 1 }
+agilACOutGroups   OBJECT IDENTIFIER ::= { agilObjects 2 }
+agilACInGroups    OBJECT IDENTIFIER ::= { agilObjects 3 }
+agilDCGroups      OBJECT IDENTIFIER ::= { agilObjects 4 }
+agilSupervisor    OBJECT IDENTIFIER ::= { agilObjects 5 }
+agilAlarm         OBJECT IDENTIFIER ::= { agilObjects 6 }
+agilTrap          OBJECT IDENTIFIER ::= { agilObjects 7 }
+
+agilInputsOutputs OBJECT IDENTIFIER ::= { agilObjects 9 }
+agilSynoptic      OBJECT IDENTIFIER ::= { agilObjects 10 }
+agilConfiguration OBJECT IDENTIFIER ::= { agilObjects 11 }
+
+--
+-- agilModules
+--
+
+ModuleEntry ::= SEQUENCE {
+    agilModuleIndex               PositiveInteger,
+    agilModuleSeen                NonNegativeInteger,
+    agilModuleSN                  NonNegativeInteger,
+    agilModuleSoftware            NonNegativeInteger,
+    agilModuleNominalPowerW       NonNegativeInteger,
+    agilModuleNominalPowerVA      NonNegativeInteger,
+    agilModuleNominalACVoltage    NonNegativeInteger,
+    agilModuleNominalDCVoltage    NonNegativeInteger,
+    agilModuleNominalFrequency    NonNegativeInteger,
+    agilModuleACIn1GroupNumber    NonNegativeInteger,
+    agilModuleACIn2GroupNumber    NonNegativeInteger,
+    agilModuleACIn3GroupNumber    NonNegativeInteger,
+    agilModuleDCGroupNumber       NonNegativeInteger,
+    agilModuleACOut1GroupNumber   NonNegativeInteger,
+    agilModuleACOut2GroupNumber   NonNegativeInteger,
+    agilModuleACOut3GroupNumber   NonNegativeInteger,
+    agilModuleStatus              INTEGER,
+    agilModuleACOut1PowerW        Integer32,
+    agilModuleACOut2PowerW        Integer32,
+    agilModuleACOut3PowerW        Integer32,
+    agilModuleACOut1PowerVA       Integer32,
+    agilModuleACOut2PowerVA       Integer32,
+    agilModuleACOut3PowerVA       Integer32,
+    agilModuleACOut1Voltage       NonNegativeInteger,
+    agilModuleACOut2Voltage       NonNegativeInteger,
+    agilModuleACOut3Voltage       NonNegativeInteger,
+    agilModuleACOut1Current       Integer32,
+    agilModuleACOut2Current       Integer32,
+    agilModuleACOut3Current       Integer32,
+    agilModuleACIn1PowerW         Integer32,
+    agilModuleACIn2PowerW         Integer32,
+    agilModuleACIn3PowerW         Integer32,
+    agilModuleACIn1Voltage        NonNegativeInteger,
+    agilModuleACIn2Voltage        NonNegativeInteger,
+    agilModuleACIn3Voltage        NonNegativeInteger,
+    agilModuleACIn1Current        Integer32,
+    agilModuleACIn2Current        Integer32,
+    agilModuleACIn3Current        Integer32,
+    agilModuleACIn1Frequency      NonNegativeInteger,
+    agilModuleACIn2Frequency      NonNegativeInteger,
+    agilModuleACIn3Frequency      NonNegativeInteger,
+    agilModuleDCPowerW            Integer32,
+    agilModuleDCVoltage           NonNegativeInteger,
+    agilModuleDCCurrent           Integer32,
+    agilModuleInternalTemperature NonNegativeInteger
+}
+
+agilModuleTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF ModuleEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "The list of modules."
+    ::= { agilModules 1 }
+
+agilModuleEntry OBJECT-TYPE
+    SYNTAX      ModuleEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION ""
+    INDEX       { agilModuleIndex }
+    ::= { agilModuleTable 1 }
+
+agilModuleIndex OBJECT-TYPE
+    SYNTAX      PositiveInteger
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "The module identifier"
+    ::= { agilModuleEntry 1 }
+
+agilModuleSeen OBJECT-TYPE
+    SYNTAX      PositiveInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "0: not seen, 1: seen"
+    ::= { agilModuleEntry 2 }
+
+agilModuleSN OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Serial number"
+    ::= { agilModuleEntry 3 }
+
+agilModuleSoftware OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Soft version"
+    ::= { agilModuleEntry 4 }
+
+agilModuleNominalPowerW OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "Watt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Nominale active power (W)"
+    ::= { agilModuleEntry 5 }
+
+agilModuleNominalPowerVA OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "VA"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Nominal apparent power (VA)"
+    ::= { agilModuleEntry 6 }
+
+agilModuleNominalACVoltage OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "Volt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Nominal AC voltage (V)"
+    ::= { agilModuleEntry 7 }
+
+agilModuleNominalDCVoltage OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "Volt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Nominal DC voltage (V)"
+    ::= { agilModuleEntry 8 }
+
+agilModuleNominalFrequency OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "0.1 Hz"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Nominal frequency (0.1Hz)"
+    ::= { agilModuleEntry 9 }
+
+agilModuleACIn1GroupNumber OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "AC input group affectation of stage ACIn 1"
+    ::= { agilModuleEntry 10 }
+
+agilModuleACIn2GroupNumber OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "AC input group affectation of stage ACIn 2"
+    ::= { agilModuleEntry 11 }
+
+agilModuleACIn3GroupNumber OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "AC input group affectation of stage ACIn 3"
+    ::= { agilModuleEntry 12 }
+
+agilModuleDCGroupNumber OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "DC group affectatuion of stage DCIn"
+    ::= { agilModuleEntry 13 }
+
+agilModuleACOut1GroupNumber OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "AC output group affectation of stage ACOut 1"
+    ::= { agilModuleEntry 14 }
+
+agilModuleACOut2GroupNumber OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "AC output group affectation of stage ACOut 2"
+    ::= { agilModuleEntry 15 }
+
+agilModuleACOut3GroupNumber OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "AC output group affectation of stage ACOut 3"
+    ::= { agilModuleEntry 16 }
+
+agilModuleStatus OBJECT-TYPE
+    SYNTAX      INTEGER {
+        unknown (0),
+        ok      (1),
+        alarm   (2),
+        error   (3),
+        off     (4)
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Global status of the module"
+    ::= { agilModuleEntry 17 }
+
+agilModuleACOut1PowerW OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "Watt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Power ACOut 1 (W)"
+    ::= { agilModuleEntry 18 }
+
+agilModuleACOut2PowerW OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "Watt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Power ACOut 2 (W)"
+    ::= { agilModuleEntry 19 }
+
+agilModuleACOut3PowerW OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "Watt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Power ACOut 3 (W)"
+    ::= { agilModuleEntry 20 }
+
+agilModuleACOut1PowerVA OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "VA"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Power ACOut 1 (VA)"
+    ::= { agilModuleEntry 21 }
+
+agilModuleACOut2PowerVA OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "VA"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Power ACOut 2 (VA)"
+    ::= { agilModuleEntry 22 }
+
+agilModuleACOut3PowerVA OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "VA"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Power ACOut 3 (VA)"
+    ::= { agilModuleEntry 23 }
+
+agilModuleACOut1Voltage OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "0.1 Volt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Voltage ACOut 1 (0.1V)"
+    ::= { agilModuleEntry 24 }
+
+agilModuleACOut2Voltage OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "0.1 Volt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Voltage ACOut 2 (0.1V)"
+    ::= { agilModuleEntry 25 }
+
+agilModuleACOut3Voltage OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "0.1 Volt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Voltage ACOut 3 (0.1V)"
+    ::= { agilModuleEntry 26 }
+
+agilModuleACOut1Current OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "0.1 Ampere"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Current ACOut 1 (0.1A)"
+    ::= { agilModuleEntry 27 }
+
+agilModuleACOut2Current OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "0.1 Ampere"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Current ACOut 2 (0.1A)"
+    ::= { agilModuleEntry 28 }
+
+agilModuleACOut3Current OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "0.1 Ampere"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Current ACOut 3 (0.1A)"
+    ::= { agilModuleEntry 29 }
+
+agilModuleACIn1PowerW OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "Watt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Power ACIn 1 (W)"
+    ::= { agilModuleEntry 30 }
+
+agilModuleACIn2PowerW OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "Watt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Power ACIn 2 (W)"
+    ::= { agilModuleEntry 31 }
+
+agilModuleACIn3PowerW OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "Watt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Power ACIn 3 (W)"
+    ::= { agilModuleEntry 32 }
+
+agilModuleACIn1Voltage OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "0.1 Volt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Voltage ACIn 1 (0.1V)"
+    ::= { agilModuleEntry 33 }
+
+agilModuleACIn2Voltage OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "0.1 Volt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Voltage ACIn 2 (0.1V)"
+    ::= { agilModuleEntry 34 }
+
+agilModuleACIn3Voltage OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "0.1 Volt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Voltage ACIn 3 (0.1V)"
+    ::= { agilModuleEntry 35 }
+
+agilModuleACIn1Current OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "0.1 Ampere"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Current ACIn 1 (0.1A)"
+    ::= { agilModuleEntry 36 }
+
+agilModuleACIn2Current OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "0.1 Ampere"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Current ACIn 2 (0.1A)"
+    ::= { agilModuleEntry 37 }
+
+agilModuleACIn3Current OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "0.1 Ampere"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Current ACIn 3 (0.1A)"
+    ::= { agilModuleEntry 38 }
+
+agilModuleACIn1Frequency OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "0.1 Hz"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Frequency ACIn 1 (0.1Hz)"
+    ::= { agilModuleEntry 39 }
+
+agilModuleACIn2Frequency OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "0.1 Hz"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Frequency ACIn 2 (0.1Hz)"
+    ::= { agilModuleEntry 40 }
+
+agilModuleACIn3Frequency OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "0.1 Hz"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Frequency ACIn 3 (0.1Hz)"
+    ::= { agilModuleEntry 41 }
+
+agilModuleDCPowerW OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "Watt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Power DC (W)"
+    ::= { agilModuleEntry 42 }
+
+agilModuleDCVoltage OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "0.1 Volt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Voltage DC (0.1V)"
+    ::= { agilModuleEntry 43 }
+
+agilModuleDCCurrent OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "0.1 Ampere"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Current DC (0.1A)"
+    ::= { agilModuleEntry 44 }
+
+agilModuleInternalTemperature OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "0.1 Degree K"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Max temperature value (0.1K) between AC in and AC out stage"
+    ::= { agilModuleEntry 45 }
+
+--
+-- agilACOutGroups
+--
+
+agilNbACOutGrpConfigured OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Number of AC output groups"
+    ::= { agilACOutGroups 1 }
+
+ACOutGrpTableEntry ::= SEQUENCE {
+    agilACOutGrpTableIndex             PositiveInteger,
+    agilAcOutGrpNbrStage               NonNegativeInteger,
+    agilAcOutGrpInstalledPowerW        NonNegativeInteger,
+    agilAcOutGrpInstalledPowerVA       NonNegativeInteger,
+    agilAcOutGrpAvailablePowerW        NonNegativeInteger,
+    agilAcOutGrpAvailablePowerVA       NonNegativeInteger,
+    agilAcOutGrpNominalVoltage         NonNegativeInteger,
+    agilAcOutGrpStatus                 INTEGER,
+    agilAcOutGrpAlarm                  NonNegativeInteger,
+    agilAcOutGrpPowerW                 Integer32,
+    agilAcOutGrpVoltage                NonNegativeInteger,
+    agilAcOutGrpCurrent                Integer32,
+    agilAcOutGrpFrequency              NonNegativeInteger,
+    agilAcOutGrpPowerFactor            Integer32,
+    agilAcOutGrpAvailablePowerRatioW   NonNegativeInteger,
+    agilAcOutGrpAvailablePowerRatioSA  NonNegativeInteger,
+    agilAcOutGrpInstalledPowerRatioW   NonNegativeInteger,
+    agilAcOutGrpInstalledPowerRatioVA  NonNegativeInteger
+}
+
+agilACOutGrpTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF ACOutGrpTableEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "The list of AC outputs."
+    ::= { agilACOutGroups 2 }
+
+agilACOutGrpEntry OBJECT-TYPE
+    SYNTAX      ACOutGrpTableEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION ""
+    INDEX       { agilACOutGrpTableIndex }
+    ::= { agilACOutGrpTable 1 }
+
+agilACOutGrpTableIndex OBJECT-TYPE
+    SYNTAX      PositiveInteger
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "The output identifier."
+    ::= { agilACOutGrpEntry 1 }
+
+agilAcOutGrpNbrStage OBJECT-TYPE
+    SYNTAX      PositiveInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Nbr AC output stage currently connected"
+    ::= { agilACOutGrpEntry 2 }
+
+agilAcOutGrpInstalledPowerW OBJECT-TYPE
+    SYNTAX      PositiveInteger
+    UNITS       "Watt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Installed active power (W)"
+    ::= { agilACOutGrpEntry 3 }
+
+agilAcOutGrpInstalledPowerVA OBJECT-TYPE
+    SYNTAX      PositiveInteger
+    UNITS       "VA"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Installed apparent power (VA)"
+    ::= { agilACOutGrpEntry 4 }
+
+agilAcOutGrpAvailablePowerW OBJECT-TYPE
+    SYNTAX      PositiveInteger
+    UNITS       "Watt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Available active power (W) - (according redundancy)"
+    ::= { agilACOutGrpEntry 5 }
+
+agilAcOutGrpAvailablePowerVA OBJECT-TYPE
+    SYNTAX      PositiveInteger
+    UNITS       "VA"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Available active power (VA) - (according redundancy)"
+    ::= { agilACOutGrpEntry 6 }
+
+agilAcOutGrpNominalVoltage OBJECT-TYPE
+    SYNTAX      PositiveInteger
+    UNITS       "Volt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Nominal AC voltage (V)"
+    ::= { agilACOutGrpEntry 7 }
+
+agilAcOutGrpStatus OBJECT-TYPE
+    SYNTAX      INTEGER {
+        unknown    (0),
+        on         (1),
+        on_al      (2),
+        start      (3),
+        off_m      (4),
+        off_r_all  (5),
+        off_nr_all (6)
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Status"
+    ::= { agilACOutGrpEntry 8 }
+
+agilAcOutGrpAlarm OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Alarm"
+    ::= { agilACOutGrpEntry 9 }
+
+agilAcOutGrpPowerW OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "Watt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Active power (W)"
+    ::= { agilACOutGrpEntry 10 }
+
+agilAcOutGrpVoltage OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "0.1 Volt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Voltage (0.1V)"
+    ::= { agilACOutGrpEntry 11 }
+
+agilAcOutGrpCurrent OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "0.1 Ampere"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Current (0.1A)"
+    ::= { agilACOutGrpEntry 12 }
+
+agilAcOutGrpFrequency OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "0.1 Hz"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Frequency (0.1Hz)"
+    ::= { agilACOutGrpEntry 13 }
+
+agilAcOutGrpPowerFactor OBJECT-TYPE
+    SYNTAX      Integer32
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Power factor (0.01)"
+    ::= { agilACOutGrpEntry 14 }
+
+agilAcOutGrpAvailablePowerRatioW OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Ratio between active load and available active power (%)"
+    ::= { agilACOutGrpEntry 15 }
+
+agilAcOutGrpAvailablePowerRatioSA OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Ratio between apparent load and available apparent power (%)"
+    ::= { agilACOutGrpEntry 16 }
+
+agilAcOutGrpInstalledPowerRatioW OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Ratio between active load and installed active power (%)"
+    ::= { agilACOutGrpEntry 17 }
+
+agilAcOutGrpInstalledPowerRatioVA OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Ratio between apparent load and installed apparent power (%)"
+    ::= { agilACOutGrpEntry 18 }
+
+--
+-- agilACInGroups
+--
+
+agilNbACInGrpConfigured OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Number of AC input groups"
+    ::= { agilACInGroups 1 }
+
+ACInGrpTableEntry ::= SEQUENCE {
+    agilACInGrpTableIndex     PositiveInteger,
+    agilACInNbrStage          NonNegativeInteger,
+    agilACInNominalVoltage    NonNegativeInteger,
+    agilACInNominalFrequency  NonNegativeInteger,
+    agilACInGrpStatus         INTEGER,
+    agilACInGrpAlarm          NonNegativeInteger,
+    agilACInGrpPowerW         Integer32,
+    agilACInGrpVoltage        NonNegativeInteger,
+    agilACInGrpCurrent        Integer32,
+    agilACInGrpFrequency      NonNegativeInteger
+}
+
+agilACInGrpTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF ACInGrpTableEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "The list of AC inputs."
+    ::= { agilACInGroups 2 }
+
+agilACInEntry OBJECT-TYPE
+    SYNTAX      ACInGrpTableEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION ""
+    INDEX       { agilACInGrpTableIndex }
+    ::= { agilACInGrpTable 1 }
+
+agilACInGrpTableIndex OBJECT-TYPE
+    SYNTAX      PositiveInteger
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "The input identifier."
+    ::= { agilACInEntry 1 }
+
+agilACInNbrStage OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Nbr AC input stage currently connected"
+    ::= { agilACInEntry 2 }
+
+agilACInNominalVoltage OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "Volt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Nominal AC voltage (V)"
+    ::= { agilACInEntry 3 }
+
+agilACInNominalFrequency OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "0.1 Hz"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Nominal AC frequncy (0.1 Hz)"
+    ::= { agilACInEntry 4 }
+
+agilACInGrpStatus OBJECT-TYPE
+    SYNTAX      INTEGER {
+        unknown    (0),
+        cust_limit (1),
+        on         (2),
+        start      (3),
+        off_m      (4),
+        off_r_all  (5),
+        off_nr_all (6)
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Status"
+    ::= { agilACInEntry 5 }
+
+agilACInGrpAlarm OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Alarm"
+    ::= { agilACInEntry 6 }
+
+agilACInGrpPowerW OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "Watt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Active power (W)"
+    ::= { agilACInEntry 7 }
+
+agilACInGrpVoltage OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "0.1 Volt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Voltage (0.1 V)"
+    ::= { agilACInEntry 8 }
+
+agilACInGrpCurrent OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "0.1 Ampere"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Current (0.1 A)"
+    ::= { agilACInEntry 9 }
+
+agilACInGrpFrequency OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "0.1 Hz"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Frequency (0.1 Hz)"
+    ::= { agilACInEntry 10 }
+
+--
+-- agilDCGroups
+--
+
+agilNbDCGrpConfigured OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Number of configured DC groups"
+    ::= { agilDCGroups 1 }
+
+DCGroupsEntry ::= SEQUENCE {
+    agilDCGrpTableIndex             PositiveInteger,
+    agilDCGrpNbrStage               NonNegativeInteger,
+    agilDCGrpNominalVoltage         NonNegativeInteger,
+    agilDCGrpStatus                 INTEGER,
+    agilDCGrpAlarm                  NonNegativeInteger,
+    agilDCGrpPower                  Integer32,
+    agilDCGrpVoltage                NonNegativeInteger,
+    agilDCGrpCurrent                Integer32,
+    agilDCGrpCapacity               NonNegativeInteger,
+    agilDCGrpTemperature            NonNegativeInteger,
+    agilDCGrpAutonomy               NonNegativeInteger,
+    agilDCGrpChargerMode            INTEGER,
+    agilDCGrpChargerStatus          INTEGER,
+    agilDCGrpChargerVoltageSetpoint Integer32,
+    agilDCGrpChargerMaxBattCurrent  Integer32
+}
+
+agilDCGrpTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF DCGroupsEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "The list of DC groups"
+    ::= { agilDCGroups 2 }
+
+agilDCGrpTableEntry OBJECT-TYPE
+    SYNTAX      DCGroupsEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION ""
+    INDEX       { agilDCGrpTableIndex }
+    ::= { agilDCGrpTable 1 }
+
+agilDCGrpTableIndex OBJECT-TYPE
+    SYNTAX      PositiveInteger
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "The DC group identifier."
+    ::= { agilDCGrpTableEntry 1 }
+
+agilDCGrpNbrStage OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Nbr DC input stage currently connected"
+    ::= { agilDCGrpTableEntry 2 }
+
+agilDCGrpNominalVoltage OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "Volt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Nomnial DC voltage (V)"
+    ::= { agilDCGrpTableEntry 3 }
+
+agilDCGrpStatus OBJECT-TYPE
+    SYNTAX      INTEGER {
+        unknown    (0),
+        on         (1),
+        on_al      (2),
+        start      (3),
+        off_m      (4),
+        off_r_all  (5),
+        off_nr_all (6)
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "DC group status"
+    ::= { agilDCGrpTableEntry 4 }
+
+agilDCGrpAlarm OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "DC group alarm"
+    ::= { agilDCGrpTableEntry 5 }
+
+agilDCGrpPower OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "Watt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Power (W)"
+    ::= { agilDCGrpTableEntry 6 }
+
+agilDCGrpVoltage OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "0.1 Volt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Voltage (0.1V)"
+    ::= { agilDCGrpTableEntry 7 }
+
+agilDCGrpCurrent OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "0.1 Ampere"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Current (0.1A)"
+    ::= { agilDCGrpTableEntry 8 }
+
+agilDCGrpCapacity OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "Percent"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Battery capacity (%)"
+    ::= { agilDCGrpTableEntry 9 }
+
+agilDCGrpTemperature OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "0.1 Degree K"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Battery temperature (0.1 K)"
+    ::= { agilDCGrpTableEntry 10 }
+
+agilDCGrpAutonomy OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    UNITS       "Seconds"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Autonomy with current output load (s)"
+    ::= { agilDCGrpTableEntry 11 }
+
+agilDCGrpChargerMode OBJECT-TYPE
+    SYNTAX      INTEGER {
+        unknown   (0),
+        off       (1),
+        safe      (2),
+        float     (3),
+        boost     (4),
+        discharge (5),
+        test      (6)
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Charger mode"
+    ::= { agilDCGrpTableEntry 12 }
+
+agilDCGrpChargerStatus OBJECT-TYPE
+    SYNTAX      INTEGER {
+        unknown    (0),
+        cust_limit (1),
+        on         (2),
+        standby    (3),
+        mod_limit  (4),
+        discharge  (5),
+        off        (6),
+        error      (7)
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Status"
+    ::= { agilDCGrpTableEntry 13 }
+
+agilDCGrpChargerVoltageSetpoint OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "0.1 Volt"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Reference voltage for battery charger (0.1V)"
+    ::= { agilDCGrpTableEntry 14 }
+
+agilDCGrpChargerMaxBattCurrent OBJECT-TYPE
+    SYNTAX      Integer32
+    UNITS       "0.1 Ampere"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Maximum current for battery charger (0.1A)"
+    ::= { agilDCGrpTableEntry 15 }
+
+--
+-- agilSupervisor
+--
+
+agilSupervisorSoftMainVersion OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Software Version Main"
+    ::= { agilSupervisor 1 }
+
+agilSupervisorSoftSubVersion OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Software Version Sub"
+    ::= { agilSupervisor 2 }
+
+agilSupervisorSN OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Software Serial Number"
+    ::= { agilSupervisor 3 }
+
+agilSupervisorTime OBJECT-TYPE
+    SYNTAX      TimeStamp
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Software Timestamp"
+    ::= { agilSupervisor 4 }
+
+--
+-- agilAlarm
+--
+
+agilAlarmNbMinorAlarm OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Number of active minor alarms"
+    ::= { agilAlarm 1 }
+
+agilAlarmNbMajorAlarm OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Number of active major alarms"
+    ::= { agilAlarm 2 }
+
+agilAlarmNbTotalAlarm OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Total number of active alarms"
+    ::= { agilAlarm 3 }
+
+AlarmEntry ::= SEQUENCE {
+    agilAlarmTableIndex                PositiveInteger,
+    agilAlarmTableMainSource           INTEGER,
+    agilAlarmTableMainSourceRef        INTEGER,
+    agilAlarmTableSecondarySource      INTEGER,
+    agilAlarmTableSecondarySourceRef   INTEGER,
+    agilAlarmTableAlarmType            INTEGER,
+    agilAlarmTableAlarmDescription     DisplayString,
+    agilAlarmTableAlarmTime            TimeStamp
+}
+
+agilAlarmTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF AlarmEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "The list of alarms"
+    ::= { agilAlarm 4 }
+
+agilAlarmTableEntry OBJECT-TYPE
+    SYNTAX      AlarmEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION ""
+    INDEX       { agilAlarmTableIndex }
+    ::= { agilAlarmTable 1 }
+
+agilAlarmTableIndex OBJECT-TYPE
+    SYNTAX      PositiveInteger
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "The alarm identifier."
+    ::= { agilAlarmTableEntry 1 }
+
+agilAlarmTableMainSource OBJECT-TYPE
+    SYNTAX      INTEGER {
+        no_source (0),
+        t3s       (1),
+        system    (2),
+        group     (3),
+        module    (4),
+        battery   (5),
+        tsio      (6)
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "The alarm main source."
+    ::= { agilAlarmTableEntry 2 }
+
+agilAlarmTableMainSourceRef OBJECT-TYPE
+    SYNTAX      INTEGER
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "The alarm main source reference."
+    ::= { agilAlarmTableEntry 3 }
+
+agilAlarmTableSecondarySource OBJECT-TYPE
+    SYNTAX      INTEGER {
+        no_source (0),
+        ac_input  (1),
+        dc        (2),
+        ac_output (3),
+        inverter  (4)
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "The alarm secondary source."
+    ::= { agilAlarmTableEntry 4 }
+
+agilAlarmTableSecondarySourceRef OBJECT-TYPE
+    SYNTAX      INTEGER
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "The alarm secondary source reference."
+    ::= { agilAlarmTableEntry 5 }
+
+agilAlarmTableAlarmType OBJECT-TYPE
+    SYNTAX      INTEGER {
+        noAlarm(0),
+        minor(1),
+        major(2)
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Severity level of the alarm."
+    ::= { agilAlarmTableEntry 6 }
+
+agilAlarmTableAlarmDescription OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Description string of the alarm."
+    ::= { agilAlarmTableEntry 7 }
+
+agilAlarmTableAlarmTime OBJECT-TYPE
+    SYNTAX      TimeStamp
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Date and time of the occurence of the alarm."
+    ::= { agilAlarmTableEntry 8 }
+
+--
+-- agilTrap
+--
+
+agilTrapsPrefix OBJECT IDENTIFIER ::= { agilTrap 1 }
+
+agilTrapMajorAlarmAdded NOTIFICATION-TYPE
+   OBJECTS     { agilAlarmMainSource, agilAlarmTableMainSourceRef, agilAlarmTableSecondarySource, agilAlarmTableSecondarySourceRef, agilAlarmTableAlarmType, agilAlarmTableAlarmDescription, agilAlarmTableAlarmTime }
+   STATUS      current
+   DESCRIPTION "This trap is sent each time a new major alarm is detected in the system"
+ ::= { agilTrapsPrefix 1 }
+
+agilTrapMajorAlarmRemoved NOTIFICATION-TYPE
+   OBJECTS     { agilAlarmMainSource, agilAlarmTableMainSourceRef, agilAlarmTableSecondarySource, agilAlarmTableSecondarySourceRef, agilAlarmTableAlarmType, agilAlarmTableAlarmDescription, agilAlarmTableAlarmTime }
+   STATUS      current
+   DESCRIPTION "This trap is sent each time a major alarm that was present in the system disappear from it"
+   ::= { agilTrapsPrefix 2 }
+
+agilTrapMinorAlarmAdded NOTIFICATION-TYPE
+   OBJECTS     { agilAlarmMainSource, agilAlarmTableMainSourceRef, agilAlarmTableSecondarySource, agilAlarmTableSecondarySourceRef, agilAlarmTableAlarmType, agilAlarmTableAlarmDescription, agilAlarmTableAlarmTime }
+   STATUS      current
+   DESCRIPTION "This trap is sent each time a new minor alarm is detected in the system"
+ ::= { agilTrapsPrefix 3 }
+
+agilTrapMinorAlarmRemoved NOTIFICATION-TYPE
+   OBJECTS     { agilAlarmMainSource, agilAlarmTableMainSourceRef, agilAlarmTableSecondarySource, agilAlarmTableSecondarySourceRef, agilAlarmTableAlarmType, agilAlarmTableAlarmDescription, agilAlarmTableAlarmTime }
+   STATUS      current
+   DESCRIPTION "This trap is sent each time a minor alarm that was present in the system disappear from it"
+ ::= { agilTrapsPrefix 4 }
+
+--
+-- agilInputsOutputs
+--
+
+agilSupervsiorInOut OBJECT IDENTIFIER ::= { agilInputsOutputs 1 }
+tsioBoardInOut      OBJECT IDENTIFIER ::= { agilInputsOutputs 2 }
+
+--
+-- agilSupervsiorInOut
+--
+
+agilSupervisorNbrAvailableInputs OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Number of available inputs"
+    ::= { agilSupervsiorInOut 1 }
+
+SupervsiorInputTableEntry ::= SEQUENCE {
+    agilSupervsiorInputTableIndex      PositiveInteger,
+    agilSupervsiorInputTableValue      INTEGER,
+    agilSupervsiorInputTableDescr      DisplayString
+}
+
+agilSupervsiorInputTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF SupervsiorInputTableEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "The list of supervsior inputs."
+    ::= { agilSupervsiorInOut 2 }
+
+agilSupervsiorInputTableEntry OBJECT-TYPE
+    SYNTAX      SupervsiorInputTableEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION ""
+    INDEX       { agilSupervsiorInputTableIndex }
+    ::= { agilSupervsiorInputTable 1 }
+
+agilSupervsiorInputTableIndex OBJECT-TYPE
+    SYNTAX      PositiveInteger
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "table index"
+    ::= { agilSupervsiorInputTableEntry 1 }
+
+agilSupervsiorInputTableValue OBJECT-TYPE
+    SYNTAX      INTEGER {
+        false     (0),
+        true      (1),
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "value"
+    ::= { agilSupervsiorInputTableEntry 2 }
+
+agilSupervsiorInputTableDescr OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "description"
+    ::= { agilSupervsiorInputTableEntry 3 }
+
+agilSupervisorNbrAvailableOutputs OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Number of available outputs"
+    ::= { agilSupervsiorInOut 3 }
+
+SupervsiorOutputTableEntry ::= SEQUENCE {
+    agilSupervsiorOutputTableIndex      PositiveInteger,
+    agilSupervsiorOutputTableValue      INTEGER,
+    agilSupervsiorOutputTableDescr      DisplayString
+}
+
+agilSupervsiorOutputTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF SupervsiorOutputTableEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "The list of supervsior outputs."
+    ::= { agilSupervsiorInOut 4 }
+
+agilSupervsiorOutputTableEntry OBJECT-TYPE
+    SYNTAX      SupervsiorOutputTableEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION ""
+    INDEX       { agilSupervsiorOutputTableIndex }
+    ::= { agilSupervsiorOutputTable 1 }
+
+agilSupervsiorOutputTableIndex OBJECT-TYPE
+    SYNTAX      PositiveInteger
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "table index"
+    ::= { agilSupervsiorOutputTableEntry 1 }
+
+agilSupervsiorOutputTableValue OBJECT-TYPE
+    SYNTAX      INTEGER {
+        false     (0),
+        true      (1),
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "value"
+    ::= { agilSupervsiorOutputTableEntry 2 }
+
+agilSupervsiorOutputTableDescr OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "description"
+    ::= { agilSupervsiorOutputTableEntry 3 }
+
+--
+-- tsioBoardInOut
+--
+
+tsioNbrPresent OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Number of available i/o"
+    ::= { tsioBoardInOut 1 }
+
+tsioNbrAvailableInputs OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Number of available inputs"
+    ::= { tsioBoardInOut 2 }
+
+TSIO_InputTableEntry ::= SEQUENCE {
+    tsioInputTableIndex      PositiveInteger,
+    tsioInputTableValue      INTEGER,
+    tsioInputTableDescr      DisplayString
+}
+
+tsioInputTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF TSIO_InputTableEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "The list of tsio inputs."
+    ::= { tsioBoardInOut 3 }
+
+tsioInputTableEntry OBJECT-TYPE
+    SYNTAX      TSIO_InputTableEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION ""
+    INDEX       { tsioInputTableIndex }
+    ::= { tsioInputTable 1 }
+
+tsioInputTableIndex OBJECT-TYPE
+    SYNTAX      PositiveInteger
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "table index"
+    ::= { tsioInputTableEntry 1 }
+
+tsioInputTableValue OBJECT-TYPE
+    SYNTAX      INTEGER {
+        false     (0),
+        true      (1),
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "value"
+    ::= { tsioInputTableEntry 2 }
+
+tsioInputTableDescr OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "description"
+    ::= { tsioInputTableEntry 3 }
+
+tsioNbrAvailableOutputs OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Number of available outputs"
+    ::= { tsioBoardInOut 4 }
+
+TSIO_OutputTableEntry ::= SEQUENCE {
+    tsioOutputTableIndex      PositiveInteger,
+    tsioOutputTableValue      INTEGER,
+    tsioOutputTableDescr      DisplayString
+}
+
+tsioOutputTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF TSIO_OutputTableEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "The list of tsio Outputs."
+    ::= { tsioBoardInOut 5 }
+
+tsioOutputTableEntry OBJECT-TYPE
+    SYNTAX      TSIO_OutputTableEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION ""
+    INDEX       { tsioOutputTableIndex }
+    ::= { tsioOutputTable 1 }
+
+tsioOutputTableIndex OBJECT-TYPE
+    SYNTAX      PositiveInteger
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "table index"
+    ::= { tsioOutputTableEntry 1 }
+
+tsioOutputTableValue OBJECT-TYPE
+    SYNTAX      INTEGER {
+        false     (0),
+        true      (1),
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "value"
+    ::= { tsioOutputTableEntry 2 }
+
+tsioOutputTableDescr OBJECT-TYPE
+    SYNTAX      DisplayString
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "description"
+    ::= { tsioOutputTableEntry 3 }
+
+--
+-- agilSynoptic
+--
+
+agilSynopticAlMajortLed OBJECT-TYPE
+    SYNTAX      INTEGER {
+        grey         (0),
+        green        (1),
+        yellow       (2),
+        orange       (3),
+        red          (4),
+        blink_green  (5),
+        blink_yellow (6),
+        blink_orange (7),
+        blink_red    (8),
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Major alarm's LED color"
+    ::= { agilSynoptic 1 }
+
+agilSynopticAlMinorLed OBJECT-TYPE
+    SYNTAX      INTEGER {
+        grey         (0),
+        green        (1),
+        yellow       (2),
+        orange       (3),
+        red          (4),
+        blink_green  (5),
+        blink_yellow (6),
+        blink_orange (7),
+        blink_red    (8),
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Minor alarm's LED color"
+    ::= { agilSynoptic 2 }
+
+agilSynopticInOutLed OBJECT-TYPE
+    SYNTAX      INTEGER {
+        grey         (0),
+        green        (1),
+        yellow       (2),
+        orange       (3),
+        red          (4),
+        blink_green  (5),
+        blink_yellow (6),
+        blink_orange (7),
+        blink_red    (8),
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "LED related to inputs and output state"
+    ::= { agilSynoptic 3 }
+
+agilSynopticACGridLed OBJECT-TYPE
+    SYNTAX      INTEGER {
+        grey         (0),
+        green        (1),
+        yellow       (2),
+        orange       (3),
+        red          (4),
+        blink_green  (5),
+        blink_yellow (6),
+        blink_orange (7),
+        blink_red    (8),
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Comercial network's LED color"
+    ::= { agilSynoptic 4 }
+
+agilSynopticACOutLed OBJECT-TYPE
+    SYNTAX      INTEGER {
+        grey         (0),
+        green        (1),
+        yellow       (2),
+        orange       (3),
+        red          (4),
+        blink_green  (5),
+        blink_yellow (6),
+        blink_orange (7),
+        blink_red    (8),
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Output network's LED color"
+    ::= { agilSynoptic 5 }
+
+agilSynopticBatteryLed OBJECT-TYPE
+    SYNTAX      INTEGER {
+        grey         (0),
+        green        (1),
+        yellow       (2),
+        orange       (3),
+        red          (4),
+        blink_green  (5),
+        blink_yellow (6),
+        blink_orange (7),
+        blink_red    (8),
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Battery LED color"
+    ::= { agilSynoptic 6 }
+
+agilSynopticAgilACInLed OBJECT-TYPE
+    SYNTAX      INTEGER {
+        grey         (0),
+        green        (1),
+        yellow       (2),
+        orange       (3),
+        red          (4),
+        blink_green  (5),
+        blink_yellow (6),
+        blink_orange (7),
+        blink_red    (8),
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Central Block's ACIn LED"
+    ::= { agilSynoptic 7 }
+
+agilSynopticAgilInOutLed OBJECT-TYPE
+    SYNTAX      INTEGER {
+        grey         (0),
+        green        (1),
+        yellow       (2),
+        orange       (3),
+        red          (4),
+        blink_green  (5),
+        blink_yellow (6),
+        blink_orange (7),
+        blink_red    (8),
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Central Block's ACOut LED"
+    ::= { agilSynoptic 8 }
+
+agilSynopticAgilDCLed OBJECT-TYPE
+    SYNTAX      INTEGER {
+        grey         (0),
+        green        (1),
+        yellow       (2),
+        orange       (3),
+        red          (4),
+        blink_green  (5),
+        blink_yellow (6),
+        blink_orange (7),
+        blink_red    (8),
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Central Block's DC LED"
+    ::= { agilSynoptic 9 }
+
+agilSynopticAgilCOMLed OBJECT-TYPE
+    SYNTAX      INTEGER {
+        grey         (0),
+        green        (1),
+        yellow       (2),
+        orange       (3),
+        red          (4),
+        blink_green  (5),
+        blink_yellow (6),
+        blink_orange (7),
+        blink_red    (8),
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Central Block's COM LED"
+    ::= { agilSynoptic 10 }
+
+agilSynopticACGrid1Arrow OBJECT-TYPE
+    SYNTAX      INTEGER {
+        not_present         (0),
+        go_in_agil_grey     (1),
+        go_in_agil_green    (2),
+        go_in_agil_orange   (3),
+        go_in_agil_red      (4),
+        go_out_agil_green   (5),
+        go_out_agil_orange  (6),
+        go_out_agil_red     (7),
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Comercial network's A arrow direction"
+    ::= { agilSynoptic 11 }
+
+agilSynopticACGrid2Arrow OBJECT-TYPE
+    SYNTAX      INTEGER {
+        not_present         (0),
+        go_in_agil_grey     (1),
+        go_in_agil_green    (2),
+        go_in_agil_orange   (3),
+        go_in_agil_red      (4),
+        go_out_agil_green   (5),
+        go_out_agil_orange  (6),
+        go_out_agil_red     (7),
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Comercial network's B arrow direction"
+    ::= { agilSynoptic 12 }
+
+agilSynopticACoutArrow OBJECT-TYPE
+    SYNTAX      INTEGER {
+        not_present         (0),
+        go_in_agil_grey     (1),
+        go_in_agil_green    (2),
+        go_in_agil_orange   (3),
+        go_in_agil_red      (4),
+        go_out_agil_green   (5),
+        go_out_agil_orange  (6),
+        go_out_agil_red     (7),
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Output network's arrow direction"
+    ::= { agilSynoptic 13 }
+
+agilSynopticBattery1Arrow OBJECT-TYPE
+    SYNTAX      INTEGER {
+        not_present         (0),
+        go_in_agil_grey     (1),
+        go_in_agil_green    (2),
+        go_in_agil_orange   (3),
+        go_in_agil_red      (4),
+        go_out_agil_green   (5),
+        go_out_agil_orange  (6),
+        go_out_agil_red     (7),
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Battery network's A arrow direction"
+    ::= { agilSynoptic 14 }
+
+agilSynopticBattery2Arrow OBJECT-TYPE
+    SYNTAX      INTEGER {
+        not_present         (0),
+        go_in_agil_grey     (1),
+        go_in_agil_green    (2),
+        go_in_agil_orange   (3),
+        go_in_agil_red      (4),
+        go_out_agil_green   (5),
+        go_out_agil_orange  (6),
+        go_out_agil_red     (7),
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Battery network's B arrow direction"
+    ::= { agilSynoptic 15 }
+
+agilSynopticMBPPost OBJECT-TYPE
+    SYNTAX      INTEGER {
+        not_managed_by_t3s (0),
+        open               (1),
+        close              (2),
+    }
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Status of the MBP"
+    ::= { agilSynoptic 16 }
+
+--
+-- agilConfiguration
+--
+
+agilConfigurationNbrT3SParameter OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Number of T3S configuration values."
+    ::= { agilConfiguration 1 }
+
+agilConfigurationNbrAgilParameter OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Number of Agil configuration values."
+    ::= { agilConfiguration 2 }
+
+ConfigurationEntry ::= SEQUENCE {
+    agilConfigurationIndex PositiveInteger,
+    agilConfigurationValue NonNegativeInteger
+ }
+
+agilConfigurationTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF ConfigurationEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "The list of configuration values."
+    ::= { agilConfiguration 3 }
+
+agilConfigurationEntry OBJECT-TYPE
+    SYNTAX      ConfigurationEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION ""
+    INDEX       { agilConfigurationIndex }
+    ::= { agilConfigurationTable 1 }
+
+agilConfigurationIndex OBJECT-TYPE
+    SYNTAX      PositiveInteger
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION "Configuration identifier."
+    ::= { agilConfigurationEntry 1 }
+
+agilConfigurationValue OBJECT-TYPE
+    SYNTAX      NonNegativeInteger
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION "Configuration value."
+    ::= { agilConfigurationEntry 2 }
+
+END

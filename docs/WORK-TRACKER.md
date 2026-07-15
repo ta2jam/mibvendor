@@ -182,7 +182,7 @@ Acceptance criteria:
 
 ### DATA-09 — Revision, duplicate, and conflict engine
 
-Status: `planned`
+Status: `in-progress`
 
 Identify a module variant by module name, module revision, source family,
 source revision, and artifact SHA-256. Never overwrite a same-name variant.
@@ -444,3 +444,23 @@ with no billing code.
 - Kept staging outside the active catalog and production image. DATA-02 remains
   `in-progress` until the 550-module release threshold, parser/collision gates,
   notices, and immutable activation manifest pass.
+
+### 2026-07-15 — DATA-02 candidate corpus expansion
+
+- Expanded discovery to 12 repositories and 9,756 candidates. The selected
+  license-signal policy classifies 973 candidates as redistributable and keeps
+  8,783 in quarantine.
+- Staged 357 raw MIB variants from five licensed repositories. Of these, 315
+  are collision-free against the active catalog, 41 collide with an active
+  module name, and one lacks a valid module declaration.
+- Statically analyzed 273 BSD-2-Clause PySNMP compiled modules without executing
+  Python and extracted 20,901 candidate OID objects. Two modules carry parser
+  warnings and 27 collide with active module names.
+- Collapsed 739 active/raw/compiled variants into 559 unique module names: 110
+  active and 449 candidates. The 550-module numerical target is met only in the
+  candidate set, not in production.
+- Recorded 115 multi-variant modules, including 111 content conflicts. DATA-09
+  is now `in-progress`; no conflict was silently overwritten.
+- DATA-02 remains `in-progress`: the 252 selected raw candidates still need the
+  full parser/dependency gate, the 197 selected compiled candidates need field
+  fidelity review, and only then can an immutable release be activated.

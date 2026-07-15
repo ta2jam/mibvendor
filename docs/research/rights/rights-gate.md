@@ -18,6 +18,13 @@ commit'indeki 24 MIB artifact'i indirildi; 23'ü aktif katalogla isim çakışma
 olmayan aday, biri çakışan varyanttır. Yalnız modül bildirimi doğrulandı; tam
 parser gate'i açıktır. Bunlar aktif veri sürümüne henüz dahil değildir.
 
+Genişletilmiş staging 12 kaynak kaydında 973 license-derived adayı kapsar. Raw
+intake beş depodan 357 varyant, compiled intake ise BSD-2-Clause PySNMP
+deposundan Python çalıştırılmadan statik çözümlenen 273 modül ve 20.901 OID
+nesnesi içerir. Aktif 110 modülle birlikte tekrarlar düşüldüğünde 559 benzersiz
+modül adayı vardır; bu sayı production kapsamı veya parser gate başarısı olarak
+sunulmaz.
+
 - Kamuya açılan çekirdek: dosya bazında koşulları doğrulanmış IETF MIB code component'leri, doğrudan IANA Protocol Registry MIB'leri ve sabitlenmiş Net-SNMP proje MIB'leri.
 - Vendor aileleri: 19 aile incelendi; hiçbirine mevcut kanıtla A veya B verilmedi.
 - Tier B şu anda boş. Kamuya metadata koymak için de `metadata_index` kapsamının açıkça onaylanması gerekir.

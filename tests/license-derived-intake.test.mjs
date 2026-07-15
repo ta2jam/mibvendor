@@ -13,9 +13,10 @@ const manifest = JSON.parse(await readFile(path.join(root, "data", "license-deri
 
 test("license-derived MIB intake is complete, pinned, and staged", async () => {
   assert.deepEqual(await validateLicenseDerivedIntake(root, discovery, activeCatalog, manifest), []);
-  assert.equal(manifest.counts.artifacts, 24);
-  assert.equal(manifest.counts.collision_free_candidates, 23);
-  assert.equal(manifest.counts.active_module_collisions, 1);
+  assert.equal(manifest.counts.artifacts, 357);
+  assert.equal(manifest.counts.collision_free_candidates, 315);
+  assert.equal(manifest.counts.active_module_collisions, 41);
+  assert.equal(manifest.counts.module_declaration_missing, 1);
   assert.equal(manifest.activation_state, "staged-not-active");
   assert.equal(manifest.parser_gate, "open");
   assert.equal(manifest.active_data_release_at_generation, activeCatalog.data_release);

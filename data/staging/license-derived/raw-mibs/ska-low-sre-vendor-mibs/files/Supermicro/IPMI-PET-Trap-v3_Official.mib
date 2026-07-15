@@ -1,0 +1,85 @@
+PET-EVENTS-V3-MIB DEFINITIONS ::= BEGIN
+
+    IMPORTS
+        NOTIFICATION-TYPE, OBJECT-TYPE, Integer32, TimeTicks FROM SNMPv2-SMI
+        ipmi FROM ATEN-IPMI-MIB;
+
+petevts MODULE-IDENTITY
+    LAST-UPDATED "202009241150Z"
+    ORGANIZATION "supermicro.com.tw"
+    CONTACT-INFO "supermicro"
+    DESCRIPTION  "trap event trap3"
+    REVISION     "202009240Z"
+    DESCRIPTION  "First draft"
+    ::= { ipmi 30 }
+
+trapguid OBJECT-TYPE
+    SYNTAX OCTET STRING (SIZE(32))
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION "GUID."
+    ::= { petevts 2 }
+
+trapSensorType OBJECT-TYPE
+    SYNTAX OCTET STRING (SIZE(64))
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION "System evnet log sensor type"
+    ::= { petevts 3 }
+
+trapsensorNumber OBJECT-TYPE
+    SYNTAX INTEGER
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION "A unique value, greater than zero, for each interface.  It
+            is recommended that values are assigned contiguously
+            starting from 1.  The value for each interface sub-layer
+            must remain constant at least from one re-initialization of
+            the entity's network management system to the next re-
+            initialization."
+    ::= { petevts 4 }
+
+trapselRawData OBJECT-TYPE
+    SYNTAX OCTET STRING (SIZE(20))
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION "System evnet log raw data"
+    ::= { petevts 5 }
+
+trapselSensorName OBJECT-TYPE
+    SYNTAX OCTET STRING (SIZE(16))
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION "System evnet log sensor name"
+    ::= { petevts 6 }
+
+trapselDescription OBJECT-TYPE
+    SYNTAX OCTET STRING (SIZE(512))
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION "System evnet log description"
+    ::= { petevts 7 }
+
+trapseverity OBJECT-TYPE
+    SYNTAX INTEGER { Info(0), Warning(1), Critical(2) }
+    MAX-ACCESS  accessible-for-notify
+    STATUS      current
+    DESCRIPTION "severity."
+    ::= { petevts 8 }
+
+trapmessage NOTIFICATION-TYPE
+ OBJECTS { 
+           trapguid,
+           trapSensorType,
+           trapsensorNumber,
+           trapselRawData,
+           trapselSensorName,
+           trapselDescription,
+           trapseverity
+         }
+ STATUS current
+ DESCRIPTION
+  "Trap message"
+ ::= { petevts 1}
+
+END

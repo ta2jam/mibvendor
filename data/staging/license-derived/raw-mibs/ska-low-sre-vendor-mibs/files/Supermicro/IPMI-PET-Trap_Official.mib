@@ -1,0 +1,5313 @@
+PET-EVENTS-MIB DEFINITIONS ::= BEGIN
+
+	IMPORTS
+		enterprises
+			FROM RFC1155-SMI
+		OBJECT-TYPE
+			FROM RFC-1212
+
+        	TRAP-TYPE
+		        FROM RFC-1215
+
+
+		DisplayString
+			FROM RFC1213-MIB;
+
+	wiredformgmt     OBJECT IDENTIFIER ::= { enterprises 3183 }
+	pet              OBJECT IDENTIFIER ::= { wiredformgmt 1 }
+
+	petevts   		OBJECT IDENTIFIER ::= { pet 1 }
+
+trapTempLNCGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Lower Non Critical- going low - Asserted"
+
+
+ ::= 65792
+
+
+trapTempLNCGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Lower Non Critical- going high - Asserted"
+
+
+ ::= 65793
+
+
+trapTempLCGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Lower Critical - going low - Asserted"
+
+
+ ::= 65794
+
+
+trapTempLCGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Lower Critical - going high - Asserted"
+
+
+ ::= 65795
+
+
+trapTempLNRGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Lower Non-Recoverable - going low - Asserted"
+
+
+ ::= 65796
+
+
+trapTempLNRGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Lower Non-Recoverable - going high - Asserted"
+
+
+ ::= 65797
+
+
+trapTempUNCGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Upper Non-Critical - going low - Asserted"
+
+
+ ::= 65798
+
+
+trapTempUNCGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Upper Non-Critical - going high - Asserted"
+
+
+ ::= 65799
+
+
+trapTempUCGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Upper Critical - going low - Asserted"
+
+
+ ::= 65800
+
+
+trapTempUCGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Upper Critical - going high - Asserted"
+
+
+ ::= 65801
+
+
+trapTempUNRGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Upper Non-Recoverable - going low - Asserted"
+
+
+ ::= 65802
+
+
+trapTempUNRGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Upper Non-Recoverable - going high - Asserted"
+
+
+ ::= 65803
+
+
+trapTransitiontoIdleAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to Idle - Asserted"
+
+
+ ::= 131584
+
+
+trapTransitiontoActiveAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to Active - Asserted"
+
+
+ ::= 131585
+
+
+trapTransitiontoBusyAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to Busy - Asserted"
+
+
+ ::= 131586
+
+
+trapVoltageLNCGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Lower Non Critical- going low - Asserted"
+
+
+ ::= 131328
+
+
+trapVoltageLNCGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Lower Non Critical- going high - Asserted"
+
+
+ ::= 131329
+
+
+trapVoltageLCGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Lower Critical - going low - Asserted"
+
+
+ ::= 131330
+
+
+trapVoltageLCGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Lower Critical - going high - Asserted"
+
+
+ ::= 131331
+
+
+trapVoltageLNRGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Lower Non-Recoverable - going low - Asserted"
+
+
+ ::= 131332
+
+
+trapVoltageLNRGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Lower Non-Recoverable - going high - Asserted"
+
+
+ ::= 131333
+
+
+trapVoltageUNCGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Upper Non-Critical - going low - Asserted"
+
+
+ ::= 131334
+
+
+trapVoltageUNCGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Upper Non-Critical - going high - Asserted"
+
+
+ ::= 131335
+
+
+trapVoltageUCGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Upper Critical - going low - Asserted"
+
+
+ ::= 131336
+
+
+trapVoltageUCGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Upper Critical - going high - Asserted"
+
+
+ ::= 131337
+
+
+trapVoltageUNRGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Upper Non-Recoverable - going low - Asserted"
+
+
+ ::= 131338
+
+
+trapVoltageUNRGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Upper Non-Recoverable - going high - Asserted"
+
+
+ ::= 131339
+
+
+trapCurrentLNCGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Lower Non Critical- going low - Asserted"
+
+
+ ::= 196864
+
+
+trapCurrentLNCGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Lower Non Critical- going high - Asserted"
+
+
+ ::= 196865
+
+
+trapCurrentLCGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Lower Critical - going low - Asserted"
+
+
+ ::= 196866
+
+
+trapCurrentLCGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Lower Critical - going high - Asserted"
+
+
+ ::= 196867
+
+
+trapCurrentLNRGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Lower Non-Recoverable - going low - Asserted"
+
+
+ ::= 196868
+
+
+trapCurrentLNRGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Lower Non-Recoverable - going high - Asserted"
+
+
+ ::= 196869
+
+
+trapCurrentUNCGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Upper Non-Critical - going low - Asserted"
+
+
+ ::= 196870
+
+
+trapCurrentUNCGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Upper Non-Critical - going high - Asserted"
+
+
+ ::= 196871
+
+
+trapCurrentUCGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Upper Critical - going low - Asserted"
+
+
+ ::= 196872
+
+
+trapCurrentUCGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Upper Critical - going high - Asserted"
+
+
+ ::= 196873
+
+
+trapCurrentUNRGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Upper Non-Recoverable - going low - Asserted"
+
+
+ ::= 196874
+
+
+trapCurrentUNRGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Upper Non-Recoverable - going high - Asserted"
+
+
+ ::= 196875
+
+
+trapStateDeassertedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "State Deasserted - Asserted"
+
+
+ ::= 197376
+
+
+trapStateAssertedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "State Asserted - Asserted"
+
+
+ ::= 197377
+
+
+trapFanLNCGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Lower Non Critical- going low - Asserted"
+
+
+ ::= 262400
+
+
+trapFanLNCGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Lower Non Critical- going high - Asserted"
+
+
+ ::= 262401
+
+
+trapFanLCGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Lower Critical - going low - Asserted"
+
+
+ ::= 262402
+
+
+trapFanLCGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Lower Critical - going high - Asserted"
+
+
+ ::= 262403
+
+
+trapFanLNRGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Lower Non-Recoverable - going low - Asserted"
+
+
+ ::= 262404
+
+
+trapFanLNRGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Lower Non-Recoverable - going high - Asserted"
+
+
+ ::= 262405
+
+
+trapFanUNCGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Upper Non-Critical - going low - Asserted"
+
+
+ ::= 262406
+
+
+trapFanUNCGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Upper Non-Critical - going high - Asserted"
+
+
+ ::= 262407
+
+
+trapFanUCGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Upper Critical - going low - Asserted"
+
+
+ ::= 262408
+
+
+trapFanUCGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Upper Critical - going high - Asserted"
+
+
+ ::= 262409
+
+
+trapFanUNRGoLowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Upper Non-Recoverable - going low - Asserted"
+
+
+ ::= 262410
+
+
+trapFanUNRGoHighAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Upper Non-Recoverable - going high - Asserted"
+
+
+ ::= 262411
+
+
+trapPredictiveFailuredeassertedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Predictive Failure deasserted - Asserted"
+
+
+ ::= 263168
+
+
+trapPredictiveFailureassertedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Predictive Failure asserted - Asserted"
+
+
+ ::= 263169
+
+
+trapLimitNotExceedednAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Limit Not Exceeded - Asserted"
+
+
+ ::= 328960
+
+
+trapLimitExceedednAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Limit Exceeded - Asserted"
+
+
+ ::= 328961
+
+
+trapGeneralChassisIntrusionAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "General Chassis Intrusion - Asserted"
+
+
+ ::= 356096
+
+
+trapDriveBayIntrusionAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Drive Bay intrusion - Asserted"
+
+
+ ::= 356097
+
+
+trapIOCardAreaIntrusionAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "IO Card Area Intrusion - Asserted"
+
+
+ ::= 356098
+
+
+trapProcessorAreaIntrusionAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor Area Intrusion - Asserted"
+
+
+ ::= 356099
+
+
+trapLANLeashLostAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "LAN Leash Lost - Asserted"
+
+
+ ::= 356100
+
+
+trapUnauthorizedDockAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unauthorized Dock (system is unplugged from LAN) - Asserted"
+
+
+ ::= 356101
+
+
+trapFANAreaIntrusionAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "FAN Area Intrusion (supports detection of hot plug fan tampering) - Asserted"
+
+
+ ::= 356102
+
+
+trapPerformanceMetAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Performance Met - Asserted"
+
+
+ ::= 394752
+
+
+trapPerformanceLagsAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Performance Lags - Asserted"
+
+
+ ::= 394753
+
+
+trapSecureModeViolationAttemptAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Secure Mode (Front Panel Lockout) Violation attempt - Asserted"
+
+
+ ::= 421632
+
+
+trapPrebootPasswordViolationUserPasswordAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Pre-boot Password Violation - user password - Asserted"
+
+
+ ::= 421633
+
+
+trapPrebootPasswordViolationAttemptSetupPasswordAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Pre-boot Password Violation attempt - setup password - Asserted"
+
+
+ ::= 421634
+
+
+trapPrebootPasswordViolationNetworkBootPasswordAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Pre-boot Password Violation - network boot password - Asserted"
+
+
+ ::= 421635
+
+
+trapOtherPrebootPasswordViolationAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Other pre-boot Password Violation - Asserted"
+
+
+ ::= 421636
+
+
+trapOutOfBandAccessPasswordViolationAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Out-of-band Access Password Violation - Asserted"
+
+
+ ::= 421637
+
+
+traptransitiontoOKAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "transition to OK - Asserted"
+
+
+ ::= 460544
+
+
+traptransitiontoNonCriticalfromOKAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "transition to Non-Critical from OK - Asserted"
+
+
+ ::= 460545
+
+
+traptransitiontoCriticalfromlesssevereAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "transition to Critical from less severe - Asserted"
+
+
+ ::= 460546
+
+
+traptransitiontoNonrecoverablefromlesssevereAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "transition to Non-recoverable from less severe - Asserted"
+
+
+ ::= 460547
+
+
+traptransitiontoNonCriticalfrommoresevereAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "transition to Non-Critical from more severe - Asserted"
+
+
+ ::= 460548
+
+
+traptransitiontoCriticalfromNonrecoverableAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "transition to Critical from Non-recoverable - Asserted"
+
+
+ ::= 460549
+
+
+traptransitiontoNonrecoverableAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "transition to Non-recoverable - Asserted"
+
+
+ ::= 460550
+
+
+trapMonitorAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Monitor - Asserted"
+
+
+ ::= 460551
+
+
+trapInformationalAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Informational - Asserted"
+
+
+ ::= 460552
+
+
+trapProcessorIERRAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor IERR - Asserted"
+
+
+ ::= 487168
+
+
+trapProcessorThermalTripAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor Thermal Trip - Asserted"
+
+
+ ::= 487169
+
+
+trapProcessorFRB1BISTFailureAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor FRB1/BIST failure - Asserted"
+
+
+ ::= 487170
+
+
+trapProcessorFRB2HangInPOSTFailureAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor FRB2/Hang in POST failure - Asserted"
+
+
+ ::= 487171
+
+
+trapProcessorFRB3ProcessorStartupInitializationFailureAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor FRB3/Processor Startup/Initialization failure - Asserted"
+
+
+ ::= 487172
+
+
+trapProcessorConfigurationErrorAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor Configuration Error - Asserted"
+
+
+ ::= 487173
+
+
+trapProcessorSMBIOSUncorrectableCPUComplexErrorAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor SM BIOS Uncorrectable CPU-complex Error - Asserted"
+
+
+ ::= 487174
+
+
+trapProcessorPresenceDetectedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor Presence detected - Asserted"
+
+
+ ::= 487175
+
+
+trapProcessorDisabledAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor disabled - Asserted"
+
+
+ ::= 487176
+
+
+trapProcessorTerminatorPresenceDetectedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor Terminator Presence Detected - Asserted"
+
+
+ ::= 487177
+
+
+trapProcessorAutomaticallyThrottledAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor Automatically Throttled - Asserted"
+
+
+ ::= 487178
+
+
+trapProcessorMachineCheckExceptionAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor Machine Check Exception - Asserted"
+
+
+ ::= 487179
+
+
+trapProcessorCorrectableMachineCheckErrorAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor Correctable Machine Check Error - Asserted"
+
+
+ ::= 487180
+
+
+trapDeviceRemovedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Device Removed - Asserted"
+
+
+ ::= 526336
+
+
+trapDeviceInsertedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Device Inserted - Asserted"
+
+
+ ::= 526337
+
+
+trapPowerSupplyPresenceDetectedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Supply Presence detected - Asserted"
+
+
+ ::= 552704
+
+
+trapPowerSupplyFailureDetectedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Supply Failure detected - Asserted"
+
+
+ ::= 552705
+
+
+trapPowerSupplyPredictiveFailureAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Supply Predictive Failure - Asserted"
+
+
+ ::= 552706
+
+
+trapPowerSupplyInputLostACDCAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Supply input lost (AC/DC) - Asserted"
+
+
+ ::= 552707
+
+
+trapPowerSupplyInputLostOrOutOfFangeAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Supply input lost or out-of-range - Asserted"
+
+
+ ::= 552708
+
+
+trapPowerSupplyInputOutOfFangeButPresentAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Supply input out-of-range but present - Asserted"
+
+
+ ::= 552709
+
+
+trapPowerSupplyConfigurationErrorAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Supply Configuration error - Asserted"
+
+
+ ::= 552710
+
+
+trapPowerSupplyInactiveInStandbyStateAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Supply Inactive (in standby state) - Asserted"
+
+
+ ::= 552711
+
+
+trapDeviceDisabledAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Device Disabled - Asserted"
+
+
+ ::= 592128
+
+
+trapDeviceEnabledAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Device Enabled - Asserted"
+
+
+ ::= 592129
+
+
+trapPowerUnitPowerOffPowerDownAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Unit Power Off / Power Down - Asserted"
+
+
+ ::= 618240
+
+
+trapPowerUnitPowerCycleAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Unit Power Cycle - Asserted"
+
+
+ ::= 618241
+
+
+trapPowerUnit240VAPowerDownAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Unit 240VA Power Down - Asserted"
+
+
+ ::= 618242
+
+
+trapPowerUnitInterlockPowerDownAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Unit Interlock Power Down - Asserted"
+
+
+ ::= 618243
+
+
+trapPowerUnitACLostPowerInputLostAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Unit AC lost / Power input lost - Asserted"
+
+
+ ::= 618244
+
+
+trapPowerUnitSoftPowerControlFailureAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Unit Soft Power Control Failure - Asserted"
+
+
+ ::= 618245
+
+
+trapPowerUnitFailureDetectedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Unit Failure detected - Asserted"
+
+
+ ::= 618246
+
+
+trapPowerUnitPredictiveFailureAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Unit Predictive Failure - Asserted"
+
+
+ ::= 618247
+
+
+traptransitiontoRunningAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to Running - Asserted"
+
+
+ ::= 657920
+
+
+traptransitiontoInTestAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to In Test - Asserted"
+
+
+ ::= 657921
+
+
+traptransitiontoPowerOffAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to Power Off - Asserted"
+
+
+ ::= 657922
+
+
+traptransitiontoOnLineAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to On Line - Asserted"
+
+
+ ::= 657923
+
+
+traptransitiontoOffLineAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to Off Line - Asserted"
+
+
+ ::= 657924
+
+
+traptransitiontoOffDutyAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to Off Duty - Asserted"
+
+
+ ::= 657925
+
+
+traptransitiontoDegradedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to Degraded - Asserted"
+
+
+ ::= 657926
+
+
+traptransitiontoPowerSaveAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to Power Save - Asserted"
+
+
+ ::= 657927
+
+
+trapInstallErrorAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Install Error - Asserted"
+
+
+ ::= 657928
+
+
+trapFullyRedundantAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fully Redundant - Asserted"
+
+
+ ::= 723712
+
+
+trapRedundancyLostEnteredAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Redundancy Lost Entered - Asserted"
+
+
+ ::= 723713
+
+
+trapRedundancyDegradedRedundancyAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Redundancy Degraded Redundancy - Asserted"
+
+
+ ::= 723714
+
+
+trapNonredundantSufficientResourcesAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Non-redundant Sufficient Resources - Asserted"
+
+
+ ::= 723715
+
+
+trapNonredundantInsufficientResourcesAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Non-redundant Insufficient Resources - Asserted"
+
+
+ ::= 723716
+
+
+trapNonRedundancyAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Insufficient Resources Unit is non-redundant and has insufficient resources to maintain normal operation - Asserted"
+
+
+ ::= 723717
+
+
+trapRedundancyDegradedFromFullyRedundantAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Redundancy Degraded from fully Redundant Unit has lost some redundant resources but is still in a redundant state. - Asserted"
+
+
+ ::= 723718
+
+
+trapRedundancyDegradedFromNonRedundantAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Redundancy Degraded from Non-Redundant Unit has regained some resources and is redundant but not fully redundant. - Asserted"
+
+
+ ::= 723719
+
+
+trapMemoryCorrectableECCAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Correctable ECC - Asserted"
+
+
+ ::= 814848
+
+
+trapMemoryUncorrectableECCAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Uncorrectable ECC - Asserted"
+
+
+ ::= 814849
+
+
+trapMemoryParityAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Parity - Asserted"
+
+
+ ::= 814850
+
+
+trapMemoryScrubFailedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Scrub Failed - Asserted"
+
+
+ ::= 814851
+
+
+trapMemoryDeviceDisabledAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Device Disabled - Asserted"
+
+
+ ::= 814852
+
+
+trapMemoryCorrectableECCLoggingLimitReachedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Correctable ECC / other correctable memory error logging limit reached - Asserted"
+
+
+ ::= 814853
+
+
+trapMemoryPresenceDetectedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Presence detected - Asserted"
+
+
+ ::= 814854
+
+
+trapMemoryConfigurationErrorAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Configuration error - Asserted"
+
+
+ ::= 814855
+
+
+trapMemorySpareAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Spare - Asserted"
+
+
+ ::= 814856
+
+
+trapMemoryAutomaticallyThrottledAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Automatically Throttled - Asserted"
+
+
+ ::= 814857
+
+
+trapMemoryCriticalOvertemperatureAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Critical Overtemperature - Asserted"
+
+
+ ::= 814858
+
+
+trapDrivePresenceAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Drive Slot (Bay) Drive Presence - Asserted"
+
+
+ ::= 880384
+
+
+trapDriveFaultAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Drive Slot (Bay) Drive Fault - Asserted"
+
+
+ ::= 880385
+
+
+trapDriveSlotPredictiveFailureAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Drive Slot (Bay) Predictive Failure - Asserted"
+
+
+ ::= 880386
+
+
+trapDriveSlotHotSpareAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Drive Slot (Bay) Hot Spare - Asserted"
+
+
+ ::= 880387
+
+
+trapDriveSlotConsistencyCheckParityCheckInProgressAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Drive Slot (Bay) Consistency Check / Parity Check in progress - Asserted"
+
+
+ ::= 880388
+
+
+trapDriveSlotInCriticalArrayAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Drive Slot (Bay) In Critical Array - Asserted"
+
+
+ ::= 880389
+
+
+trapDriveSlotInFailedArrayAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Drive Slot (Bay) In Failed Array - Asserted"
+
+
+ ::= 880390
+
+
+trapDriveSlotRebuildRemapInProgressAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Drive Slot (Bay) Rebuild/Remap in progress - Asserted"
+
+
+ ::= 880391
+
+
+trapDriveSlotRebuildRemapAbortedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Drive Slot (Bay) Rebuild/Remap Aborted - Asserted"
+
+
+ ::= 880392
+
+
+trapPOSTMemoryResizeAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "POST Memory Resize - Asserted"
+
+
+ ::= 945920
+
+
+trapSystemFirmwareErrorPOSTErrorAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Firmware Progress (formerly POST Error) System Firmware Error (POST Error) - Asserted"
+
+
+ ::= 1011456
+
+
+trapSystemFirmwareHangAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Firmware Progress (formerly POST Error) System Firmware Hang - Asserted"
+
+
+ ::= 1011457
+
+
+trapSystemFirmwareProgressAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Firmware Progress (formerly POST Error) - Asserted"
+
+
+ ::= 1011458
+
+
+trapCorrectableMemoryErrorLoggingDisabledAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Correctable Memory Error Logging Disabled - Asserted"
+
+
+ ::= 1076992
+
+
+trapEventTypeLoggingDisabledAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Event Type Logging Disabled - Asserted"
+
+
+ ::= 1076993
+
+
+trapEventLoggingDisabledLogAreaResetClearedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Event Logging Disabled Log Area Reset/Cleared - Asserted"
+
+
+ ::= 1076994
+
+
+trapAllEventLoggingDisabledAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "All Event Logging Disabled - Asserted"
+
+
+ ::= 1076995
+
+
+trapEventLoggingSELFulAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Event Logging SEL Full - Asserted"
+
+
+ ::= 1076996
+
+
+trapEventLoggingSELAlmostFullAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Event Logging SEL Almost Full - Asserted"
+
+
+ ::= 1076997
+
+
+trapCorrectableMachineCheckErrorLoggingDisabledAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Correctable Machine Check Error Logging Disabled - Asserted"
+
+
+ ::= 1076998
+
+
+trapWatchdog1BIOSWatchdogResetAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 1 BIOS Watchdog Reset - Asserted"
+
+
+ ::= 1142528
+
+
+trapWatchdog1OSWatchdogResetAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 1 OS Watchdog Reset - Asserted"
+
+
+ ::= 1142529
+
+
+trapWatchdog1OSWatchdogShutDownAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 1 OS Watchdog Shut Down - Asserted"
+
+
+ ::= 1142530
+
+
+trapWatchdog1OSWatchdogPowerDownAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 1 OS Watchdog Power Down - Asserted"
+
+
+ ::= 1142531
+
+
+trapWatchdog1OSWatchdogPowerCycleAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 1 OS Watchdog Power Cycle - Asserted"
+
+
+ ::= 1142532
+
+
+trapWatchdog1OSWatchdogNMIDiagnosticInterruptAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 1 OS Watchdog NMI / Diagnostic Interrupt - Asserted"
+
+
+ ::= 1142533
+
+
+trapWatchdog1OSWatchdogExpiredStatusOnlyAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 1 OS Watchdog Expired status only - Asserted"
+
+
+ ::= 1142534
+
+
+trapWatchdog1OSWatchdogPreTimeoutInterruptNonNMIAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 1 OS Watchdog pre-timeout Interrupt non-NMI - Asserted"
+
+
+ ::= 1142535
+
+
+trapSystemEventSystemReconfiguredAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Event System Reconfigured - Asserted"
+
+
+ ::= 1208064
+
+
+trapSystemEventOEMSystemBootEventAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Event OEM System Boot Event - Asserted"
+
+
+ ::= 1208065
+
+
+trapSystemEventUndeterminedSystemHardwareFailureAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Event Undetermined system hardware failure - Asserted"
+
+
+ ::= 1208066
+
+
+trapSystemEventEntryAddedToAuxiliaryLogAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Event Entry added to Auxiliary Log - Asserted"
+
+
+ ::= 1208067
+
+
+trapSystemEventPEFActionAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Event PEF Action - Asserted"
+
+
+ ::= 1208068
+
+
+trapSystemEventTimestampClockSynchAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Event Timestamp Clock Synch - Asserted"
+
+
+ ::= 1208069
+
+
+trapCriticalInterruptFrontPanelNMIDiagnosticInterruptAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt Front Panel NMI / Diagnostic Interrupt - Asserted"
+
+
+ ::= 1273600
+
+
+trapCriticalInterruptBusTimeoutAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt Bus Timeout - Asserted"
+
+
+ ::= 1273601
+
+
+trapCriticalInterruptIOChannelCheckNMIAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt I/O channel check NMI - Asserted"
+
+
+ ::= 1273602
+
+
+trapCriticalInterruptSoftwareNMIAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt Software NMI - Asserted"
+
+
+ ::= 1273603
+
+
+trapCriticalInterruptPCIPERRAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt PCI PERR - Asserted"
+
+
+ ::= 1273604
+
+
+trapCriticalInterruptPCISERRAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt PCI SERR - Asserted"
+
+
+ ::= 1273605
+
+
+trapCriticalInterruptEISAFailSafeTimeoutAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt EISA Fail Safe Timeout - Asserted"
+
+
+ ::= 1273606
+
+
+trapCriticalInterruptBusCorrectableErrorAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt Bus Correctable Error - Asserted"
+
+
+ ::= 1273607
+
+
+trapCriticalInterruptBusUncorrectableErrorAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt Bus Uncorrectable Error - Asserted"
+
+
+ ::= 1273608
+
+
+trapCriticalInterruptFatalNMIAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt Fatal NMI (port 61h bit 7) - Asserted"
+
+
+ ::= 1273609
+
+
+trapCriticalInterruptBusFatalErrorAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt Bus Fatal Error - Asserted"
+
+
+ ::= 1273610
+
+
+trapCriticalInterruptBusDegradedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt Bus Degraded (bus operating in a degraded performance state) - Asserted"
+
+
+ ::= 1273611
+
+
+trapButtonSwitchPowerButtonPressedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Button / Switch Power Button pressed - Asserted"
+
+
+ ::= 1339136
+
+
+trapButtonSwitchSleepButtonPressedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Button / Switch Sleep Button pressed - Asserted"
+
+
+ ::= 1339137
+
+
+trapButtonSwitchResetButtonPressedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Button / Switch Reset Button pressed - Asserted"
+
+
+ ::= 1339138
+
+
+trapButtonSwitchFRULatchOpenAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Button / Switch FRU latch open - Asserted"
+
+
+ ::= 1339139
+
+
+trapButtonSwitchFRUServiceRequestButtonAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Button / Switch FRU service request button - Asserted"
+
+
+ ::= 1339140
+
+
+trapChipSetSoftPowerControlFailureAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Chip Set Soft Power Control Failure - Asserted"
+
+
+ ::= 1666816
+
+
+trapChipSetThermalTripAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Chip Set Thermal Trip - Asserted"
+
+
+ ::= 1666817
+
+
+trapCableInterconnectIsConnectedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Cable / Interconnect is connected - Asserted"
+
+
+ ::= 1797888
+
+
+trapCableInterconnectConfigurationErrorAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Cable / Interconnect Configuration Error Incorrect cable connected / Incorrect interconnection - Asserted"
+
+
+ ::= 1797889
+
+
+trapSystemBootRestartInitiatedByPowerUpAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Boot / Restart Initiated by power up - Asserted"
+
+
+ ::= 1928960
+
+
+trapSystemBootRestartInitiatedByHardResetAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Boot / Restart Initiated by hard reset - Asserted"
+
+
+ ::= 1928961
+
+
+trapSystemBootRestartInitiatedByWarmResetAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Boot / Restart Initiated by warm reset - Asserted"
+
+
+ ::= 1928962
+
+
+trapSystemBootRestartInitiatedUserRequestedPXEBootAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Boot / Restart Initiated User requested PXE boot - Asserted"
+
+
+ ::= 1928963
+
+
+trapSystemBootRestartInitiatedAutomaticBootToDiagnostiAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Boot / Restart Initiated Automatic boot to diagnostic - Asserted"
+
+
+ ::= 1928964
+
+
+trapSystemOSRuntimeSoftwareInitiatedHardResetAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Boot / Restart Initiated OS / run-time software initiated hard reset - Asserted"
+
+
+ ::= 1928965
+
+
+trapSystemOSRuntimeS0oftwareInitiatedWarmResetAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Boot / Restart Initiated OS / run-time software initiated warm reset - Asserted"
+
+
+ ::= 1928966
+
+
+trapSystemBootRestartInitiatedSystemRestartAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Boot / Restart Initiated System Restart - Asserted"
+
+
+ ::= 1928967
+
+
+trapBootErrorNoBootableMediaAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Boot Error No bootable media - Asserted"
+
+
+ ::= 1994496
+
+
+trapBootErrorNonBootableDisketteLeftInDriveAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Boot Error Non-bootable diskette left in drive - Asserted"
+
+
+ ::= 1994497
+
+
+trapBootErrorPXEServerNotFoundAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Boot Error PXE Server not found - Asserted"
+
+
+ ::= 1994498
+
+
+trapBootErrorInvalidBootSectorAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Boot Error Invalid boot sector - Asserted"
+
+
+ ::= 1994499
+
+
+trapBootErrorTimeoutWaitingForUserSelectionOfBootSourceAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Boot Error Timeout waiting for user selection of boot source - Asserted"
+
+
+ ::= 1994500
+
+
+trapBaseOSBootABootCompletedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status A boot completed - Asserted"
+
+
+ ::= 2060032
+
+
+trapBaseOSBootCBootCompletedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status C boot completed - Asserted"
+
+
+ ::= 2060033
+
+
+trapBaseOSBootPXEBootCompletedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status PXE boot completed - Asserted"
+
+
+ ::= 2060034
+
+
+trapBaseOSBootDiagnosticBootCompletedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status Diagnostic boot completed - Asserted"
+
+
+ ::= 2060035
+
+
+trapBaseOSBootCD-ROMBootCompletedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status CD-ROM boot completed - Asserted"
+
+
+ ::= 2060036
+
+
+trapBaseOSBootROMBootCompletedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status ROM boot completed - Asserted"
+
+
+ ::= 2060037
+
+
+trapBaseOSbootDeviceNotSpecifiedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status boot completed - boot device not specified - Asserted"
+
+
+ ::= 2060038
+
+
+trapBaseOSHypervisorInstallationStartedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status Base OS/Hypervisor Installation started - Asserted"
+
+
+ ::= 2060039
+
+
+trapBaseOSHypervisorInstallationCompletedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status Base OS/Hypervisor Installation completed - Asserted"
+
+
+ ::= 2060040
+
+
+trapBaseOSHypervisorInstallationAbortedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status Base OS/Hypervisor Installation aborted - Asserted"
+
+
+ ::= 2060041
+
+
+trapBaseOSHypervisorInstallationFailedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status Base OS/Hypervisor Installation failed - Asserted"
+
+
+ ::= 2060042
+
+
+trapCriticalStopDuringOSloadInitializationAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "OS Stop / Shutdown Critical stop during OS load / initialization - Asserted"
+
+
+ ::= 2125568
+
+
+trapRuntimeCriticalStopAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "OS Stop / Shutdown Run-time Critical Stop - Asserted"
+
+
+ ::= 2125569
+
+
+trapOSGracefulStopAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "OS Stop / Shutdown OS Graceful Stop - Asserted"
+
+
+ ::= 2125570
+
+
+trapOSGracefulShutdownAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "OS Stop / Shutdown OS Graceful Shutdown - Asserted"
+
+
+ ::= 2125571
+
+
+trapSoftShutdownInitiatedByPEFAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "OS Stop / Shutdown Soft Shutdown initiated by PEF - Asserted"
+
+
+ ::= 2125572
+
+
+trapAgentNotRespondingAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "OS Stop / Shutdown Agent Not Responding - Asserted"
+
+
+ ::= 2125573
+
+
+trapSlotConnectorFaultStatusAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Slot / Connector Fault Status asserted - Asserted"
+
+
+ ::= 2191104
+
+
+trapSlotConnectorIdentifyStatusAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Slot / Connector Identify Status asserted - Asserted"
+
+
+ ::= 2191105
+
+
+trapSlotConnectorDeviceInstalledAttachedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Slot / Connector Slot / Connector Device installed/attached - Asserted"
+
+
+ ::= 2191106
+
+
+trapSlotConnectorReadyForDeviceInstallationAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Slot / Connector Slot / Connector Ready for Device Installation - Asserted"
+
+
+ ::= 2191107
+
+
+trapSlotConnectorReadyForDeviceRemovalAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Slot / Connector Slot/Connector Ready for Device Removal - Asserted"
+
+
+ ::= 2191108
+
+
+trapSlotConnectorSlotPowerIsOffAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Slot / Connector Slot Power is Off - Asserted"
+
+
+ ::= 2191109
+
+
+trapSlotConnectorDeviceRemovalRequestAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Slot / Connector Slot / Connector Device Removal Request - Asserted"
+
+
+ ::= 2191110
+
+
+trapSlotConnectorInterlockAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Slot / Connector Interlock asserted - Asserted"
+
+
+ ::= 2191111
+
+
+trapSlotConnectorSlotIsDisabledAssertedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Slot / Connector Slot is Disabled - Asserted"
+
+
+ ::= 2191112
+
+
+trapSlotConnectorSlotHoldsSpareDeviceAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Slot / Connector Slot holds spare device - Asserted"
+
+
+ ::= 2191113
+
+
+trapPowerStateS0G0WorkingAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State S0 / G0 working - Asserted"
+
+
+ ::= 2256640
+
+
+trapPowerStateS1SleepingWithContextMaintainedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State S1 sleeping with system h/w & processor context maintained - Asserted"
+
+
+ ::= 2256641
+
+
+trapPowerStateS2SleepingProcessorContextLostAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State S2 sleeping processor context lost - Asserted"
+
+
+ ::= 2256642
+
+
+trapPowerStateS3SleepingMemoryRetainedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State S3 sleeping processor & h/w context lost memory retained - Asserted"
+
+
+ ::= 2256643
+
+
+trapPowerStateS4NonvolatileSleepSuspendToDiskAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State S4 non-volatile sleep / suspend-to disk - Asserted"
+
+
+ ::= 2256644
+
+
+trapPowerStateS5G2SoftOffAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State S5 / G2 soft-off - Asserted"
+
+
+ ::= 2256645
+
+
+trapPowerStateS4S5CannotBeDeterminedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State S4 / S5 soft-off particular S4 / S5 state cannot be determined - Asserted"
+
+
+ ::= 2256646
+
+
+trapPowerStateG3MechanicalOffAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State G3 / Mechanical Off - Asserted"
+
+
+ ::= 2256647
+
+
+trapPowerStateSleepingInAnS1S2orS3StatesAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State Sleeping in an S1 S2 or S3 states - Asserted"
+
+
+ ::= 2256648
+
+
+trapPowerStateG1SleepingAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State G1 sleeping - Asserted"
+
+
+ ::= 2256649
+
+
+trapPowerStateS5EteredByOverrideAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State S5 entered by override - Asserted"
+
+
+ ::= 2256650
+
+
+trapPowerStateLegacyONStateAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State Legacy ON state - Asserted"
+
+
+ ::= 2256651
+
+
+trapPowerStateLegacyOFFStateAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State Legacy OFF state - Asserted"
+
+
+ ::= 2256652
+
+
+trapPowerStateUnknownAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State Unknown - Asserted"
+
+
+ ::= 2256654
+
+
+trapWatchdog2TimerExpiredStatusOnlyAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 2 Timer expired status only - Asserted"
+
+
+ ::= 2322176
+
+
+trapWatchdog2HardResetAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 2 Hard Reset - Asserted"
+
+
+ ::= 2322177
+
+
+trapWatchdog2PowerDownAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 2 Power Down - Asserted"
+
+
+ ::= 2322178
+
+
+trapWatchdog2PowerCycleAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 2 Power Cycle - Asserted"
+
+
+ ::= 2322179
+
+
+trapWatchdog2TimerInterruptAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 2 Timer interrupt - Asserted"
+
+
+ ::= 2322184
+
+
+trapPlatformAlertplatformGeneratedPageAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Platform Alert platform generated page - Asserted"
+
+
+ ::= 2387712
+
+
+trapPlatformAlertplatformGeneratedLANAlertAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Platform Alert platform generated LAN alert - Asserted"
+
+
+ ::= 2387713
+
+
+trapPlatformAlertPlatformEventTrapGeneratedFormattedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Platform Alert Platform Event Trap generated formatted per IPMI PET specification- Asserted"
+
+
+ ::= 2387714
+
+
+trapPlatformAlertPlatformGeneratedSNMPTrapOEMFormatAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Platform Alert platform generated SNMP trap OEM format - Asserted"
+
+
+ ::= 2387715
+
+
+trapEntityPresentAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Entity Presence Entity Present - Asserted"
+
+
+ ::= 2453248
+
+
+trapEntityAbsentAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Entity Presence Entity Absent - Asserted"
+
+
+ ::= 2453249
+
+
+trapEntityDisabledAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Entity Presence Entity Disabled - Asserted"
+
+
+ ::= 2453250
+
+
+trapLANHeartbeatLostAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "LAN Heartbeat Lost - Asserted"
+
+
+ ::= 2584320
+
+
+trapLANHeartbeatAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "LAN Heartbeat - Asserted"
+
+
+ ::= 2584321
+
+
+trapSensorAccessDegradedOrUnavailableAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Management Subsystem Health sensor access degraded or unavailable - Asserted"
+
+
+ ::= 2649856
+
+
+trapControllerAccessDegradedOrUnavailableAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Management Subsystem Health controller access degraded or unavailable - Asserted"
+
+
+ ::= 2649857
+
+
+trapManagementControllerOfflineAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Management Subsystem Health management controller off-line - Asserted"
+
+
+ ::= 2649858
+
+
+trapManagementControllerUnavailableAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Management Subsystem Health management controller unavailable - Asserted"
+
+
+ ::= 2649859
+
+
+trapManagementSubsystemHealthSensorFailureAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Management Subsystem Health Sensor failure - Asserted"
+
+
+ ::= 2649860
+
+
+trapManagementSubsystemHealthFRUFailureAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Management Subsystem Health FRU failure - Asserted"
+
+
+ ::= 2649861
+
+
+trapBatteryLowPredictiveFailureAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Battery battery low (predictive failure) - Asserted"
+
+
+ ::= 2715392
+
+
+trapBatteryFailedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Battery battery failed - Asserted"
+
+
+ ::= 2715393
+
+
+trapBatteryPresenceDetectedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Battery battery presence detected - Asserted"
+
+
+ ::= 2715394
+
+
+trapSessionAuditSessionActivatedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Session Audit Session Activated - Asserted"
+
+
+ ::= 2780928
+
+
+trapSessionAuditSessionDeactivatedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Session Audit Session Deactivated - Asserted"
+
+
+ ::= 2780929
+
+
+trapSessionAuditInvalidUsernameOrPasswordAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Session Audit Invalid Username or Password - Asserted"
+
+
+ ::= 2780930
+
+
+trapSessionAuditInvalidPasswordDisableAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Session Audit Invalid password disable - Asserted"
+
+
+ ::= 2780931
+
+
+trapHardwareChangeDetectedWithAssociatedEntityAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Version Change Hardware change detected with associated Entity - Asserted"
+
+
+ ::= 2846464
+
+
+trapFirmwareOrSoftwareChangeDetectedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Version Change Firmware or software change detected with associated Entity - Asserted"
+
+
+ ::= 2846465
+
+
+trapHardwareIncompatibilityDetectedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Version Change Hardware incompatibility detected with associated Entity - Asserted"
+
+
+ ::= 2846466
+
+
+trapFirmwareOrSoftwareIncompatibilityDetectedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Version Change Firmware or software incompatibility detected with associated Entity - Asserted"
+
+
+ ::= 2846467
+
+
+trapEntityIsOfAnInvalidOrUnsupportedHardwareVersionAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Version Change Entity is of an invalid or unsupported hardware version - Asserted"
+
+
+ ::= 2846468
+
+
+trapEntityContainsAnInvalidOrUnsupportedFirmwareAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Version Change Entity contains an invalid or unsupported firmware or software version- Asserted"
+
+
+ ::= 2846469
+
+
+trapHardwareChangeDetectedWasSuccessfulAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Version Change Hardware Change detected with associated Entity was successful - Asserted"
+
+
+ ::= 2846470
+
+
+trapSoftwareOrFWChangeDetectedWasSuccessfulAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Version Change Software or F/W Change detected with associated Entity was successful - Asserted"
+
+
+ ::= 2846471
+
+
+trapFRUStateFRUNotInstalledAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "FRU State FRU Not Installed - Asserted"
+
+
+ ::= 2912000
+
+
+trapFRUStateFRUInactiveAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "FRU State FRU Inactive - Asserted"
+
+
+ ::= 2912001
+
+
+trapFRUStateFRUActivationRequestedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "FRU State FRU Activation Requested - Asserted"
+
+
+ ::= 2912002
+
+
+trapFRUStateFRUActivationInProgressAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "FRU State FRU Activation In Progress - Asserted"
+
+
+ ::= 2912003
+
+
+trapFRUStateFRUActiveAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "FRU State FRU Active - Asserted"
+
+
+ ::= 2912004
+
+
+trapFRUStateFRUDeactivationRequestedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "FRU State FRU Deactivation Requested - Asserted"
+
+
+ ::= 2912005
+
+
+trapFRUStateFRUDeactivationInProgressAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "FRU State FRU Deactivation In Progress - Asserted"
+
+
+ ::= 2912006
+
+
+trapFRUStateFRUCommunicationLostAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "FRU State FRU Communication Lost - Asserted"
+
+
+ ::= 2912007
+
+
+trapTempLNCGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Lower Non Critical- going low - Deasserted"
+
+
+ ::= 65920
+
+
+trapTempLNCGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Lower Non Critical- going high - Deasserted"
+
+
+ ::= 65921
+
+
+trapTempLCGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Lower Critical - going low - Deasserted"
+
+
+ ::= 65922
+
+
+trapTempLCGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Lower Critical - going high - Deasserted"
+
+
+ ::= 65923
+
+
+trapTempLNRGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Lower Non-Recoverable - going low - Deasserted"
+
+
+ ::= 65924
+
+
+trapTempLNRGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Lower Non-Recoverable - going high - Deasserted"
+
+
+ ::= 65925
+
+
+trapTempUNCGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Upper Non-Critical - going low - Deasserted"
+
+
+ ::= 65926
+
+
+trapTempUNCGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Upper Non-Critical - going high - Deasserted"
+
+
+ ::= 65927
+
+
+trapTempUCGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Upper Critical - going low - Deasserted"
+
+
+ ::= 65928
+
+
+trapTempUCGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Upper Critical - going high - Deasserted"
+
+
+ ::= 65929
+
+
+trapTempUNRGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Upper Non-Recoverable - going low - Deasserted"
+
+
+ ::= 65930
+
+
+trapTempUNRGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Temperature Upper Non-Recoverable - going high - Deasserted"
+
+
+ ::= 65931
+
+
+trapTransitiontoIdleDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to Idle - Deasserted"
+
+
+ ::= 131712
+
+
+trapTransitiontoActiveDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to Active - Deasserted"
+
+
+ ::= 131713
+
+
+trapTransitiontoBusyDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to Busy - Deasserted"
+
+
+ ::= 131714
+
+
+trapVoltageLNCGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Lower Non Critical- going low - Deasserted"
+
+
+ ::= 131456
+
+
+trapVoltageLNCGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Lower Non Critical- going high - Deasserted"
+
+
+ ::= 131457
+
+
+trapVoltageLCGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Lower Critical - going low - Deasserted"
+
+
+ ::= 131458
+
+
+trapVoltageLCGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Lower Critical - going high - Deasserted"
+
+
+ ::= 131459
+
+
+trapVoltageLNRGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Lower Non-Recoverable - going low - Deasserted"
+
+
+ ::= 131460
+
+
+trapVoltageLNRGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Lower Non-Recoverable - going high - Deasserted"
+
+
+ ::= 131461
+
+
+trapVoltageUNCGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Upper Non-Critical - going low - Deasserted"
+
+
+ ::= 131462
+
+
+trapVoltageUNCGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Upper Non-Critical - going high - Deasserted"
+
+
+ ::= 131463
+
+
+trapVoltageUCGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Upper Critical - going low - Deasserted"
+
+
+ ::= 131464
+
+
+trapVoltageUCGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Upper Critical - going high - Deasserted"
+
+
+ ::= 131465
+
+
+trapVoltageUNRGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Upper Non-Recoverable - going low - Deasserted"
+
+
+ ::= 131466
+
+
+trapVoltageUNRGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Voltage Upper Non-Recoverable - going high - Deasserted"
+
+
+ ::= 131467
+
+
+trapCurrentLNCGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Lower Non Critical- going low - Deasserted"
+
+
+ ::= 196992
+
+
+trapCurrentLNCGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Lower Non Critical- going high - Deasserted"
+
+
+ ::= 196993
+
+
+trapCurrentLCGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Lower Critical - going low - Deasserted"
+
+
+ ::= 196994
+
+
+trapCurrentLCGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Lower Critical - going high - Deasserted"
+
+
+ ::= 196995
+
+
+trapCurrentLNRGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Lower Non-Recoverable - going low - Deasserted"
+
+
+ ::= 196996
+
+
+trapCurrentLNRGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Lower Non-Recoverable - going high - Deasserted"
+
+
+ ::= 196997
+
+
+trapCurrentUNCGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Upper Non-Critical - going low - Deasserted"
+
+
+ ::= 196998
+
+
+trapCurrentUNCGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Upper Non-Critical - going high - Deasserted"
+
+
+ ::= 196999
+
+
+trapCurrentUCGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Upper Critical - going low - Deasserted"
+
+
+ ::= 197000
+
+
+trapCurrentUCGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Upper Critical - going high - Deasserted"
+
+
+ ::= 197001
+
+
+trapCurrentUNRGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Upper Non-Recoverable - going low - Deasserted"
+
+
+ ::= 197002
+
+
+trapCurrentUNRGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Current Upper Non-Recoverable - going high - Deasserted"
+
+
+ ::= 197003
+
+
+trapStateDeassertedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "State Deasserted - Deasserted"
+
+
+ ::= 197504
+
+
+trapStateAssertedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "State Asserted - Deasserted"
+
+
+ ::= 197505
+
+
+trapFanLNCGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Lower Non Critical- going low - Deasserted"
+
+
+ ::= 262528
+
+
+trapFanLNCGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Lower Non Critical- going high - Deasserted"
+
+
+ ::= 262529
+
+
+trapFanLCGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Lower Critical - going low - Deasserted"
+
+
+ ::= 262530
+
+
+trapFanLCGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Lower Critical - going high - Deasserted"
+
+
+ ::= 262531
+
+
+trapFanLNRGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Lower Non-Recoverable - going low - Deasserted"
+
+
+ ::= 262532
+
+
+trapFanLNRGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Lower Non-Recoverable - going high - Deasserted"
+
+
+ ::= 262533
+
+
+trapFanUNCGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Upper Non-Critical - going low - Deasserted"
+
+
+ ::= 262534
+
+
+trapFanUNCGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Upper Non-Critical - going high - Deasserted"
+
+
+ ::= 262535
+
+
+trapFanUCGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Upper Critical - going low - Deasserted"
+
+
+ ::= 262536
+
+
+trapFanUCGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Upper Critical - going high - Deasserted"
+
+
+ ::= 262537
+
+
+trapFanUNRGoLowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Upper Non-Recoverable - going low - Deasserted"
+
+
+ ::= 262538
+
+
+trapFanUNRGoHighDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fan Upper Non-Recoverable - going high - Deasserted"
+
+
+ ::= 262539
+
+
+trapPredictiveFailuredeassertedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Predictive Failure deasserted - Deasserted"
+
+
+ ::= 263296
+
+
+trapPredictiveFailureassertedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Predictive Failure asserted - Deasserted"
+
+
+ ::= 263297
+
+
+trapLimitNotExceedednDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Limit Not Exceeded - Deasserted"
+
+
+ ::= 329088
+
+
+trapLimitExceedednDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Limit Exceeded - Deasserted"
+
+
+ ::= 329089
+
+
+trapGeneralChassisIntrusionDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "General Chassis Intrusion - Deasserted"
+
+
+ ::= 356224
+
+
+trapDriveBayIntrusionDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Drive Bay intrusion - Deasserted"
+
+
+ ::= 356225
+
+
+trapIOCardAreaIntrusionDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "IO Card Area Intrusion - Deasserted"
+
+
+ ::= 356226
+
+
+trapProcessorAreaIntrusionDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor Area Intrusion - Deasserted"
+
+
+ ::= 356227
+
+
+trapLANLeashLostDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "LAN Leash Lost - Deasserted"
+
+
+ ::= 356228
+
+
+trapUnauthorizedDockDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unauthorized Dock (system is unplugged from LAN) - Deasserted"
+
+
+ ::= 356229
+
+
+trapFANAreaIntrusionDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "FAN Area Intrusion (supports detection of hot plug fan tampering) - Deasserted"
+
+
+ ::= 356230
+
+
+trapPerformanceMetDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Performance Met - Deasserted"
+
+
+ ::= 394880
+
+
+trapPerformanceLagsDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Performance Lags - Deasserted"
+
+
+ ::= 394881
+
+
+trapSecureModeViolationAttemptDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Secure Mode (Front Panel Lockout) Violation attempt - Deasserted"
+
+
+ ::= 421760
+
+
+trapPrebootPasswordViolationUserPasswordDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Pre-boot Password Violation - user password - Deasserted"
+
+
+ ::= 421761
+
+
+trapPrebootPasswordViolationAttemptSetupPasswordDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Pre-boot Password Violation attempt - setup password - Deasserted"
+
+
+ ::= 421762
+
+
+trapPrebootPasswordViolationNetworkBootPasswordDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Pre-boot Password Violation - network boot password - Deasserted"
+
+
+ ::= 421763
+
+
+trapOtherPrebootPasswordViolationDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Other pre-boot Password Violation - Deasserted"
+
+
+ ::= 421764
+
+
+trapOutOfBandAccessPasswordViolationDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Out-of-band Access Password Violation - Deasserted"
+
+
+ ::= 421765
+
+
+traptransitiontoOKDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "transition to OK - Deasserted"
+
+
+ ::= 460672
+
+
+traptransitiontoNonCriticalfromOKDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "transition to Non-Critical from OK - Deasserted"
+
+
+ ::= 460673
+
+
+traptransitiontoCriticalfromlesssevereDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "transition to Critical from less severe - Deasserted"
+
+
+ ::= 460674
+
+
+traptransitiontoNonrecoverablefromlesssevereDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "transition to Non-recoverable from less severe - Deasserted"
+
+
+ ::= 460675
+
+
+traptransitiontoNonCriticalfrommoresevereDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "transition to Non-Critical from more severe - Deasserted"
+
+
+ ::= 460676
+
+
+traptransitiontoCriticalfromNonrecoverableDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "transition to Critical from Non-recoverable - Deasserted"
+
+
+ ::= 460677
+
+
+traptransitiontoNonrecoverableDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "transition to Non-recoverable - Deasserted"
+
+
+ ::= 460678
+
+
+trapMonitorDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Monitor - Deasserted"
+
+
+ ::= 460679
+
+
+trapInformationalDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Informational - Deasserted"
+
+
+ ::= 460680
+
+
+trapProcessorIERRDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor IERR - Deasserted"
+
+
+ ::= 487296
+
+
+trapProcessorThermalTripDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor Thermal Trip - Deasserted"
+
+
+ ::= 487297
+
+
+trapProcessorFRB1BISTFailureDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor FRB1/BIST failure - Deasserted"
+
+
+ ::= 487298
+
+
+trapProcessorFRB2HangInPOSTFailureDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor FRB2/Hang in POST failure - Deasserted"
+
+
+ ::= 487299
+
+
+trapProcessorFRB3ProcessorStartupInitializationFailureDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor FRB3/Processor Startup/Initialization failure - Deasserted"
+
+
+ ::= 487300
+
+
+trapProcessorConfigurationErrorDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor Configuration Error - Deasserted"
+
+
+ ::= 487301
+
+
+trapProcessorSMBIOSUncorrectableCPUComplexErrorDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor SM BIOS Uncorrectable CPU-complex Error - Deasserted"
+
+
+ ::= 487302
+
+
+trapProcessorPresenceDetectedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor Presence detected - Deasserted"
+
+
+ ::= 487303
+
+
+trapProcessorDisabledDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor disabled - Deasserted"
+
+
+ ::= 487304
+
+
+trapProcessorTerminatorPresenceDetectedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor Terminator Presence Detected - Deasserted"
+
+
+ ::= 487305
+
+
+trapProcessorAutomaticallyThrottledDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor Automatically Throttled - Deasserted"
+
+
+ ::= 487306
+
+
+trapProcessorMachineCheckExceptionDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor Machine Check Exception - Deasserted"
+
+
+ ::= 487307
+
+
+trapProcessorCorrectableMachineCheckErrorDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor Correctable Machine Check Error - Deasserted"
+
+
+ ::= 487308
+
+
+trapDeviceRemovedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Device Removed - Deasserted"
+
+
+ ::= 526464
+
+
+trapDeviceInsertedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Device Inserted - Deasserted"
+
+
+ ::= 526465
+
+
+trapPowerSupplyPresenceDetectedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Supply Presence detected - Deasserted"
+
+
+ ::= 552832
+
+
+trapPowerSupplyFailureDetectedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Supply Failure detected - Deasserted"
+
+
+ ::= 552833
+
+
+trapPowerSupplyPredictiveFailureDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Supply Predictive Failure - Deasserted"
+
+
+ ::= 552834
+
+
+trapPowerSupplyInputLostACDCDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Supply input lost (AC/DC) - Deasserted"
+
+
+ ::= 552835
+
+
+trapPowerSupplyInputLostOrOutOfFange TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Supply input lost or out-of-range - Deasserted"
+
+
+ ::= 552836
+
+
+trapPowerSupplyInputOutOfFangeButPresentDeassertedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Supply input out-of-range but present - Deasserted"
+
+
+ ::= 552837
+
+
+trapPowerSupplyConfigurationErrorDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Supply Configuration error - Deasserted"
+
+
+ ::= 552838
+
+
+trapPowerSupplyInactiveInStandbyStateDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Supply Inactive (in standby state) - Deasserted"
+
+
+ ::= 552839
+
+
+trapDeviceDisabledDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Device Disabled - Deasserted"
+
+
+ ::= 592256
+
+
+trapDeviceEnabledDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Device Enabled - Deasserted"
+
+
+ ::= 592257
+
+
+trapPowerUnitPowerOffPowerDownDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Unit Power Off / Power Down - Deasserted"
+
+
+ ::= 618368
+
+
+trapPowerUnitPowerCycleDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Unit Power Cycle - Deasserted"
+
+
+ ::= 618369
+
+
+trapPowerUnit240VAPowerDownDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Unit 240VA Power Down - Deasserted"
+
+
+ ::= 618370
+
+
+trapPowerUnitInterlockPowerDownDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Unit Interlock Power Down - Deasserted"
+
+
+ ::= 618371
+
+
+trapPowerUnitACLostPowerInputLostDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Unit AC lost / Power input lost - Deasserted"
+
+
+ ::= 618372
+
+
+trapPowerUnitSoftPowerControlFailureDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Unit Soft Power Control Failure - Deasserted"
+
+
+ ::= 618373
+
+
+trapPowerUnitFailureDetectedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Unit Failure detected - Deasserted"
+
+
+ ::= 618374
+
+
+trapPowerUnitPredictiveFailureDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Power Unit Predictive Failure - Deasserted"
+
+
+ ::= 618375
+
+
+traptransitiontoRunningDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to Running - Deasserted"
+
+
+ ::= 658048
+
+
+traptransitiontoInTestDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to In Test - Deasserted"
+
+
+ ::= 658049
+
+
+traptransitiontoPowerOffDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to Power Off - Deasserted"
+
+
+ ::= 658050
+
+
+traptransitiontoOnLineDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to On Line - Deasserted"
+
+
+ ::= 658051
+
+
+traptransitiontoOffLineDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to Off Line - Deasserted"
+
+
+ ::= 658052
+
+
+traptransitiontoOffDutyDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to Off Duty - Deasserted"
+
+
+ ::= 658053
+
+
+traptransitiontoDegradedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to Degraded - Deasserted"
+
+
+ ::= 658054
+
+
+traptransitiontoPowerSaveDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Transition to Power Save - Deasserted"
+
+
+ ::= 658055
+
+
+trapInstallErrorDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Install Error - Deasserted"
+
+
+ ::= 658056
+
+
+trapFullyRedundantDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Fully Redundant - Deasserted"
+
+
+ ::= 723840
+
+
+trapRedundancyLostEnteredDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Redundancy Lost Entered - Deasserted"
+
+
+ ::= 723841
+
+
+trapRedundancyDegradedRedundancyDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Redundancy Degraded Redundancy - Deasserted"
+
+
+ ::= 723842
+
+
+trapNonredundantSufficientResourcesDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Non-redundant Sufficient Resources - Deasserted"
+
+
+ ::= 723843
+
+
+trapNonredundantInsufficientResourcesDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Non-redundant Insufficient Resources - Deasserted"
+
+
+ ::= 723844
+
+
+trapNonRedundancyDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Insufficient Resources Unit is non-redundant and has insufficient resources to maintain normal operation - Deasserted"
+
+
+ ::= 723845
+
+
+trapRedundancyDegradedFromFullyRedundantDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Redundancy Degraded from fully Redundant Unit has lost some redundant resources but is still in a redundant state. - Deasserted"
+
+
+ ::= 723846
+
+
+trapRedundancyDegradedFromNonRedundantDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Redundancy Degraded from Non-Redundant Unit has regained some resources and is redundant but not fully redundant. - Deasserted"
+
+
+ ::= 723847
+
+
+trapMemoryCorrectableECCDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Correctable ECC - Deasserted"
+
+
+ ::= 814976
+
+
+trapMemoryUncorrectableECCDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Uncorrectable ECC - Deasserted"
+
+
+ ::= 814977
+
+
+trapMemoryParityDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Parity - Deasserted"
+
+
+ ::= 814978
+
+
+trapMemoryScrubFailedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Scrub Failed - Deasserted"
+
+
+ ::= 814979
+
+
+trapMemoryDeviceDisabledDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Device Disabled - Deasserted"
+
+
+ ::= 814980
+
+
+trapMemoryCorrectableECCLoggingLimitReachedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Correctable ECC / other correctable memory error logging limit reached - Deasserted"
+
+
+ ::= 814981
+
+
+trapMemoryPresenceDetectedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Presence detected Deasserted- Deasserted"
+
+
+ ::= 814982
+
+
+trapMemoryConfigurationErrorDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Configuration error - Deasserted"
+
+
+ ::= 814983
+
+
+trapMemorySpareDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Spare - Deasserted"
+
+
+ ::= 814984
+
+
+trapMemoryAutomaticallyThrottledDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Automatically Throttled - Deasserted"
+
+
+ ::= 814985
+
+
+trapMemoryCriticalOvertemperatureDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Critical Overtemperature - Deasserted"
+
+
+ ::= 814986
+
+
+trapDrivePresenceDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Drive Slot (Bay) Drive Presence - Deasserted"
+
+
+ ::= 880512
+
+
+trapDriveFaultDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Drive Slot (Bay) Drive Fault - Deasserted"
+
+
+ ::= 880513
+
+
+trapDriveSlotPredictiveFailureDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Drive Slot (Bay) Predictive Failure - Deasserted"
+
+
+ ::= 880514
+
+
+trapDriveSlotHotSpareDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Drive Slot (Bay) Hot Spare - Deasserted"
+
+
+ ::= 880515
+
+
+trapDriveSlotConsistencyCheckParityCheckInProgressDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Drive Slot (Bay) Consistency Check / Parity Check in progress - Deasserted"
+
+
+ ::= 880516
+
+
+trapDriveSlotInCriticalArrayDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Drive Slot (Bay) In Critical Array - Deasserted"
+
+
+ ::= 880517
+
+
+trapDriveSlotInFailedArrayDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Drive Slot (Bay) In Failed Array - Deasserted"
+
+
+ ::= 880518
+
+
+trapDriveSlotRebuildRemapInProgressDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Drive Slot (Bay) Rebuild/Remap in progress - Deasserted"
+
+
+ ::= 880519
+
+
+trapDriveSlotRebuildRemapAbortedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Drive Slot (Bay) Rebuild/Remap Aborted - Deasserted"
+
+
+ ::= 880520
+
+
+trapPOSTMemoryResizeDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "POST Memory Resize - Deasserted"
+
+
+ ::= 946048
+
+
+trapSystemFirmwareErrorPOSTErrorDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Firmware Progress (formerly POST Error) System Firmware Error (POST Error) - Deasserted"
+
+
+ ::= 1011584
+
+
+trapSystemFirmwareHangDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Firmware Progress (formerly POST Error) System Firmware Hang - Deasserted"
+
+
+ ::= 1011585
+
+
+trapSystemFirmwareProgressDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Firmware Progress (formerly POST Error) - Deasserted"
+
+
+ ::= 1011586
+
+
+trapCorrectableMemoryErrorLoggingDisabledDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Correctable Memory Error Logging Disabled - Deasserted"
+
+
+ ::= 1077120
+
+
+trapEventTypeLoggingDisabledDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Event Type Logging Disabled - Deasserted"
+
+
+ ::= 1077121
+
+
+trapEventLoggingDisabledLogAreaResetClearedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Event Logging Disabled Log Area Reset/Cleared - Deasserted"
+
+
+ ::= 1077122
+
+
+trapAllEventLoggingDisabledDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "All Event Logging Disabled - Deasserted"
+
+
+ ::= 1077123
+
+
+trapEventLoggingSELFulDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Event Logging SEL Full - Deasserted"
+
+
+ ::= 1077124
+
+
+trapEventLoggingSELAlmostFullDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Event Logging SEL Almost Full - Deasserted"
+
+
+ ::= 1077125
+
+
+trapCorrectableMachineCheckErrorLoggingDisabledDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Correctable Machine Check Error Logging Disabled - Deasserted"
+
+
+ ::= 1077126
+
+
+trapWatchdog1BIOSWatchdogResetDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 1 BIOS Watchdog Reset - Deasserted"
+
+
+ ::= 1142656
+
+
+trapWatchdog1OSWatchdogResetDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 1 OS Watchdog Reset - Deasserted"
+
+
+ ::= 1142657
+
+
+trapWatchdog1OSWatchdogShutDownDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 1 OS Watchdog Shut Down - Deasserted"
+
+
+ ::= 1142658
+
+
+trapWatchdog1OSWatchdogPowerDownDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 1 OS Watchdog Power Down - Deasserted"
+
+
+ ::= 1142659
+
+
+trapWatchdog1OSWatchdogPowerCycleDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 1 OS Watchdog Power Cycle - Deasserted"
+
+
+ ::= 1142660
+
+
+trapWatchdog1OSWatchdogNMIDiagnosticInterruptDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 1 OS Watchdog NMI / Diagnostic Interrupt - Deasserted"
+
+
+ ::= 1142661
+
+
+trapWatchdog1OSWatchdogExpiredStatusOnlyDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 1 OS Watchdog Expired status only - Deasserted"
+
+
+ ::= 1142662
+
+
+trapWatchdog1OSWatchdogPreTimeoutInterruptNonNMIDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 1 OS Watchdog pre-timeout Interrupt non-NMI - Deasserted"
+
+
+ ::= 1142663
+
+
+trapSystemEventSystemReconfiguredDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Event System Reconfigured - Deasserted"
+
+
+ ::= 1208192
+
+
+trapSystemEventOEMSystemBootEventDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Event OEM System Boot Event - Deasserted"
+
+
+ ::= 1208193
+
+
+trapSystemEventUndeterminedSystemHardwareFailureDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Event Undetermined system hardware failure - Deasserted"
+
+
+ ::= 1208194
+
+
+trapSystemEventEntryAddedToAuxiliaryLogDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Event Entry added to Auxiliary Log - Deasserted"
+
+
+ ::= 1208195
+
+
+trapSystemEventPEFActionDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Event PEF Action - Deasserted"
+
+
+ ::= 1208196
+
+
+trapSystemEventTimestampClockSynchDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Event Timestamp Clock Synch - Deasserted"
+
+
+ ::= 1208197
+
+
+trapCriticalInterruptFrontPanelNMIDiagnosticInterruptDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt Front Panel NMI / Diagnostic Interrupt - Deasserted"
+
+
+ ::= 1273728
+
+
+trapCriticalInterruptBusTimeoutDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt Bus Timeout - Deasserted"
+
+
+ ::= 1273729
+
+
+trapCriticalInterruptIOChannelCheckNMIDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt I/O channel check NMI - Deasserted"
+
+
+ ::= 1273730
+
+
+trapCriticalInterruptSoftwareNMIDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt Software NMI - Deasserted"
+
+
+ ::= 1273731
+
+
+trapCriticalInterruptPCIPERRDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt PCI PERR - Deasserted"
+
+
+ ::= 1273732
+
+
+trapCriticalInterruptPCISERRDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt PCI SERR - Deasserted"
+
+
+ ::= 1273733
+
+
+trapCriticalInterruptEISAFailSafeTimeoutDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt EISA Fail Safe Timeout - Deasserted"
+
+
+ ::= 1273734
+
+
+trapCriticalInterruptBusCorrectableErrorDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt Bus Correctable Error - Deasserted"
+
+
+ ::= 1273735
+
+
+trapCriticalInterruptBusUncorrectableErrorDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt Bus Uncorrectable Error - Deasserted"
+
+
+ ::= 1273736
+
+
+trapCriticalInterruptFatalNMIDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt Fatal NMI (port 61h bit 7) - Deasserted"
+
+
+ ::= 1273737
+
+
+trapCriticalInterruptBusFatalErrorDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt Bus Fatal Error - Deasserted"
+
+
+ ::= 1273738
+
+
+trapCriticalInterruptBusDegradedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Interrupt Bus Degraded (bus operating in a degraded performance state) - Deasserted"
+
+
+ ::= 1273739
+
+
+trapButtonSwitchPowerButtonPressedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Button / Switch Power Button pressed - Deasserted"
+
+
+ ::= 1339264
+
+
+trapButtonSwitchSleepButtonPressedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Button / Switch Sleep Button pressed - Deasserted"
+
+
+ ::= 1339265
+
+
+trapButtonSwitchResetButtonPressedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Button / Switch Reset Button pressed - Deasserted"
+
+
+ ::= 1339266
+
+
+trapButtonSwitchFRULatchOpenDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Button / Switch FRU latch open - Deasserted"
+
+
+ ::= 1339267
+
+
+trapButtonSwitchFRUServiceRequestButtonDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Button / Switch FRU service request button - Deasserted"
+
+
+ ::= 1339268
+
+
+trapChipSetSoftPowerControlFailureDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Chip Set Soft Power Control Failure - Deasserted"
+
+
+ ::= 1666944
+
+
+trapChipSetThermalTripDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Chip Set Thermal Trip - Deasserted"
+
+
+ ::= 1666945
+
+
+trapCableInterconnectIsConnectedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Cable / Interconnect is connected - Deasserted"
+
+
+ ::= 1798016
+
+
+trapCableInterconnectConfigurationErrorDeassertedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Cable / Interconnect Configuration Error Incorrect cable connected / Incorrect interconnection - Deasserted"
+
+
+ ::= 1798017
+
+
+trapSystemBootRestartInitiatedByPowerUpDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Boot / Restart Initiated by power up - Deasserted"
+
+
+ ::= 1929088
+
+
+trapSystemBootRestartInitiatedByHardResetDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Boot / Restart Initiated by hard reset - Deasserted"
+
+
+ ::= 1929089
+
+
+trapSystemBootRestartInitiatedByWarmResetDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Boot / Restart Initiated by warm reset - Deasserted"
+
+
+ ::= 1929090
+
+
+trapSystemBootRestartInitiatedUserRequestedPXEBootDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Boot / Restart Initiated User requested PXE boot - Deasserted"
+
+
+ ::= 1929091
+
+
+trapSystemBootRestartInitiatedAutomaticBootToDiagnostiDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Boot / Restart Initiated Automatic boot to diagnostic - Deasserted"
+
+
+ ::= 1929092
+
+
+trapSystemOSRuntimeSoftwareInitiatedHardResetDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Boot / Restart Initiated OS / run-time software initiated hard reset - Deasserted"
+
+
+ ::= 1929093
+
+
+trapSystemOSRuntimeS0oftwareInitiatedWarmResetDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Boot / Restart Initiated OS / run-time software initiated warm reset - Deasserted"
+
+
+ ::= 1929094
+
+
+trapSystemBootRestartInitiatedSystemRestartDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Boot / Restart Initiated System Restart - Deasserted"
+
+
+ ::= 1929095
+
+
+trapBootErrorNoBootableMediaDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Boot Error No bootable media - Deasserted"
+
+
+ ::= 1994624
+
+
+trapBootErrorNonBootableDisketteLeftInDriveDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Boot Error Non-bootable diskette left in drive - Deasserted"
+
+
+ ::= 1994625
+
+
+trapBootErrorPXEServerNotFoundDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Boot Error PXE Server not found - Deasserted"
+
+
+ ::= 1994626
+
+
+trapBootErrorInvalidBootSector TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Boot Error Invalid boot sector - Deasserted"
+
+
+ ::= 1994627
+
+
+trapBootErrorTimeoutWaitingForUserSelectionOfBootSource TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Boot Error Timeout waiting for user selection of boot source - Deasserted"
+
+
+ ::= 1994628
+
+
+trapBaseOSBootABootCompleted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status A boot completed - Deasserted"
+
+
+ ::= 2060160
+
+
+trapBaseOSBootCBootCompleted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status C boot completed - Deasserted"
+
+
+ ::= 2060161
+
+
+trapBaseOSBootPXEBootCompleted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status PXE boot completed - Deasserted"
+
+
+ ::= 2060162
+
+
+trapBaseOSBootDiagnosticBootCompleted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status Diagnostic boot completed - Deasserted"
+
+
+ ::= 2060163
+
+
+trapBaseOSBootCD-ROMBootCompleted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status CD-ROM boot completed - Deasserted"
+
+
+ ::= 2060164
+
+
+trapBaseOSBootROMBootCompleted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status ROM boot completed - Deasserted"
+
+
+ ::= 2060165
+
+
+trapBaseOSbootDeviceNotSpecified TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status boot completed - boot device not specified - Deasserted"
+
+
+ ::= 2060166
+
+
+trapBaseOSHypervisorInstallationStartedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status Base OS/Hypervisor Installation started - Deasserted"
+
+
+ ::= 2060167
+
+
+trapBaseOSHypervisorInstallationCompletedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status Base OS/Hypervisor Installation completed - Deasserted"
+
+
+ ::= 2060168
+
+
+trapBaseOSHypervisorInstallationAbortedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status Base OS/Hypervisor Installation aborted - Deasserted"
+
+
+ ::= 2060169
+
+
+trapBaseOSHypervisorInstallationFailedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Base OS Boot / Installation Status Base OS/Hypervisor Installation failed - Deasserted"
+
+
+ ::= 2060170
+
+
+trapCriticalStopDuringOSloadInitializationDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "OS Stop / Shutdown Critical stop during OS load / initialization - Deasserted"
+
+
+ ::= 2125696
+
+
+trapRuntimeCriticalStopDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "OS Stop / Shutdown Run-time Critical Stop - Deasserted"
+
+
+ ::= 2125697
+
+
+trapOSGracefulStopDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "OS Stop / Shutdown OS Graceful Stop - Deasserted"
+
+
+ ::= 2125698
+
+
+trapOSGracefulShutdownDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "OS Stop / Shutdown OS Graceful Shutdown - Deasserted"
+
+
+ ::= 2125699
+
+
+trapSoftShutdownInitiatedByPEFDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "OS Stop / Shutdown Soft Shutdown initiated by PEF - Deasserted"
+
+
+ ::= 2125700
+
+
+trapAgentNotRespondingDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "OS Stop / Shutdown Agent Not Responding - Deasserted"
+
+
+ ::= 2125701
+
+
+trapSlotConnectorFaultStatusDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Slot / Connector Fault Status Deasserted - Deasserted"
+
+
+ ::= 2191232
+
+
+trapSlotConnectorIdentifyStatusDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Slot / Connector Identify Status Deasserted - Deasserted"
+
+
+ ::= 2191233
+
+
+trapSlotConnectorDeviceInstalledAttachedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Slot / Connector Slot / Connector Device installed/attached - Deasserted"
+
+
+ ::= 2191234
+
+
+trapSlotConnectorReadyForDeviceInstallationDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Slot / Connector Slot / Connector Ready for Device Installation - Deasserted"
+
+
+ ::= 2191235
+
+
+trapSlotConnectorReadyForDeviceRemovalDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Slot / Connector Slot/Connector Ready for Device Removal - Deasserted"
+
+
+ ::= 2191236
+
+
+trapSlotConnectorSlotPowerIsOffDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Slot / Connector Slot Power is Off - Deasserted"
+
+
+ ::= 2191237
+
+
+trapSlotConnectorDeviceRemovalRequestDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Slot / Connector Slot / Connector Device Removal Request - Deasserted"
+
+
+ ::= 2191238
+
+
+trapSlotConnectorInterlockDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Slot / Connector Interlock Deasserted - Deasserted"
+
+
+ ::= 2191239
+
+
+trapSlotConnectorSlotIsDisabledDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Slot / Connector Slot is Disabled - Deasserted"
+
+
+ ::= 2191240
+
+
+trapSlotConnectorSlotHoldsSpareDeviceDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Slot / Connector Slot holds spare device - Deasserted"
+
+
+ ::= 2191241
+
+
+trapPowerStateS0G0WorkingDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State S0 / G0 working - Deasserted"
+
+
+ ::= 2256768
+
+
+trapPowerStateS1SleepingWithContextMaintainedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State S1 sleeping with system h/w & processor context maintained - Deasserted"
+
+
+ ::= 2256769
+
+
+trapPowerStateS2SleepingProcessorContextLostDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State S2 sleeping processor context lost - Deasserted"
+
+
+ ::= 2256770
+
+
+trapPowerStateS3SleepingMemoryRetainedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State S3 sleeping processor & h/w context lost memory retained - Deasserted"
+
+
+ ::= 2256771
+
+
+trapPowerStateS4NonvolatileSleepSuspendToDiskDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State S4 non-volatile sleep / suspend-to disk - Deasserted"
+
+
+ ::= 2256772
+
+
+trapPowerStateS5G2SoftOffDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State S5 / G2 soft-off - Deasserted"
+
+
+ ::= 2256773
+
+
+trapPowerStateS4S5CannotBeDeterminedDeassertedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State S4 / S5 soft-off particular S4 / S5 state cannot be determined - Deasserted"
+
+
+ ::= 2256774
+
+
+trapPowerStateG3MechanicalOffDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State G3 / Mechanical Off - Deasserted"
+
+
+ ::= 2256775
+
+
+trapPowerStateSleepingInAnS1S2orS3StatesDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State Sleeping in an S1 S2 or S3 states - Deasserted"
+
+
+ ::= 2256776
+
+
+trapPowerStateG1SleepingDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State G1 sleeping - Deasserted"
+
+
+ ::= 2256777
+
+
+trapPowerStateS5EteredByOverrideDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State S5 entered by override - Deasserted"
+
+
+ ::= 2256778
+
+
+trapPowerStateLegacyONStateDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State Legacy ON state - Deasserted"
+
+
+ ::= 2256779
+
+
+trapPowerStateLegacyOFFStateDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State Legacy OFF state - Deasserted"
+
+
+ ::= 2256780
+
+
+trapPowerStateUnknownDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System ACPI Power State Unknown - Deasserted"
+
+
+ ::= 2256782
+
+
+trapWatchdog2TimerExpiredStatusOnlyDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 2 Timer expired status only - Deasserted"
+
+
+ ::= 2322304
+
+
+trapWatchdog2HardResetDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 2 Hard Reset - Deasserted"
+
+
+ ::= 2322305
+
+
+trapWatchdog2PowerDownDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 2 Power Down - Deasserted"
+
+
+ ::= 2322306
+
+
+trapWatchdog2PowerCycleDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 2 Power Cycle - Deasserted"
+
+
+ ::= 2322307
+
+
+trapWatchdog2TimerInterruptDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Watchdog 2 Timer interrupt - Deasserted"
+
+
+ ::= 2322312
+
+
+trapPlatformAlertplatformGeneratedPageDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Platform Alert platform generated page - Deasserted"
+
+
+ ::= 2387840
+
+
+trapPlatformAlertplatformGeneratedLANAlertDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Platform Alert platform generated LAN alert - Deasserted"
+
+
+ ::= 2387841
+
+
+trapPlatformAlertPlatformEventTrapGeneratedFormattedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Platform Alert Platform Event Trap generated formatted per IPMI PET specification- Deasserted"
+
+
+ ::= 2387842
+
+
+trapPlatformAlertPlatformGeneratedSNMPTrapOEMFormatDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Platform Alert platform generated SNMP trap OEM format - Deasserted"
+
+
+ ::= 2387843
+
+
+trapEntityPresentDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Entity Presence Entity Present - Deasserted"
+
+
+ ::= 2453376
+
+
+trapEntityAbsentDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Entity Presence Entity Absent - Deasserted"
+
+
+ ::= 2453377
+
+
+trapEntityDisabledDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Entity Presence Entity Disabled - Deasserted"
+
+
+ ::= 2453378
+
+
+trapLANHeartbeatLostDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "LAN Heartbeat Lost - Deasserted"
+
+
+ ::= 2584448
+
+
+trapLANHeartbeatDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "LAN Heartbeat - Deasserted"
+
+
+ ::= 2584449
+
+
+trapSensorAccessDegradedOrUnavailableDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Management Subsystem Health sensor access degraded or unavailable - Deasserted"
+
+
+ ::= 2649984
+
+
+trapControllerAccessDegradedOrUnavailableDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Management Subsystem Health controller access degraded or unavailable - Deasserted"
+
+
+ ::= 2649985
+
+
+trapManagementControllerOfflineDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Management Subsystem Health management controller off-line - Deasserted"
+
+
+ ::= 2649986
+
+
+trapManagementControllerUnavailableDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Management Subsystem Health management controller unavailable - Deasserted"
+
+
+ ::= 2649987
+
+
+trapManagementSubsystemHealthSensorFailureDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Management Subsystem Health Sensor failure - Deasserted"
+
+
+ ::= 2649988
+
+
+trapManagementSubsystemHealthFRUFailureDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Management Subsystem Health FRU failure - Deasserted"
+
+
+ ::= 2649989
+
+
+trapBatteryLowPredictiveFailureDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Battery battery low (predictive failure) - Deasserted"
+
+
+ ::= 2715520
+
+
+trapBatteryFailedDeassertedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Battery battery failed - Deasserted"
+
+
+ ::= 2715521
+
+
+trapBatteryPresenceDetectedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Battery battery presence detected - Deasserted"
+
+
+ ::= 2715522
+
+
+trapSessionAuditSessionActivatedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Session Audit Session Activated - Deasserted"
+
+
+ ::= 2781056
+
+
+trapSessionAuditSessionDeactivatedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Session Audit Session Deactivated - Deasserted"
+
+
+ ::= 2781057
+
+
+trapSessionAuditInvalidUsernameOrPasswordDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Session Audit Invalid Username or Password - Deasserted"
+
+
+ ::= 2781058
+
+
+trapSessionAuditInvalidPasswordDisableDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Session Audit Invalid password disable - Deasserted"
+
+
+ ::= 2781059
+
+
+trapHardwareChangeDetectedWithAssociatedEntityDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Version Change Hardware change detected with associated Entity - Deasserted"
+
+
+ ::= 2846592
+
+
+trapFirmwareOrSoftwareChangeDetectedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Version Change Firmware or software change detected with associated Entity - Deasserted"
+
+
+ ::= 2846593
+
+
+trapHardwareIncompatibilityDetectedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Version Change Hardware incompatibility detected with associated Entity - Deasserted"
+
+
+ ::= 2846594
+
+
+trapFirmwareOrSoftwareIncompatibilityDetectedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Version Change Firmware or software incompatibility detected with associated Entity - Deasserted"
+
+
+ ::= 2846595
+
+
+trapEntityIsOfAnInvalidOrUnsupportedHardwareVersionDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Version Change Entity is of an invalid or unsupported hardware version - Deasserted"
+
+
+ ::= 2846596
+
+
+trapEntityContainsAnInvalidOrUnsupportedFirmwareDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Version Change Entity contains an invalid or unsupported firmware or software version- Deasserted"
+
+
+ ::= 2846597
+
+
+trapHardwareChangeDetectedWasSuccessfulDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Version Change Hardware Change detected with associated Entity was successful - Deasserted"
+
+
+ ::= 2846598
+
+
+trapSoftwareOrFWChangeDetectedWasSuccessfulDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Version Change Software or F/W Change detected with associated Entity was successful - Deasserted"
+
+
+ ::= 2846599
+
+
+trapFRUStateFRUNotInstalledDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "FRU State FRU Not Installed - Deasserted"
+
+
+ ::= 2912128
+
+
+trapFRUStateFRUInactiveDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "FRU State FRU Inactive - Deasserted"
+
+
+ ::= 2912129
+
+
+trapFRUStateFRUActivationRequestedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "FRU State FRU Activation Requested - Deasserted"
+
+
+ ::= 2912130
+
+
+trapFRUStateFRUActivationInProgressDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "FRU State FRU Activation In Progress - Deasserted"
+
+
+ ::= 2912131
+
+
+trapFRUStateFRUActiveDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "FRU State FRU Active - Deasserted"
+
+
+ ::= 2912132
+
+
+trapFRUStateFRUDeactivationRequestedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "FRU State FRU Deactivation Requested - Deasserted"
+
+
+ ::= 2912133
+
+
+trapFRUStateFRUDeactivationInProgressDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "FRU State FRU Deactivation In Progress - Deasserted"
+
+
+ ::= 2912134
+
+
+trapFRUStateFRUCommunicationLostDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "FRU State FRU Communication Lost - Deasserted"
+
+
+ ::= 2912135
+
+
+END

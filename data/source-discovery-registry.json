@@ -79,6 +79,93 @@
       ]
     },
     {
+      "id": "openss7-mibs",
+      "repository": "openss7/openss7",
+      "homepage": "https://www.openss7.org/",
+      "source_roles": ["mib-corpus"],
+      "minimum_candidate_count": 140,
+      "license_files": ["COPYING"],
+      "candidate_roots": [
+        {
+          "path": "src/mibs",
+          "kind": "mib-file",
+          "matcher": "extensions",
+          "extensions": [".mib"]
+        }
+      ]
+    },
+    {
+      "id": "pandora-open-mibs",
+      "repository": "pandorafms/pandora-open",
+      "homepage": "https://pandorafms.com/",
+      "source_roles": ["mib-corpus"],
+      "minimum_candidate_count": 100,
+      "license_files": ["LICENSE"],
+      "candidate_roots": [
+        {
+          "path": "pandora_agent/win32/bin/util/mibs",
+          "kind": "mib-file",
+          "matcher": "extensions",
+          "extensions": [".txt"]
+        },
+        {
+          "path": "pandora_console/attachment/mibs",
+          "kind": "mib-file",
+          "matcher": "extensions",
+          "extensions": [".mib", ".txt"]
+        }
+      ]
+    },
+    {
+      "id": "osnmpd-mibs",
+      "repository": "verrio/osnmpd",
+      "homepage": "https://github.com/verrio/osnmpd",
+      "source_roles": ["mib-corpus"],
+      "minimum_candidate_count": 35,
+      "license_files": ["LICENSE"],
+      "candidate_roots": [
+        {
+          "path": "doc/mib",
+          "kind": "mib-file",
+          "matcher": "extensions",
+          "extensions": [".mib"]
+        }
+      ]
+    },
+    {
+      "id": "ska-low-sre-vendor-mibs",
+      "repository": "ska-telescope/ska-low-sre-vendor-mib",
+      "homepage": "https://www.skao.int/",
+      "source_roles": ["mib-corpus"],
+      "minimum_candidate_count": 35,
+      "license_files": ["LICENSE"],
+      "candidate_roots": [
+        {
+          "path": "",
+          "kind": "mib-file",
+          "matcher": "extensions",
+          "extensions": [".mib"]
+        }
+      ]
+    },
+    {
+      "id": "pysnmp-compiled-mibs",
+      "repository": "etingof/pysnmp-mibs",
+      "homepage": "https://github.com/etingof/pysnmp-mibs",
+      "source_roles": ["compiled-mib-corpus"],
+      "minimum_candidate_count": 270,
+      "license_files": ["LICENSE.txt"],
+      "candidate_roots": [
+        {
+          "path": "pysnmp_mibs",
+          "kind": "compiled-mib-module",
+          "matcher": "extensions",
+          "extensions": [".py"],
+          "exclude_names": ["__init__.py"]
+        }
+      ]
+    },
+    {
       "id": "zabbix",
       "repository": "zabbix/zabbix",
       "homepage": "https://www.zabbix.com/",

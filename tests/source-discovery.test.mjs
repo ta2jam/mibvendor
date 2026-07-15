@@ -9,8 +9,9 @@ const discovery = JSON.parse(await readFile(new URL("../data/source-discovery.js
 
 test("source discovery records a large provenance-only candidate universe", () => {
   assert.deepEqual(validateSourceDiscovery(registry, discovery), []);
-  assert.ok(discovery.counts.candidates >= 9_000);
-  assert.ok(discovery.counts.by_type["mib-file"] >= 7_000);
+  assert.ok(discovery.counts.candidates >= 9_700);
+  assert.ok(discovery.counts.by_type["mib-file"] >= 7_450);
+  assert.ok(discovery.counts.by_type["compiled-mib-module"] >= 270);
   assert.ok(discovery.counts.by_type["device-identity-definition"] >= 1_000);
   assert.ok(discovery.counts.publication_modes.redistributable > 0);
   assert.ok(discovery.counts.publication_modes.quarantine > 8_000);

@@ -14,7 +14,7 @@ function gitBlobOid(bytes) {
 
 function safeStagedPath(stagedPath) {
   return typeof stagedPath === "string"
-    && stagedPath.startsWith("staging/license-derived/")
+    && stagedPath.startsWith("staging/license-derived/raw-mibs/")
     && !path.isAbsolute(stagedPath)
     && !stagedPath.split("/").includes("..");
 }
@@ -81,7 +81,10 @@ export async function validateLicenseDerivedIntake(root, discovery, activeCatalo
     if (artifact.license_basis !== "repository-license-signal") failures.push(`Artifact license basis drifted ${artifact.id}`);
     if (artifact.publication_mode !== "redistributable") failures.push(`Artifact publication mode drifted ${artifact.id}`);
     if (artifact.activation_state !== "staged") failures.push(`Artifact escaped staging ${artifact.id}`);
-    if (artifact.intake_validation !== "module-declaration-only" || artifact.parser_status !== "not-run") failures.push(`Artifact parser state was over-promoted ${artifact.id}`);
+    const expectedIntakeValidation = artifact.module === null ? "module-declaration-missing" : "module-declaration-only";
+    if (artifact.intake_validation !== expectedIntakeValidation || artifact.parser_status !== "not-run") failures.push(`Artifact parser state was over-promoted ${artifact.id}`);
+    if (artifact.module === null && artifact.active_module_collision !== null) failures.push(`Missing-declaration artifact has a collision claim ${artifact.id}`);
+    if (artifact.module !== null && typeof artifact.active_module_collision !== "boolean") failures.push(`Declared module lacks collision state ${artifact.id}`);
     if (!safeStagedPath(artifact.staged_path)) {
       failures.push(`Unsafe staged artifact path ${artifact.id}`);
       continue;
@@ -97,16 +100,19 @@ export async function validateLicenseDerivedIntake(root, discovery, activeCatalo
   }
 
   if (artifactIds.size !== eligibleCandidateIds.size || [...eligibleCandidateIds].some((id) => !artifactIds.has(id))) failures.push("Eligible MIB intake coverage drifted");
-  const collisionCount = (manifest.artifacts ?? []).filter((artifact) => artifact.active_module_collision).length;
+  const missingDeclarationCount = (manifest.artifacts ?? []).filter((artifact) => artifact.module === null).length;
+  const collisionCount = (manifest.artifacts ?? []).filter((artifact) => artifact.active_module_collision === true).length;
+  const collisionFreeCount = (manifest.artifacts ?? []).filter((artifact) => artifact.module !== null && artifact.active_module_collision === false).length;
   if (manifest.counts?.sources !== manifest.sources?.length) failures.push("Intake source count drift");
   if (manifest.counts?.artifacts !== manifest.artifacts?.length) failures.push("Intake artifact count drift");
+  if (manifest.counts?.module_declaration_missing !== missingDeclarationCount) failures.push("Intake module-declaration count drift");
   if (manifest.counts?.active_module_collisions !== collisionCount) failures.push("Intake collision count drift");
-  if (manifest.counts?.collision_free_candidates !== (manifest.artifacts?.length ?? 0) - collisionCount) failures.push("Intake collision-free count drift");
+  if (manifest.counts?.collision_free_candidates !== collisionFreeCount) failures.push("Intake collision-free count drift");
   for (const source of manifest.sources ?? []) {
     if (source.artifact_count !== (manifest.artifacts ?? []).filter((artifact) => artifact.source_id === source.id).length) failures.push(`Intake source artifact count drift ${source.id}`);
   }
   try {
-    const actualPaths = (await walkFiles(path.join(root, "data", "staging", "license-derived")))
+    const actualPaths = (await walkFiles(path.join(root, "data", "staging", "license-derived", "raw-mibs")))
       .map((file) => path.relative(path.join(root, "data"), file));
     for (const actualPath of actualPaths) {
       if (!manifestPaths.has(actualPath)) failures.push(`Unmanifested staged file ${actualPath}`);

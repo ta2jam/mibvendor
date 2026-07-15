@@ -6,7 +6,7 @@ import process from "node:process";
 const root = process.cwd();
 const discovery = JSON.parse(await readFile(path.join(root, "data", "source-discovery.json"), "utf8"));
 const activeCatalog = JSON.parse(await readFile(path.join(root, "data", "mib-catalog.json"), "utf8"));
-const outputRoot = path.join(root, "data", "staging", "license-derived");
+const outputRoot = path.join(root, "data", "staging", "license-derived", "raw-mibs");
 const manifestPath = path.join(root, "data", "license-derived-intake.json");
 
 function digest(algorithm, bytes) {
@@ -71,7 +71,6 @@ const artifacts = await mapLimit(candidates, 8, async (candidate) => {
     throw new Error(`Git blob mismatch for ${candidate.id}: expected ${candidate.git_blob_oid}, got ${actualGitBlobOid}`);
   }
   const module = moduleName(bytes.toString("utf8"));
-  if (!module) throw new Error(`No SMI module declaration in ${candidate.id}`);
   const relativeSourcePath = safeRelative(candidate.path);
   const relativeOutputPath = path.join(candidate.source_id, "files", relativeSourcePath);
   const absoluteOutputPath = path.join(outputRoot, relativeOutputPath);
@@ -93,9 +92,9 @@ const artifacts = await mapLimit(candidates, 8, async (candidate) => {
     license_basis: "repository-license-signal",
     publication_mode: "redistributable",
     activation_state: "staged",
-    intake_validation: "module-declaration-only",
+    intake_validation: module ? "module-declaration-only" : "module-declaration-missing",
     parser_status: "not-run",
-    active_module_collision: activeModuleIds.has(module)
+    active_module_collision: module ? activeModuleIds.has(module) : null
   };
 });
 
@@ -147,8 +146,9 @@ const manifest = {
   counts: {
     sources: sources.length,
     artifacts: artifacts.length,
-    active_module_collisions: artifacts.filter((artifact) => artifact.active_module_collision).length,
-    collision_free_candidates: artifacts.filter((artifact) => !artifact.active_module_collision).length
+    module_declaration_missing: artifacts.filter((artifact) => artifact.module === null).length,
+    active_module_collisions: artifacts.filter((artifact) => artifact.active_module_collision === true).length,
+    collision_free_candidates: artifacts.filter((artifact) => artifact.module !== null && artifact.active_module_collision === false).length
   },
   sources,
   artifacts
