@@ -1,6 +1,6 @@
 # Source governance
 
-Status: implemented for the rights-cleared public core; vendor permission gate open
+Status: implemented for the rights-cleared public core and license-derived staging
 
 Every acquired artifact becomes an immutable source snapshot. A snapshot binds
 the source identity, official URL, acquisition time, artifact and notice hashes,
@@ -12,14 +12,17 @@ The intake path is:
 1. acquire from the recorded official URL;
 2. hash the artifact and applicable notice;
 3. record dated rights evidence and an optional expiry;
-4. fail closed for every unknown output scope;
+4. approve recognized SPDX repository-license signals under ADR 0008 and fail
+   closed for `NOASSERTION`, absent license files, and unknown output scopes;
 5. parse only when parser use is approved;
 6. stage normalized output against the adapter and canonical contracts;
 7. include it in an immutable release only within approved scopes;
 8. promote by changing the active-release pointer.
 
 Tier P is synthetic/provisional and Tier Q is quarantine. Neither may approve
-public output scopes. Unknown rights are not equivalent to permission. Parser
+public output scopes. A pinned recognized SPDX repository license is accepted as
+permission under [ADR 0008](../decisions/0008-license-signal-publication-policy.md);
+an absent or unmapped license is not. Parser
 permission is also not permission to render text, expose API output, offer raw
 downloads, or create bulk exports.
 

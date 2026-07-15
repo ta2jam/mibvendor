@@ -14,7 +14,9 @@ export function validateSourceDiscovery(registry, document) {
   if (!Number.isFinite(Date.parse(document.generated_at))) failures.push("Source discovery generated_at is invalid");
   if (document.policy?.default_publication_mode !== "quarantine") failures.push("Discovery must default to quarantine");
   if (document.policy?.default_rights_review !== "required") failures.push("Discovery must require rights review");
-  if (document.policy?.repository_license_is_file_approval !== false) failures.push("Repository license cannot approve candidate files");
+  if (document.policy?.repository_license_is_file_approval !== true) failures.push("Repository license signal approval policy drifted");
+  if (document.policy?.license_signal_publication_approval !== true) failures.push("License signal publication policy drifted");
+  if (document.policy?.license_signal_requires_recognized_spdx_and_pinned_license_file !== true) failures.push("License signal evidence boundary drifted");
   if (document.policy?.content_downloaded_during_discovery !== false) failures.push("Discovery cannot download source content");
 
   const registryIds = registry.sources.map((source) => source.id);
@@ -28,7 +30,10 @@ export function validateSourceDiscovery(registry, document) {
   for (const source of document.sources) {
     if (!/^[0-9a-f]{40}$/i.test(source.commit)) failures.push(`Source ${source.id} is not pinned to a commit`);
     if (source.tree_complete !== true) failures.push(`Source ${source.id} has an incomplete tree`);
-    if (source.repository_license?.status !== "signal-only") failures.push(`Source ${source.id} repository license was over-promoted`);
+    const licenseDerivedApproval = source.repository_license?.spdx !== "NOASSERTION"
+      && (source.repository_license?.files?.length ?? 0) > 0;
+    const expectedLicenseStatus = licenseDerivedApproval ? "license-derived-approval" : "signal-only";
+    if (source.repository_license?.status !== expectedLicenseStatus) failures.push(`Source ${source.id} repository license status drifted`);
     const minimum = registrySources.get(source.id)?.minimum_candidate_count;
     if (!Number.isSafeInteger(minimum) || minimum < 1 || source.minimum_candidate_count !== minimum) failures.push(`Source ${source.id} minimum candidate boundary drifted`);
     if (source.candidate_count < minimum) failures.push(`Source ${source.id} candidate inventory is below its reviewed minimum`);
@@ -55,9 +60,13 @@ export function validateSourceDiscovery(registry, document) {
     if (!/^[0-9a-f]{40,64}$/i.test(candidate.git_blob_oid)) failures.push(`Invalid Git blob oid ${candidate.id}`);
     if (candidate.bytes !== null && (!Number.isSafeInteger(candidate.bytes) || candidate.bytes < 0)) failures.push(`Invalid byte count ${candidate.id}`);
     if (source && !candidate.pinned_url.includes(`/${source.commit}/`)) failures.push(`Candidate URL is not pinned ${candidate.id}`);
-    if (candidate.repository_license_status !== "signal-only") failures.push(`Candidate repository license was over-promoted ${candidate.id}`);
-    if (candidate.rights_review !== "required") failures.push(`Candidate bypassed rights review ${candidate.id}`);
-    if (candidate.publication_mode !== "quarantine") failures.push(`Candidate escaped quarantine ${candidate.id}`);
+    const licenseDerivedApproval = source?.repository_license?.status === "license-derived-approval";
+    const expectedReview = licenseDerivedApproval ? "approved-by-repository-license-signal" : "required";
+    const expectedMode = licenseDerivedApproval ? "redistributable" : "quarantine";
+    const expectedLicenseStatus = licenseDerivedApproval ? "license-derived-approval" : "signal-only";
+    if (candidate.repository_license_status !== expectedLicenseStatus) failures.push(`Candidate repository license status drifted ${candidate.id}`);
+    if (candidate.rights_review !== expectedReview) failures.push(`Candidate rights review drifted ${candidate.id}`);
+    if (candidate.publication_mode !== expectedMode) failures.push(`Candidate publication mode drifted ${candidate.id}`);
     if (candidate.content_intake !== "not-fetched") failures.push(`Discovery fetched content ${candidate.id}`);
   }
 
@@ -67,8 +76,8 @@ export function validateSourceDiscovery(registry, document) {
   if (document.counts?.candidates !== document.candidates.length) failures.push("Candidate count drift");
   if (JSON.stringify(document.counts?.by_source) !== JSON.stringify(bySource)) failures.push("Per-source count drift");
   if (JSON.stringify(document.counts?.by_type) !== JSON.stringify(byType)) failures.push("Per-type count drift");
-  if (document.counts?.publication_modes?.quarantine !== document.candidates.length) failures.push("Quarantine count drift");
-  if (document.counts?.rights_review?.required !== document.candidates.length) failures.push("Rights-review count drift");
+  if (JSON.stringify(document.counts?.publication_modes) !== JSON.stringify(countBy(document.candidates, "publication_mode"))) failures.push("Publication-mode count drift");
+  if (JSON.stringify(document.counts?.rights_review) !== JSON.stringify(countBy(document.candidates, "rights_review"))) failures.push("Rights-review count drift");
   for (const source of document.sources) {
     if (source.candidate_count !== (bySource[source.id] ?? 0)) failures.push(`Candidate count drift for ${source.id}`);
   }
@@ -88,6 +97,6 @@ if (invokedPath === fileURLToPath(import.meta.url)) {
     for (const failure of failures) console.error(failure);
     process.exitCode = 1;
   } else {
-    console.log(`Source discovery passed: ${document.counts.sources} sources, ${document.counts.candidates} quarantined candidates.`);
+    console.log(`Source discovery passed: ${document.counts.sources} sources, ${document.counts.candidates} classified candidates.`);
   }
 }

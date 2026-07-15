@@ -42,6 +42,7 @@ for (const required of [
   "docs/decisions/0005-provisional-foundation-contracts.md",
   "docs/decisions/0006-rfc8785-content-addressing.md",
   "docs/decisions/0007-fail-closed-mib-publication.md",
+  "docs/decisions/0008-license-signal-publication-policy.md",
   "contracts/source-snapshot.schema.json",
   "contracts/canonical-module.schema.json",
   "contracts/data-release.schema.json",
@@ -75,10 +76,13 @@ for (const required of [
   "data/source-catalog.json",
   "data/source-discovery-registry.json",
   "data/source-discovery.json",
+  "data/license-derived-intake.json",
   "scripts/update-mib-catalog.mjs",
   "scripts/validate-mib-catalog.mjs",
   "scripts/update-source-discovery.mjs",
   "scripts/validate-source-discovery.mjs",
+  "scripts/update-license-derived-intake.mjs",
+  "scripts/validate-license-derived-intake.mjs",
   "scripts/update-iana-pen.mjs",
   "THIRD_PARTY_NOTICES.md"
 ]) {
@@ -269,6 +273,7 @@ for (const file of allFiles) {
   const relative = path.relative(root, file);
   const allowedFixture = relative.startsWith(path.join("experiments", "parser-bakeoff", "fixtures", "redistributable"))
     || relative.startsWith(path.join("data", "mibs", "redistributable"))
+    || relative.startsWith(path.join("data", "staging", "license-derived"))
     || (
       relative.startsWith(path.join("experiments", "parser-bakeoff", "corpus", "MIBVENDOR-"))
       && await exists(path.join("experiments", "parser-bakeoff", "corpus", "LICENSE.md"))

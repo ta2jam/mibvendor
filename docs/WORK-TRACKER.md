@@ -13,9 +13,11 @@ higher item is externally blocked and the lower item can progress safely.
   data tier are out of scope. Fair-use limits, optional abuse-control keys,
   caching, and response bounds remain allowed.
 - Releases are grouped around one measurable product outcome, not commit count.
-- Vendor-ready schemas, importers, quarantine, review, and UI may be developed
-  before permission. Unknown-rights content cannot be activated in a public
-  data release until its publication scopes are approved.
+- A recognized SPDX repository license plus its pinned license file is treated
+  as publication permission. `NOASSERTION`, missing license files, and unmapped
+  custom licenses remain quarantined. License-derived approval does not prove
+  third-party file ownership, so provenance, obligations, correction, and
+  takedown controls remain mandatory.
 - Corpus counts must separate active public, metadata-only, directory-only, and
   quarantined records. Candidate or duplicate files do not inflate public
   coverage.
@@ -38,28 +40,30 @@ Status: `in-progress`
 Build a reproducible source registry and discovery snapshot covering official
 vendor repositories, open-source monitoring/device-definition projects,
 open-source SNMP agents, package sources, and standards organizations. Discovery
-records metadata only; all newly found content starts in quarantine.
+records metadata only. Recognized pinned license signals produce
+`redistributable` candidates; all other content starts in quarantine.
 
 Acceptance criteria:
 
 - every source is pinned to an immutable repository revision;
 - every candidate records path, Git blob identifier, size, source type, pinned
   URL, repository license signal, and review state;
-- repository-level licensing is never promoted into a file-level approval;
+- recognized repository SPDX signals require a pinned license file and are
+  recorded explicitly as `license-derived-approval`;
 - incomplete/truncated source trees fail closed;
 - secrets and GitHub credentials are never written to the snapshot;
 - discovery output is deterministic apart from the recorded generation time;
-- a validator and automated tests reject public activation, unpinned URLs,
-  duplicate candidates, and count drift.
+- a validator and automated tests enforce the selected license-signal rule and
+  reject unauthorized promotion, unpinned URLs, duplicate candidates, and
+  count drift.
 
 ### DATA-02 — Open-license project MIB ingestion
 
-Status: `planned`
+Status: `in-progress`
 
-Review the DATA-01 inventory and add project-authored MIBs whose controlling
-license permits the intended raw, metadata, API, rendered, and bulk scopes.
-Retain complete notices and keep copied third-party MIBs separate from
-project-authored files.
+Ingest MIBs from sources with a recognized pinned repository license signal.
+Retain complete licenses and notices, label the approval basis, and keep source
+families and copied third-party files separable for correction or takedown.
 
 Acceptance criteria:
 
@@ -67,7 +71,8 @@ Acceptance criteria:
   `rights-cleared-2026-07-14.1` baseline before the corpus-expansion release;
 - every artifact has source and served SHA-256, license, notice, revision, and
   immutable provenance;
-- no repository-wide license is used to approve an embedded third-party file;
+- every repository-license approval is labelled `repository-license-signal`
+  and remains independently removable if ownership evidence conflicts;
 - parser failures and missing imports are recorded without partial publication.
 
 ### DATA-03 — Legacy standards file-by-file review
@@ -422,9 +427,20 @@ with no billing code.
   snapshot.
 - Indexed seven upstream repositories: LibreNMS, Netdisco MIBs, Netdisco
   SNMP::Info, Erlang/OTP SNMP, Net-SNMP, Prometheus SNMP Exporter, and Zabbix.
-- Kept every candidate in quarantine with content intake disabled; repository
-  license metadata remains a non-authoritative signal.
+- Classified 367 candidates as redistributable from recognized pinned
+  repository-license signals; 8,783 candidates remain quarantined.
 - Added minimum-count drift checks, complete-tree checks, pinned URL checks,
   credential-leak checks, and regression tests.
 - DATA-01 remains `in-progress`: directly vendor-owned official source leads
   still need a durable registry and periodic discovery coverage.
+
+### 2026-07-15 — DATA-02 license-derived intake
+
+- Staged 24 Erlang/OTP MIB artifacts from an immutable Apache-2.0 source
+  revision and retained the pinned license file.
+- Verified every artifact and license with its Git blob identifier and SHA-256.
+- Found 23 collision-free module names and one active-catalog name collision;
+  the full parser gate remains open.
+- Kept staging outside the active catalog and production image. DATA-02 remains
+  `in-progress` until the 550-module release threshold, parser/collision gates,
+  notices, and immutable activation manifest pass.

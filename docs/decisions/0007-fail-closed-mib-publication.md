@@ -4,6 +4,10 @@ Status: Accepted
 
 Date: 2026-07-14
 
+Repository-license-signal handling in this decision is superseded by
+[ADR 0008](0008-license-signal-publication-policy.md). The active release
+described below remains unchanged.
+
 ## Decision
 
 Every public source and MIB module has one publication mode:

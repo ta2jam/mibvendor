@@ -20,7 +20,7 @@ WORKDIR /app
 COPY --chown=101:101 server.mjs VERSION package.json ./
 COPY --chown=101:101 src/ ./src/
 COPY --chown=101:101 data/iana-private-enterprise-numbers.json data/mib-catalog.json data/mib-objects.json data/source-catalog.json ./data/
-COPY --chown=101:101 data/mibs/ ./data/mibs/
+COPY --chown=101:101 data/mibs/redistributable/ ./data/mibs/redistributable/
 COPY --chown=101:101 prototype/ ./prototype/
 COPY --chown=101:101 docs/research/demand/phase0-openapi.json ./docs/research/demand/phase0-openapi.json
 

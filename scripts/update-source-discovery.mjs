@@ -69,15 +69,20 @@ for (const source of registry.sources) {
       pinned_url: pinnedRawUrl(source.repository, commit, licensePath)
     };
   });
+  const licenseDerivedApproval = licenseFiles.length > 0
+    && licenseDocument?.license?.spdx_id
+    && licenseDocument.license.spdx_id !== "NOASSERTION";
   const repositoryLicense = {
-    status: "signal-only",
+    status: licenseDerivedApproval ? "license-derived-approval" : "signal-only",
     spdx: licenseDocument?.license?.spdx_id || "NOASSERTION",
     name: licenseDocument?.license?.name || "Repository license requires file-level review",
     api_url: licenseDocument?.html_url || null,
     files: licenseFiles,
     caveat: licenseFiles.length === 0
       ? "No repository license file was detected or configured. Every candidate remains unlicensed until file-level review proves otherwise."
-      : "A repository license signal does not approve embedded third-party MIBs, device definitions, rendered text, API output, raw download, or bulk export."
+      : licenseDerivedApproval
+        ? "Project policy treats the pinned repository SPDX license as publication permission. Embedded third-party ownership is not independently verified and remains a takedown risk."
+        : "The repository license could not be mapped to a recognized SPDX identifier, so candidates remain quarantined."
   };
 
   let sourceCandidateCount = 0;
@@ -95,9 +100,9 @@ for (const source of registry.sources) {
       bytes: entry.size ?? null,
       pinned_url: pinnedRawUrl(source.repository, commit, entry.path),
       repository_license_spdx: repositoryLicense.spdx,
-      repository_license_status: "signal-only",
-      rights_review: "required",
-      publication_mode: "quarantine",
+      repository_license_status: repositoryLicense.status,
+      rights_review: licenseDerivedApproval ? "approved-by-repository-license-signal" : "required",
+      publication_mode: licenseDerivedApproval ? "redistributable" : "quarantine",
       content_intake: "not-fetched"
     };
     candidates.push(candidate);
@@ -137,7 +142,9 @@ const document = {
   policy: {
     default_publication_mode: "quarantine",
     default_rights_review: "required",
-    repository_license_is_file_approval: false,
+    repository_license_is_file_approval: true,
+    license_signal_publication_approval: true,
+    license_signal_requires_recognized_spdx_and_pinned_license_file: true,
     content_downloaded_during_discovery: false
   },
   counts: {
@@ -145,8 +152,14 @@ const document = {
     candidates: candidates.length,
     by_source: bySource,
     by_type: byType,
-    publication_modes: { quarantine: candidates.length },
-    rights_review: { required: candidates.length }
+    publication_modes: Object.fromEntries(Object.entries(candidates.reduce((counts, candidate) => {
+      counts[candidate.publication_mode] = (counts[candidate.publication_mode] ?? 0) + 1;
+      return counts;
+    }, {})).sort(([left], [right]) => left.localeCompare(right))),
+    rights_review: Object.fromEntries(Object.entries(candidates.reduce((counts, candidate) => {
+      counts[candidate.rights_review] = (counts[candidate.rights_review] ?? 0) + 1;
+      return counts;
+    }, {})).sort(([left], [right]) => left.localeCompare(right)))
   },
   sources: discoveredSources,
   candidates

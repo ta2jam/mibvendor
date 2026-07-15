@@ -2,11 +2,21 @@
 
 Kontrol tarihi: 2026-07-14
 
-Bu çalışma hukuki görüş değildir. Ürün için ihtiyatlı yayın politikasını tanımlar. Bir dosyanın indirilebilir olması, onu yeniden yayınlama veya ondan ticari bir API üretme izni olarak kabul edilmez. Tek tek OID ve sembollerin olgusal niteliği de veri tabanı, derleme, sözleşme ve kaynak erişim koşullarını ortadan kaldırdığı varsayımıyla kullanılmaz.
+Bu çalışma hukuki görüş değildir. Ürün politikası 2026-07-15 tarihinde değişti:
+GitHub tarafından tanınan bir SPDX lisansı ve aynı sabit commit'te lisans dosyası
+bulunması yayın izni kabul edilir. `NOASSERTION`, lisans dosyası eksikliği ve
+yalnız indirilebilir olma hâlâ izin sayılmaz. Bu yaklaşım üçüncü taraf dosya
+sahipliğini kanıtlamaz; provenance, lisans yükümlülükleri ve takedown riski
+korunur.
 
 ## Karar
 
 Gate yalnız dar bir standartlar çekirdeği için geçildi. Vendor korpusu için geçilmedi.
+
+License-derived staging ayrıca açıktır: Erlang/OTP'nin sabit Apache-2.0 kaynak
+commit'indeki 24 MIB artifact'i indirildi; 23'ü aktif katalogla isim çakışması
+olmayan aday, biri çakışan varyanttır. Yalnız modül bildirimi doğrulandı; tam
+parser gate'i açıktır. Bunlar aktif veri sürümüne henüz dahil değildir.
 
 - Kamuya açılan çekirdek: dosya bazında koşulları doğrulanmış IETF MIB code component'leri, doğrudan IANA Protocol Registry MIB'leri ve sabitlenmiş Net-SNMP proje MIB'leri.
 - Vendor aileleri: 19 aile incelendi; hiçbirine mevcut kanıtla A veya B verilmedi.
