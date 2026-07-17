@@ -54,3 +54,8 @@ independently verifies the public origin every 15 minutes, and a hardened VPS
 timer checks the container, loopback bind, release identity, public/local
 health, Caddy, disk threshold, and representative API results every five
 minutes.
+
+The GitHub production monitor resolves the expected commit from the immutable
+`v${VERSION}` release tag. It does not assume that every `main` commit has been
+deployed; staged corpus and parser work may safely advance `main` while the
+published production release remains pinned to its tag.

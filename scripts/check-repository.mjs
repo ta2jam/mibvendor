@@ -61,6 +61,7 @@ for (const required of [
   "experiments/parser-bakeoff/.dockerignore",
   "experiments/parser-bakeoff/scripts/validate_corpus_intake.py",
   "scripts/verify-production.sh",
+  "scripts/resolve-production-commit.sh",
   "docs/research/demand/validation-evidence.json",
   "docs/research/demand/phase0-openapi.json",
   "docs/research/rights/permission-requests.json",
@@ -147,11 +148,16 @@ for (const requiredMonitorBoundary of [
   "schedule:",
   "workflow_dispatch:",
   "permissions:\n  contents: read",
+  "fetch-depth: 0",
+  "./scripts/resolve-production-commit.sh",
   "./scripts/verify-production.sh"
 ]) {
   if (!productionMonitor.includes(requiredMonitorBoundary)) {
     failures.push(`Production monitor is missing boundary: ${requiredMonitorBoundary}`);
   }
+}
+if (productionMonitor.includes("EXPECTED_COMMIT: ${{ github.sha }}")) {
+  failures.push("Production monitor must resolve the deployed release tag, not assume main is deployed");
 }
 if (!productionMonitor.includes("EXPECTED_DATA_RELEASE: rights-cleared-2026-07-14.1")) {
   failures.push("Production monitor and runtime data release differ");

@@ -18,12 +18,15 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
       - name: Verify public origin and governed release
         env:
           ORIGIN: https://mibvendor.io
-          EXPECTED_COMMIT: ${{ github.sha }}
           EXPECTED_DATA_RELEASE: rights-cleared-2026-07-14.1
         run: |
-          EXPECTED_VERSION=$(tr -d '\n' < VERSION)
+          EXPECTED_VERSION=$(tr -d '\r\n' < VERSION)
+          EXPECTED_COMMIT=$(./scripts/resolve-production-commit.sh)
           export EXPECTED_VERSION
+          export EXPECTED_COMMIT
           ./scripts/verify-production.sh
