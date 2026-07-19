@@ -3,6 +3,39 @@
 All notable changes are documented here. The project uses Semantic Versioning
 while it is pre-1.0; research releases may remain unstable.
 
+## [0.3.0-alpha.1] - 2026-07-20
+
+### Added
+
+- Expanded the active license-signaled corpus from 110 to 702 raw modules and
+  from 5,392 to 76,606 parsed OID nodes, with 4,138 textual conventions and
+  1,273 notifications reported separately.
+- Added deterministic repository-license discovery, pinned intake, parser,
+  dependency-closure, case-folded public-ID collision, release-evidence,
+  correction, and publication-control gates.
+- Added routable object, module, enterprise, `sysObjectID`, search, and release
+  views plus bounded ancestor, direct-child, and subtree navigation APIs.
+- Added one evidence-backed SigScale OCS platform mapping. It remains an exact
+  OID/platform claim with `model: null`, not a hardware-model assertion.
+- Added a permanently free API decision, strong ETags, conditional GETs,
+  copyable curl/JavaScript/Python examples, and explicit fair-use boundaries.
+- Added deterministic raw-MIB TAR downloads that retain the applicable license
+  or notice and provenance; active raw routes revalidate withdrawal controls.
+
+### Changed
+
+- Replaced per-request search normalization with a retained normalized index;
+  the 76,606-object candidate measured 16.669 ms text-search p95 and 316.91 MiB
+  peak RSS under the documented local benchmark.
+- Marked body-dependent batch POST responses `no-store` so shared caches cannot
+  reuse a result across different request bodies.
+- Superseded six synthetic API records with their active parsed catalog rows,
+  preserving task-intent metadata while exposing redistributable provenance,
+  table/row/index context, and instance-safe numeric resolution.
+- Increased the production container memory limit from 192 MiB to 640 MiB for
+  the measured corpus while keeping the database-free, dependency-light Node
+  runtime and loopback-only service boundary.
+
 ## [0.2.0-alpha.1] - 2026-07-14
 
 ### Added
@@ -233,6 +266,7 @@ while it is pre-1.0; research releases may remain unstable.
   evidence cannot be marked complete.
 - Repository checks and CI without production MIB data.
 
+[0.3.0-alpha.1]: https://github.com/ta2jam/mibvendor/releases/tag/v0.3.0-alpha.1
 [0.2.0-alpha.1]: https://github.com/ta2jam/mibvendor/releases/tag/v0.2.0-alpha.1
 [0.1.0-alpha.13]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.13
 [0.1.0-alpha.12]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.12

@@ -15,7 +15,8 @@ Files:
 - `scoring-sheet.md`: per-session and aggregate scoring.
 - `api-scenarios.md`: three unvalidated API integration hypotheses expressed as contracts and tests.
 - `phase0-openapi.json`: machine-checked OpenAPI 3.1 contract for the bounded
-  public-alpha API; external integration evidence remains at zero.
+  permanently free public-alpha API; fair-use controls apply and external
+  integration evidence remains at zero.
 - `prototype-performance.md`: one reproducible 50,000-line synthetic walk baseline and its limits.
 - `validation-evidence.json`: machine-checked, privacy-minimized participant,
   repeat-use, and external integration evidence register. It intentionally

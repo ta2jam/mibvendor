@@ -43,3 +43,31 @@ treated as Net-SNMP-authored modules and are excluded from this source class.
 
 These mappings identify an agent platform declared by an exact OID. They do not
 identify a hardware model, prove device ownership, or authenticate the device.
+
+## Repository-license-derived MIB collections
+
+The following collections are published under mibvendor's repository-license
+signal policy. A recognized license at the exact pinned repository revision is
+treated as publication permission for that snapshot only when the artifact does
+not carry a more specific conflicting restriction, confidential-material claim,
+or no-license notice. Conflicting artifacts are quarantined and their raw bytes
+are neither retained in public staging nor published. This is a release policy,
+not a claim that the repository owner authored or owns every embedded MIB. Each
+published artifact remains traceable by source URL and checksum and may be
+removed through the documented takedown process.
+
+| Source | License signal | Pinned revision | Retained notice |
+| --- | --- | --- | --- |
+| dynatrace-extensions/snmp-mib-files | Apache-2.0 | `5050aeed71a88f2994e7dc2a8ba1ca5b377abb3c` | [`LICENSE`](data/mibs/redistributable/license-derived/dynatrace-snmp-mib-files/licenses/LICENSE) |
+| erlang/otp SNMP | Apache-2.0 | `34baca942c370d385ed03daa1fcd8c0f7c3bb88b` | [`LICENSE.txt`](data/mibs/redistributable/license-derived/erlang-otp-snmp/licenses/LICENSE.txt) |
+| kmalinich/snmp-mibs | MIT | `4ad06ab6c6d205b2844495dae032ae23f1970c95` | [`LICENSE`](data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/licenses/LICENSE) |
+| ntop/ntopng MIBs | GPL-3.0 | `b225f45d319cbc7ed45e4044ab5c3f3abd08c747` | [`LICENSE`](data/mibs/redistributable/license-derived/ntopng-mibs/licenses/LICENSE) |
+| openss7/mibs | AGPL-3.0 | `7c7fc62a98b820d5d13946717661d2f32b898c03` | [`COPYING`](data/mibs/redistributable/license-derived/openss7-mibs/licenses/COPYING) |
+| osnmpd/mibs | MIT | `a7c7830cfbbb77fc20d18021531e250267da67e3` | [`LICENSE`](data/mibs/redistributable/license-derived/osnmpd-mibs/licenses/LICENSE) |
+| pandorafms/open-mibs | GPL-2.0 | `ab7e2a4c20707834cd1ed28fefc06631cbfa8f15` | [`LICENSE`](data/mibs/redistributable/license-derived/pandora-open-mibs/licenses/LICENSE) |
+| sigscale/mibs | Apache-2.0 | `14259b9e52a5cd7ff0fd60b33728da616792887d` | [`COPYING`](data/mibs/redistributable/license-derived/sigscale-mibs/licenses/COPYING) |
+| ska-telescope/ska-low-sre-vendor-mibs | BSD-3-Clause | `47e13d3d6aa8413f9d44779a3180e407d536d847` | [`LICENSE`](data/mibs/redistributable/license-derived/ska-low-sre-vendor-mibs/licenses/LICENSE) |
+
+The retained license files and the source-specific notices in each raw MIB must
+remain with redistributed raw files. The API exposes source provenance and
+checksums so consumers can audit the exact material used by a data release.

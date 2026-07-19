@@ -17,6 +17,25 @@ const contentTypes = new Map([
   [".txt", "text/plain; charset=utf-8"]
 ]);
 
+const spaRoutes = [
+  /^\/search$/,
+  /^\/objects\/[A-Za-z0-9][A-Za-z0-9._-]{0,511}$/,
+  /^\/modules\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/,
+  /^\/enterprises\/[0-9]{1,10}$/,
+  /^\/sys-object-ids\/[0-9.]{1,512}$/,
+  /^\/releases\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/
+];
+
+function isSpaRoute(pathname) {
+  return spaRoutes.some((pattern) => pattern.test(pathname));
+}
+
+function staticCacheControl(requested) {
+  const extension = path.extname(requested);
+  if (requested === "index.html" || new Set([".css", ".js", ".mjs"]).has(extension)) return "no-cache";
+  return "public, max-age=300, must-revalidate";
+}
+
 function serveStatic(request, response, url) {
   if (!new Set(["GET", "HEAD"]).has(request.method)) {
     response.writeHead(405, { allow: "GET, HEAD", "content-type": "text/plain; charset=utf-8" });
@@ -41,7 +60,7 @@ function serveStatic(request, response, url) {
     response.writeHead(200, {
       "content-type": contentTypes.get(path.extname(absolute)) ?? "application/octet-stream",
       "content-length": stat.size,
-      "cache-control": requested === "index.html" ? "no-cache" : "public, max-age=300, must-revalidate",
+      "cache-control": staticCacheControl(requested),
       "x-content-type-options": "nosniff"
     });
     if (request.method === "HEAD") response.end();
@@ -94,6 +113,10 @@ export function createMibvendorServer() {
         return;
       }
       if (await apiHandler(request, response, url)) return;
+      if (new Set(["GET", "HEAD"]).has(request.method) && isSpaRoute(url.pathname)) {
+        serveStatic(request, response, { pathname: "/" });
+        return;
+      }
       serveStatic(request, response, url);
     } catch {
       if (response.headersSent) response.destroy();

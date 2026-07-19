@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "data_release": "license-signaled-2026-07-20.2",
+  "predecessor_data_release": "rights-cleared-2026-07-14.1",
+  "candidate_generated_at": "2026-07-19T22:40:14.000Z",
+  "activated_at": "2026-07-19T22:43:50Z",
+  "application_release": "0.3.0-alpha.1",
+  "candidate_report_sha256": "199a210fd29bb8c32a5a61bfcfb74dcf13b7cd006ffb12765b896ae93c649641",
+  "documents": {
+    "mib_catalog_sha256": "f85842c12be24a0adfc1b8571782c5550f3f2ef82118ab657e2fb00f64c5414c",
+    "mib_objects_sha256": "c42c4f50ea94b54eef9ae8e54dcee578a0dd5ac448b2796458ce8798058d3097",
+    "source_catalog_sha256": "42515d9968f3935a8c37acec761db9a7cf61552694feb9242cb66d20d7127770",
+    "publication_controls_sha256": "cd7a04efea76316669237212fe5f1f9fc75004a5707fb6a29dc8bd9212225f63"
+  },
+  "publication_control_event_sha256": "df23577bee9ae71f4aa71e951cb66c23fc3d4bf45f1f937b14dcf212afde8750",
+  "activation_basis": "Verified repository license signal with artifact-level restrictive-notice override, immutable provenance, complete static parser resolution, dependency closure, collision-free public IDs, and measured resource and integrity gates."
+}

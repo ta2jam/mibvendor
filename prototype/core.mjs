@@ -1,5 +1,6 @@
 export const MAX_WALK_BYTES = 10 * 1024 * 1024;
 export const MAX_WALK_LINES = 50_000;
+export const MAX_SEARCH_RESULTS = 20;
 
 export function parseOid(value) {
   const text = String(value).trim().replace(/^\./, "");
@@ -53,15 +54,44 @@ function normalizeSearchText(value) {
     .trim();
 }
 
-export function rankSearchRecords(query, records) {
+export function createSearchIndex(records) {
+  return {
+    records,
+    documents: records.map((record) => ({
+      record,
+      symbol: normalizeSearchText(record.symbol),
+      module: normalizeSearchText(record.module),
+      intents: (record.intent ?? []).map(normalizeSearchText),
+      haystack: normalizeSearchText([
+        record.module,
+        record.symbol,
+        record.oid,
+        record.kind,
+        record.description,
+        ...(record.intent ?? []),
+        ...(record.related ?? [])
+      ].join(" "))
+    }))
+  };
+}
+
+function rankedSearchResultPrecedes(score, oid, current) {
+  return score > current.score
+    || (score === current.score && oid.localeCompare(current.record.oid, "en", { numeric: true }) < 0);
+}
+
+function compareRankedSearchResults(left, right) {
+  return right.score - left.score
+    || left.record.oid.localeCompare(right.record.oid, "en", { numeric: true });
+}
+
+export function rankSearchIndex(query, index) {
   const normalized = normalizeSearchText(query);
-  if (!normalized) {
-    return [];
-  }
+  if (!normalized) return [];
 
   const numeric = parseOid(normalized);
   if (numeric) {
-    const resolved = resolveOid(normalized, records);
+    const resolved = resolveOid(normalized, index.records);
     if (!resolved?.record) return [];
     return [{
       record: resolved.record,
@@ -71,50 +101,73 @@ export function rankSearchRecords(query, records) {
   }
 
   const tokens = normalized.split(/\s+/);
-  return records
-    .map((record) => {
-      const symbol = normalizeSearchText(record.symbol);
-      const module = normalizeSearchText(record.module);
-      const intents = record.intent.map(normalizeSearchText);
-      const haystack = normalizeSearchText([
-        record.module,
-        record.symbol,
-        record.oid,
-        record.kind,
-        record.description,
-        ...record.intent,
-        ...record.related
-      ].join(" "));
+  const top = [];
 
-      let score = 0;
-      let matchKind = "related";
-      if (symbol === normalized) {
-        score += 100;
-        matchKind = "exact-symbol";
+  for (const { record, symbol, module, intents, haystack } of index.documents) {
+    let score = 0;
+    let matchKind = "related";
+    if (symbol === normalized) {
+      score += 100;
+      matchKind = "exact-symbol";
+    }
+    if (module.length + symbol.length + 1 === normalized.length
+      && normalized.startsWith(module)
+      && normalized[module.length] === " "
+      && normalized.endsWith(symbol)) {
+      score += 110;
+      matchKind = "module-qualified";
+    }
+    if (symbol.includes(normalized)) {
+      score += 50;
+      if (matchKind === "related") matchKind = "symbol";
+    }
+    let partialIntentMatch = false;
+    let exactIntentMatch = false;
+    for (const intent of intents) {
+      if (intent === normalized) {
+        exactIntentMatch = true;
+        break;
       }
-      if (`${module} ${symbol}` === normalized) {
-        score += 110;
-        matchKind = "module-qualified";
-      }
-      if (symbol.includes(normalized)) {
-        score += 50;
-        if (matchKind === "related") matchKind = "symbol";
-      }
-      if (intents.includes(normalized)) {
-        score += 80;
-        if (matchKind === "related") matchKind = "task-intent";
-      } else if (intents.some((intent) => intent.includes(normalized))) {
-        score += 40;
-        if (matchKind === "related") matchKind = "task-intent";
-      }
-      for (const token of tokens) {
-        if (haystack.includes(token)) score += 10;
-      }
-      return { record, score, matchKind };
-    })
-    .filter(({ score }) => score > 0)
-    .sort((a, b) => b.score - a.score || a.record.oid.localeCompare(b.record.oid, "en", { numeric: true }))
-    .slice(0, 20);
+      if (intent.includes(normalized)) partialIntentMatch = true;
+    }
+    if (exactIntentMatch) {
+      score += 80;
+      if (matchKind === "related") matchKind = "task-intent";
+    } else if (partialIntentMatch) {
+      score += 40;
+      if (matchKind === "related") matchKind = "task-intent";
+    }
+    for (const token of tokens) {
+      if (haystack.includes(token)) score += 10;
+    }
+    if (score === 0) continue;
+
+    let candidate;
+    if (top.length < MAX_SEARCH_RESULTS) {
+      candidate = { record, score, matchKind };
+      top.push(candidate);
+    } else {
+      candidate = top[MAX_SEARCH_RESULTS - 1];
+      if (!rankedSearchResultPrecedes(score, record.oid, candidate)) continue;
+      candidate.record = record;
+      candidate.score = score;
+      candidate.matchKind = matchKind;
+    }
+
+    let position = top.length - 1;
+    while (position > 0 && compareRankedSearchResults(top[position], top[position - 1]) < 0) {
+      const previous = top[position - 1];
+      top[position - 1] = top[position];
+      top[position] = previous;
+      position -= 1;
+    }
+  }
+
+  return top;
+}
+
+export function rankSearchRecords(query, records) {
+  return rankSearchIndex(query, createSearchIndex(records));
 }
 
 export function searchRecords(query, records) {

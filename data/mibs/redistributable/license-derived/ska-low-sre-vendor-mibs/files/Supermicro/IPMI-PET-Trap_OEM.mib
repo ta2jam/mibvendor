@@ -1,0 +1,2523 @@
+PET-EVENTS-OEM-MIB DEFINITIONS ::= BEGIN
+
+	IMPORTS
+		enterprises
+			FROM RFC1155-SMI
+		OBJECT-TYPE
+			FROM RFC-1212
+
+        	TRAP-TYPE
+		        FROM RFC-1215
+
+
+		DisplayString
+			FROM RFC1213-MIB;
+
+	wiredformgmt     OBJECT IDENTIFIER ::= { enterprises 3183 }
+	pet              OBJECT IDENTIFIER ::= { wiredformgmt 1 }
+
+	petevts   		OBJECT IDENTIFIER ::= { pet 1 }
+
+trapTASDrivePresenceAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "TAS Drive Presence - Asserted"
+
+
+ ::= 880640
+
+
+trapTASDriveFaultAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "TAS Drive Fault - Asserted"
+
+
+ ::= 880641
+
+
+trapTASPredictiveFailureAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "TAS Predictive Failure - Asserted"
+
+
+ ::= 880642
+
+
+trapTASHotSpareAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "TAS Hot Spare - Asserted"
+
+
+ ::= 880643
+
+
+trapTASConsistencyCheckAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "TAS Consistency Check / Parity Check in progress - Asserted"
+
+
+ ::= 880644
+
+
+trapTASInCriticalArrayAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "TAS In Critical Array - Asserted"
+
+
+ ::= 880645
+
+
+trapTASInFailedArrayAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "TAS In Failed Array - Asserted"
+
+
+ ::= 880646
+
+
+trapTASRebuildRemapProgressAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "TAS Rebuild/Remap in progress - Asserted"
+
+
+ ::= 880647
+
+
+trapTASRebuildRemapAbortedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "TAS Rebuild/Remap Aborted (was not completed normally) - Asserted"
+
+
+ ::= 880648
+
+
+trapStorageControllerAccessDegradedUnavailableAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "StorageController Access Degraded/ Unavailable - Asserted"
+
+
+ ::= 2650113
+
+
+trapStorageControllerHDDLostAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "StorageController HDD Lost - Asserted"
+
+
+ ::= 2650127
+
+
+trapStorageControllerBBULowAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "StorageController BBU Low - Asserted"
+
+
+ ::= 2715648
+
+
+trapStorageControllerBBUFailedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "StorageController BBU Failed - Asserted"
+
+
+ ::= 2715649
+
+
+trapStorageControllerBBUPresenceAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "StorageController BBU Presence - Asserted"
+
+
+ ::= 2715650
+
+
+trapDisk0SMARTAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk0 SMART Error - Asserted"
+
+
+ ::= 12611328
+
+
+trapDisk1SMARTAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk1 SMART Error - Asserted"
+
+
+ ::= 12611329
+
+
+trapDisk2SMARTAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk2 SMART Error - Asserted"
+
+
+ ::= 12611330
+
+
+trapDisk3SMARTAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk3 SMART Error - Asserted"
+
+
+ ::= 12611331
+
+
+trapDisk4SMARTAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk4 SMART Error - Asserted"
+
+
+ ::= 12611332
+
+
+trapDisk5SMARTAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk5 SMART Error - Asserted"
+
+
+ ::= 12611333
+
+
+trapDisk6SMARTAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk6 SMART Error - Asserted"
+
+
+ ::= 12611334
+
+
+trapDisk7SMARTAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk7 SMART Error - Asserted"
+
+
+ ::= 12611335
+
+
+trapDisk8SMARTAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk8 SMART Error - Asserted"
+
+
+ ::= 12611336
+
+
+trapDisk9SMARTAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk9 SMART Error - Asserted"
+
+
+ ::= 12611337
+
+
+trapDisk10SMARTAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk10 SMART Error - Asserted"
+
+
+ ::= 12611338
+
+
+trapDisk11SMARTAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk11 SMART Error - Asserted"
+
+
+ ::= 12611339
+
+
+trapDisk12SMARTAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk12 SMART Error - Asserted"
+
+
+ ::= 12611340
+
+
+trapDisk13SMARTAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk13 SMART Error - Asserted"
+
+
+ ::= 12611341
+
+
+trapDisk14SMARTAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk15 SMART Error - Asserted"
+
+
+ ::= 12611342
+
+
+trapDisk15SMARTAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk16 SMART Error - Asserted"
+
+
+ ::= 12611343
+
+
+trapMCEErrAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "MCE Error - Asserted"
+
+
+ ::= 12676864
+
+
+trapCPLDErrAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "CPLD Error - Asserted"
+
+
+ ::= 12742400
+
+
+trapCPUErr0Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "CPU Error 0 - Asserted"
+
+
+ ::= 12807936
+
+
+trapCPUErr1Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "CPU Error 1 - Asserted"
+
+
+ ::= 12807937
+
+
+trapCPUErr2Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "CPU Error 2 - Asserted"
+
+
+ ::= 12807938
+
+
+trapPCHHotAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "PCH Hot - Asserted"
+
+
+ ::= 12807939
+
+
+trapBBPExpiredAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "BBP Expired - Asserted"
+
+
+ ::= 13004559
+
+
+trapXeonPhiThrottleAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Xeon Phi Throttle - Asserted"
+
+
+ ::= 13070081
+
+
+trapUnknownGPUOther0Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Asserted"
+
+
+ ::= 13070080
+
+
+trapUnknownGPUOther2Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Asserted"
+
+
+ ::= 13070082
+
+
+trapUnknownGPUOther3Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Asserted"
+
+
+ ::= 13070083
+
+
+trapUnknownGPUOther4Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Asserted"
+
+
+ ::= 13070084
+
+
+trapUnknownGPUOther5Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Asserted"
+
+
+ ::= 13070085
+
+
+trapUnknownGPUOther6Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Asserted"
+
+
+ ::= 13070086
+
+
+trapUnknownGPUOther7Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Asserted"
+
+
+ ::= 13070087
+
+
+trapUnknownGPUOther8Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Asserted"
+
+
+ ::= 13070088
+
+
+trapUnknownGPUOther9Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Asserted"
+
+
+ ::= 13070089
+
+
+trapUnknownGPUOtherAAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Asserted"
+
+
+ ::= 13070090
+
+
+trapUnknownGPUOtherBAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Asserted"
+
+
+ ::= 13070091
+
+
+trapUnknownGPUOtherCAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Asserted"
+
+
+ ::= 13070092
+
+
+trapUnknownGPUOtherDAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Asserted"
+
+
+ ::= 13070093
+
+
+trapUnknownGPUOtherEAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Asserted"
+
+
+ ::= 13070094
+
+
+trapUnknownGPUOtherFAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Asserted"
+
+
+ ::= 13070095
+
+
+trapACPowerOnAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "AC Power On - Asserted"
+
+
+ ::= 13135631
+
+
+trapPCodeNotCompletedInitializationAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "pCode has not completed initialization - Asserted"
+
+
+ ::= 13201160
+
+
+trapAddCpuToMPTFailAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Adding CPU to Minimum Path Tree failed - Asserted"
+
+
+ ::= 13201161
+
+
+trapTopologyDiscoveryFailedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Topology Discovery Failed - Asserted"
+
+
+ ::= 13201162
+
+
+trapInvalidMMCFGSizeSuppliedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Invalid MMCFG Size Supplied - Asserted"
+
+
+ ::= 13201163
+
+
+trapErrUnsupportedTopologyAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "ERR_UNSUPPORTED_TOPOLOGY - Asserted"
+
+
+ ::= 13201164
+
+
+trapKtiFullSpeedTransFailedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Kti full speed transition failed - Asserted"
+
+
+ ::= 13201165
+
+
+trapErrS3ResmeAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "ERR_S3_RESUME - Asserted"
+
+
+ ::= 13201166
+
+
+trapOOBFileBuildDateMismatchAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "OOB file build date mismatch"
+
+
+ ::= 13266689
+
+
+trapOOBFeatureInitFailAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "OOB feature initial failure"
+
+
+ ::= 13266690
+
+
+trapActivateNodeProductKeyAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Activate Node Product Key"
+
+
+ ::= 13266696
+
+
+trapQPIErrorFromBIOSAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "QPI error from BIOS - Asserted"
+
+
+ ::= 13332225
+
+
+trapQPIErrAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "QPI Error - Asserted"
+
+
+ ::= 13332229
+
+
+trapDIMMErr00Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x00 - Asserted"
+
+
+ ::= 13397760
+
+
+trapDIMMErr01Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x01 - Asserted"
+
+
+ ::= 13397761
+
+
+trapDIMMErr04Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x04 - Asserted"
+
+
+ ::= 13397764
+
+
+trapDIMMErr05Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x05 - Asserted"
+
+
+ ::= 13397765
+
+
+trapDIMMErr06Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x06 - Asserted"
+
+
+ ::= 13397766
+
+
+trapDIMMErr07Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x07 - Asserted"
+
+
+ ::= 13397767
+
+
+trapDIMMErr08Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x08 - Asserted"
+
+
+ ::= 13397768
+
+
+trapDIMMErr09Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x09 - Asserted"
+
+
+ ::= 13397769
+
+
+trapDIMMErr10Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x0A - Asserted"
+
+
+ ::= 13397770
+
+
+trapDIMMErr11Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x0B - Asserted"
+
+
+ ::= 13397771
+
+
+trapDIMMErr12Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x0C - Asserted"
+
+
+ ::= 13397772
+
+
+trapDIMMErr13Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x0D - Asserted"
+
+
+ ::= 13397773
+
+
+trapDIMMErr14Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x0E - Asserted"
+
+
+ ::= 13397774
+
+
+trapDIMMErr15Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x0F - Asserted"
+
+
+ ::= 13397775
+
+
+trapNICIPv4IPChangeAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System NIC IPv4 IP Change"
+
+
+ ::= 13659904
+
+
+trapNICLinkUpAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System NIC Link Up"
+
+
+ ::= 13659905
+
+
+trapNICLinkDownAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System NIC Link Down"
+
+
+ ::= 13659906
+
+
+trapDedocatedLANLinkUpAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Dedicated LAN Link Up"
+
+
+ ::= 13659907
+
+
+trapDedocatedLANLinkDownAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Dedicated LAN Link Down"
+
+
+ ::= 13659908
+
+
+trapNICIPv6IPChangeAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System NIC IPv6 IP Change"
+
+
+ ::= 13659912
+
+
+trapNVMeEnjectedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Group @ %Group[3:0] Slot @ %string Ejected"
+
+
+ ::= 13725440
+
+
+trapNVMeInsertedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Group @ %Group[3:0] Slot @ %string Inserted"
+
+
+ ::= 13725441
+
+
+trapNVMeDriveFaultAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Group @ %Group[3:0] Slot @ %string Drive Fault"
+
+
+ ::= 13725442
+
+
+trapSMBIOSErrorFAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "SMBIOS error - Asserted"
+
+
+ ::= 13790991
+
+
+trapSMBIOSErrorAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "SMBIOS error - Asserted"
+
+
+ ::= 13790976
+
+
+trapMiscellaneousErrorAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Miscellaneous error - Asserted"
+
+
+ ::= 13790977
+
+
+trapSysMemRAS01Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Memory RAS Activated 01 - Asserted"
+
+
+ ::= 13856512
+
+
+trapSysMemRAS02Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Memory RAS Activated 02 - Asserted"
+
+
+ ::= 13856513
+
+
+trapSysMemRAS03Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Memory RAS Activated 03 - Asserted"
+
+
+ ::= 13856514
+
+
+trapProcessorConfigErrAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor Configuration failed - Asserted"
+
+
+ ::= 13922048
+
+
+trapVTDErrAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "VT-d - Data Parity Error - Asserted"
+
+
+ ::= 13922049
+
+
+trapITCErrAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Inbound Traffic Controller(ITC) failed - Asserted"
+
+
+ ::= 13922050
+
+
+trapOTCErrAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "OutBound Traffic Controller(OTC) failed - Asserted"
+
+
+ ::= 13922051
+
+
+trapDMAAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Direct Memory Access(DMA) - Asserted"
+
+
+ ::= 13922052
+
+
+trapNVMeVDInfoAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "VD status info - Asserted"
+
+
+ ::= 13987584
+
+
+trapNVMePDInfoAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "PD status info - Asserted"
+
+
+ ::= 13987585
+
+
+trapNVMeFWInfoAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Device FW status / PCIe Link failed - Asserted"
+
+
+ ::= 13987586
+
+
+trapCriticalDataCompromisedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Data Compromised - Asserted"
+
+
+ ::= 14315264
+
+
+trapCriticalDataRecoveredAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Data Recovered - Asserted"
+
+
+ ::= 14315265
+
+
+trapBMCFirmwareCompromisedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "BMC Firmware Compromised - Asserted"
+
+
+ ::= 14315266
+
+
+trapBIOSFirmwareisCompromisedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "BIOS Firmware is Compromised - Asserted"
+
+
+ ::= 14315267
+
+
+trapDeviceRemovedOEMAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Device Removed - Asserted"
+
+
+ ::= 14446336
+
+
+trapDeviceInstalledAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Device Installed - Asserted"
+
+
+ ::= 14446337
+
+
+trapDeviceChangedAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Device Changed - Asserted"
+
+
+ ::= 14446338
+
+
+trapOthersComponentsChanged3Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Asserted"
+
+
+ ::= 14446339
+
+
+trapOthersComponentsChanged4Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Asserted"
+
+
+ ::= 14446340
+
+
+trapOthersComponentsChanged5Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Asserted"
+
+
+ ::= 14446341
+
+
+trapOthersComponentsChanged6Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Asserted"
+
+
+ ::= 14446342
+
+
+trapOthersComponentsChanged7Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Asserted"
+
+
+ ::= 14446343
+
+
+trapOthersComponentsChanged8Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Asserted"
+
+
+ ::= 14446344
+
+
+trapOthersComponentsChanged9Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Asserted"
+
+
+ ::= 14446345
+
+
+trapOthersComponentsChangedAAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Asserted"
+
+
+ ::= 14446346
+
+
+trapOthersComponentsChangedBAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Asserted"
+
+
+ ::= 14446347
+
+
+trapOthersComponentsChangedCAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Asserted"
+
+
+ ::= 14446348
+
+
+trapOthersComponentsChangedDAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Asserted"
+
+
+ ::= 14446349
+
+
+trapOthersComponentsChangedEAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Asserted"
+
+
+ ::= 14446350
+
+
+trapOthersComponentsChangedFAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Asserted"
+
+
+ ::= 14446351
+
+
+trapMemoryErr0Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Asserted"
+
+
+ ::= 15757056
+
+
+trapMemoryErr1Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Asserted"
+
+
+ ::= 15757057
+
+
+trapMemoryErr2Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Asserted"
+
+
+ ::= 15757058
+
+
+trapMemoryErr3Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Asserted"
+
+
+ ::= 15757059
+
+
+trapMemoryErr4Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Asserted"
+
+
+ ::= 15757060
+
+
+trapMemoryErr5Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Asserted"
+
+
+ ::= 15757061
+
+
+trapMemoryErr6Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Asserted"
+
+
+ ::= 15757062
+
+
+trapMemoryErr7Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Asserted"
+
+
+ ::= 15757063
+
+
+trapMemoryErr8Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Asserted"
+
+
+ ::= 15757064
+
+
+trapMemoryErr9Asserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Asserted"
+
+
+ ::= 15757065
+
+
+trapMemoryErrAAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Asserted"
+
+
+ ::= 15757066
+
+
+trapMemoryErrBAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Asserted"
+
+
+ ::= 15757067
+
+
+trapMemoryErrCAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Asserted"
+
+
+ ::= 15757068
+
+
+trapMemoryErrDAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Asserted"
+
+
+ ::= 15757069
+
+
+trapMemoryErrEAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Asserted"
+
+
+ ::= 15757070
+
+
+trapMemoryErrFAsserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Asserted"
+
+
+ ::= 15757071
+
+
+trapTASDrivePresenceDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "TAS Drive Presence - Deasserted"
+
+
+ ::= 880768
+
+
+trapTASDriveFaultDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "TAS Drive Fault - Deasserted"
+
+
+ ::= 880769
+
+
+trapTASPredictiveFailureDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "TAS Predictive Failure - Deasserted"
+
+
+ ::= 880770
+
+
+trapTASHotSpareDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "TAS Hot Spare - Deasserted"
+
+
+ ::= 880771
+
+
+trapTASConsistencyCheckDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "TAS Consistency Check / Parity Check in progress - Deasserted"
+
+
+ ::= 880772
+
+
+trapTASInCriticalArrayDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "TAS In Critical Array - Deasserted"
+
+
+ ::= 880773
+
+
+trapTASInFailedArrayDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "TAS In Failed Array - Deasserted"
+
+
+ ::= 880774
+
+
+trapTASRebuildRemapProgressDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "TAS Rebuild/Remap in progress - Deasserted"
+
+
+ ::= 880775
+
+
+trapTASRebuildRemapAbortedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "TAS Rebuild/Remap Aborted (was not completed normally) - Deasserted"
+
+
+ ::= 880776
+
+
+trapStorageControllerAccessDegradedOrUnavailableDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "StorageController Access Degraded / Unavailable - Deasserted"
+
+
+ ::= 2650241
+
+
+trapStorageControllerHDDLostDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "StorageController HDD Lost - Deasserted"
+
+
+ ::= 2650255
+
+
+trapStorageControllerBBULowDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "StorageController BBU Low - Deasserted"
+
+
+ ::= 2715776
+
+
+trapStorageControllerBBUFailedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "StorageController BBU Failed - Deasserted"
+
+
+ ::= 2715777
+
+
+trapStorageControllerBBUPresenceDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "StorageController BBU Presence - Deasserted"
+
+
+ ::= 2715778
+
+
+trapDisk0SMARTDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk0 SMART Error - Deasserted"
+
+
+ ::= 12611456
+
+
+trapDisk1SMARTDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk1 SMART Error - Deasserted"
+
+
+ ::= 12611457
+
+
+trapDisk2SMARTDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk2 SMART Error - Deasserted"
+
+
+ ::= 12611458
+
+
+trapDisk3SMARTDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk3 SMART Error - Deasserted"
+
+
+ ::= 12611459
+
+
+trapDisk4SMARTDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk4 SMART Error - Deasserted"
+
+
+ ::= 12611460
+
+
+trapDisk5SMARTDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk5 SMART Error - Deasserted"
+
+
+ ::= 12611461
+
+
+trapDisk6SMARTDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk6 SMART Error - Deasserted"
+
+
+ ::= 12611462
+
+
+trapDisk7SMARTDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk7 SMART Error - Deasserted"
+
+
+ ::= 12611463
+
+
+trapDisk8SMARTDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk8 SMART Error - Deasserted"
+
+
+ ::= 12611464
+
+
+trapDisk9SMARTDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk9 SMART Error - Deasserted"
+
+
+ ::= 12611465
+
+
+trapDisk10SMARTDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk10 SMART Error - Deasserted"
+
+
+ ::= 12611466
+
+
+trapDisk11SMARTDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk11 SMART Error - Deasserted"
+
+
+ ::= 12611467
+
+
+trapDisk12SMARTDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk12 SMART Error - Deasserted"
+
+
+ ::= 12611468
+
+
+trapDisk13SMARTDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk13 SMART Error - Deasserted"
+
+
+ ::= 12611469
+
+
+trapDisk14SMARTDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk14 SMART Error - Deasserted"
+
+
+ ::= 12611470
+
+
+trapDisk15SMARTDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Disk15 SMART Error - Deasserted"
+
+
+ ::= 12611471
+
+
+trapMCEErrDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "MCE Error - Deasserted"
+
+
+ ::= 12676992
+
+
+trapCPLDErrDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "CPLD Error - Deasserted"
+
+
+ ::= 12742528
+
+
+trapCPUErr0Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "CPU Error 0 - Deasserted"
+
+
+ ::= 12808064
+
+
+trapCPUErr1Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "CPU Error 1 - Deasserted"
+
+
+ ::= 12808065
+
+
+trapCPUErr2Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "CPU Error 2 - Deasserted"
+
+
+ ::= 12808066
+
+
+trapPCHHotDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "PCH Hot - Deasserted"
+
+
+ ::= 12808067
+
+
+trapBBPExpiredDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "BBP Expired - Deasserted"
+
+
+ ::= 13004687
+
+
+trapXeonPhiThrottleDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Xeon Phi Throttle - Deasserted"
+
+
+ ::= 13070209
+
+
+trapUnknownGPUOther0Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Deasserted"
+
+
+ ::= 13070208
+
+
+trapUnknownGPUOther2Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Deasserted"
+
+
+ ::= 13070210
+
+
+trapUnknownGPUOther3Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Deasserted"
+
+
+ ::= 13070211
+
+
+trapUnknownGPUOther4Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Deasserted"
+
+
+ ::= 13070212
+
+
+trapUnknownGPUOther5Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Deasserted"
+
+
+ ::= 13070213
+
+
+trapUnknownGPUOther6Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Deasserted"
+
+
+ ::= 13070214
+
+
+trapUnknownGPUOther7Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Deasserted"
+
+
+ ::= 13070215
+
+
+trapUnknownGPUOther8Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Deasserted"
+
+
+ ::= 13070216
+
+
+trapUnknownGPUOther9Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Deasserted"
+
+
+ ::= 13070217
+
+
+trapUnknownGPUOtherADeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Deasserted"
+
+
+ ::= 13070218
+
+
+trapUnknownGPUOtherBDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Deasserted"
+
+
+ ::= 13070219
+
+
+trapUnknownGPUOtherCDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Deasserted"
+
+
+ ::= 13070220
+
+
+trapUnknownGPUOtherDDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Deasserted"
+
+
+ ::= 13070221
+
+
+trapUnknownGPUOtherEDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Deasserted"
+
+
+ ::= 13070222
+
+
+trapUnknownGPUOtherFDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Unknown GPU - Deasserted"
+
+
+ ::= 13070223
+
+
+trapACPowerOnDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "AC Power On - Deasserted"
+
+
+ ::= 13135759
+
+
+trapPCodeNotCompletedInitializationDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "pCode has not completed initialization - Deasserted"
+
+
+ ::= 13201288
+
+
+trapAddCpuToMPTFailDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Adding CPU to Minimum Path Tree failed - Deasserted"
+
+
+ ::= 13201289
+
+
+trapTopologyDiscoveryFailedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Topology Discovery Failed - Deasserted"
+
+
+ ::= 13201290
+
+
+trapInvalidMMCFGSizeSuppliedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Invalid MMCFG Size Supplied - Deasserted"
+
+
+ ::= 13201291
+
+
+trapErrUnsupportedTopologyDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "ERR_UNSUPPORTED_TOPOLOGY - Deasserted"
+
+
+ ::= 13201292
+
+
+trapKtiFullSpeedTransFailedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Kti full speed transition failed - Deasserted"
+
+
+ ::= 13201293
+
+
+trapErrS3ResmeDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "ERR_S3_RESUME - Deasserted"
+
+
+ ::= 13201294
+
+
+trapOOBFileBuildDateMismatchDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "OOB file build date mismatch"
+
+
+ ::= 13266817
+
+
+trapOOBFeatureInitFailDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "OOB feature initial failure"
+
+
+ ::= 13266818
+
+
+trapActivateNodeProductKeyDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Activate Node Product Key"
+
+
+ ::= 13266824
+
+
+trapQPIErrorFromBIOSDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "QPI error from BIOS - Deasserted"
+
+
+ ::= 13332353
+
+
+trapQPIErrDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "QPI Error - Deasserted"
+
+
+ ::= 13332357
+
+
+trapDIMMErr00Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x00 - Deasserted"
+
+
+ ::= 13397888
+
+
+trapDIMMErr01Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x01 - Deasserted"
+
+
+ ::= 13397889
+
+
+trapDIMMErr04Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x04 - Deasserted"
+
+
+ ::= 13397892
+
+
+trapDIMMErr05Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x05 - Deasserted"
+
+
+ ::= 13397893
+
+
+trapDIMMErr06Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x06 - Deasserted"
+
+
+ ::= 13397894
+
+
+trapDIMMErr07Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x07 - Deasserted"
+
+
+ ::= 13397895
+
+
+trapDIMMErr08Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x08 - Deasserted"
+
+
+ ::= 13397896
+
+
+trapDIMMErr09Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x09 - Deasserted"
+
+
+ ::= 13397897
+
+
+trapDIMMErr10Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x0A - Deasserted"
+
+
+ ::= 13397898
+
+
+trapDIMMErr11Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x0B - Deasserted"
+
+
+ ::= 13397899
+
+
+trapDIMMErr12Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x0C - Deasserted"
+
+
+ ::= 13397900
+
+
+trapDIMMErr13Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x0D - Deasserted"
+
+
+ ::= 13397901
+
+
+trapDIMMErr14Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x0E - Deasserted"
+
+
+ ::= 13397902
+
+
+trapDIMMErr15Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "DIMM_ERR 0x0F - Deasserted"
+
+
+ ::= 13397903
+
+
+trapNICIPv4IPChangeDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System NIC IPv4 IP Change"
+
+
+ ::= 13660032
+
+
+trapNICLinkUpDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System NIC Link Up"
+
+
+ ::= 13660033
+
+
+trapNICLinkDownDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System NIC Link Down"
+
+
+ ::= 13660034
+
+
+trapDedocatedLANLinkUpDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Dedicated LAN Link Up"
+
+
+ ::= 13660035
+
+
+trapDedocatedLANLinkDownDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Dedicated LAN Link Down"
+
+
+ ::= 13660036
+
+
+trapNICIPv6IPChangeDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System NIC IPv6 IP Change"
+
+
+ ::= 13660040
+
+
+trapNVMeEnjectedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Group @ %Group[3:0] Slot @ %string Ejected"
+
+
+ ::= 13725568
+
+
+trapNVMeInsertedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Group @ %Group[3:0] Slot @ %string Inserted"
+
+
+ ::= 13725569
+
+
+trapNVMeDriveFaultDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Group @ %Group[3:0] Slot @ %string Drive Fault"
+
+
+ ::= 13725570
+
+
+trapSMBIOSErrorFDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "SMBIOS error - Deasserted"
+
+
+ ::= 13791119
+
+
+trapSMBIOSErrorDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "SMBIOS error - Deasserted"
+
+
+ ::= 13791104
+
+
+trapMiscellaneousErrorDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Miscellaneous error - Deasserted"
+
+
+ ::= 13791105
+
+
+trapSysMemRAS01Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Memory RAS Activated 01 - Deasserted"
+
+
+ ::= 13856640
+
+
+trapSysMemRAS02Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Memory RAS Activated 02 - Deasserted"
+
+
+ ::= 13856641
+
+
+trapSysMemRAS03Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "System Memory RAS Activated 03 - Deasserted"
+
+
+ ::= 13856642
+
+
+trapProcessorConfigErrDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Processor Configuration failed - Deasserted"
+
+
+ ::= 13922176
+
+
+trapVTDErrDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "VT-d - Data Parity Error - Deasserted"
+
+
+ ::= 13922177
+
+
+trapITCErrDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Inbound Traffic Controller(ITC) failed - Deasserted"
+
+
+ ::= 13922178
+
+
+trapOTCErrDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "OutBound Traffic Controller(OTC) failed - Deasserted"
+
+
+ ::= 13922179
+
+
+trapDMADeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Direct Memory Access(DMA) - Deasserted"
+
+
+ ::= 13922180
+
+
+trapNVMeVDInfoDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "VD status info - Deasserted"
+
+
+ ::= 13987712
+
+
+trapNVMePDInfoDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "PD status info - Deasserted"
+
+
+ ::= 13987713
+
+
+trapNVMeFWInfoDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Device FW status / PCIe Link failed - Deasserted"
+
+
+ ::= 13987714
+
+
+trapCriticalDataCompromisedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Data Compromised - Deasserted"
+
+
+ ::= 14315392
+
+
+trapCriticalDataRecoveredDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Critical Data Recovered - Deasserted"
+
+
+ ::= 14315393
+
+
+trapBMCFirmwareCompromisedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "BMC Firmware Compromised - Deasserted"
+
+
+ ::= 14315394
+
+
+trapBIOSFirmwareisCompromisedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "BIOS Firmware is Compromised - Deasserted"
+
+
+ ::= 14315395
+
+
+trapDeviceRemovedOEMDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Device Removed - Deasserted"
+
+
+ ::= 14446464
+
+
+trapDeviceInstalledDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Device Installed - Deasserted"
+
+
+ ::= 14446465
+
+
+trapDeviceChangedDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Device Changed - Deasserted"
+
+
+ ::= 14446466
+
+
+trapOthersComponentsChanged3Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Deasserted"
+
+
+ ::= 14446467
+
+
+trapOthersComponentsChanged4Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Deasserted"
+
+
+ ::= 14446468
+
+
+trapOthersComponentsChanged5Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Deasserted"
+
+
+ ::= 14446469
+
+
+trapOthersComponentsChanged6Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Deasserted"
+
+
+ ::= 14446470
+
+
+trapOthersComponentsChanged7Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Deasserted"
+
+
+ ::= 14446471
+
+
+trapOthersComponentsChanged8Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Deasserted"
+
+
+ ::= 14446472
+
+
+trapOthersComponentsChanged9Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Deasserted"
+
+
+ ::= 14446473
+
+
+trapOthersComponentsChangedADeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Deasserted"
+
+
+ ::= 14446474
+
+
+trapOthersComponentsChangedBDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Deasserted"
+
+
+ ::= 14446475
+
+
+trapOthersComponentsChangedCDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Deasserted"
+
+
+ ::= 14446476
+
+
+trapOthersComponentsChangedDDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Deasserted"
+
+
+ ::= 14446477
+
+
+trapOthersComponentsChangedEDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Deasserted"
+
+
+ ::= 14446478
+
+
+trapOthersComponentsChangedFDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Others components changed - Deasserted"
+
+
+ ::= 14446479
+
+
+trapMemoryErr0Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Deasserted"
+
+
+ ::= 15757184
+
+
+trapMemoryErr1Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Deasserted"
+
+
+ ::= 15757185
+
+
+trapMemoryErr2Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Deasserted"
+
+
+ ::= 15757186
+
+
+trapMemoryErr3Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Deasserted"
+
+
+ ::= 15757187
+
+
+trapMemoryErr4Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Deasserted"
+
+
+ ::= 15757188
+
+
+trapMemoryErr5Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Deasserted"
+
+
+ ::= 15757189
+
+
+trapMemoryErr6Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Deasserted"
+
+
+ ::= 15757190
+
+
+trapMemoryErr7Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Deasserted"
+
+
+ ::= 15757191
+
+
+trapMemoryErr8Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Deasserted"
+
+
+ ::= 15757192
+
+
+trapMemoryErr9Deasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Deasserted"
+
+
+ ::= 15757193
+
+
+trapMemoryErrADeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Deasserted"
+
+
+ ::= 15757194
+
+
+trapMemoryErrBDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Deasserted"
+
+
+ ::= 15757195
+
+
+trapMemoryErrCDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Deasserted"
+
+
+ ::= 15757196
+
+
+trapMemoryErrDDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Deasserted"
+
+
+ ::= 15757197
+
+
+trapMemoryErrEDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Deasserted"
+
+
+ ::= 15757198
+
+
+trapMemoryErrFDeasserted TRAP-TYPE
+ ENTERPRISE petevts
+ DESCRIPTION
+  "Memory Error - Deasserted"
+
+
+ ::= 15757199
+
+
+END

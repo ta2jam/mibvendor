@@ -36,19 +36,33 @@ Deploying a working directory without publishing the corresponding commit/tag
 is not production completion. Pushing code without deploying and verifying the
 VPS is also not production completion.
 
-## Current Phase 0 boundary
+## Current Phase 0 release candidate
 
-`v0.2.0-alpha.1` publishes a rights-cleared MIB catalog plus the existing
-research and bounded public-alpha intelligence API. The active immutable data
-release contains 110 redistributable IETF/IANA/Net-SNMP modules, 5,392 parsed
-OID nodes, file/source checksums, retained notices, fail-closed raw downloads,
-and 23 reviewed source decisions. No vendor source is approved for metadata
-extraction; 19 vendor families and legacy IETF remain directory-only with
-content quarantined. The API also includes the contact-free IANA PEN snapshot,
-pinned Net-SNMP `sysObjectID` evidence, dependency states, batch resolution,
-RFC 9457 failures, and per-client rate limiting. It does not authorize a
-production database, unknown-rights vendor content, broad product-model
-coverage, or a stable/SLA-backed API claim. The application binds only to
+`v0.3.0-alpha.1` defines the corpus-expansion release contract. Its immutable
+`license-signaled-2026-07-20.2` data release contains 702 redistributable
+modules, 76,606 searchable catalog OID nodes, 4,138 textual conventions, 1,273
+notifications, file/source checksums, retained notices, and fail-closed raw
+downloads. The 32 reviewed source records remain separated into 12
+redistributable and 20 directory-only sources. The release preserves the
+110-module `rights-cleared-2026-07-14.1` baseline and promotes 592 modules only
+after license-signal, parser-resolution, dependency-closure, collision, and
+resource gates pass. Two hash-chained publication-control events retain the
+baseline and promotion decisions.
+
+The API also includes the contact-free IANA PEN snapshot, 19 pinned Net-SNMP
+and SigScale `sysObjectID` mappings with explicit claim strength, dependency
+states, batch resolution, RFC 9457 failures, and per-client rate limiting. It
+does not authorize a production database, unknown-rights vendor content, broad
+product-model coverage, or a stable/SLA-backed API claim. The API is
+permanently free but fair-use bounded: it has no paid tier or paid quota
+upgrade, and free access does not imply unlimited use or an availability SLA.
+
+Production status: complete on 2026-07-20 after the commit, immutable tag, CI,
+VPS deployment, public smoke checks, and release-identity reconciliation met
+the completion rule above. The exact release image also passed an isolated
+Linux cgroup preflight: 40 concurrent searches and a 1,000-OID batch completed
+with zero OOM, limit, or restart events and a 229,392,384-byte peak under the
+640 MiB limit. The application binds only to
 `127.0.0.1:3001`; host-level Caddy and Cloudflare own the public edge. GitHub
 independently verifies the public origin every 15 minutes, and a hardened VPS
 timer checks the container, loopback bind, release identity, public/local

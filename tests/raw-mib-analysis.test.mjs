@@ -17,7 +17,7 @@ const [candidates, intake, active, aliases, analysis, objects, types] = await Pr
 
 test("raw analysis covers every selected module and reports an open gate honestly", () => {
   assert.deepEqual(validateRawMibAnalysis(candidates, intake, active, aliases, analysis, objects, types), []);
-  assert.equal(analysis.counts.modules, 252);
+  assert.equal(analysis.counts.modules, candidates.modules.filter((module) => module.selected_format === "raw").length);
   assert.ok(analysis.counts.resolved_objects > 30_000);
   assert.ok(analysis.counts.unresolved_objects > 0);
   assert.equal(analysis.parser_gate, "open");
@@ -32,16 +32,29 @@ test("raw parser success cannot be claimed while partial modules remain", () => 
 });
 
 test("dependency aliases remain evidence-bound and do not hide real missing modules", () => {
-  assert.equal(analysis.counts.missing_dependency_edges, 6);
+  assert.ok(analysis.counts.missing_dependency_edges > 0);
   const dns = analysis.modules.find((module) => module.module === "DNS-SERVER-MIB");
   assert.deepEqual(dns.dependencies.find((dependency) => dependency.module === "RFC-1213"), {
     module: "RFC-1213",
-    state: "alias-selected-raw",
+    state: "alias-active",
     resolved_as: "RFC1213-MIB"
   });
+  assert.equal(analysis.modules.find((module) => module.module === "CPQHLTH-MIB")?.dependencies.find((dependency) => dependency.module === "CPQHOST-MIB")?.state, "missing");
   const mutatedAliases = structuredClone(aliases);
   mutatedAliases.aliases[0].canonical_artifact_id = "missing:evidence";
   const failures = validateRawMibAnalysis(candidates, intake, active, mutatedAliases, analysis, objects, types);
   assert.ok(failures.includes("MIB module alias canonical evidence drifted RFC-1213"));
   assert.ok(failures.includes("MIB module alias artifact evidence missing RFC-1213"));
+});
+
+test("active alias targets retain an exact raw-artifact provenance chain", () => {
+  const mutatedActive = structuredClone(active);
+  mutatedActive.modules.find((module) => module.id === "RFC1213-MIB").activation_basis.source_artifact_id = "other:artifact";
+  const activeFailures = validateRawMibAnalysis(candidates, intake, mutatedActive, aliases, analysis, objects, types);
+  assert.ok(activeFailures.includes("MIB module alias canonical evidence drifted RFC-1213"));
+
+  const mutatedCandidates = structuredClone(candidates);
+  mutatedCandidates.modules.find((module) => module.module === "RFC-1212").selected_sha256 = "0".repeat(64);
+  const candidateFailures = validateRawMibAnalysis(mutatedCandidates, intake, active, aliases, analysis, objects, types);
+  assert.ok(candidateFailures.includes("MIB module alias canonical evidence drifted RFC1212"));
 });

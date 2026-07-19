@@ -23,7 +23,7 @@ const variants = [];
 for (const module of active.modules) {
   variants.push({ module: module.id, format: "active", source_id: module.source_id, artifact_id: `active:${module.id}`, sha256: module.artifact_sha256, parser_status: "active-release" });
 }
-for (const artifact of raw.artifacts.filter((item) => item.module !== null)) {
+for (const artifact of raw.artifacts.filter((item) => item.module !== null && item.retention_state === "retained")) {
   variants.push({ module: artifact.module, format: "raw", source_id: artifact.source_id, artifact_id: artifact.id, sha256: artifact.artifact_sha256, parser_status: artifact.parser_status });
 }
 for (const artifact of compiled.artifacts) {

@@ -43,6 +43,7 @@ for (const required of [
   "docs/decisions/0006-rfc8785-content-addressing.md",
   "docs/decisions/0007-fail-closed-mib-publication.md",
   "docs/decisions/0008-license-signal-publication-policy.md",
+  "docs/decisions/0009-permanently-free-api.md",
   "contracts/source-snapshot.schema.json",
   "contracts/canonical-module.schema.json",
   "contracts/data-release.schema.json",
@@ -57,6 +58,7 @@ for (const required of [
   "deploy/mibvendor-health.service",
   "deploy/mibvendor-health.timer",
   ".github/workflows/production-monitor.yml",
+  ".github/workflows/source-freshness.yml",
   ".github/workflows/parser-arm64.yml",
   "experiments/parser-bakeoff/.dockerignore",
   "experiments/parser-bakeoff/scripts/validate_corpus_intake.py",
@@ -77,6 +79,7 @@ for (const required of [
   "data/source-catalog.json",
   "data/source-discovery-registry.json",
   "data/source-discovery.json",
+  "data/publication-controls.json",
   "data/license-derived-intake.json",
   "data/compiled-mib-intake.json",
   "data/compiled-mib-objects-staging.json",
@@ -88,6 +91,11 @@ for (const required of [
   "scripts/validate-mib-catalog.mjs",
   "scripts/update-source-discovery.mjs",
   "scripts/validate-source-discovery.mjs",
+  "scripts/source-discovery-snapshot.mjs",
+  "scripts/validate-publication-controls.mjs",
+  "scripts/validate-release-evidence.mjs",
+  "scripts/lib/release-evidence.mjs",
+  "scripts/lib/artifact-restrictive-notices.mjs",
   "scripts/update-license-derived-intake.mjs",
   "scripts/validate-license-derived-intake.mjs",
   "scripts/update-compiled-mib-intake.mjs",
@@ -99,6 +107,7 @@ for (const required of [
   "scripts/update-compiled-mib-fidelity.mjs",
   "scripts/validate-compiled-mib-fidelity.mjs",
   "scripts/update-iana-pen.mjs",
+  "src/publication-controls.mjs",
   "THIRD_PARTY_NOTICES.md"
 ]) {
   if (!await exists(required)) failures.push(`Missing required file: ${required}`);
@@ -130,8 +139,10 @@ if (readme.includes("ta2jam.github.io/mibvendor")) {
 for (const requiredCopy of [
   "## Use the web application",
   "## Use it safely",
-  "## Public alpha API",
+  "## Permanently free public API",
   "The public API is live at `https://mibvendor.io/v1`",
+  "free abuse-control credentials only",
+  "Free access is fair-use bounded, not unlimited use or an availability SLA",
   "open source on GitHub"
 ]) {
   if (!readme.includes(requiredCopy)) failures.push(`README is missing required service copy: ${requiredCopy}`);
@@ -159,8 +170,22 @@ for (const requiredMonitorBoundary of [
 if (productionMonitor.includes("EXPECTED_COMMIT: ${{ github.sha }}")) {
   failures.push("Production monitor must resolve the deployed release tag, not assume main is deployed");
 }
-if (!productionMonitor.includes("EXPECTED_DATA_RELEASE: rights-cleared-2026-07-14.1")) {
+if (!productionMonitor.includes("EXPECTED_DATA_RELEASE: license-signaled-2026-07-20.2")) {
   failures.push("Production monitor and runtime data release differ");
+}
+
+const sourceFreshnessWorkflow = await readFile(path.join(root, ".github", "workflows", "source-freshness.yml"), "utf8");
+for (const requiredFreshnessBoundary of [
+  "schedule:",
+  "workflow_dispatch:",
+  "permissions:\n  contents: read",
+  "npm run update:sources",
+  "npm run check:sources",
+  "git diff --exit-code -- data/source-discovery.json"
+]) {
+  if (!sourceFreshnessWorkflow.includes(requiredFreshnessBoundary)) {
+    failures.push(`Source freshness workflow is missing boundary: ${requiredFreshnessBoundary}`);
+  }
 }
 
 const arm64ParserWorkflow = await readFile(path.join(root, ".github", "workflows", "parser-arm64.yml"), "utf8");
@@ -313,15 +338,21 @@ for (const requiredCopy of [
   "Local walk parsing",
   "No device connections",
   "Public API",
-  "Live public alpha",
+  "Permanently free",
   "open source on GitHub"
 ]) {
   if (!prototypeHtml.includes(requiredCopy)) failures.push(`Prototype is missing required trust copy: ${requiredCopy}`);
 }
 for (const requiredDeveloperCopy of [
   "Developer API",
-  "Live public alpha",
-  "no availability SLA yet",
+  "Free · Public alpha",
+  "free abuse-control credentials only",
+  "fair-use bounded, not unlimited use or an availability SLA",
+  "no availability SLA",
+  "RateLimit-*",
+  "Retry-After",
+  "Cache-Control",
+  "ETag",
   "/v1/resolve:batch",
   "/v1/enterprises/{number}",
   "/v1/sys-object-ids/{oid}",
@@ -330,6 +361,19 @@ for (const requiredDeveloperCopy of [
   "/v1/sources"
 ]) {
   if (!prototypeHtml.includes(requiredDeveloperCopy)) failures.push(`Prototype is missing developer-preview copy: ${requiredDeveloperCopy}`);
+}
+
+const freeApiDecision = await readFile(path.join(root, "docs", "decisions", "0009-permanently-free-api.md"), "utf8");
+const openApiDocument = JSON.parse(await readFile(path.join(root, "docs", "research", "demand", "phase0-openapi.json"), "utf8"));
+const accessPolicy = openApiDocument["x-mibvendor-access-policy"];
+if (!freeApiDecision.includes("permanently free") || !freeApiDecision.includes("free abuse-control credentials only")) {
+  failures.push("ADR 0009 must preserve the permanently-free and optional-key boundaries");
+}
+if (accessPolicy?.access !== "permanently-free" || accessPolicy?.paid_tiers !== false || accessPolicy?.billing !== false) {
+  failures.push("OpenAPI permanently-free access policy drifted");
+}
+if (accessPolicy?.unlimited_use !== false || accessPolicy?.availability_sla !== false || accessPolicy?.authentication?.required !== false || accessPolicy?.authentication?.optional_keys !== "free-abuse-control-only") {
+  failures.push("OpenAPI fair-use, SLA, or optional-key boundary drifted");
 }
 
 if (failures.length) {

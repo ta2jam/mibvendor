@@ -1,6 +1,6 @@
 # FAZ 0 veri hakları ve provenance gate'i
 
-Kontrol tarihi: 2026-07-14
+Kontrol tarihi: 2026-07-20
 
 Bu çalışma hukuki görüş değildir. Ürün politikası 2026-07-15 tarihinde değişti:
 GitHub tarafından tanınan bir SPDX lisansı ve aynı sabit commit'te lisans dosyası
@@ -11,34 +11,36 @@ korunur.
 
 ## Karar
 
-Gate yalnız dar bir standartlar çekirdeği için geçildi. Vendor korpusu için geçilmedi.
+Yayın gate'i standartlar çekirdeği ve sabit commit'te tanınan repository lisans
+sinyalini taşıyan dokuz kaynak için geçildi. Genel koşulları veya açık lisans
+kanıtı yeterli olmayan 20 vendor/dizin kaynağı içerik yayınlama gate'ini hâlâ
+geçmedi; bunlar yalnız resmi kaynağa yönlendiren `directory-only` kayıtlardır.
 
-License-derived staging ayrıca açıktır: Erlang/OTP'nin sabit Apache-2.0 kaynak
-commit'indeki 24 MIB artifact'i indirildi; 23'ü aktif katalogla isim çakışması
-olmayan aday, biri çakışan varyanttır. Yalnız modül bildirimi doğrulandı; tam
-parser gate'i açıktır. Bunlar aktif veri sürümüne henüz dahil değildir.
+`license-signaled-2026-07-20.2` adayı çakışma, bağımlılık kapanışı, parse,
+provenance, yayın kontrolü, kimlik sabitliği ve kaynak-lisans kanıtı kapılarından
+geçti. 592 yeni modül tarihsel 110-modüllük çekirdeğe eklendi. Reddedilen veya
+çakışan varyantlar aktif kataloğa sessizce birleştirilmedi.
 
-Genişletilmiş staging 12 kaynak kaydında 973 license-derived adayı kapsar. Raw
-intake beş depodan 357 varyant, compiled intake ise BSD-2-Clause PySNMP
-deposundan Python çalıştırılmadan statik çözümlenen 273 modül ve 20.901 OID
-nesnesi içerir. Aktif 110 modülle birlikte tekrarlar düşüldüğünde 559 benzersiz
-modül adayı vardır; bu sayı production kapsamı veya parser gate başarısı olarak
-sunulmaz.
-
-252 seçili raw adayın deterministik staging analizi 38.045 OID nesnesini,
-1.055 textual convention'ı ve 12 SMI makrosunu çıkardı. İki tarihsel modül adı
-farkı artifact kanıtlı alias olarak kaydedildi; gerçek eksik import sayısı altı,
-çözülemeyen OID sayısı 3.688'dir. Parser gate'i bu nedenle hâlâ açıktır ve bu
-çıktılar aktif kamu veri sürümüne dahil değildir.
+Aktivasyon sonrası staging yeni tabana göre yeniden üretildi. Staging çıktıları
+gelecek sürüm adaylarıdır; aktif üretim kapsamı veya yayın izni sayılmaz.
 
 - Kamuya açılan çekirdek: dosya bazında koşulları doğrulanmış IETF MIB code component'leri, doğrudan IANA Protocol Registry MIB'leri ve sabitlenmiş Net-SNMP proje MIB'leri.
-- Vendor aileleri: 19 aile incelendi; hiçbirine mevcut kanıtla A veya B verilmedi.
+- Vendor/dizin kaynakları: 20 kaynak `directory-only`; içerikleri mevcut kanıtla
+  yayınlanmaz.
 - Tier B şu anda boş. Kamuya metadata koymak için de `metadata_index` kapsamının açıkça onaylanması gerekir.
 - `unknown` kamuya açık korpusa giremez. `denied` ise ancak kaynağa özgü yazılı izin veya ayrı bir kontrol eden lisansla yeniden değerlendirilebilir.
 
-Kanonik satır bazlı kayıt [rights-matrix.csv](./rights-matrix.csv) dosyasındadır. Matris 23 kaynak ailesi içerir: 3 Tier A; 19 vendor ailesi ve legacy IETF sınıfından oluşan 20 Tier Q. Uygulama karşılıkları `redistributable`, `metadata-only`, `directory-only` ve `quarantine` olarak yayınlanır.
+İlk hukuki taramanın satır bazlı kaydı [rights-matrix.csv](./rights-matrix.csv)
+dosyasındadır. Çalışma zamanı kararı ve dokuz repository-lisans kaynağının sabit
+kanıtı `data/source-catalog.json` dosyasındadır. Uygulama karşılıkları
+`redistributable`, `metadata-only`, `directory-only` ve `quarantine` olarak
+yayınlanır.
 
-Aktif `rights-cleared-2026-07-14.1` veri sürümü 110 ham modül ve 5.392 çözümlenmiş OID düğümü içerir: 72 IETF, 20 IANA ve 18 Net-SNMP. IETF envanterindeki 14 aday RFC notice kontrolünü geçemediği için manifestte gerekçesiyle karantinadadır; metinleri repoya veya API'a girmez.
+Aktif `license-signaled-2026-07-20.2` veri sürümü 702 ham modül, 76.606
+çözümlenmiş OID düğümü, 4.138 textual convention ve 1.273 notification içerir.
+Kaynak dizinindeki 32 kaynağın 12'si redistributable, 20'si directory-only'dir.
+IETF envanterindeki 14 aday RFC notice kontrolünü geçemediği için manifestte
+gerekçesiyle karantinadadır; metinleri repoya veya API'a girmez.
 
 ## Kamu çekirdeğinin kabul koşulları
 
@@ -111,7 +113,7 @@ Her talep tek bir “MIB kullanabilir miyiz?” sorusu olmamalı. Yazılı cevap
 
 1. OID, symbol, module, revision, object kind ve resmi kaynak linkinden oluşan `metadata_index`.
 2. DESCRIPTION, enum, textual convention, INDEX/AUGMENTS ve notification metinlerinin `rendered_text` kullanımı.
-3. Aynı verilerin ücretsiz ve ücretli `api_output` olarak sunulması.
+3. Aynı verilerin kalıcı olarak ücretsiz public `api_output` kapsamında sunulması.
 4. Orijinal dosyanın `raw_download` ile aynalanması.
 5. Dataset/API snapshot'ının `bulk_export` edilmesi.
 6. Dünya çapında, ticari kullanım; normalizasyon ve türev veri; cache/CDN; attribution formatı; sürüm güncelleme; sona erme ve takedown prosedürü.

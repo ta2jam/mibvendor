@@ -27,7 +27,10 @@ test("batch resolution preserves order, duplicates, instances, and unknown state
     const oids = [
       "1.3.6.1.2.1.2.2.1.8.7",
       "1.3.6.1.4.1.999999.1.0",
-      "1.3.6.1.2.1.2.2.1.8.7"
+      "1.3.6.1.2.1.2.2.1.8.7",
+      "1.3.6.1.2.1.1.3.0",
+      "1.3.6.1.2.1.2.2.999999",
+      "1.3.6.1.2.1.2.2.1.999999"
     ];
     const response = await fetch(`${base}/v1/resolve:batch`, {
       method: "POST",
@@ -43,6 +46,12 @@ test("batch resolution preserves order, duplicates, instances, and unknown state
     assert.deepEqual(body.results[0].instance_suffix, [7]);
     assert.equal(body.results[1].status, "not_found");
     assert.equal(body.results[2].status, "resolved");
+    assert.equal(body.results[3].object.id, "snmpv2-mib--sysuptime");
+    assert.equal(body.results[3].object.kind, "scalar");
+    assert.deepEqual(body.results[3].instance_suffix, [0]);
+    assert.equal(body.results[3].object.provenance.rights_tier, "A");
+    assert.equal(body.results[4].status, "not_found");
+    assert.equal(body.results[5].status, "not_found");
   });
 });
 
@@ -50,10 +59,15 @@ test("search and exact object responses expose structured intelligence and prove
   await withServer(async (base) => {
     const searchResponse = await fetch(`${base}/v1/search?q=interface%20status`);
     const search = await searchResponse.json();
+    assert.equal(search.results.filter((result) => result.id === "if-mib--ifoperstatus").length, 1);
+    assert.equal(search.results[0].id, "if-mib--ifoperstatus");
+    assert.equal(search.results[0].module, "IF-MIB");
     assert.equal(search.results[0].symbol, "ifOperStatus");
-    assert.equal(search.results[0].provenance.rights_tier, "B");
-    assert.equal(search.results[0].provenance.publication_mode, "metadata-only");
-    assert.equal(search.results[0].provenance.raw_download, false);
+    assert.equal(search.results[0].provenance.rights_tier, "A");
+    assert.equal(search.results[0].provenance.publication_mode, "redistributable");
+    assert.equal(search.results[0].provenance.raw_download, true);
+    assert.match(search.results[0].provenance.source_revision, /^[0-9a-f]{40}$/);
+    assert.match(search.results[0].provenance.artifact_sha256, /^[0-9a-f]{64}$/);
 
     const objectResponse = await fetch(`${base}/v1/objects/if-mib--ifoperstatus`);
     const object = await objectResponse.json();
@@ -64,7 +78,12 @@ test("search and exact object responses expose structured intelligence and prove
     assert.equal(object.object.access, "read-only");
     assert.equal(object.object.status, "current");
     assert.equal(object.object.description.status, "available");
+    assert.equal(object.object.kind, "column");
+    assert.equal(object.object.relationships.table, "ifTable");
     assert.equal(object.object.relationships.row, "ifEntry");
+    assert.deepEqual(object.object.relationships.indexes, ["ifIndex"]);
+    assert.equal(object.object.provenance.rights_tier, "A");
+    assert.equal(object.object.provenance.publication_mode, "redistributable");
   });
 });
 
@@ -95,6 +114,14 @@ test("enterprise and sysObjectID lookup separate registry identity from exact ev
     assert.equal(exact.result.match.product_family, "Net-SNMP agent");
     assert.equal(exact.result.match.platform, "Linux");
     assert.equal(exact.result.match.model, null);
+    assert.equal(exact.result.match.claim_strength, "platform");
+
+    const sigScale = await (await fetch(`${base}/v1/sys-object-ids/1.3.6.1.4.1.50386.1.1`)).json();
+    assert.equal(sigScale.result.status, "resolved");
+    assert.equal(sigScale.result.match.product_family, "SigScale OCS");
+    assert.equal(sigScale.result.match.claim_strength, "platform");
+    assert.equal(sigScale.result.match.model, null);
+    assert.equal(sigScale.result.match.provenance.source_license, "Apache-2.0");
 
     const boundary = await (await fetch(`${base}/v1/sys-object-ids/1.3.6.1.4.1.2.999999`)).json();
     assert.equal(boundary.result.status, "enterprise_only");
@@ -112,11 +139,12 @@ test("module dependencies distinguish graph states", async () => {
     const response = await fetch(`${base}/v1/modules/IF-MIB/dependencies`);
     const body = await response.json();
     assert.equal(response.status, 200);
-    assert.deepEqual(body.direct, ["SNMPv2-CONF", "SNMPv2-SMI", "SNMPv2-TC"]);
+    assert.deepEqual(body.direct, ["IANAifType-MIB", "SNMPv2-CONF", "SNMPv2-MIB", "SNMPv2-SMI", "SNMPv2-TC"]);
     assert.deepEqual(body.transitive, []);
-    assert.deepEqual(body.missing, ["SNMPv2-CONF", "SNMPv2-SMI", "SNMPv2-TC"]);
+    assert.deepEqual(body.missing, []);
     assert.deepEqual(body.cyclic, []);
-    assert.equal(body.status, "partial");
+    assert.deepEqual(body.diagnostics, []);
+    assert.equal(body.status, "complete");
   });
 });
 
@@ -127,12 +155,29 @@ test("module and source catalogs enforce raw redistribution boundaries", async (
     assert.equal(bfd.publication_mode, "redistributable");
     assert.equal(bfd.raw_download, true);
     assert.match(bfd.artifact_sha256, /^[0-9a-f]{64}$/);
+    assert.ok(bfd.root_objects.length > 0);
+    assert.match(bfd.root_objects[0].id, /^bfd-std-mib--/);
+    assert.match(bfd.root_objects[0].oid, /^\d+(?:\.\d+)+$/);
 
     const rawResponse = await fetch(`${base}${bfd.raw_url}`);
     assert.equal(rawResponse.status, 200);
-    assert.equal(rawResponse.headers.get("x-content-sha256"), bfd.artifact_sha256);
+    assert.equal(rawResponse.headers.get("content-type"), "application/x-tar");
+    assert.equal(rawResponse.headers.get("cache-control"), "no-cache");
+    assert.match(rawResponse.headers.get("x-content-sha256"), /^[0-9a-f]{64}$/);
+    assert.equal(rawResponse.headers.get("x-mib-sha256"), bfd.artifact_sha256);
     assert.match(rawResponse.headers.get("link"), /rel="license"/);
-    assert.match(await rawResponse.text(), /BFD-STD-MIB DEFINITIONS ::= BEGIN/);
+    const bundle = Buffer.from(await rawResponse.arrayBuffer());
+    assert.equal(bundle.includes(Buffer.from("BFD-STD-MIB DEFINITIONS ::= BEGIN")), true);
+    assert.equal(bundle.includes(Buffer.from("LICENSE.txt")), true);
+    assert.equal(bundle.includes(Buffer.from("PROVENANCE.json")), true);
+
+    const licensedModule = await (await fetch(`${base}/v1/modules/ACCOUNTING-CONTROL-MIB`)).json();
+    const licensedBundleResponse = await fetch(`${base}${licensedModule.module.raw_url}`);
+    const licensedBundle = Buffer.from(await licensedBundleResponse.arrayBuffer());
+    assert.equal(licensedBundleResponse.status, 200);
+    assert.equal(licensedBundleResponse.headers.get("x-mib-sha256"), licensedModule.module.artifact_sha256);
+    assert.equal(licensedBundle.includes(Buffer.from("Permission is hereby granted")), true);
+    assert.equal(licensedBundle.includes(Buffer.from('"role": "retained-license-or-notice"')), true);
 
     const cisco = await (await fetch(`${base}/v1/sources/cisco`)).json();
     assert.equal(cisco.source.publication_mode, "directory-only");

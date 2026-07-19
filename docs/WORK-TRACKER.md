@@ -1,6 +1,6 @@
 # Product work tracker
 
-Updated: 2026-07-15
+Updated: 2026-07-20
 
 This is the binding implementation tracker for corpus growth, device identity,
 web UX, and the permanently free API. Work is ordered by dependency and product
@@ -35,7 +35,7 @@ higher item is externally blocked and the lower item can progress safely.
 
 ### DATA-01 — Source discovery and per-file rights inventory
 
-Status: `in-progress`
+Status: `complete`
 
 Build a reproducible source registry and discovery snapshot covering official
 vendor repositories, open-source monitoring/device-definition projects,
@@ -59,7 +59,7 @@ Acceptance criteria:
 
 ### DATA-02 — Open-license project MIB ingestion
 
-Status: `in-progress`
+Status: `complete`
 
 Ingest MIBs from sources with a recognized pinned repository license signal.
 Retain complete licenses and notices, label the approval basis, and keep source
@@ -214,7 +214,7 @@ Initial measurement targets:
 
 ### DATA-11 — Honest public corpus statistics
 
-Status: `planned`
+Status: `complete`
 
 Expose separate counts for modules, revisions, objects, notifications, textual
 conventions, exact identities, family identities, vendors, unresolved imports,
@@ -228,7 +228,7 @@ Acceptance criteria:
 
 ### DATA-12 — Source freshness, correction, and takedown operations
 
-Status: `planned`
+Status: `in-progress`
 
 Add scheduled upstream diffing, license/notice change detection, checksum drift,
 source and module kill switches, correction records, immutable release diffs,
@@ -242,7 +242,7 @@ Acceptance criteria:
 
 ### DATA-13 — Permanently free API contract
 
-Status: `planned`
+Status: `complete`
 
 Record the no-paid-tier decision in an ADR, README, website, OpenAPI, and API
 documentation. Retain fair-use controls and bounded responses without billing.
@@ -258,7 +258,7 @@ Acceptance criteria:
 
 ### UI-01 — Routable information architecture
 
-Status: `planned`
+Status: `complete`
 
 Replace the growing anchor-only page with deep-linkable routes for search,
 numeric OIDs, objects, modules and revisions, enterprise records, device/model
@@ -283,7 +283,7 @@ identity-strength filters with cursor pagination and DOM virtualization.
 
 ### UI-04 — Full MIB module page
 
-Status: `planned`
+Status: `in-progress`
 
 Show identity, revisions, source, license, counts, root OID, imports, imported
 symbols, dependants, missing/cyclic dependencies, object kinds, module-scoped
@@ -291,7 +291,7 @@ search, lazy tree, revision selection, and raw availability.
 
 ### UI-05 — Lazy virtualized OID tree
 
-Status: `planned`
+Status: `in-progress`
 
 Load children on demand, virtualize wide subtrees, support keyboard navigation,
 persist expanded nodes in URL state, and synchronize breadcrumbs and object
@@ -371,7 +371,7 @@ tree/graph table alternatives.
 
 ### UI-15 — Free API documentation
 
-Status: `planned`
+Status: `in-progress`
 
 Publish a concise free-API statement, copyable curl/JavaScript/Python examples,
 real responses, error states, pagination, caching, release pinning, fair-use
@@ -381,12 +381,13 @@ limits, OpenAPI, health/status links, and prohibited sensitive inputs.
 
 ### v0.3.0-alpha.1 — Corpus expansion engine
 
-Status: `planned`
+Status: `complete`
 
 One result: every approved file in the defined discovery universe is imported
 reproducibly and public module coverage is at least five times the 110-module
 baseline. Infrastructure-only or documentation-only changes do not trigger the
-release.
+release. The published release meets this result with 702 active modules; its
+tag, CI, VPS deployment, and live release identity are reconciled.
 
 ### v0.4.0-alpha.1 — Device identity
 
@@ -499,3 +500,41 @@ with no billing code.
   missing and remain visible; no fallback dependency was inferred.
 - DATA-02 remains `in-progress`: 3,688 OID declarations are unresolved, 16
   duplicate symbols remain explicit, and the parser gate is still open.
+
+### 2026-07-20 — v0.3 corpus-expansion release candidate
+
+- Completed DATA-01 against its documented acceptance criteria: 16 immutable
+  discovery sources produce a 10,636-candidate provenance snapshot; validators
+  and tests enforce complete trees, pinned URLs, license-signal evidence,
+  deterministic output, credential exclusion, unique candidates, and count
+  drift. A weekly GitHub workflow rebuilds the snapshot and requires explicit
+  review when the rebuilt evidence differs.
+- Completed DATA-02 by activating `license-signaled-2026-07-20.2`: 592 approved
+  modules join the 110-module historical baseline for 702 active modules and
+  76,606 collision-free searchable catalog OID nodes. Every promoted artifact
+  passed immutable provenance, license/notice, parser-resolution, diagnostics,
+  and dependency-closure gates; 336 rejected artifacts remain outside the
+  active release.
+- Completed DATA-11 with one runtime/API/UI statistics contract: 4,138 textual
+  conventions, 1,273 notifications, 66,266 IANA enterprise records, 19 exact
+  platform mappings, and 32 source records are reported separately from staged
+  or quarantined content.
+- Completed DATA-13 with the no-paid-tier ADR and public contract, bounded
+  requests, cursor pagination, strong ETags and conditional responses,
+  immutable release identifiers, and fair-use language. API documentation has
+  copyable curl, JavaScript, and Python examples, but UI-15 remains
+  `in-progress` until real success-response and cursor-pagination examples, a
+  dedicated service-status link, and full documented interaction checks are
+  complete.
+- Completed UI-01 with safe deep routes for search, object, module, enterprise,
+  `sysObjectID`, and release views plus canonical URLs and browser history.
+  UI-04 and UI-05 remain `in-progress`: the routable module/object views and
+  bounded ancestor/child/subtree API exist, but revision comparison, full
+  module context, keyboard tree behavior, and virtualization do not.
+- Began DATA-12 with scheduled source freshness and hash-chained source/module
+  publication controls. Correction records and machine-verified takedown and
+  rollback drills remain open.
+- Completed v0.3 production publication with the immutable tag, green CI, VPS
+  deployment, public release-identity checks, and an isolated 640 MiB cgroup
+  preflight. Device/model identity scale and Phase 0 external-demand evidence
+  remain open; no corpus count closes either gate.

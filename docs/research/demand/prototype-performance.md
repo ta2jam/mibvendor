@@ -41,7 +41,10 @@ resolver uses a numeric-prefix index, so one OID lookup is `O(d)` in OID depth;
 a batch is `O(B × d)` for `B` OIDs. Response serialization and response bytes,
 not lookup work, dominate the maximum batch's transient memory and energy cost.
 
-The production container limit is therefore 192 MiB. A 128 MiB limit left less
-than 20 MiB of measured headroom before accounting for Linux/container runtime
-differences and concurrent responses. Production RSS and container health must
-still be checked after deployment.
+The `v0.2.0-alpha.1` production container limit was therefore 192 MiB. A
+128 MiB limit left less than 20 MiB of measured headroom before accounting for
+Linux/container runtime differences and concurrent responses. This historical
+limit is superseded for the expanded corpus by the
+[corpus candidate benchmark](../../operations/corpus-release-candidate-benchmark.md)
+and a 640 MiB container limit. Production RSS and container health must still
+be checked after deployment.

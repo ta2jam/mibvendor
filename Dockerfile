@@ -19,8 +19,9 @@ ENV NODE_ENV=production \
 WORKDIR /app
 COPY --chown=101:101 server.mjs VERSION package.json ./
 COPY --chown=101:101 src/ ./src/
-COPY --chown=101:101 data/iana-private-enterprise-numbers.json data/mib-catalog.json data/mib-objects.json data/source-catalog.json ./data/
+COPY --chown=101:101 data/iana-private-enterprise-numbers.json data/mib-catalog.json data/mib-objects.json data/source-catalog.json data/publication-controls.json ./data/
 COPY --chown=101:101 data/mibs/redistributable/ ./data/mibs/redistributable/
+COPY --chown=101:101 scripts/canonical-json.mjs ./scripts/canonical-json.mjs
 COPY --chown=101:101 prototype/ ./prototype/
 COPY --chown=101:101 docs/research/demand/phase0-openapi.json ./docs/research/demand/phase0-openapi.json
 

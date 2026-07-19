@@ -216,6 +216,70 @@
           "extensions": [".mib", ".txt"]
         }
       ]
+    },
+    {
+      "id": "kmalinich-snmp-mibs",
+      "repository": "kmalinich/snmp-mibs",
+      "homepage": "https://github.com/kmalinich/snmp-mibs",
+      "source_roles": ["mib-corpus"],
+      "minimum_candidate_count": 600,
+      "license_files": ["LICENSE"],
+      "candidate_roots": [
+        {
+          "path": "",
+          "kind": "mib-file",
+          "matcher": "extensions",
+          "extensions": [".mib"]
+        }
+      ]
+    },
+    {
+      "id": "ntopng-mibs",
+      "repository": "ntop/ntopng",
+      "homepage": "https://www.ntop.org/",
+      "source_roles": ["mib-corpus"],
+      "minimum_candidate_count": 144,
+      "license_files": ["LICENSE"],
+      "candidate_roots": [
+        {
+          "path": "packages/mibs",
+          "kind": "mib-file",
+          "matcher": "mib-names",
+          "extensions": ["", ".txt"]
+        }
+      ]
+    },
+    {
+      "id": "dynatrace-snmp-mib-files",
+      "repository": "dynatrace-extensions/snmp-mib-files",
+      "homepage": "https://github.com/dynatrace-extensions/snmp-mib-files",
+      "source_roles": ["mib-corpus"],
+      "minimum_candidate_count": 86,
+      "license_files": ["LICENSE"],
+      "candidate_roots": [
+        {
+          "path": "mibs",
+          "kind": "mib-file",
+          "matcher": "extensions",
+          "extensions": [".mib", ".txt", ".my"]
+        }
+      ]
+    },
+    {
+      "id": "sigscale-mibs",
+      "repository": "sigscale/sigscale_mibs",
+      "homepage": "https://github.com/sigscale/sigscale_mibs",
+      "source_roles": ["mib-corpus"],
+      "minimum_candidate_count": 4,
+      "license_files": ["COPYING"],
+      "candidate_roots": [
+        {
+          "path": "mibs",
+          "kind": "mib-file",
+          "matcher": "extensions",
+          "extensions": [".mib"]
+        }
+      ]
     }
   ]
 }

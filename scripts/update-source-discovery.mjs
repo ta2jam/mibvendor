@@ -2,6 +2,8 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
+import { finalizeDiscoverySnapshot } from "./source-discovery-snapshot.mjs";
+
 const root = process.cwd();
 const registryPath = path.join(root, "data", "source-discovery-registry.json");
 const outputPath = path.join(root, "data", "source-discovery.json");
@@ -59,7 +61,7 @@ for (const source of registry.sources) {
   const tree = await github(`repos/${source.repository}/git/trees/${commit}?recursive=1`);
   if (tree.truncated) throw new Error(`GitHub tree is truncated for ${source.id}; narrow the configured roots before accepting this source`);
 
-  const licenseDocument = await github(`repos/${source.repository}/license?ref=${commit}`, { optional: true });
+  const pinnedLicenseDocument = await github(`repos/${source.repository}/license?ref=${commit}`, { optional: true });
   const licenseFiles = source.license_files.map((licensePath) => {
     const item = tree.tree.find((entry) => entry.type === "blob" && entry.path === licensePath);
     if (!item) throw new Error(`Configured license signal ${licensePath} is missing for ${source.id}`);
@@ -69,6 +71,17 @@ for (const source of registry.sources) {
       pinned_url: pinnedRawUrl(source.repository, commit, licensePath)
     };
   });
+  let licenseDocument = pinnedLicenseDocument;
+  let recognitionBasis = "pinned-ref";
+  if (!licenseDocument?.license?.spdx_id || licenseDocument.license.spdx_id === "NOASSERTION") {
+    const defaultLicenseDocument = await github(`repos/${source.repository}/license`, { optional: true });
+    const pinnedDefaultLicense = defaultLicenseDocument
+      && licenseFiles.find((file) => file.path === defaultLicenseDocument.path && file.git_blob_oid === defaultLicenseDocument.sha);
+    if (pinnedDefaultLicense && defaultLicenseDocument.license?.spdx_id && defaultLicenseDocument.license.spdx_id !== "NOASSERTION") {
+      licenseDocument = defaultLicenseDocument;
+      recognitionBasis = "default-branch-classification-matching-pinned-blob";
+    }
+  }
   const licenseDerivedApproval = licenseFiles.length > 0
     && licenseDocument?.license?.spdx_id
     && licenseDocument.license.spdx_id !== "NOASSERTION";
@@ -76,7 +89,10 @@ for (const source of registry.sources) {
     status: licenseDerivedApproval ? "license-derived-approval" : "signal-only",
     spdx: licenseDocument?.license?.spdx_id || "NOASSERTION",
     name: licenseDocument?.license?.name || "Repository license requires file-level review",
-    api_url: licenseDocument?.html_url || null,
+    recognition_basis: licenseDerivedApproval ? recognitionBasis : "unrecognized",
+    classification_path: licenseDocument?.path || null,
+    classification_git_blob_oid: licenseDocument?.sha || null,
+    api_url: pinnedLicenseDocument?.html_url || null,
     files: licenseFiles,
     caveat: licenseFiles.length === 0
       ? "No repository license file was detected or configured. Every candidate remains unlicensed until file-level review proves otherwise."
@@ -136,9 +152,9 @@ const byType = Object.fromEntries([...new Set(candidates.map((candidate) => cand
   .sort()
   .map((type) => [type, candidates.filter((candidate) => candidate.source_type === type).length]));
 
-const document = {
+const nextDocument = {
   schema_version: 1,
-  generated_at: new Date().toISOString(),
+  generated_at: null,
   policy: {
     default_publication_mode: "quarantine",
     default_rights_review: "required",
@@ -165,5 +181,12 @@ const document = {
   candidates
 };
 
+let previousDocument = null;
+try {
+  previousDocument = JSON.parse(await readFile(outputPath, "utf8"));
+} catch (error) {
+  if (error?.code !== "ENOENT") throw error;
+}
+const document = finalizeDiscoverySnapshot(previousDocument, nextDocument);
 await writeFile(outputPath, `${JSON.stringify(document, null, 2)}\n`, "utf8");
 console.log(JSON.stringify(document.counts));

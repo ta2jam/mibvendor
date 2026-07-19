@@ -50,6 +50,24 @@ test("a recognized repository license promotes candidates under the selected pol
   assert.ok(failures.some((failure) => failure.includes("rights review drifted")));
 });
 
+test("default-branch SPDX fallback is accepted only for the identical pinned license blob", () => {
+  const source = discovery.sources.find((candidate) => candidate.id === "kmalinich-snmp-mibs");
+  assert.equal(source.repository_license.spdx, "MIT");
+  assert.equal(source.repository_license.recognition_basis, "default-branch-classification-matching-pinned-blob");
+  assert.ok(source.repository_license.files.some((file) => (
+    file.path === source.repository_license.classification_path
+    && file.git_blob_oid === source.repository_license.classification_git_blob_oid
+  )));
+  assert.ok(source.repository_license.files.some((file) => source.repository_license.api_url.includes(`/${source.commit}/${file.path}`)));
+  assert.ok(discovery.candidates
+    .filter((candidate) => candidate.source_id === source.id)
+    .every((candidate) => candidate.publication_mode === "redistributable"));
+
+  const mutated = structuredClone(discovery);
+  mutated.sources.find((candidate) => candidate.id === source.id).repository_license.api_url = "https://github.com/kmalinich/snmp-mibs/blob/master/LICENSE";
+  assert.ok(validateSourceDiscovery(registry, mutated).some((failure) => failure.includes("pinned license URL")));
+});
+
 test("unpinned URLs, truncated trees, and count drift fail closed", () => {
   const mutated = structuredClone(discovery);
   mutated.sources[0].tree_complete = false;
@@ -59,4 +77,16 @@ test("unpinned URLs, truncated trees, and count drift fail closed", () => {
   assert.ok(failures.some((failure) => failure.includes("incomplete tree")));
   assert.ok(failures.some((failure) => failure.includes("URL is not pinned")));
   assert.ok(failures.includes("Candidate count drift"));
+});
+
+test("MIB names may contain authorization while credential fields still fail", () => {
+  const named = structuredClone(discovery);
+  named.candidates[0].path = "AUTHORIZATION-MIB.mib";
+  named.candidates[0].id = `${named.candidates[0].source_id}:AUTHORIZATION-MIB.mib`;
+  named.candidates[0].pinned_url = named.candidates[0].pinned_url.replace(/[^/]+$/, "AUTHORIZATION-MIB.mib");
+  assert.ok(!validateSourceDiscovery(registry, named).includes("Discovery snapshot contains a credential marker"));
+
+  const credential = structuredClone(discovery);
+  credential.authorization = "Bearer secret";
+  assert.ok(validateSourceDiscovery(registry, credential).includes("Discovery snapshot contains a credential marker"));
 });

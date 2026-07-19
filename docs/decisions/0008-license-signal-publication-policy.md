@@ -12,9 +12,24 @@ license signal as permission to publish candidates from that repository. The
 decision applies to raw download, metadata, rendered text, API output, and bulk
 export, subject to the detected license's obligations.
 
+A direct notice inside an artifact overrides that repository-level signal when
+it explicitly claims confidential/proprietary material, prohibits copying,
+use, disclosure, or distribution, or restricts the artifact to an internal or
+authorized audience. The artifact remains as pinned metadata and hashed notice
+evidence, but its raw bytes are not retained in public staging and it cannot be
+selected for publication. Copyright, `All rights reserved`, and trademark lines
+alone are not treated as this conflict; the scanner requires a narrow direct
+restriction to avoid turning ordinary attribution into a false prohibition.
+
 `NOASSERTION`, an absent license file, an unmapped custom license, public source
 availability, or a repository homepage alone does not qualify. Those candidates
 remain quarantined.
+
+GitHub sometimes classifies a default-branch license but returns `NOASSERTION`
+for the identical file queried by commit ref. That fallback is accepted only
+when the classified path and Git blob identifier exactly equal a configured
+license file in the pinned commit. The snapshot records this recognition basis;
+a path or blob mismatch remains quarantined.
 
 License-derived artifacts retain the pinned license file, source commit, source
 path, Git blob identifier, source and served SHA-256, and the explicit basis
@@ -26,8 +41,9 @@ release, and rollback support.
 
 This decision supersedes ADR 0007 only where ADR 0007 prohibited promoting a
 repository-level license signal. File-specific notices and written grants remain
-stronger evidence. The active `rights-cleared-2026-07-14.1` catalog is not
-retroactively mutated.
+stronger evidence. The historical `rights-cleared-2026-07-14.1` catalog was not
+retroactively mutated; qualifying artifacts were promoted through the separate,
+immutable `license-signaled-2026-07-20.2` release.
 
 ## Consequences
 

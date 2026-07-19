@@ -5,24 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Find OIDs, understand MIB context, and decode numeric SNMP walks safely in your browser.">
     <title>mibvendor — MIB context without the maze</title>
-    <link rel="stylesheet" href="styles.css">
+    <link id="canonical-url" rel="canonical" href="https://mibvendor.io/">
+    <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
-      <a class="brand" href="./" aria-label="mibvendor home">mib<span>vendor</span></a>
+      <a class="brand" href="/" aria-label="mibvendor home">mib<span>vendor</span></a>
       <nav aria-label="Primary navigation">
-        <a href="#search">OID search</a>
-        <a href="#catalog">MIB catalog</a>
-        <a href="#decoder">Walk decoder</a>
-        <a href="#intelligence">Identity lookup</a>
-        <a href="#safe-use">Safe use</a>
-        <a href="#developers">API</a>
+        <a href="/#search">OID search</a>
+        <a href="/#catalog">MIB catalog</a>
+        <a href="/#decoder">Walk decoder</a>
+        <a href="/#intelligence">Identity lookup</a>
+        <a href="/#safe-use">Safe use</a>
+        <a href="/#developers">API</a>
       </nav>
-      <span class="alpha-badge">Public alpha</span>
+      <a class="alpha-badge" href="/releases/license-signaled-2026-07-20.2" data-route>Public alpha</a>
     </header>
 
     <main id="main">
+      <section id="route-view" class="route-view" aria-live="polite" tabindex="-1" hidden>
+        <nav class="route-breadcrumb" aria-label="Breadcrumb"><a href="/">mibvendor</a><span aria-hidden="true">/</span><span id="route-kind">View</span></nav>
+        <div id="route-content"><p>Loading view…</p></div>
+      </section>
+
       <section class="hero" aria-labelledby="hero-title">
         <p class="eyebrow">MIB context without the maze</p>
         <h1 id="hero-title">Find the object. Understand the index. Use it with confidence.</h1>
@@ -31,12 +37,12 @@
           leaf to table meaning, a usable command, and traceable source context.
         </p>
 
-        <form id="search" class="search-form" role="search">
+        <form id="search" class="search-form" role="search" action="/search" method="get">
           <label for="query">OID, symbol, module, or monitoring task</label>
           <div class="search-row">
             <input
               id="query"
-              name="query"
+              name="q"
               type="search"
               autocomplete="off"
               value="ifOperStatus"
@@ -125,31 +131,31 @@
         </div>
 
         <div class="intelligence-grid">
-          <form id="enterprise-form" class="lookup-card">
+          <form id="enterprise-form" class="lookup-card" action="/enterprises/9">
             <label for="enterprise-number">Enterprise number</label>
             <p>Look up the current IANA PEN assignee. Contact names and email addresses are not stored.</p>
             <div class="lookup-row">
-              <input id="enterprise-number" inputmode="numeric" value="9" pattern="[0-9]+" maxlength="10" required>
+              <input id="enterprise-number" name="enterprise-number" inputmode="numeric" value="9" pattern="[0-9]+" maxlength="10" required>
               <button type="submit">Look up PEN</button>
             </div>
             <div id="enterprise-result" class="lookup-result" aria-live="polite">Try PEN 9 or 8072.</div>
           </form>
 
-          <form id="sysobjectid-form" class="lookup-card">
+          <form id="sysobjectid-form" class="lookup-card" action="/sys-object-ids/1.3.6.1.4.1.8072.3.2.10">
             <label for="sysobjectid">sysObjectID value</label>
             <p>Exact rights-approved matches identify only what the source proves. A PEN-only result never becomes a model guess.</p>
             <div class="lookup-row">
-              <input id="sysobjectid" value="1.3.6.1.4.1.8072.3.2.10" maxlength="512" required>
+              <input id="sysobjectid" name="oid" value="1.3.6.1.4.1.8072.3.2.10" maxlength="512" required>
               <button type="submit">Resolve identity</button>
             </div>
             <div id="sysobjectid-result" class="lookup-result" aria-live="polite">Try the Net-SNMP Linux agent OID.</div>
           </form>
 
-          <form id="dependency-form" class="lookup-card">
+          <form id="dependency-form" class="lookup-card" action="/modules/IF-MIB">
             <label for="module-name">Module dependencies</label>
             <p>Direct, transitive, missing, and cyclic states remain separate so parser failures are diagnosable.</p>
             <div class="lookup-row">
-              <input id="module-name" value="IF-MIB" maxlength="128" required>
+              <input id="module-name" name="module" value="IF-MIB" maxlength="128" required>
               <button type="submit">Inspect graph</button>
             </div>
             <div id="dependency-result" class="lookup-result" aria-live="polite">Inspect the public alpha dependency closure.</div>
@@ -189,9 +195,9 @@
             <div>
               <div class="card-title-row">
                 <h3>Public API</h3>
-                <span class="api-status live">Public alpha</span>
+                <span class="api-status live">Permanently free</span>
               </div>
-              <p>Use only <code>https://mibvendor.io/v1</code>. Send bounded numeric OID batches—not raw walks, credentials, hostnames, serial numbers, or customer identifiers.</p>
+              <p>Use only <code>https://mibvendor.io/v1</code>. Access is permanently free and fair-use bounded. Send numeric OID batches—not raw walks, credentials, hostnames, serial numbers, or customer identifiers.</p>
             </div>
           </article>
         </div>
@@ -251,12 +257,13 @@
             <p class="eyebrow">Developer API</p>
             <h2 id="developer-title">Resolve OIDs without uploading raw walks.</h2>
           </div>
-          <span class="api-status live">Live public alpha</span>
+          <span class="api-status live">Free · Public alpha</span>
         </div>
 
         <p class="developer-lede">
-          The API is live without authentication during public alpha. It is
-          release-pinned and rate-limited, but has no availability SLA yet.
+          The API is permanently free: no paid tier, subscription, billing, or
+          paid quota upgrade. It currently needs no API key. Optional keys, if
+          introduced, will be free abuse-control credentials only.
         </p>
 
         <div class="developer-grid">
@@ -265,8 +272,9 @@
             <ul class="endpoint-list">
               <li><span class="method get">GET</span><code>/v1/search?q=interface+status</code><small>Ranked discovery</small></li>
               <li><span class="method get">GET</span><code>/v1/objects/{objectId}</code><small>Object semantics and provenance</small></li>
+              <li><span class="method get">GET</span><code>/v1/objects/{objectId}/navigation</code><small>Bounded ancestors, children, and subtree</small></li>
               <li><span class="method get">GET</span><code>/v1/modules?q=BFD</code><small>Rights-cleared module catalog</small></li>
-              <li><span class="method get">GET</span><code>/v1/modules/{module}/raw</code><small>Licensed raw MIB download</small></li>
+              <li><span class="method get">GET</span><code>/v1/modules/{module}/raw</code><small>Exact MIB + license + provenance TAR</small></li>
               <li><span class="method get">GET</span><code>/v1/sources</code><small>Publication mode and rights scopes</small></li>
               <li><span class="method get">GET</span><code>/v1/enterprises/{number}</code><small>IANA PEN lookup</small></li>
               <li><span class="method get">GET</span><code>/v1/sys-object-ids/{oid}</code><small>Evidence-bounded identity</small></li>
@@ -275,9 +283,10 @@
               <li><span class="method get">GET</span><code>/v1/data-release</code><small>Active immutable release</small></li>
             </ul>
 
-            <h3>Public alpha contract</h3>
+            <h3>Free public API contract</h3>
             <ul class="contract-list">
               <li>HTTPS JSON under a versioned <code>/v1</code> namespace.</li>
+              <li>Free access is fair-use bounded, not unlimited use or an availability SLA.</li>
               <li>Every response identifies its immutable <code>data_release</code>.</li>
               <li>Batch order and duplicate inputs are preserved.</li>
               <li>Invalid OIDs and valid-but-not-found OIDs remain distinct.</li>
@@ -291,45 +300,67 @@
               <span><strong>200</strong> search characters</span>
               <span><strong>120</strong> requests / minute</span>
             </div>
-            <p class="preview-note">Public alpha limits may tighten during abuse; there is no availability SLA.</p>
+            <p class="preview-note">Fair-use limits may change to contain abuse. Read <code>RateLimit-*</code> and <code>Retry-After</code>, honor <code>429</code>, and follow each response's <code>Cache-Control</code> and <code>ETag</code>. Batch POST results are <code>no-store</code>; active raw routes revalidate withdrawal controls. Module lists use cursors; the service provides no availability SLA.</p>
           </div>
 
           <div class="example-panel" aria-label="Synthetic batch resolution example">
             <div class="code-heading">
-              <span>Request</span>
-              <code>POST /v1/resolve:batch</code>
+              <span>curl · inspect release and cache headers</span>
+              <button type="button" class="copy-code" data-copy-target="api-curl-example">Copy curl</button>
             </div>
-            <pre class="api-code"><code>{
-  "data_release": "&lt;immutable-release-id&gt;",
-  "oids": [
-    "1.3.6.1.2.1.2.2.1.8.7",
-    "1.3.6.1.4.1.999999.1.0"
-  ]
-}</code></pre>
+            <pre class="api-code"><code id="api-curl-example">curl --fail-with-body --compressed -i \
+  'https://mibvendor.io/v1/data-release'</code></pre>
 
             <div class="code-heading response-heading">
-              <span>Public alpha response</span>
-              <code>200 application/json</code>
+              <span>JavaScript · release-pinned batch</span>
+              <button type="button" class="copy-code" data-copy-target="api-javascript-example">Copy JavaScript</button>
             </div>
-            <pre class="api-code"><code>{
-  "data_release": "&lt;immutable-release-id&gt;",
-  "results": [
-    {
-      "input": "1.3.6.1.2.1.2.2.1.8.7",
-      "status": "resolved",
-      "object": {
-        "module": "IF-MIB",
-        "symbol": "ifOperStatus",
-        "oid": "1.3.6.1.2.1.2.2.1.8"
-      },
-      "instance_suffix": [7]
-    },
-    {
-      "input": "1.3.6.1.4.1.999999.1.0",
-      "status": "not_found"
-    }
-  ]
+            <pre class="api-code"><code id="api-javascript-example">const origin = "https://mibvendor.io";
+const releaseResponse = await fetch(`${origin}/v1/data-release`);
+if (!releaseResponse.ok) throw new Error(`release: ${releaseResponse.status}`);
+const release = await releaseResponse.json();
+
+const response = await fetch(`${origin}/v1/resolve:batch`, {
+  method: "POST",
+  headers: { "content-type": "application/json" },
+  body: JSON.stringify({
+    data_release: release.data_release,
+    oids: ["1.3.6.1.2.1.2.2.1.8.7", "1.3.6.1.4.1.999999.1.0"]
+  })
+});
+if (!response.ok) throw await response.json();
+console.log(await response.json());</code></pre>
+
+            <div class="code-heading response-heading">
+              <span>Python 3 · standard library only</span>
+              <button type="button" class="copy-code" data-copy-target="api-python-example">Copy Python</button>
+            </div>
+            <pre class="api-code"><code id="api-python-example">import json
+from urllib.request import Request, urlopen
+
+origin = "https://mibvendor.io"
+with urlopen(f"{origin}/v1/data-release", timeout=10) as response:
+    release = json.load(response)
+
+body = json.dumps({
+    "data_release": release["data_release"],
+    "oids": ["1.3.6.1.2.1.2.2.1.8.7"]
+}).encode()
+request = Request(f"{origin}/v1/resolve:batch", data=body,
+                  headers={"content-type": "application/json"}, method="POST")
+with urlopen(request, timeout=10) as response:
+    print(json.load(response))</code></pre>
+
+            <details class="api-error-example">
+              <summary>Error contract example</summary>
+              <pre class="api-code"><code>{
+  "type": "https://mibvendor.io/problems/data-release-unavailable",
+  "title": "Data release unavailable",
+  "status": 409,
+  "detail": "This public alpha exposes only its active immutable release"
 }</code></pre>
+            </details>
+            <p id="copy-status" class="copy-status" aria-live="polite"></p>
           </div>
         </div>
 
@@ -337,7 +368,8 @@
           <p><strong>Safe input:</strong> send bounded numeric OIDs only. Do not send raw walks, credentials, hostnames, serial numbers, or customer identifiers.</p>
           <div class="developer-links">
             <a href="/openapi.json">OpenAPI 3.1 specification</a>
-            <a href="#safe-use">API status and safety</a>
+            <a href="/healthz">Service health</a>
+            <a href="#safe-use">API safety</a>
           </div>
         </div>
       </section>
@@ -359,6 +391,6 @@
       <p class="open-source-note">The application is <a href="https://github.com/ta2jam/mibvendor">open source on GitHub</a>.</p>
     </footer>
 
-    <script type="module" src="app.js"></script>
+    <script type="module" src="/app.js"></script>
   </body>
 </html>

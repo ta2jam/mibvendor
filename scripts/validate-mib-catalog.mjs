@@ -3,6 +3,8 @@ import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
+import { scanArtifactRestrictiveNotices } from "./lib/artifact-restrictive-notices.mjs";
+
 const root = process.cwd();
 const dataRoot = path.join(root, "data");
 const approvedRoot = path.join(dataRoot, "mibs", "redistributable");
@@ -72,6 +74,11 @@ for (const module of catalog.modules) {
   if (module.source_id === "ietf-post-2008" && (!text.startsWith("-- mibvendor redistribution notice") || module.license.spdx !== "BSD-3-Clause")) failures.push(`IETF license notice missing for ${module.id}`);
   if (module.source_id === "iana-maintained-mibs" && (module.source_sha256 !== module.artifact_sha256 || module.license.spdx !== "CC0-1.0")) failures.push(`IANA raw snapshot was modified or mislicensed: ${module.id}`);
   if (module.source_id === "net-snmp" && module.license.spdx !== "LicenseRef-Net-SNMP") failures.push(`Net-SNMP license mapping missing for ${module.id}`);
+  const restrictiveNotices = scanArtifactRestrictiveNotices(text);
+  if (restrictiveNotices.length) {
+    const evidence = restrictiveNotices.map((notice) => `${notice.rule_id}@${notice.line_start}-${notice.line_end}:${notice.excerpt_sha256}`).join(",");
+    failures.push(`Restrictive artifact notice conflicts with raw publication for ${module.id}: ${evidence}`);
+  }
 }
 
 for (const file of (await walk(approvedRoot)).filter((candidate) => candidate.endsWith(".mib"))) {

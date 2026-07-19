@@ -1,0 +1,35 @@
+name: Source Freshness
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 4 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: source-freshness
+  cancel-in-progress: false
+
+jobs:
+  compare-pinned-sources:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Rebuild discovery snapshot from current upstream state
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npm run update:sources
+
+      - name: Validate rebuilt snapshot
+        run: npm run check:sources
+
+      - name: Require an explicit review for upstream drift
+        run: git diff --exit-code -- data/source-discovery.json

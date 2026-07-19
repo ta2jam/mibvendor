@@ -15,13 +15,22 @@ import {
 
 const catalog = JSON.parse(await readFile(new URL("../data/mib-catalog.json", import.meta.url), "utf8"));
 
-test("rights-cleared catalog is complete for its pinned authoritative snapshots", () => {
-  assert.equal(DATA_RELEASE, "rights-cleared-2026-07-14.1");
-  assert.equal(MIB_MODULE_COUNT, 110);
+test("license-signaled release manifest has its immutable published counts", () => {
+  assert.equal(DATA_RELEASE, "license-signaled-2026-07-20.2");
+  assert.equal(MIB_MODULE_COUNT, 702);
+  assert.equal(catalog.counts.modules, 702);
   assert.equal(catalog.counts.publishers.IETF, 72);
   assert.equal(catalog.counts.publishers.IANA, 20);
   assert.equal(catalog.counts.publishers["Net-SNMP"], 18);
-  assert.equal(catalog.counts.resolved_objects, 5392);
+  assert.equal(catalog.counts.resolved_objects, 76606);
+  assert.equal(catalog.counts.textual_conventions, 4138);
+  assert.equal(catalog.counts.notifications, 1273);
+  assert.equal(catalog.counts.stable_object_id_collisions, 0);
+  assert.deepEqual(catalog.counts.publication_modes, {
+    redistributable: 702,
+    "metadata-only": 0,
+    "directory-only": 20
+  });
   assert.equal(catalog.source_snapshots.ietf_rfc_index.quarantined_rfcs.length, 14);
 });
 
@@ -45,7 +54,7 @@ test("directory-only vendor records expose no extracted MIB fields", () => {
   }
 });
 
-test("rights-cleared OID resolution separates object and instance suffix", () => {
+test("license-signaled OID resolution separates object and instance suffix", () => {
   const result = resolveObject("1.3.6.1.2.1.222.1.1.1.0");
   assert.equal(result.status, "resolved");
   assert.equal(result.object.id, "bfd-std-mib--bfdadminstatus");

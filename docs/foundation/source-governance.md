@@ -22,7 +22,10 @@ The intake path is:
 Tier P is synthetic/provisional and Tier Q is quarantine. Neither may approve
 public output scopes. A pinned recognized SPDX repository license is accepted as
 permission under [ADR 0008](../decisions/0008-license-signal-publication-policy.md);
-an absent or unmapped license is not. Parser
+an absent or unmapped license is not. If GitHub classifies the default-branch
+license but returns `NOASSERTION` for the same file at a commit ref, the signal
+is accepted only when the classified path and Git blob identifier exactly match
+the configured license file in the pinned commit. Parser
 permission is also not permission to render text, expose API output, offer raw
 downloads, or create bulk exports.
 

@@ -5,6 +5,8 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
 
+import { validateMibModuleAliases } from "./lib/mib-module-aliases.mjs";
+
 export function validateRawMibAnalysis(candidateSet, rawIntake, activeCatalog, aliasDocument, analysis, objectDocument, typeDocument) {
   const failures = [];
   if (analysis.schema_version !== 2 || objectDocument.schema_version !== 1 || typeDocument.schema_version !== 1) failures.push("Raw MIB analysis schema versions drifted");
@@ -16,19 +18,8 @@ export function validateRawMibAnalysis(candidateSet, rawIntake, activeCatalog, a
   const selectedRows = candidateSet.modules.filter((module) => module.selected_format === "raw");
   const selectedByModule = new Map(selectedRows.map((module) => [module.module, module]));
   const artifactById = new Map(rawIntake.artifacts.map((artifact) => [artifact.id, artifact]));
-  if (aliasDocument.schema_version !== 1) failures.push("MIB module alias schema version must be 1");
-  const aliasByName = new Map();
-  for (const alias of aliasDocument.aliases ?? []) {
-    if (aliasByName.has(alias.alias)) failures.push(`Duplicate MIB module alias ${alias.alias}`);
-    aliasByName.set(alias.alias, alias);
-    if (!alias.alias || !alias.canonical_module || alias.alias === alias.canonical_module) failures.push(`Invalid MIB module alias ${alias.alias}`);
-    if (!selectedByModule.has(alias.canonical_module)) failures.push(`MIB module alias target is not selected raw ${alias.alias}`);
-    if (selectedByModule.get(alias.canonical_module)?.selected_artifact_id !== alias.canonical_artifact_id) failures.push(`MIB module alias canonical evidence drifted ${alias.alias}`);
-    if (selectedByModule.get(alias.importer_module)?.selected_artifact_id !== alias.importer_artifact_id) failures.push(`MIB module alias importer evidence drifted ${alias.alias}`);
-    if (!artifactById.has(alias.importer_artifact_id) || !artifactById.has(alias.canonical_artifact_id)) failures.push(`MIB module alias artifact evidence missing ${alias.alias}`);
-    if (!alias.evidence?.trim()) failures.push(`MIB module alias evidence missing ${alias.alias}`);
-  }
-  for (const alias of aliasDocument.aliases ?? []) if (aliasByName.has(alias.canonical_module)) failures.push(`Chained MIB module alias is forbidden ${alias.alias}`);
+  failures.push(...validateMibModuleAliases(candidateSet, rawIntake, activeCatalog, aliasDocument));
+  const aliasByName = new Map((aliasDocument.aliases ?? []).map((alias) => [alias.alias, alias]));
   const moduleByName = new Map();
   for (const module of analysis.modules ?? []) {
     if (moduleByName.has(module.module)) failures.push(`Duplicate raw analysis module ${module.module}`);

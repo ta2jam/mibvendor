@@ -83,12 +83,21 @@ import os
 document = json.loads(os.environ["DATA_RELEASE_JSON"])
 if document.get("status") != "public-alpha":
     raise SystemExit("API is not reporting public-alpha status")
-if document.get("object_count", 0) < 5000:
+if document.get("object_count", 0) < 76606:
     raise SystemExit("unexpectedly small public object count")
-if document.get("module_count") != 110 or document.get("redistributable_module_count") != 110:
-    raise SystemExit("rights-cleared module inventory mismatch")
+if document.get("module_count") != 702 or document.get("redistributable_module_count") != 702:
+    raise SystemExit("license-signaled module inventory mismatch")
 if document.get("directory_only_source_count") != 20:
     raise SystemExit("directory-only source inventory mismatch")
+statistics = document.get("statistics", {})
+if statistics.get("definitions", {}).get("textual_conventions", {}).get("active_module_definitions") != 4138:
+    raise SystemExit("textual-convention inventory mismatch")
+if statistics.get("definitions", {}).get("notifications", {}).get("catalog_oid_nodes") != 1273:
+    raise SystemExit("notification inventory mismatch")
+if statistics.get("sources", {}).get("total") != 32:
+    raise SystemExit("source inventory mismatch")
+if statistics.get("identity", {}).get("sys_object_id_mappings") != 19:
+    raise SystemExit("sysObjectID inventory mismatch")
 if document.get("production_data") is not True:
     raise SystemExit("active rights-cleared data is not marked production")
 if document.get("enterprise_count", 0) < 60000:
@@ -100,6 +109,7 @@ PY
 
 enterprise_json=$(request "$ORIGIN/v1/enterprises/8072")
 sys_exact_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.8072.3.2.10")
+sys_sigscale_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.50386.1.1")
 sys_boundary_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.2.999999")
 sys_restricted_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.9.999999")
 object_json=$(request "$ORIGIN/v1/objects/if-mib--ifoperstatus")
@@ -116,7 +126,7 @@ batch_json=$(request --request POST --header 'content-type: application/json' \
     --data '{"oids":["1.3.6.1.2.1.2.2.1.8.7","bad"]}' "$ORIGIN/v1/resolve:batch")
 openapi_json=$(request "$ORIGIN/openapi.json")
 
-ENTERPRISE_JSON=$enterprise_json SYS_EXACT_JSON=$sys_exact_json \
+ENTERPRISE_JSON=$enterprise_json SYS_EXACT_JSON=$sys_exact_json SYS_SIGSCALE_JSON=$sys_sigscale_json \
 SYS_BOUNDARY_JSON=$sys_boundary_json SYS_RESTRICTED_JSON=$sys_restricted_json OBJECT_JSON=$object_json \
 DEPENDENCIES_JSON=$dependencies_json MODULE_JSON=$module_json SOURCE_JSON=$source_json \
 BATCH_JSON=$batch_json OPENAPI_JSON=$openapi_json \
@@ -132,6 +142,12 @@ exact = json.loads(os.environ["SYS_EXACT_JSON"])["result"]
 assert exact["status"] == "resolved" and exact["match"]["platform"] == "Linux"
 assert exact["match"]["model"] is None
 
+sigscale = json.loads(os.environ["SYS_SIGSCALE_JSON"])["result"]
+assert sigscale["status"] == "resolved"
+assert sigscale["match"]["product_family"] == "SigScale OCS"
+assert sigscale["match"]["claim_strength"] == "platform"
+assert sigscale["match"]["model"] is None
+
 boundary = json.loads(os.environ["SYS_BOUNDARY_JSON"])["result"]
 assert boundary["status"] == "enterprise_only" and boundary["match"] is None
 
@@ -143,6 +159,9 @@ obj = json.loads(os.environ["OBJECT_JSON"])["object"]
 assert obj["syntax"]["enums"]["1"] == "up"
 assert obj["access"] == "read-only" and obj["status"] == "current"
 assert obj["description"]["status"] == "available"
+assert obj["relationships"]["table"] == "ifTable"
+assert obj["relationships"]["row"] == "ifEntry"
+assert obj["relationships"]["indexes"] == ["ifIndex"]
 
 deps = json.loads(os.environ["DEPENDENCIES_JSON"])
 for key in ("direct", "transitive", "missing", "cyclic"):

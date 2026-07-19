@@ -4,7 +4,8 @@ import path from "node:path";
 import process from "node:process";
 import { gzipSync } from "node:zlib";
 
-import { importsFor, parseDefinitions, parseMacros, parseTextualConventions, resolveObjects } from "./update-mib-catalog.mjs";
+import { importBindingsFor, importsFor, parseDefinitions, parseMacros, parseTextualConventions, resolveObjects } from "./update-mib-catalog.mjs";
+import { validateMibModuleAliases } from "./lib/mib-module-aliases.mjs";
 
 const root = process.cwd();
 const [candidateSet, rawIntake, activeCatalog, activeObjects, compiledObjects, aliasDocument] = await Promise.all([
@@ -23,6 +24,8 @@ const selectedCompiledModules = new Set(candidateSet.modules.filter((module) => 
 const activeModules = new Set(activeCatalog.modules.map((module) => module.id));
 const parsedModules = [];
 const moduleInputs = [];
+const aliasFailures = validateMibModuleAliases(candidateSet, rawIntake, activeCatalog, aliasDocument);
+if (aliasFailures.length) throw new Error(`MIB module alias gate failed:\n${aliasFailures.join("\n")}`);
 const aliases = new Map(aliasDocument.aliases.map((alias) => [alias.alias, alias.canonical_module]));
 
 for (const row of selectedRawRows) {
@@ -38,7 +41,8 @@ for (const row of selectedRawRows) {
   const duplicateSymbols = [...symbolCounts.entries()].filter(([, count]) => count > 1).map(([symbol]) => symbol).sort();
   const objects = parsedObjects.filter((object) => symbolCounts.get(object.symbol) === 1);
   const dependencies = importsFor(text);
-  parsedModules.push({ module: row.module, objects });
+  const imports = Object.fromEntries(Object.entries(importBindingsFor(text)).map(([symbol, sourceModule]) => [symbol, aliases.get(sourceModule) ?? sourceModule]));
+  parsedModules.push({ module: row.module, objects, imports });
   moduleInputs.push({ row, artifact, dependencies, declaredObjects: objects, duplicateSymbols, textualConventions, macros });
 }
 

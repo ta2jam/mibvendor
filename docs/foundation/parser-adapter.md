@@ -25,3 +25,25 @@ Required boundaries:
 The current parser recommendation remains provisional. Replacing it must not
 change the canonical or API contract unless evidence requires a versioned
 migration.
+
+## Staging static-parser evidence
+
+The license-derived staging pipeline uses a deliberately narrower static SMI
+reader. It does not execute MIB source or compiled Python and does not load
+machine-local MIB directories. Its resolver now:
+
+- masks comments and quoted prose before scanning grammar boundaries, so an
+  example definition inside `DESCRIPTION` cannot become an object;
+- accepts a definition concatenated directly after the preceding assignment's
+  closing brace, which occurs in pinned upstream artifacts;
+- resolves full rooted OID paths and multi-arc relative assignments instead of
+  discarding all but the final parent/arc pair;
+- prefers an explicit `IMPORTS` binding over an otherwise ambiguous global
+  symbol, including only artifact-backed module-name aliases; and
+- statically joins numeric PySNMP tuple expressions such as `(base) + (suffix)`
+  without evaluating Python.
+
+Unresolved imports, case-sensitive source typos, duplicate definitions, empty
+module shells, and cross-format differences remain explicit gate failures. The
+staging result is evidence for adapter selection; it is not active catalog data
+or proof that the canonical parser gate has passed.

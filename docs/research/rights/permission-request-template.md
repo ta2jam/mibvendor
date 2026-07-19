@@ -24,7 +24,8 @@ scopes independently:
    module revision, object kind, and official source link.
 2. **Rendered text:** publicly display DESCRIPTION, textual conventions, enums,
    INDEX/AUGMENTS definitions, and notification/varbind documentation.
-3. **API output:** return the approved fields through a free or paid JSON API.
+3. **API output:** return the approved fields through the permanently free
+   public JSON API.
 4. **Raw download:** mirror the original MIB files for individual download.
 5. **Bulk export:** provide dataset/API snapshots containing the approved
    fields.

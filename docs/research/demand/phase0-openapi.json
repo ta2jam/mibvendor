@@ -2,11 +2,37 @@
   "openapi": "3.1.0",
   "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
   "info": {
-    "title": "mibvendor Public Alpha API",
-    "version": "0.2.0-alpha.1",
-    "description": "Source-aware OID intelligence plus a fail-closed MIB source catalog. Raw files are served only for rights-cleared IETF, IANA, and Net-SNMP modules; unapproved vendor sources remain directory-only."
+    "title": "mibvendor Permanently Free Public API",
+    "version": "0.3.0-alpha.1",
+    "description": "Permanently free, source-aware OID intelligence plus a fail-closed MIB source catalog. There is no paid tier, billing, subscription, or paid quota upgrade. Free access is fair-use bounded, not unlimited use or an availability SLA. Raw files are served only for modules approved by file-specific or recognized pinned repository-license evidence; unapproved vendor sources remain directory-only."
   },
   "x-mibvendor-status": "public-alpha",
+  "x-mibvendor-access-policy": {
+    "access": "permanently-free",
+    "paid_tiers": false,
+    "billing": false,
+    "unlimited_use": false,
+    "availability_sla": false,
+    "authentication": {
+      "required": false,
+      "optional_keys": "free-abuse-control-only"
+    },
+    "fair_use": {
+      "requests_per_client": 120,
+      "window_seconds": 60,
+      "limits_may_change": true,
+      "response_headers": ["RateLimit-Limit", "RateLimit-Remaining", "RateLimit-Reset", "Retry-After"]
+    },
+    "caching": {
+      "cache_control": true,
+      "etag": true,
+      "conditional_get": true,
+      "cursor_pagination": true,
+      "immutable_release_artifacts": true,
+      "post_responses_no_store": true,
+      "active_raw_revalidation": true
+    }
+  },
   "servers": [{ "url": "https://mibvendor.io", "description": "Official public service" }],
   "security": [],
   "paths": {
@@ -14,7 +40,7 @@
       "get": {
         "operationId": "getDataRelease",
         "summary": "Inspect the active immutable data release",
-        "responses": { "200": { "description": "Release identity and corpus counts", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DataRelease" } } } } }
+        "responses": { "200": { "description": "Release identity and active-public corpus statistics; staged and quarantined content is excluded", "headers": { "Cache-Control": { "$ref": "#/components/headers/CacheControl" }, "ETag": { "$ref": "#/components/headers/ETag" }, "RateLimit-Limit": { "$ref": "#/components/headers/RateLimitLimit" }, "RateLimit-Remaining": { "$ref": "#/components/headers/RateLimitRemaining" }, "RateLimit-Reset": { "$ref": "#/components/headers/RateLimitReset" } }, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DataRelease" } } } } }
       }
     },
     "/v1/resolve:batch": {
@@ -24,7 +50,7 @@
         "x-max-body-bytes": 65536,
         "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BatchRequest" } } } },
         "responses": {
-          "200": { "description": "Per-item resolution results", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BatchResponse" } } } },
+          "200": { "description": "Per-item resolution results; body-dependent POST responses are never shared-cacheable", "headers": { "Cache-Control": { "$ref": "#/components/headers/CacheControl" } }, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/BatchResponse" } } } },
           "400": { "$ref": "#/components/responses/Problem" },
           "409": { "$ref": "#/components/responses/Problem" },
           "413": { "$ref": "#/components/responses/Problem" },
@@ -53,6 +79,26 @@
         "responses": {
           "200": { "description": "Complete available object intelligence", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ObjectResponse" } } } },
           "404": { "$ref": "#/components/responses/Problem" },
+          "422": { "$ref": "#/components/responses/Problem" },
+          "429": { "$ref": "#/components/responses/Problem" }
+        }
+      }
+    },
+    "/v1/objects/{objectId}/navigation": {
+      "get": {
+        "operationId": "getObjectNavigation",
+        "summary": "Get known ancestors, paginated direct children, and a bounded subtree summary for one object",
+        "parameters": [
+          { "$ref": "#/components/parameters/ObjectId" },
+          { "name": "child_cursor", "in": "query", "schema": { "type": "integer", "minimum": 0, "default": 0 } },
+          { "name": "child_limit", "in": "query", "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50 } },
+          { "name": "subtree_depth", "in": "query", "schema": { "type": "integer", "minimum": 0, "maximum": 4, "default": 2 } },
+          { "name": "subtree_limit", "in": "query", "schema": { "type": "integer", "minimum": 1, "maximum": 250, "default": 100 } }
+        ],
+        "responses": {
+          "200": { "description": "Bounded lazy-tree navigation; the complete object corpus is never embedded in the response", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ObjectNavigationResponse" } } } },
+          "404": { "$ref": "#/components/responses/Problem" },
+          "422": { "$ref": "#/components/responses/Problem" },
           "429": { "$ref": "#/components/responses/Problem" }
         }
       }
@@ -89,10 +135,10 @@
     "/v1/modules/{moduleId}/raw": {
       "get": {
         "operationId": "downloadRawModule",
-        "summary": "Download a raw MIB only when redistribution is explicitly approved",
+        "summary": "Download an exact raw MIB with its retained license or notice when redistribution is explicitly approved",
         "parameters": [{ "$ref": "#/components/parameters/ModuleId" }],
         "responses": {
-          "200": { "description": "Rights-cleared raw MIB with checksum and license headers", "headers": { "X-Content-SHA256": { "schema": { "type": "string", "pattern": "^[0-9a-f]{64}$" } }, "Link": { "schema": { "type": "string" } } }, "content": { "text/plain": { "schema": { "type": "string" } } } },
+          "200": { "description": "Deterministic TAR containing the exact source MIB, retained license or generated notice, and provenance. The active unversioned route always revalidates publication controls.", "headers": { "Cache-Control": { "$ref": "#/components/headers/CacheControl" }, "ETag": { "$ref": "#/components/headers/ETag" }, "X-Content-SHA256": { "schema": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "SHA-256 of the served TAR bytes." } }, "X-MIB-SHA256": { "schema": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "SHA-256 of the exact MIB entry inside the TAR." } }, "Link": { "schema": { "type": "string" } } }, "content": { "application/x-tar": { "schema": { "type": "string", "format": "binary" } } } },
           "404": { "$ref": "#/components/responses/Problem" },
           "451": { "$ref": "#/components/responses/Problem" },
           "429": { "$ref": "#/components/responses/Problem" }
@@ -162,32 +208,167 @@
     }
   },
   "components": {
+    "headers": {
+      "CacheControl": {
+        "description": "Cache policy for this response; clients should reuse cacheable public results.",
+        "schema": { "type": "string" }
+      },
+      "ETag": {
+        "description": "Strong validator for the exact response bytes. Send it in If-None-Match on later GET requests.",
+        "schema": { "type": "string" }
+      },
+      "RateLimitLimit": {
+        "description": "Current fair-use request limit for the client window; this operational value may change.",
+        "schema": { "type": "integer", "minimum": 1 }
+      },
+      "RateLimitRemaining": {
+        "description": "Requests remaining in the current client window.",
+        "schema": { "type": "integer", "minimum": 0 }
+      },
+      "RateLimitReset": {
+        "description": "Unix timestamp in seconds when the current client window resets.",
+        "schema": { "type": "integer", "minimum": 0 }
+      },
+      "RetryAfter": {
+        "description": "Seconds the client should wait before retrying a rate-limited request.",
+        "schema": { "type": "integer", "minimum": 0 }
+      }
+    },
     "parameters": {
-      "ObjectId": { "name": "objectId", "in": "path", "required": true, "schema": { "type": "string", "pattern": "^[a-z0-9-]+--[a-z0-9-]+$" } },
+      "ObjectId": { "name": "objectId", "in": "path", "required": true, "description": "Stable module--symbol id or an exact numeric object OID; instance suffixes are not resolved by this item endpoint.", "schema": { "type": "string", "maxLength": 512, "oneOf": [{ "pattern": "^[a-z0-9-]+--[a-z0-9-]+$" }, { "$ref": "#/components/schemas/Oid" }] } },
       "ModuleId": { "name": "moduleId", "in": "path", "required": true, "schema": { "type": "string", "minLength": 1, "maxLength": 128 } },
       "EnterpriseNumber": { "name": "enterpriseNumber", "in": "path", "required": true, "schema": { "type": "integer", "minimum": 0, "maximum": 4294967295 } },
       "OidPath": { "name": "oid", "in": "path", "required": true, "schema": { "$ref": "#/components/schemas/Oid" } }
     },
     "responses": {
-      "Problem": { "description": "RFC 9457-compatible machine-distinguishable failure", "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } }
+      "Problem": { "description": "RFC 9457-compatible machine-distinguishable failure; Retry-After is emitted for rate-limit responses", "headers": { "RateLimit-Limit": { "$ref": "#/components/headers/RateLimitLimit" }, "RateLimit-Remaining": { "$ref": "#/components/headers/RateLimitRemaining" }, "RateLimit-Reset": { "$ref": "#/components/headers/RateLimitReset" }, "Retry-After": { "$ref": "#/components/headers/RetryAfter" } }, "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } }
     },
     "schemas": {
-      "DataReleaseId": { "type": "string", "const": "rights-cleared-2026-07-14.1" },
+      "DataReleaseId": { "type": "string", "const": "license-signaled-2026-07-20.2" },
       "DataRelease": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["data_release", "status", "production_data", "object_count", "enterprise_count", "sys_object_id_count", "module_count", "redistributable_module_count", "directory_only_source_count", "enterprise_registry"],
+        "required": ["data_release", "status", "production_data", "statistics", "object_count", "enterprise_count", "sys_object_id_count", "module_count", "redistributable_module_count", "directory_only_source_count", "enterprise_registry"],
         "properties": {
           "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
           "status": { "const": "public-alpha" },
           "production_data": { "const": true },
-          "object_count": { "type": "integer", "minimum": 0 },
-          "enterprise_count": { "type": "integer", "minimum": 60000 },
-          "sys_object_id_count": { "type": "integer", "minimum": 0 },
-          "module_count": { "type": "integer", "minimum": 100 },
-          "redistributable_module_count": { "type": "integer", "minimum": 100 },
-          "directory_only_source_count": { "type": "integer", "minimum": 1 },
+          "statistics": { "$ref": "#/components/schemas/CorpusStatistics" },
+          "object_count": { "type": "integer", "minimum": 0, "deprecated": true, "description": "Compatibility alias for statistics.oid_nodes.searchable_records; this is not the catalog OID-node count." },
+          "enterprise_count": { "type": "integer", "minimum": 60000, "deprecated": true, "description": "Compatibility alias for statistics.identity.enterprise_records." },
+          "sys_object_id_count": { "type": "integer", "minimum": 0, "deprecated": true, "description": "Compatibility alias for statistics.identity.sys_object_id_mappings." },
+          "module_count": { "type": "integer", "minimum": 100, "deprecated": true, "description": "Compatibility alias for statistics.modules.total." },
+          "redistributable_module_count": { "type": "integer", "minimum": 100, "deprecated": true, "description": "Compatibility alias for statistics.modules.publication_modes.redistributable." },
+          "directory_only_source_count": { "type": "integer", "minimum": 1, "deprecated": true, "description": "Compatibility alias for statistics.sources.publication_modes.directory-only." },
           "enterprise_registry": { "$ref": "#/components/schemas/RegistrySource" }
+        }
+      },
+      "CorpusStatistics": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Counts derived only from the active public release. Candidate, staged, and quarantined content is not included.",
+        "required": ["scope", "modules", "oid_nodes", "definitions", "identity", "sources", "publication_controls"],
+        "properties": {
+          "scope": { "const": "active-public-release" },
+          "modules": { "$ref": "#/components/schemas/ModuleStatistics" },
+          "oid_nodes": { "$ref": "#/components/schemas/OidNodeStatistics" },
+          "definitions": { "$ref": "#/components/schemas/DefinitionStatistics" },
+          "identity": { "$ref": "#/components/schemas/IdentityStatistics" },
+          "sources": { "$ref": "#/components/schemas/SourceStatistics" },
+          "publication_controls": { "$ref": "#/components/schemas/PublicationControlStatistics" }
+        }
+      },
+      "ModuleStatistics": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["total", "publication_modes"],
+        "properties": {
+          "total": { "type": "integer", "const": 702 },
+          "publication_modes": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["redistributable", "metadata-only", "directory-only"],
+            "properties": {
+              "redistributable": { "type": "integer", "const": 702 },
+              "metadata-only": { "type": "integer", "const": 0 },
+              "directory-only": { "type": "integer", "const": 0 }
+            }
+          }
+        }
+      },
+      "OidNodeStatistics": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["catalog_oid_nodes", "supplemental_legacy_records", "searchable_records"],
+        "properties": {
+          "catalog_oid_nodes": { "type": "integer", "const": 76606, "description": "OID-bearing records parsed from the active module catalog." },
+          "supplemental_legacy_records": { "type": "integer", "const": 0, "description": "Legacy fixtures duplicated by the active catalog are removed from the searchable release." },
+          "searchable_records": { "type": "integer", "const": 76606, "description": "Catalog OID nodes plus non-duplicated supplemental legacy records." }
+        }
+      },
+      "DefinitionStatistics": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["textual_conventions", "notifications"],
+        "properties": {
+          "textual_conventions": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["active_module_definitions", "searchable_records"],
+            "properties": {
+              "active_module_definitions": { "type": "integer", "const": 4138, "description": "TEXTUAL-CONVENTION definitions in active redistributable module artifacts." },
+              "searchable_records": { "type": "integer", "const": 0, "description": "Textual conventions are not yet first-class searchable records." }
+            }
+          },
+          "notifications": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["catalog_oid_nodes", "supplemental_searchable_records", "searchable_records"],
+            "properties": {
+              "catalog_oid_nodes": { "type": "integer", "const": 1273 },
+              "supplemental_searchable_records": { "type": "integer", "const": 0 },
+              "searchable_records": { "type": "integer", "const": 1273 }
+            }
+          }
+        }
+      },
+      "IdentityStatistics": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["enterprise_records", "sys_object_id_mappings"],
+        "properties": {
+          "enterprise_records": { "type": "integer", "const": 66266, "description": "IANA PEN registry records; these are registry assignments, not device identities." },
+          "sys_object_id_mappings": { "type": "integer", "const": 19, "description": "Exact rights-approved sysObjectID mappings. Claim strength remains separate from exact OID match method." }
+        }
+      },
+      "SourceStatistics": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["total", "publication_modes"],
+        "properties": {
+          "total": { "type": "integer", "const": 32 },
+          "publication_modes": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["redistributable", "metadata-only", "directory-only"],
+            "properties": {
+              "redistributable": { "type": "integer", "const": 12 },
+              "metadata-only": { "type": "integer", "const": 0 },
+              "directory-only": { "type": "integer", "const": 20 }
+            }
+          }
+        }
+      },
+      "PublicationControlStatistics": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Effective fail-closed source and module withdrawal state for this application release.",
+        "required": ["event_count", "disabled_sources", "disabled_modules", "latest_event_sha256"],
+        "properties": {
+          "event_count": { "type": "integer", "const": 2 },
+          "disabled_sources": { "type": "integer", "const": 0 },
+          "disabled_modules": { "type": "integer", "const": 0 },
+          "latest_event_sha256": { "type": "string", "const": "b16512f0c29e62a6dc183b6000804090e484e004b80e8b2b5c88400e5cb991e5", "pattern": "^[0-9a-f]{64}$" }
         }
       },
       "BatchRequest": {
@@ -234,6 +415,61 @@
         "additionalProperties": false,
         "required": ["data_release", "object"],
         "properties": { "data_release": { "$ref": "#/components/schemas/DataReleaseId" }, "object": { "$ref": "#/components/schemas/MibObject" } }
+      },
+      "ObjectNavigationResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["data_release", "navigation"],
+        "properties": {
+          "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
+          "navigation": { "$ref": "#/components/schemas/ObjectNavigation" }
+        }
+      },
+      "ObjectNavigation": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["object", "ancestors", "direct_children", "subtree"],
+        "properties": {
+          "object": { "$ref": "#/components/schemas/MibObject" },
+          "ancestors": { "type": "array", "items": { "$ref": "#/components/schemas/MibObject" } },
+          "direct_children": { "$ref": "#/components/schemas/DirectChildrenPage" },
+          "subtree": { "$ref": "#/components/schemas/SubtreeSummary" }
+        }
+      },
+      "DirectChildrenPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["total", "cursor", "limit", "next_cursor", "results"],
+        "properties": {
+          "total": { "type": "integer", "minimum": 0 },
+          "cursor": { "type": "integer", "minimum": 0 },
+          "limit": { "type": "integer", "minimum": 1, "maximum": 100 },
+          "next_cursor": { "type": ["integer", "null"], "minimum": 0 },
+          "results": { "type": "array", "maxItems": 100, "items": { "$ref": "#/components/schemas/MibObject" } }
+        }
+      },
+      "SubtreeSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["depth", "limit", "descendant_count", "returned_count", "truncated", "nodes"],
+        "properties": {
+          "depth": { "type": "integer", "minimum": 0, "maximum": 4 },
+          "limit": { "type": "integer", "minimum": 1, "maximum": 250 },
+          "descendant_count": { "type": "integer", "minimum": 0 },
+          "returned_count": { "type": "integer", "minimum": 0, "maximum": 250 },
+          "truncated": { "type": "boolean" },
+          "nodes": { "type": "array", "maxItems": 250, "items": { "$ref": "#/components/schemas/SubtreeNode" } }
+        }
+      },
+      "SubtreeNode": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["depth", "direct_child_count", "object"],
+        "properties": {
+          "depth": { "type": "integer", "minimum": 1, "maximum": 4 },
+          "direct_child_count": { "type": "integer", "minimum": 0 },
+          "object": { "$ref": "#/components/schemas/MibObject" }
+        }
       },
       "MibObject": {
         "type": "object",
@@ -332,10 +568,55 @@
         "required": ["data_release", "enterprise"],
         "properties": { "data_release": { "$ref": "#/components/schemas/DataReleaseId" }, "enterprise": { "$ref": "#/components/schemas/Enterprise" } }
       },
+      "IdentityArtifactEvidence": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["fields", "symbols", "source_path", "source_url", "git_blob_oid", "sha256"],
+        "properties": {
+          "fields": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "symbols": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "source_path": { "type": "string" },
+          "source_url": { "type": "string", "format": "uri" },
+          "git_blob_oid": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        }
+      },
+      "IdentityLicenseEvidence": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_path", "source_url", "git_blob_oid", "sha256"],
+        "properties": {
+          "source_path": { "type": "string" },
+          "source_url": { "type": "string", "format": "uri" },
+          "git_blob_oid": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        }
+      },
+      "IdentityProvenance": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source", "source_url", "source_revision", "checked_at"],
+        "properties": {
+          "source_id": { "type": "string" },
+          "source": { "type": "string" },
+          "source_url": { "type": "string", "format": "uri" },
+          "source_revision": { "type": "string" },
+          "source_path": { "type": "string" },
+          "git_blob_oid": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "source_license": { "type": "string" },
+          "license_basis": { "type": "string" },
+          "rights": { "type": "string" },
+          "license": { "$ref": "#/components/schemas/IdentityLicenseEvidence" },
+          "field_evidence": { "type": "array", "items": { "$ref": "#/components/schemas/IdentityArtifactEvidence" } },
+          "claim_boundary": { "type": "string" },
+          "checked_at": { "type": "string", "format": "date" }
+        }
+      },
       "SysObjectIdMatch": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["oid", "organization", "product_family", "model", "platform", "identity_type", "match_type", "confidence", "provenance"],
+        "required": ["oid", "organization", "product_family", "model", "platform", "identity_type", "match_type", "claim_strength", "confidence", "provenance"],
         "properties": {
           "oid": { "$ref": "#/components/schemas/Oid" },
           "organization": { "type": "string" },
@@ -344,8 +625,9 @@
           "platform": { "type": ["string", "null"] },
           "identity_type": { "type": "string" },
           "match_type": { "const": "exact" },
+          "claim_strength": { "type": "string", "enum": ["exact_model", "product_family", "platform", "vendor_only"], "description": "Strength of the identity assertion. An exact OID match does not imply an exact-model claim." },
           "confidence": { "const": "high" },
-          "provenance": { "type": "object" }
+          "provenance": { "$ref": "#/components/schemas/IdentityProvenance" }
         }
       },
       "SysObjectIdResult": {
@@ -393,7 +675,7 @@
       "Module": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "publisher", "publication_mode", "raw_download", "raw_url", "source_url", "source_revision", "source_sha256", "artifact_sha256", "revision", "license", "dependencies", "declared_oid_count", "resolved_oid_count"],
+        "required": ["id", "publisher", "publication_mode", "raw_download", "raw_url", "source_url", "source_revision", "source_sha256", "artifact_sha256", "revision", "license", "dependencies", "root_objects", "declared_oid_count", "resolved_oid_count"],
         "properties": {
           "id": { "type": "string" },
           "publisher": { "type": "string", "enum": ["IETF", "IANA", "Net-SNMP"] },
@@ -407,6 +689,20 @@
           "revision": { "type": ["string", "null"], "format": "date" },
           "license": { "$ref": "#/components/schemas/License" },
           "dependencies": { "type": "array", "items": { "type": "string" } },
+          "root_objects": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "symbol", "oid", "kind"],
+              "properties": {
+                "id": { "type": "string" },
+                "symbol": { "type": "string" },
+                "oid": { "$ref": "#/components/schemas/Oid" },
+                "kind": { "type": "string" }
+              }
+            }
+          },
           "declared_oid_count": { "type": "integer", "minimum": 0 },
           "resolved_oid_count": { "type": "integer", "minimum": 0 }
         }

@@ -22,6 +22,12 @@ It must let a user:
 The web UI has first product priority. The data model and immutable release
 contract are foundational because both UI and API depend on them.
 
+The official public API is permanently free and has no paid tier, billing, or
+paid quota upgrade. Free access remains subject to bounded requests, fair-use
+controls, and no availability SLA. Optional API keys, if introduced, are free
+abuse-control credentials only; see
+[ADR 0009](decisions/0009-permanently-free-api.md).
+
 ## Non-goals for V1
 
 - connecting to a user's SNMP devices;
@@ -52,9 +58,12 @@ approval for another.
 
 A dependency-free Node.js public-alpha runtime currently serves the static UI
 and bounded API from one process. It uses no production database and loads only
-reviewed immutable snapshots: 110 raw modules, 5,392 parsed OID nodes, the IANA
-PEN registry, and the bounded `sysObjectID` set. This remains smaller than the
-later data-engine hypothesis:
+reviewed immutable snapshots. The active `license-signaled-2026-07-20.2`
+release contains 702 redistributable modules, 76,606 searchable catalog OID
+nodes, 4,138 textual conventions, 1,273 notifications, the IANA PEN registry,
+and 19 exact platform-level `sysObjectID` mappings. The public source catalog
+contains 12 redistributable and 20 directory-only sources. This remains smaller
+than the later data-engine hypothesis:
 
 - Next.js and TypeScript for UI and route handlers;
 - PostgreSQL for immutable source/module releases and active release state;

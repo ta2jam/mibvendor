@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "active_data_release": "license-signaled-2026-07-20.2",
+  "updated_at": "2026-07-19T22:43:50Z",
+  "disabled_sources": [],
+  "disabled_modules": [],
+  "events": [
+    {
+      "sequence": 1,
+      "occurred_at": "2026-07-14T14:27:29Z",
+      "action": "baseline",
+      "target_type": "release",
+      "target_id": "rights-cleared-2026-07-14.1",
+      "reason": "Initialize fail-closed publication controls for the active public data release.",
+      "evidence_url": "https://github.com/ta2jam/mibvendor/releases/tag/v0.2.0-alpha.1",
+      "supersedes_event_sha256": null,
+      "previous_event_sha256": null,
+      "event_sha256": "e5d79752f5fdfed332af5aa112b1b5f891fbc541baa35479dba157d40a7faa5b"
+    },
+    {
+      "sequence": 2,
+      "occurred_at": "2026-07-19T22:43:50Z",
+      "action": "promotion",
+      "target_type": "release",
+      "target_id": "license-signaled-2026-07-20.2",
+      "reason": "Promote the verified corpus expansion after artifact-notice, rights, parser, collision, dependency, resource, and integrity gates passed.",
+      "evidence_url": "https://github.com/ta2jam/mibvendor/releases/tag/v0.3.0-alpha.1",
+      "supersedes_event_sha256": null,
+      "previous_event_sha256": "e5d79752f5fdfed332af5aa112b1b5f891fbc541baa35479dba157d40a7faa5b",
+      "event_sha256": "df23577bee9ae71f4aa71e951cb66c23fc3d4bf45f1f937b14dcf212afde8750"
+    }
+  ]
+}

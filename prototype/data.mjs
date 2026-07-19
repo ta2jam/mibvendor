@@ -4,7 +4,7 @@ const standardsTrust = {
   publicationStatus: "public-alpha-synthetic",
   rightsTier: "A — mibvendor-authored metadata and paraphrase",
   rightsScopes: ["metadata", "rendered text", "API output"],
-  dataRelease: "rights-cleared-2026-07-14.1"
+  dataRelease: "license-signaled-2026-07-20.2"
 };
 
 export const records = [

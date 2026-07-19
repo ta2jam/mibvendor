@@ -27,10 +27,12 @@ application/database scaffolding.
 
 A bounded public-alpha slice now exposes enterprise lookup, evidence-limited
 `sysObjectID` lookup, structured object details, module dependency states, and
-batch resolution. The rights-cleared slice also exposes 110 manifest-bound raw
-modules, 5,392 parsed OID nodes, file/source checksums, four publication modes,
-and fail-closed source decisions. This is validation infrastructure, not
-evidence that Phases 1–4 or the Phase 0 demand/vendor-rights gates are complete.
+batch resolution. The active `license-signaled-2026-07-20.2` slice exposes 702
+manifest-bound raw modules, 76,606 searchable catalog OID nodes, 4,138 textual
+conventions, 1,273 notifications, file/source checksums, four publication
+modes, and fail-closed source decisions across 32 source records. This is
+validation infrastructure, not evidence that Phases 1–4, broad model identity,
+or the Phase 0 external-demand gates are complete.
 
 ## Phase 1 — public foundation
 
@@ -58,7 +60,9 @@ evidence that Phases 1–4 or the Phase 0 demand/vendor-rights gates are complet
 - versioned search, resolve, object, module, dependency, batch, and data-release
   endpoints;
 - provenance and rights fields, OpenAPI 3.1, JSON Schema, RFC 9457 errors,
-  bounded pagination, caching, and protective rate limits.
+  bounded pagination, caching, and protective rate limits;
+- permanently free access with no paid tier or paid quota upgrade, bounded by
+  fair use and no availability SLA.
 
 ## Phase 5 — production and controlled expansion
 

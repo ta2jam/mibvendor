@@ -6,7 +6,16 @@
 !src/
 !src/**
 !data/
-!data/**
+!data/iana-private-enterprise-numbers.json
+!data/mib-catalog.json
+!data/mib-objects.json
+!data/source-catalog.json
+!data/publication-controls.json
+!data/mibs/
+!data/mibs/redistributable/
+!data/mibs/redistributable/**
+!scripts/
+!scripts/canonical-json.mjs
 !prototype/
 !prototype/**
 !docs/

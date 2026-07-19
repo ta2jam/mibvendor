@@ -1,17 +1,17 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-15T08:07:16.508Z",
+  "generated_at": "2026-07-19T22:45:35.234Z",
   "policy": "repository-license-signal-is-publication-permission",
   "activation_state": "staged-not-active",
-  "active_data_release_at_generation": "rights-cleared-2026-07-14.1",
+  "active_data_release_at_generation": "license-signaled-2026-07-20.2",
   "parser_security": "static-analysis-only-no-python-execution",
   "counts": {
     "sources": 1,
     "artifacts": 273,
     "objects": 20901,
     "parser_warning_artifacts": 2,
-    "active_module_collisions": 27,
-    "collision_free_modules": 246
+    "active_module_collisions": 183,
+    "collision_free_modules": 90
   },
   "sources": [
     {
@@ -66,7 +66,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 45,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/ADSL-LINE-EXT-MIB.py",
@@ -136,7 +136,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 249,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/ADSL-TC-MIB.py",
@@ -167,7 +167,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 2,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/ADSL2-LINE-MIB.py",
@@ -265,7 +265,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 39,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/AGGREGATE-MIB.py",
@@ -298,7 +298,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 26,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/ALARM-MIB.py",
@@ -429,7 +429,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 294,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/APPLETALK-MIB.py",
@@ -460,7 +460,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 283,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/APPLICATION-MIB.py",
@@ -493,7 +493,7 @@
         "SYSAPPL-MIB"
       ],
       "object_count": 160,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/APPN-DLUR-MIB.py",
@@ -526,7 +526,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 40,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/APPN-MIB.py",
@@ -559,7 +559,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 356,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/APPN-TRAP-MIB.py",
@@ -592,7 +592,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 13,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/APS-MIB.py",
@@ -626,7 +626,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 66,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/ARC-MIB.py",
@@ -690,7 +690,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 38,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/ATM-MIB.py",
@@ -722,7 +722,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 109,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/ATM-TC-MIB.py",
@@ -753,7 +753,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 18,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/ATM2-MIB.py",
@@ -818,7 +818,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 63,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/BLDG-HVAC-MIB.py",
@@ -882,7 +882,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 69,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/CHARACTER-MIB.py",
@@ -914,7 +914,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 47,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/CIRCUIT-IF-MIB.py",
@@ -946,7 +946,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 20,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/CISCO-SMI.py",
@@ -977,7 +977,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 54,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/CLNS-MIB.py",
@@ -1008,7 +1008,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 115,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/COFFEE-POT-MIB.py",
@@ -1040,7 +1040,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 12,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/COPS-CLIENT-MIB.py",
@@ -1072,7 +1072,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 53,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DECNET-PHIV-MIB.py",
@@ -1103,7 +1103,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 236,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DIAL-CONTROL-MIB.py",
@@ -1136,7 +1136,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 85,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DIFFSERV-CONFIG-MIB.py",
@@ -1199,7 +1199,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 1,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DIFFSERV-MIB.py",
@@ -1234,7 +1234,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 170,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DIRECTORY-SERVER-MIB.py",
@@ -1301,7 +1301,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 117,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DISMAN-EXPRESSION-MIB.py",
@@ -1334,7 +1334,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 54,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DISMAN-NSLOOKUP-MIB.py",
@@ -1367,7 +1367,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 22,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DISMAN-PING-MIB.py",
@@ -1401,7 +1401,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 59,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DISMAN-SCHEDULE-MIB.py",
@@ -1433,7 +1433,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 32,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DISMAN-SCRIPT-MIB.py",
@@ -1465,7 +1465,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 82,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DISMAN-TRACEROUTE-MIB.py",
@@ -1500,7 +1500,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 74,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DLSW-MIB.py",
@@ -1533,7 +1533,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 198,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DNS-RESOLVER-MIB.py",
@@ -1629,7 +1629,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 100,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DOCS-BPI2-MIB.py",
@@ -1701,7 +1701,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 130,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DOCS-IETF-BPI2-MIB.py",
@@ -1872,7 +1872,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 230,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DOT12-IF-MIB.py",
@@ -1904,7 +1904,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 32,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DOT12-RPTR-MIB.py",
@@ -1935,7 +1935,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 91,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DOT3-EPON-MIB.py",
@@ -2000,7 +2000,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 80,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DS0-MIB.py",
@@ -2032,7 +2032,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 17,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DS0BUNDLE-MIB.py",
@@ -2064,7 +2064,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 16,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DS1-MIB.py",
@@ -2097,7 +2097,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 121,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DS3-MIB.py",
@@ -2130,7 +2130,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 104,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DSA-MIB.py",
@@ -2162,7 +2162,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 43,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/DSMON-MIB.py",
@@ -2231,7 +2231,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 46,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/EFM-CU-MIB.py",
@@ -2264,7 +2264,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 111,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/ENTITY-MIB.py",
@@ -2329,7 +2329,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 15,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/ENTITY-STATE-MIB.py",
@@ -2361,7 +2361,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 16,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/ENTITY-STATE-TC-MIB.py",
@@ -2392,7 +2392,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 1,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/ETHER-CHIPSET-MIB.py",
@@ -2424,7 +2424,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 78,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/ETHER-WIS.py",
@@ -2457,7 +2457,7 @@
         "SONET-MIB"
       ],
       "object_count": 27,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/EtherLike-MIB.py",
@@ -2489,7 +2489,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 57,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/FC-MGMT-MIB.py",
@@ -2522,7 +2522,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 152,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/FCIP-MGMT-MIB.py",
@@ -2557,7 +2557,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 66,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/FDDI-SMT73-MIB.py",
@@ -2588,7 +2588,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 128,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/FIBRE-CHANNEL-FE-MIB.py",
@@ -2620,7 +2620,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 121,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/Finisher-MIB.py",
@@ -2720,7 +2720,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 45,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/FR-MFR-MIB.py",
@@ -2753,7 +2753,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 52,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/FRAME-RELAY-DTE-MIB.py",
@@ -2785,7 +2785,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 54,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/FRNETSERV-MIB.py",
@@ -2818,7 +2818,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 110,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/FRSLD-MIB.py",
@@ -3058,7 +3058,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 33,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/HC-PerfHist-TC-MIB.py",
@@ -3089,7 +3089,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 1,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/HC-RMON-MIB.py",
@@ -3154,7 +3154,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 1,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/HDSL2-SHDSL-LINE-MIB.py",
@@ -3220,7 +3220,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 97,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/HOST-RESOURCES-TYPES.py",
@@ -3252,7 +3252,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 55,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/HPR-IP-MIB.py",
@@ -3285,7 +3285,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 23,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/HPR-MIB.py",
@@ -3318,7 +3318,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 80,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/IANA-ADDRESS-FAMILY-NUMBERS-MIB.py",
@@ -3754,7 +3754,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 11,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/IF-INVERTED-STACK-MIB.py",
@@ -3786,7 +3786,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 8,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/IF-MIB.py",
@@ -3819,7 +3819,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 74,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/IFCP-MGMT-MIB.py",
@@ -3889,7 +3889,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 32,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/INET-ADDRESS-MIB.py",
@@ -3920,7 +3920,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 1,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/INTEGRATED-SERVICES-GUARANTEED-MIB.py",
@@ -3953,7 +3953,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 12,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/INTEGRATED-SERVICES-MIB.py",
@@ -3985,7 +3985,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 43,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/INTERFACETOPN-MIB.py",
@@ -4019,7 +4019,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 28,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/IP-FORWARD-MIB.py",
@@ -4054,7 +4054,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 62,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/IP-MIB.py",
@@ -4087,7 +4087,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 267,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/IPATM-IPMC-MIB.py",
@@ -4121,7 +4121,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 203,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/IPMCAST-MIB.py",
@@ -4158,7 +4158,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 103,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/IPMROUTE-STD-MIB.py",
@@ -4192,7 +4192,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 63,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/IPOA-MIB.py",
@@ -4225,7 +4225,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 88,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/IPS-AUTH-MIB.py",
@@ -4258,7 +4258,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 66,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/IPSEC-SPD-MIB.py",
@@ -4293,7 +4293,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 119,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/IPV6-FLOW-LABEL-MIB.py",
@@ -4324,7 +4324,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 1,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/IPV6-ICMP-MIB.py",
@@ -4421,7 +4421,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 29,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/IPV6-TC.py",
@@ -4584,7 +4584,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 72,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/ISNS-MIB.py",
@@ -4686,7 +4686,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 1,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/Job-Monitoring-MIB.py",
@@ -4717,7 +4717,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 40,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/JUNIPER-SMI.py",
@@ -4748,7 +4748,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 80,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/L2TP-MIB.py",
@@ -4812,7 +4812,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 1,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/LMP-MIB.py",
@@ -4881,7 +4881,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 82,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/MAU-MIB.py",
@@ -4913,7 +4913,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 111,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/MIDCOM-MIB.py",
@@ -4948,7 +4948,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 81,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/MIOX25-MIB.py",
@@ -5013,7 +5013,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 180,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/MOBILEIPV6-MIB.py",
@@ -5046,7 +5046,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 187,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/Modem-MIB.py",
@@ -5491,7 +5491,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 69,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/MTA-MIB.py",
@@ -5524,7 +5524,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 63,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/NAT-MIB.py",
@@ -5718,7 +5718,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 32,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/NHRP-MIB.py",
@@ -5751,7 +5751,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 162,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/NOTIFICATION-LOG-MIB.py",
@@ -5783,7 +5783,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 50,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/OPT-IF-MIB.py",
@@ -5816,7 +5816,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 430,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/OSPF-MIB.py",
@@ -5848,7 +5848,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 217,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/OSPF-TRAP-MIB.py",
@@ -5880,7 +5880,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 30,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/P-BRIDGE-MIB.py",
@@ -5912,7 +5912,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 51,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/PARALLEL-MIB.py",
@@ -5944,7 +5944,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 23,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/PerfHist-TC-MIB.py",
@@ -5975,7 +5975,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 1,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/PIM-MIB.py",
@@ -6008,7 +6008,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 66,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/PIM-STD-MIB.py",
@@ -6042,7 +6042,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 233,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/PINT-MIB.py",
@@ -6075,7 +6075,7 @@
         "SYSAPPL-MIB"
       ],
       "object_count": 50,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/PKTC-IETF-MTA-MIB.py",
@@ -6181,7 +6181,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 92,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/POWER-ETHERNET-MIB.py",
@@ -6214,7 +6214,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 42,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/PPP-BRIDGE-NCP-MIB.py",
@@ -6247,7 +6247,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 24,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/PPP-IP-NCP-MIB.py",
@@ -6280,7 +6280,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 12,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/PPP-LCP-MIB.py",
@@ -6312,7 +6312,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 46,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/PPP-SEC-MIB.py",
@@ -6344,7 +6344,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 19,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/Printer-MIB.py",
@@ -6376,7 +6376,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 208,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/PTOPO-MIB.py",
@@ -6478,7 +6478,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 42,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/RADIUS-ACC-SERVER-MIB.py",
@@ -6511,7 +6511,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 49,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/RADIUS-AUTH-CLIENT-MIB.py",
@@ -6544,7 +6544,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 46,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/RADIUS-AUTH-SERVER-MIB.py",
@@ -6577,7 +6577,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 52,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/RADIUS-DYNAUTH-CLIENT-MIB.py",
@@ -6709,7 +6709,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 83,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/RFC1253-MIB.py",
@@ -6802,7 +6802,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 103,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/RFC1316-MIB.py",
@@ -6833,7 +6833,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 41,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/RFC1381-MIB.py",
@@ -6865,7 +6865,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 59,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/RFC1382-MIB.py",
@@ -6930,7 +6930,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 33,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/RMON-MIB.py",
@@ -6961,7 +6961,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 220,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/RMON2-MIB.py",
@@ -7124,7 +7124,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 53,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/RSTP-MIB.py",
@@ -7156,7 +7156,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 16,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/RSVP-MIB.py",
@@ -7189,7 +7189,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 157,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/RTP-MIB.py",
@@ -7222,7 +7222,7 @@
         "SYSAPPL-MIB"
       ],
       "object_count": 56,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/SCSI-MIB.py",
@@ -7286,7 +7286,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 81,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/SFLOW-MIB.py",
@@ -7418,7 +7418,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 257,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/SIP-SERVER-MIB.py",
@@ -7548,7 +7548,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 155,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/SMON-MIB.py",
@@ -7613,7 +7613,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 140,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/SNA-SDLC-MIB.py",
@@ -7645,7 +7645,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 149,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/SNMP-REPEATER-MIB.py",
@@ -7677,7 +7677,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 139,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/SNMPv2-TC-v1.py",
@@ -7743,7 +7743,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 130,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/SOURCE-ROUTING-MIB.py",
@@ -7775,7 +7775,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 29,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/SSPM-MIB.py",
@@ -7842,7 +7842,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 80,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/T11-FC-FABRIC-ADDR-MGR-MIB.py",
@@ -8254,7 +8254,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 44,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/TCPIPX-MIB.py",
@@ -8285,7 +8285,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 23,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/TE-LINK-STD-MIB.py",
@@ -8419,7 +8419,7 @@
         "SYSAPPL-MIB"
       ],
       "object_count": 104,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/TN3270E-RT-MIB.py",
@@ -8453,7 +8453,7 @@
         "TN3270E-MIB"
       ],
       "object_count": 46,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/TOKEN-RING-RMON-MIB.py",
@@ -8516,7 +8516,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 57,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/TOKENRING-STATION-SR-MIB.py",
@@ -8548,7 +8548,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 11,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/TRIP-MIB.py",
@@ -8582,7 +8582,7 @@
         "TRIP-TC-MIB"
       ],
       "object_count": 116,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/TRIP-TC-MIB.py",
@@ -8613,7 +8613,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 1,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/TUNNEL-MIB.py",
@@ -8648,7 +8648,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 37,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/UCD-SNMP-MIB.py",
@@ -8711,7 +8711,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 25,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/UDPLITE-MIB.py",
@@ -8743,7 +8743,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 24,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/UPS-MIB.py",
@@ -8774,7 +8774,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 120,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/URI-TC-MIB.py",
@@ -8805,7 +8805,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 1,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/VDSL-LINE-EXT-MCM-MIB.py",
@@ -8969,7 +8969,7 @@
         "SNMPv2-TC"
       ],
       "object_count": 89,
-      "active_module_collision": false
+      "active_module_collision": true
     },
     {
       "id": "pysnmp-compiled-mibs:pysnmp_mibs/WWW-MIB.py",
@@ -9001,7 +9001,7 @@
         "SYSAPPL-MIB"
       ],
       "object_count": 90,
-      "active_module_collision": false
+      "active_module_collision": true
     }
   ]
 }

@@ -31,7 +31,7 @@ services:
       resources:
         limits:
           cpus: "0.25"
-          memory: 192M
+          memory: 640M
           pids: 64
     logging:
       driver: local

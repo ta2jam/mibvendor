@@ -16,7 +16,7 @@ export function validateCorpusExpansionCandidates(active, raw, compiled, documen
   const selectedArtifacts = new Set();
   const knownArtifacts = new Set([
     ...active.modules.map((module) => `active:${module.id}`),
-    ...raw.artifacts.filter((artifact) => artifact.module !== null).map((artifact) => artifact.id),
+    ...raw.artifacts.filter((artifact) => artifact.module !== null && artifact.retention_state === "retained").map((artifact) => artifact.id),
     ...compiled.artifacts.map((artifact) => artifact.id)
   ]);
   for (const module of document.modules ?? []) {

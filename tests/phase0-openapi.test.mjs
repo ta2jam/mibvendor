@@ -11,6 +11,11 @@ import {
   MAX_QUERY_LENGTH,
   createPhase0ApiMock,
 } from "../scripts/phase0-api-mock.mjs";
+import {
+  MAX_NAVIGATION_CHILDREN,
+  MAX_NAVIGATION_DEPTH,
+  MAX_NAVIGATION_SUBTREE_NODES,
+} from "../src/api.mjs";
 
 const specification = JSON.parse(
   await readFile(new URL("../docs/research/demand/phase0-openapi.json", import.meta.url), "utf8"),
@@ -24,6 +29,7 @@ const expectedOperations = {
   "/v1/resolve:batch": ["post"],
   "/v1/search": ["get"],
   "/v1/objects/{objectId}": ["get"],
+  "/v1/objects/{objectId}/navigation": ["get"],
   "/v1/modules": ["get"],
   "/v1/modules/{moduleId}": ["get"],
   "/v1/modules/{moduleId}/raw": ["get"],
@@ -48,7 +54,11 @@ async function withServer(callback) {
 
 test("OpenAPI surface is exact and explicitly public alpha", () => {
   assert.equal(specification.openapi, "3.1.0");
+  assert.equal(packageDocument.version, "0.3.0-alpha.1");
   assert.equal(specification.info.version, packageDocument.version);
+  assert.equal(specification.info.title, "mibvendor Permanently Free Public API");
+  assert.match(specification.info.description, /Permanently free/);
+  assert.match(specification.info.description, /fair-use bounded, not unlimited use or an availability SLA/);
   assert.equal(specification["x-mibvendor-status"], "public-alpha");
   assert.deepEqual(specification.security, []);
   assert.deepEqual(Object.keys(specification.paths), Object.keys(expectedOperations));
@@ -67,9 +77,50 @@ test("OpenAPI surface is exact and explicitly public alpha", () => {
   }
 });
 
+test("OpenAPI makes the permanently-free fair-use boundary machine-readable", () => {
+  const policy = specification["x-mibvendor-access-policy"];
+  assert.equal(policy.access, "permanently-free");
+  assert.equal(policy.paid_tiers, false);
+  assert.equal(policy.billing, false);
+  assert.equal(policy.unlimited_use, false);
+  assert.equal(policy.availability_sla, false);
+  assert.deepEqual(policy.authentication, {
+    required: false,
+    optional_keys: "free-abuse-control-only",
+  });
+  assert.deepEqual(policy.fair_use, {
+    requests_per_client: 120,
+    window_seconds: 60,
+    limits_may_change: true,
+    response_headers: ["RateLimit-Limit", "RateLimit-Remaining", "RateLimit-Reset", "Retry-After"],
+  });
+  assert.deepEqual(policy.caching, {
+    cache_control: true,
+    etag: true,
+    conditional_get: true,
+    cursor_pagination: true,
+    immutable_release_artifacts: true,
+    post_responses_no_store: true,
+    active_raw_revalidation: true,
+  });
+  for (const header of [
+    "CacheControl", "ETag", "RateLimitLimit", "RateLimitRemaining", "RateLimitReset", "RetryAfter",
+  ]) assert.ok(specification.components.headers[header], `missing reusable header ${header}`);
+  const releaseHeaders = specification.paths["/v1/data-release"].get.responses["200"].headers;
+  assert.equal(releaseHeaders.ETag.$ref, "#/components/headers/ETag");
+  assert.equal(releaseHeaders["Cache-Control"].$ref, "#/components/headers/CacheControl");
+  assert.equal(releaseHeaders["RateLimit-Limit"].$ref, "#/components/headers/RateLimitLimit");
+  const rawHeaders = specification.paths["/v1/modules/{moduleId}/raw"].get.responses["200"].headers;
+  assert.equal(rawHeaders.ETag.$ref, "#/components/headers/ETag");
+  assert.equal(rawHeaders["Cache-Control"].$ref, "#/components/headers/CacheControl");
+  assert.match(rawHeaders["X-MIB-SHA256"].schema.pattern, /a-f/);
+  assert.equal(specification.components.responses.Problem.headers["Retry-After"].$ref, "#/components/headers/RetryAfter");
+});
+
 test("OpenAPI bounds and trust fields match the executable probe", () => {
   const schemas = specification.components.schemas;
   assert.equal(schemas.DataReleaseId.const, DATA_RELEASE);
+  assert.equal(schemas.DataReleaseId.const, "license-signaled-2026-07-20.2");
   assert.equal(schemas.BatchRequest.properties.oids.maxItems, MAX_BATCH_SIZE);
   assert.equal(schemas.Oid.maxLength, MAX_OID_LENGTH);
   assert.equal(
@@ -84,9 +135,29 @@ test("OpenAPI bounds and trust fields match the executable probe", () => {
   assert.deepEqual(schemas.Provenance.properties.publication_mode.enum, ["redistributable", "metadata-only"]);
   assert.deepEqual(schemas.Provenance.properties.rights_tier.enum, ["A", "B"]);
   assert.equal(schemas.RegistrySource.properties.rights.const, "CC0-1.0");
+  assert.ok(schemas.SysObjectIdMatch.required.includes("claim_strength"));
+  assert.deepEqual(schemas.SysObjectIdMatch.properties.claim_strength.enum, ["exact_model", "product_family", "platform", "vendor_only"]);
+  assert.equal(schemas.SysObjectIdMatch.properties.provenance.$ref, "#/components/schemas/IdentityProvenance");
+  assert.deepEqual(schemas.IdentityArtifactEvidence.required, ["fields", "symbols", "source_path", "source_url", "git_blob_oid", "sha256"]);
   assert.ok(schemas.MibObject.required.includes("description"));
   assert.ok(schemas.MibObject.required.includes("relationships"));
   assert.deepEqual(schemas.DependenciesResponse.required, ["data_release", "module", "status", "direct", "transitive", "missing", "cyclic", "diagnostics"]);
+  assert.equal(schemas.ModuleStatistics.properties.total.const, 702);
+  assert.equal(schemas.OidNodeStatistics.properties.catalog_oid_nodes.const, 76_606);
+  assert.equal(schemas.OidNodeStatistics.properties.supplemental_legacy_records.const, 0);
+  assert.equal(schemas.OidNodeStatistics.properties.searchable_records.const, 76_606);
+  assert.equal(schemas.DefinitionStatistics.properties.textual_conventions.properties.active_module_definitions.const, 4_138);
+  assert.equal(schemas.DefinitionStatistics.properties.notifications.properties.searchable_records.const, 1_273);
+  assert.equal(schemas.SourceStatistics.properties.total.const, 32);
+  assert.equal(schemas.SourceStatistics.properties.publication_modes.properties.redistributable.const, 12);
+  assert.equal(schemas.SourceStatistics.properties.publication_modes.properties["directory-only"].const, 20);
+  assert.equal(schemas.PublicationControlStatistics.properties.event_count.const, 2);
+  assert.equal(schemas.PublicationControlStatistics.properties.disabled_sources.const, 0);
+  assert.equal(schemas.PublicationControlStatistics.properties.disabled_modules.const, 0);
+  const navigationParameters = specification.paths["/v1/objects/{objectId}/navigation"].get.parameters;
+  assert.equal(navigationParameters.find((parameter) => parameter.name === "child_limit").schema.maximum, MAX_NAVIGATION_CHILDREN);
+  assert.equal(navigationParameters.find((parameter) => parameter.name === "subtree_depth").schema.maximum, MAX_NAVIGATION_DEPTH);
+  assert.equal(navigationParameters.find((parameter) => parameter.name === "subtree_limit").schema.maximum, MAX_NAVIGATION_SUBTREE_NODES);
 
   for (const [name, schema] of Object.entries(schemas)) {
     if (!schema.required) continue;
@@ -107,9 +178,10 @@ test("every documented operation is reachable with its documented media type", a
       }, "application/json"],
       ["/v1/search?q=uptime", {}, "application/json"],
       ["/v1/objects/snmpv2-mib--sysuptime", {}, "application/json"],
+      ["/v1/objects/ipv6-tcp-mib--tcp/navigation", {}, "application/json"],
       ["/v1/modules?q=BFD", {}, "application/json"],
       ["/v1/modules/BFD-STD-MIB", {}, "application/json"],
-      ["/v1/modules/BFD-STD-MIB/raw", {}, "text/plain; charset=utf-8"],
+      ["/v1/modules/BFD-STD-MIB/raw", {}, "application/x-tar"],
       ["/v1/sources", {}, "application/json"],
       ["/v1/sources/cisco", {}, "application/json"],
       ["/v1/enterprises/8072", {}, "application/json"],

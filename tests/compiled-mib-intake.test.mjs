@@ -22,6 +22,12 @@ test("compiled MIB intake statically extracts a large module and object set", as
   assert.equal(manifest.activation_state, "staged-not-active");
 });
 
+test("compiled notification tuple suffixes are retained without executing Python", () => {
+  const bySymbol = new Map(objects.objects.filter((object) => object.module === "RFC1382-MIB").map((object) => [object.symbol, object]));
+  assert.equal(bySymbol.get("x25Restart")?.oid, "1.3.6.1.2.1.10.5.0.1");
+  assert.equal(bySymbol.get("x25Reset")?.oid, "1.3.6.1.2.1.10.5.0.2");
+});
+
 test("compiled MIB execution and count claims fail closed", async () => {
   const mutated = structuredClone(manifest);
   mutated.parser_security = "execute-python";

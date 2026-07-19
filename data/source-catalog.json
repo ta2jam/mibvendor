@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "data_release": "rights-cleared-2026-07-14.1",
+  "data_release": "license-signaled-2026-07-20.2",
   "sources": [
     {
       "id": "arista",
@@ -91,6 +91,49 @@
       "reason": "Dell grants a limited personal non-commercial site-content license; its copyright page prohibits commercial/public display and mirroring without permission. No separate license is advertised on the download page."
     },
     {
+      "id": "dynatrace-snmp-mib-files",
+      "publisher": "dynatrace-extensions/snmp-mib-files",
+      "official_source_url": "https://github.com/dynatrace-extensions/snmp-mib-files/tree/5050aeed71a88f2994e7dc2a8ba1ca5b377abb3c",
+      "rights_evidence_url": "https://raw.githubusercontent.com/dynatrace-extensions/snmp-mib-files/5050aeed71a88f2994e7dc2a8ba1ca5b377abb3c/LICENSE",
+      "checked_at": "2026-07-19",
+      "publication_mode": "redistributable",
+      "content_intake": "approved",
+      "scopes": {
+        "metadata_index": "approved",
+        "rendered_text": "approved",
+        "api_output": "approved",
+        "raw_download": "approved",
+        "bulk_export": "approved"
+      },
+      "public_fields": [
+        "module",
+        "oid",
+        "symbol",
+        "syntax",
+        "access",
+        "description",
+        "source_url",
+        "checksum",
+        "raw_file"
+      ],
+      "reason": "Pinned Apache-2.0 repository-license signal at 5050aeed71a88f2994e7dc2a8ba1ca5b377abb3c; embedded third-party ownership remains subject to takedown review.",
+      "source_revision": "5050aeed71a88f2994e7dc2a8ba1ca5b377abb3c",
+      "immutable_source_url": "https://github.com/dynatrace-extensions/snmp-mib-files/commit/5050aeed71a88f2994e7dc2a8ba1ca5b377abb3c",
+      "license": {
+        "spdx": "Apache-2.0",
+        "name": "Apache License 2.0",
+        "basis": "repository-license-signal",
+        "files": [
+          {
+            "source_path": "LICENSE",
+            "pinned_url": "https://raw.githubusercontent.com/dynatrace-extensions/snmp-mib-files/5050aeed71a88f2994e7dc2a8ba1ca5b377abb3c/LICENSE",
+            "git_blob_oid": "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64",
+            "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+          }
+        ]
+      }
+    },
+    {
       "id": "eaton",
       "publisher": "Eaton Network-M3 UPS ATS and sensor MIBs",
       "official_source_url": "https://www.eaton.com/content/dam/eaton/products/backup-power-ups-surge-it-power-distribution/power-management-software-connectivity/eaton-gigabit-network-card/network-m3/resources/eaton-network-m3-user-guide.pdf",
@@ -111,6 +154,49 @@
         "rights_state"
       ],
       "reason": "Eaton limits site materials to personal non-commercial download and expressly prohibits software reproduction or redistribution outside its accompanying license; no MIB-specific public license was found."
+    },
+    {
+      "id": "erlang-otp-snmp",
+      "publisher": "erlang/otp",
+      "official_source_url": "https://github.com/erlang/otp/tree/34baca942c370d385ed03daa1fcd8c0f7c3bb88b",
+      "rights_evidence_url": "https://raw.githubusercontent.com/erlang/otp/34baca942c370d385ed03daa1fcd8c0f7c3bb88b/LICENSE.txt",
+      "checked_at": "2026-07-19",
+      "publication_mode": "redistributable",
+      "content_intake": "approved",
+      "scopes": {
+        "metadata_index": "approved",
+        "rendered_text": "approved",
+        "api_output": "approved",
+        "raw_download": "approved",
+        "bulk_export": "approved"
+      },
+      "public_fields": [
+        "module",
+        "oid",
+        "symbol",
+        "syntax",
+        "access",
+        "description",
+        "source_url",
+        "checksum",
+        "raw_file"
+      ],
+      "reason": "Pinned Apache-2.0 repository-license signal at 34baca942c370d385ed03daa1fcd8c0f7c3bb88b; embedded third-party ownership remains subject to takedown review.",
+      "source_revision": "34baca942c370d385ed03daa1fcd8c0f7c3bb88b",
+      "immutable_source_url": "https://github.com/erlang/otp/commit/34baca942c370d385ed03daa1fcd8c0f7c3bb88b",
+      "license": {
+        "spdx": "Apache-2.0",
+        "name": "Apache License 2.0",
+        "basis": "repository-license-signal",
+        "files": [
+          {
+            "source_path": "LICENSE.txt",
+            "pinned_url": "https://raw.githubusercontent.com/erlang/otp/34baca942c370d385ed03daa1fcd8c0f7c3bb88b/LICENSE.txt",
+            "git_blob_oid": "e454a52586f29b8ce8a6799163eac1f875e9ac01",
+            "sha256": "809fa1ed21450f59827d1e9aec720bbc4b687434fa22283c6cb5dd82a47ab9c0"
+          }
+        ]
+      }
     },
     {
       "id": "extreme-networks",
@@ -301,6 +387,49 @@
       "reason": "Juniper documents public download and compilation, but its legal notice says site content is protected and reproduction, modification, distribution, republication, display, or performance beyond resource use is prohibited."
     },
     {
+      "id": "kmalinich-snmp-mibs",
+      "publisher": "kmalinich/snmp-mibs",
+      "official_source_url": "https://github.com/kmalinich/snmp-mibs/tree/4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "rights_evidence_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/LICENSE",
+      "checked_at": "2026-07-19",
+      "publication_mode": "redistributable",
+      "content_intake": "approved",
+      "scopes": {
+        "metadata_index": "approved",
+        "rendered_text": "approved",
+        "api_output": "approved",
+        "raw_download": "approved",
+        "bulk_export": "approved"
+      },
+      "public_fields": [
+        "module",
+        "oid",
+        "symbol",
+        "syntax",
+        "access",
+        "description",
+        "source_url",
+        "checksum",
+        "raw_file"
+      ],
+      "reason": "Pinned MIT repository-license signal at 4ad06ab6c6d205b2844495dae032ae23f1970c95; embedded third-party ownership remains subject to takedown review.",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "immutable_source_url": "https://github.com/kmalinich/snmp-mibs/commit/4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license": {
+        "spdx": "MIT",
+        "name": "MIT License",
+        "basis": "repository-license-signal",
+        "files": [
+          {
+            "source_path": "LICENSE",
+            "pinned_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/LICENSE",
+            "git_blob_oid": "74c3d962ac4a1235a55a609052cf390bab8f78dd",
+            "sha256": "8ea379384ce4ba04bdd93ae92a1dd1c4263edfdd8f53e6bf82d4e1d40d841f07"
+          }
+        ]
+      }
+    },
+    {
       "id": "mikrotik",
       "publisher": "MikroTik RouterOS MIB",
       "official_source_url": "https://help.mikrotik.com/docs/spaces/ROS/pages/8978519/SNMP",
@@ -395,6 +524,135 @@
       "reason": "Nokia documents MIBs as a component of an entitled software package. The reviewed EULA describes use in support of internal business operations and no public MIB redistribution grant was identified."
     },
     {
+      "id": "ntopng-mibs",
+      "publisher": "ntop/ntopng",
+      "official_source_url": "https://github.com/ntop/ntopng/tree/b225f45d319cbc7ed45e4044ab5c3f3abd08c747",
+      "rights_evidence_url": "https://raw.githubusercontent.com/ntop/ntopng/b225f45d319cbc7ed45e4044ab5c3f3abd08c747/LICENSE",
+      "checked_at": "2026-07-19",
+      "publication_mode": "redistributable",
+      "content_intake": "approved",
+      "scopes": {
+        "metadata_index": "approved",
+        "rendered_text": "approved",
+        "api_output": "approved",
+        "raw_download": "approved",
+        "bulk_export": "approved"
+      },
+      "public_fields": [
+        "module",
+        "oid",
+        "symbol",
+        "syntax",
+        "access",
+        "description",
+        "source_url",
+        "checksum",
+        "raw_file"
+      ],
+      "reason": "Pinned GPL-3.0 repository-license signal at b225f45d319cbc7ed45e4044ab5c3f3abd08c747; embedded third-party ownership remains subject to takedown review.",
+      "source_revision": "b225f45d319cbc7ed45e4044ab5c3f3abd08c747",
+      "immutable_source_url": "https://github.com/ntop/ntopng/commit/b225f45d319cbc7ed45e4044ab5c3f3abd08c747",
+      "license": {
+        "spdx": "GPL-3.0",
+        "name": "GNU General Public License v3.0",
+        "basis": "repository-license-signal",
+        "files": [
+          {
+            "source_path": "LICENSE",
+            "pinned_url": "https://raw.githubusercontent.com/ntop/ntopng/b225f45d319cbc7ed45e4044ab5c3f3abd08c747/LICENSE",
+            "git_blob_oid": "733c072369ca77331f392c40da7404c85c36542c",
+            "sha256": "d62f065830aa3739cc031156b9690805c7b2e811b4a178c8b4acd8725d561c94"
+          }
+        ]
+      }
+    },
+    {
+      "id": "openss7-mibs",
+      "publisher": "openss7/openss7",
+      "official_source_url": "https://github.com/openss7/openss7/tree/7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "rights_evidence_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/COPYING",
+      "checked_at": "2026-07-19",
+      "publication_mode": "redistributable",
+      "content_intake": "approved",
+      "scopes": {
+        "metadata_index": "approved",
+        "rendered_text": "approved",
+        "api_output": "approved",
+        "raw_download": "approved",
+        "bulk_export": "approved"
+      },
+      "public_fields": [
+        "module",
+        "oid",
+        "symbol",
+        "syntax",
+        "access",
+        "description",
+        "source_url",
+        "checksum",
+        "raw_file"
+      ],
+      "reason": "Pinned AGPL-3.0 repository-license signal at 7c7fc62a98b820d5d13946717661d2f32b898c03; embedded third-party ownership remains subject to takedown review.",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "immutable_source_url": "https://github.com/openss7/openss7/commit/7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license": {
+        "spdx": "AGPL-3.0",
+        "name": "GNU Affero General Public License v3.0",
+        "basis": "repository-license-signal",
+        "files": [
+          {
+            "source_path": "COPYING",
+            "pinned_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/COPYING",
+            "git_blob_oid": "939a6f41f7cb205024328b3ee392b9ce340f0eee",
+            "sha256": "51ec650d34a292141ac2b01f626a5ed3713c440939e9d3bab54f74530868766f"
+          }
+        ]
+      }
+    },
+    {
+      "id": "osnmpd-mibs",
+      "publisher": "verrio/osnmpd",
+      "official_source_url": "https://github.com/verrio/osnmpd/tree/a7c7830cfbbb77fc20d18021531e250267da67e3",
+      "rights_evidence_url": "https://raw.githubusercontent.com/verrio/osnmpd/a7c7830cfbbb77fc20d18021531e250267da67e3/LICENSE",
+      "checked_at": "2026-07-19",
+      "publication_mode": "redistributable",
+      "content_intake": "approved",
+      "scopes": {
+        "metadata_index": "approved",
+        "rendered_text": "approved",
+        "api_output": "approved",
+        "raw_download": "approved",
+        "bulk_export": "approved"
+      },
+      "public_fields": [
+        "module",
+        "oid",
+        "symbol",
+        "syntax",
+        "access",
+        "description",
+        "source_url",
+        "checksum",
+        "raw_file"
+      ],
+      "reason": "Pinned MIT repository-license signal at a7c7830cfbbb77fc20d18021531e250267da67e3; embedded third-party ownership remains subject to takedown review.",
+      "source_revision": "a7c7830cfbbb77fc20d18021531e250267da67e3",
+      "immutable_source_url": "https://github.com/verrio/osnmpd/commit/a7c7830cfbbb77fc20d18021531e250267da67e3",
+      "license": {
+        "spdx": "MIT",
+        "name": "MIT License",
+        "basis": "repository-license-signal",
+        "files": [
+          {
+            "source_path": "LICENSE",
+            "pinned_url": "https://raw.githubusercontent.com/verrio/osnmpd/a7c7830cfbbb77fc20d18021531e250267da67e3/LICENSE",
+            "git_blob_oid": "08961ed7dfc1ce108935e4faaab315a26585e71c",
+            "sha256": "05ffd98345e1e55f17ba357101039c69ed69ef86d0243d74fe11891e7b3c4929"
+          }
+        ]
+      }
+    },
+    {
       "id": "palo-alto-networks",
       "publisher": "Palo Alto Networks enterprise SNMP MIBs",
       "official_source_url": "https://docs.paloaltonetworks.com/resources/snmp-mib-files",
@@ -415,6 +673,49 @@
         "rights_state"
       ],
       "reason": "Palo Alto Networks grants a personal non-commercial internal-use copy and prohibits modification, commercial/public use, transfer, or reproduction and distribution without prior written permission."
+    },
+    {
+      "id": "pandora-open-mibs",
+      "publisher": "pandorafms/pandora-open",
+      "official_source_url": "https://github.com/pandorafms/pandora-open/tree/ab7e2a4c20707834cd1ed28fefc06631cbfa8f15",
+      "rights_evidence_url": "https://raw.githubusercontent.com/pandorafms/pandora-open/ab7e2a4c20707834cd1ed28fefc06631cbfa8f15/LICENSE",
+      "checked_at": "2026-07-19",
+      "publication_mode": "redistributable",
+      "content_intake": "approved",
+      "scopes": {
+        "metadata_index": "approved",
+        "rendered_text": "approved",
+        "api_output": "approved",
+        "raw_download": "approved",
+        "bulk_export": "approved"
+      },
+      "public_fields": [
+        "module",
+        "oid",
+        "symbol",
+        "syntax",
+        "access",
+        "description",
+        "source_url",
+        "checksum",
+        "raw_file"
+      ],
+      "reason": "Pinned GPL-2.0 repository-license signal at ab7e2a4c20707834cd1ed28fefc06631cbfa8f15; embedded third-party ownership remains subject to takedown review.",
+      "source_revision": "ab7e2a4c20707834cd1ed28fefc06631cbfa8f15",
+      "immutable_source_url": "https://github.com/pandorafms/pandora-open/commit/ab7e2a4c20707834cd1ed28fefc06631cbfa8f15",
+      "license": {
+        "spdx": "GPL-2.0",
+        "name": "GNU General Public License v2.0",
+        "basis": "repository-license-signal",
+        "files": [
+          {
+            "source_path": "LICENSE",
+            "pinned_url": "https://raw.githubusercontent.com/pandorafms/pandora-open/ab7e2a4c20707834cd1ed28fefc06631cbfa8f15/LICENSE",
+            "git_blob_oid": "d159169d1050894d3ea3b98e1c965c4058208fe1",
+            "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643"
+          }
+        ]
+      }
     },
     {
       "id": "qnap",
@@ -459,6 +760,92 @@
         "rights_state"
       ],
       "reason": "Schneider's terms state site content is proprietary, other use is prohibited, systematic extraction is forbidden, and no copyright transfer or grant is implied."
+    },
+    {
+      "id": "sigscale-mibs",
+      "publisher": "sigscale/sigscale_mibs",
+      "official_source_url": "https://github.com/sigscale/sigscale_mibs/tree/14259b9e52a5cd7ff0fd60b33728da616792887d",
+      "rights_evidence_url": "https://raw.githubusercontent.com/sigscale/sigscale_mibs/14259b9e52a5cd7ff0fd60b33728da616792887d/COPYING",
+      "checked_at": "2026-07-19",
+      "publication_mode": "redistributable",
+      "content_intake": "approved",
+      "scopes": {
+        "metadata_index": "approved",
+        "rendered_text": "approved",
+        "api_output": "approved",
+        "raw_download": "approved",
+        "bulk_export": "approved"
+      },
+      "public_fields": [
+        "module",
+        "oid",
+        "symbol",
+        "syntax",
+        "access",
+        "description",
+        "source_url",
+        "checksum",
+        "raw_file"
+      ],
+      "reason": "Pinned Apache-2.0 repository-license signal at 14259b9e52a5cd7ff0fd60b33728da616792887d; embedded third-party ownership remains subject to takedown review.",
+      "source_revision": "14259b9e52a5cd7ff0fd60b33728da616792887d",
+      "immutable_source_url": "https://github.com/sigscale/sigscale_mibs/commit/14259b9e52a5cd7ff0fd60b33728da616792887d",
+      "license": {
+        "spdx": "Apache-2.0",
+        "name": "Apache License 2.0",
+        "basis": "repository-license-signal",
+        "files": [
+          {
+            "source_path": "COPYING",
+            "pinned_url": "https://raw.githubusercontent.com/sigscale/sigscale_mibs/14259b9e52a5cd7ff0fd60b33728da616792887d/COPYING",
+            "git_blob_oid": "75a336e15b7221bbe4bde9fece1cd56ee7ee7230",
+            "sha256": "4e9f558225b7842cf062ed9104f031217e95c421de59140e6f066b307a2ce9f3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ska-low-sre-vendor-mibs",
+      "publisher": "ska-telescope/ska-low-sre-vendor-mib",
+      "official_source_url": "https://github.com/ska-telescope/ska-low-sre-vendor-mib/tree/47e13d3d6aa8413f9d44779a3180e407d536d847",
+      "rights_evidence_url": "https://raw.githubusercontent.com/ska-telescope/ska-low-sre-vendor-mib/47e13d3d6aa8413f9d44779a3180e407d536d847/LICENSE",
+      "checked_at": "2026-07-19",
+      "publication_mode": "redistributable",
+      "content_intake": "approved",
+      "scopes": {
+        "metadata_index": "approved",
+        "rendered_text": "approved",
+        "api_output": "approved",
+        "raw_download": "approved",
+        "bulk_export": "approved"
+      },
+      "public_fields": [
+        "module",
+        "oid",
+        "symbol",
+        "syntax",
+        "access",
+        "description",
+        "source_url",
+        "checksum",
+        "raw_file"
+      ],
+      "reason": "Pinned BSD-3-Clause repository-license signal at 47e13d3d6aa8413f9d44779a3180e407d536d847; embedded third-party ownership remains subject to takedown review.",
+      "source_revision": "47e13d3d6aa8413f9d44779a3180e407d536d847",
+      "immutable_source_url": "https://github.com/ska-telescope/ska-low-sre-vendor-mib/commit/47e13d3d6aa8413f9d44779a3180e407d536d847",
+      "license": {
+        "spdx": "BSD-3-Clause",
+        "name": "BSD 3-Clause \"New\" or \"Revised\" License",
+        "basis": "repository-license-signal",
+        "files": [
+          {
+            "source_path": "LICENSE",
+            "pinned_url": "https://raw.githubusercontent.com/ska-telescope/ska-low-sre-vendor-mib/47e13d3d6aa8413f9d44779a3180e407d536d847/LICENSE",
+            "git_blob_oid": "4d1f175dc48f28d801398d9402819d6ad8102368",
+            "sha256": "0fff3c0250dda39b7b640bd8084de8566e4cc9dd7cdd32fd5278a9df61f0a63d"
+          }
+        ]
+      }
     },
     {
       "id": "synology",

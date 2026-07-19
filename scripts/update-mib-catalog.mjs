@@ -97,6 +97,51 @@ export function moduleName(text) {
   return text.match(/^\s*([A-Za-z][A-Za-z0-9-]*)\s+DEFINITIONS(?:\s+IMPLICIT\s+TAGS)?\s*::=\s*BEGIN/m)?.[1] ?? null;
 }
 
+const OID_SEEDS = new Map([
+  ["itu-t", "0"], ["ccitt", "0"], ["iso", "1"], ["joint-iso-itu-t", "2"], ["joint-iso-ccitt", "2"],
+  ["org", "1.3"], ["dod", "1.3.6"], ["internet", "1.3.6.1"],
+  ["directory", "1.3.6.1.1"], ["mgmt", "1.3.6.1.2"], ["mib-2", "1.3.6.1.2.1"],
+  ["transmission", "1.3.6.1.2.1.10"], ["experimental", "1.3.6.1.3"],
+  ["mplsStdMIB", "1.3.6.1.2.1.10.166"],
+  ["private", "1.3.6.1.4"], ["enterprises", "1.3.6.1.4.1"], ["security", "1.3.6.1.5"],
+  ["snmpV2", "1.3.6.1.6"], ["snmpDomains", "1.3.6.1.6.1"],
+  ["snmpProxys", "1.3.6.1.6.2"], ["snmpModules", "1.3.6.1.6.3"], ["zeroDotZero", "0.0"]
+]);
+
+// Preserve offsets while excluding comments and quoted prose from grammar scans.
+// MIB descriptions regularly contain illustrative `foo OBJECT IDENTIFIER ::= ...`
+// text which is data, not a module definition.
+function maskSmiNonCode(text) {
+  const masked = text.split("");
+  let quoted = false;
+  for (let index = 0; index < text.length; index += 1) {
+    if (quoted) {
+      if (text[index] === '"' && text[index + 1] === '"') {
+        masked[index] = " ";
+        masked[index + 1] = " ";
+        index += 1;
+      } else if (text[index] === '"') {
+        masked[index] = " ";
+        quoted = false;
+      } else if (text[index] !== "\n" && text[index] !== "\r") masked[index] = " ";
+      continue;
+    }
+    if (text[index] === '"') {
+      masked[index] = " ";
+      quoted = true;
+      continue;
+    }
+    if (text[index] === "-" && text[index + 1] === "-") {
+      while (index < text.length && text[index] !== "\n" && text[index] !== "\r") {
+        masked[index] = " ";
+        index += 1;
+      }
+      index -= 1;
+    }
+  }
+  return masked.join("");
+}
+
 function extractRfcModules(text) {
   const lines = text.replace(/\r\n?/g, "\n").split("\n");
   const modules = [];
@@ -153,9 +198,22 @@ function ietfNotice(rfcNumber, year) {
   return `-- mibvendor redistribution notice\n-- Derived from IETF RFC ${rfcNumber}. Please retain this notice.\n-- Copyright (c) ${year} IETF Trust and the persons identified as the\n-- document authors. All rights reserved.\n-- Redistribution and use in source and binary forms, with or without\n-- modification, are permitted provided that the following conditions are met:\n-- 1. Redistributions of source code must retain the copyright notice, this\n--    list of conditions and the following disclaimer.\n-- 2. Redistributions in binary form must reproduce the copyright notice, this\n--    list of conditions and the following disclaimer in the documentation\n--    and/or other materials provided with the distribution.\n-- 3. Neither the name of Internet Society, IETF or IETF Trust, nor the names\n--    of specific contributors, may be used to endorse or promote products\n--    derived from this software without specific prior written permission.\n-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS AS IS\n-- AND ANY EXPRESS OR IMPLIED WARRANTIES ARE DISCLAIMED. See the complete\n-- Revised BSD terms at ${IETF_LICENSE_URL}\n\n`;
 }
 
+export function importBindingsFor(text) {
+  const masked = maskSmiNonCode(text);
+  const body = masked.match(/\bIMPORTS\b([\s\S]*?);/)?.[1] ?? "";
+  const bindings = {};
+  for (const match of body.matchAll(/([\s\S]*?)\bFROM\s+([A-Za-z][A-Za-z0-9-]*)/g)) {
+    const sourceModule = match[2];
+    for (const symbol of match[1].match(/[A-Za-z][A-Za-z0-9-]*/g) ?? []) {
+      if (bindings[symbol] && bindings[symbol] !== sourceModule) bindings[symbol] = null;
+      else if (!(symbol in bindings)) bindings[symbol] = sourceModule;
+    }
+  }
+  return bindings;
+}
+
 export function importsFor(text) {
-  const body = text.match(/\bIMPORTS\b([\s\S]*?);/)?.[1] ?? "";
-  return [...new Set([...body.matchAll(/\bFROM\s+([A-Za-z][A-Za-z0-9-]*)/g)].map((match) => match[1]))].sort();
+  return [...new Set(Object.values(importBindingsFor(text)).filter(Boolean))].sort();
 }
 
 function firstDescription(block) {
@@ -186,19 +244,36 @@ function parseRevision(text) {
 
 export function parseDefinitions(text, module) {
   const reservedSymbols = new Set(["ACCESS", "AUGMENTS", "DEFVAL", "DESCRIPTION", "INDEX", "MAX-ACCESS", "MIN-ACCESS", "REFERENCE", "STATUS", "SYNTAX", "UNITS"]);
-  const starts = [...text.matchAll(/^\s*([A-Za-z][A-Za-z0-9-]*)\s+(MODULE-IDENTITY|OBJECT-TYPE|OBJECT\s+IDENTIFIER|OBJECT-IDENTITY|NOTIFICATION-TYPE)\b/gm)];
+  const masked = maskSmiNonCode(text);
+  // A few upstream snapshots concatenate definitions after the previous
+  // assignment's closing brace. Accept that exact boundary without turning
+  // the scan into an unanchored prose search.
+  const starts = [...masked.matchAll(/(?:^[ \t]*|(?<=\})[ \t]*)([A-Za-z][A-Za-z0-9-]*)\s+(MODULE-IDENTITY|OBJECT-TYPE|OBJECT\s+IDENTIFIER|OBJECT-IDENTITY|NOTIFICATION-TYPE)\b/gm)];
   return starts.map((match, index) => {
     const block = text.slice(match.index, starts[index + 1]?.index ?? text.length);
-    const assignment = block.match(/::=\s*\{\s*([^}]+)\}/s)?.[1]
-      ?.replace(/--[^\n]*/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
+    const maskedBlock = masked.slice(match.index, starts[index + 1]?.index ?? text.length);
+    const assignment = maskedBlock.match(/::=\s*\{\s*([^}]+)\}/s)?.[1]?.replace(/\s+/g, " ").trim();
     if (!assignment) return null;
-    const tokens = assignment.split(" ");
-    const final = tokens.at(-1);
-    const arc = Number(final.match(/(?:\(|^)(\d+)\)?$/)?.[1]);
-    const parent = tokens.at(-2)?.replace(/\(\d+\)$/, "") ?? null;
-    if (!parent || !Number.isSafeInteger(arc)) return null;
+    const tokens = [...assignment.matchAll(/([A-Za-z][A-Za-z0-9-]*)(?:\s*\(\s*(\d+)\s*\))?|\b(\d+)\b/g)].map((token) => ({
+      label: token[1] ?? null,
+      arc: Number(token[2] ?? token[3] ?? NaN)
+    }));
+    if (tokens.length < 2 || !Number.isSafeInteger(tokens.at(-1).arc)) return null;
+    let parent = null;
+    let arcs = [];
+    let oid = null;
+    if (!tokens[0].label) {
+      if (tokens.every((token) => Number.isSafeInteger(token.arc))) oid = tokens.map((token) => token.arc).join(".");
+    } else if (Number.isSafeInteger(tokens[0].arc)) {
+      if (tokens.every((token) => Number.isSafeInteger(token.arc))) oid = tokens.map((token) => token.arc).join(".");
+    } else if (tokens.slice(1).every((token) => Number.isSafeInteger(token.arc))) {
+      parent = tokens[0].label;
+      arcs = tokens.slice(1).map((token) => token.arc);
+      const seed = OID_SEEDS.get(parent);
+      if (seed) oid = `${seed}.${arcs.join(".")}`;
+    }
+    if (!oid && (!parent || !arcs.length)) return null;
+    const arc = tokens.at(-1).arc;
     const syntax = block.match(/\bSYNTAX\s+([\s\S]*?)(?=\n\s*(?:MAX-ACCESS|MIN-ACCESS|ACCESS|STATUS|DESCRIPTION|REFERENCE|INDEX|AUGMENTS|DEFVAL|::=))/)?.[1]
       ?.replace(/--[^\n]*/g, " ")
       .replace(/\s+/g, " ")
@@ -213,20 +288,22 @@ export function parseDefinitions(text, module) {
       kind: match[2].replace(/\s+/g, " ").toLowerCase().replaceAll(" ", "-"),
       parent,
       arc,
+      arcs,
       syntax,
       access: block.match(/\b(?:MAX-ACCESS|ACCESS)\s+([A-Za-z-]+)/)?.[1] ?? null,
       status: block.match(/\bSTATUS\s+([A-Za-z-]+)/)?.[1] ?? null,
       description: firstDescription(block),
       enums,
-      oid: null,
-      oid_resolution: "unresolved"
+      oid,
+      oid_resolution: oid ? "source-absolute" : "unresolved"
     };
   }).filter((object) => object && !reservedSymbols.has(object.symbol));
 }
 
 export function parseTextualConventions(text, module) {
-  const starts = [...text.matchAll(/^[ \t]*([A-Za-z][A-Za-z0-9-]*)\s*::=\s*TEXTUAL-CONVENTION\b/gm)];
-  const definitionCandidates = [...text.matchAll(/^[ \t]*[A-Za-z][A-Za-z0-9-]*\s+(?:(?:MODULE-IDENTITY|OBJECT-TYPE|OBJECT-IDENTITY|NOTIFICATION-TYPE|NOTIFICATION-GROUP|OBJECT-GROUP|MODULE-COMPLIANCE|AGENT-CAPABILITIES|TRAP-TYPE)\b|OBJECT\s+IDENTIFIER\s*::=|::=\s*TEXTUAL-CONVENTION\b)/gm)];
+  const masked = maskSmiNonCode(text);
+  const starts = [...masked.matchAll(/^[ \t]*([A-Za-z][A-Za-z0-9-]*)\s*::=\s*TEXTUAL-CONVENTION\b/gm)];
+  const definitionCandidates = [...masked.matchAll(/^[ \t]*[A-Za-z][A-Za-z0-9-]*\s+(?:(?:MODULE-IDENTITY|OBJECT-TYPE|OBJECT-IDENTITY|NOTIFICATION-TYPE|NOTIFICATION-GROUP|OBJECT-GROUP|MODULE-COMPLIANCE|AGENT-CAPABILITIES|TRAP-TYPE)\b|OBJECT\s+IDENTIFIER\s*::=|::=\s*TEXTUAL-CONVENTION\b)/gm)];
   const definitionStarts = definitionCandidates.filter((candidate, index) => {
     if (/::=\s*TEXTUAL-CONVENTION\b/.test(candidate[0])) return true;
     const block = text.slice(candidate.index, definitionCandidates[index + 1]?.index ?? text.length);
@@ -235,7 +312,8 @@ export function parseTextualConventions(text, module) {
   return starts.map((match) => {
     const nextDefinition = definitionStarts.find((offset) => offset > match.index);
     const block = text.slice(match.index, nextDefinition ?? text.length);
-    const syntaxMarker = [...block.matchAll(/\bSYNTAX[ \t]+/g)].at(-1);
+    const maskedBlock = masked.slice(match.index, nextDefinition ?? text.length);
+    const syntaxMarker = [...maskedBlock.matchAll(/\bSYNTAX[ \t]+/g)].at(-1);
     const syntax = syntaxMarker
       ? block.slice(syntaxMarker.index + syntaxMarker[0].length).replace(/\n[ \t]*END\b[\s\S]*$/, "").replace(/--[^\n]*/g, " ").replace(/\s+/g, " ").trim()
       : null;
@@ -252,7 +330,7 @@ export function parseTextualConventions(text, module) {
 }
 
 export function parseMacros(text, module) {
-  return [...text.matchAll(/^[ \t]*([A-Za-z][A-Za-z0-9-]*)\s+MACRO\s*::=\s*BEGIN\b/gm)].map((match) => ({
+  return [...maskSmiNonCode(text).matchAll(/^[ \t]*([A-Za-z][A-Za-z0-9-]*)\s+MACRO\s*::=\s*BEGIN\b/gm)].map((match) => ({
     module,
     symbol: match[1],
     kind: "macro"
@@ -260,32 +338,32 @@ export function parseMacros(text, module) {
 }
 
 export function resolveObjects(parsedModules, rawDirectories, { externalObjects = [], useNetSnmp = true } = {}) {
-  const seeds = new Map([
-    ["iso", "1"], ["org", "1.3"], ["dod", "1.3.6"], ["internet", "1.3.6.1"],
-    ["directory", "1.3.6.1.1"], ["mgmt", "1.3.6.1.2"], ["mib-2", "1.3.6.1.2.1"],
-    ["transmission", "1.3.6.1.2.1.10"], ["experimental", "1.3.6.1.3"],
-    ["mplsStdMIB", "1.3.6.1.2.1.10.166"],
-    ["private", "1.3.6.1.4"], ["enterprises", "1.3.6.1.4.1"], ["security", "1.3.6.1.5"],
-    ["snmpV2", "1.3.6.1.6"], ["snmpDomains", "1.3.6.1.6.1"],
-    ["snmpProxys", "1.3.6.1.6.2"], ["snmpModules", "1.3.6.1.6.3"], ["zeroDotZero", "0.0"]
-  ]);
   const all = parsedModules.flatMap((item) => item.objects);
+  const moduleInputs = new Map(parsedModules.map((item) => [item.module, item]));
   const bySymbol = new Map();
+  const byQualifiedSymbol = new Map();
   for (const object of [...all, ...externalObjects]) {
     const values = bySymbol.get(object.symbol) ?? [];
     values.push(object);
     bySymbol.set(object.symbol, values);
+    const qualified = `${object.module}\0${object.symbol}`;
+    const qualifiedValues = byQualifiedSymbol.get(qualified) ?? [];
+    qualifiedValues.push(object);
+    byQualifiedSymbol.set(qualified, qualifiedValues);
   }
   for (let pass = 0; pass < all.length; pass += 1) {
     let changed = false;
     for (const object of all.filter((candidate) => !candidate.oid)) {
       const local = bySymbol.get(object.parent)?.filter((candidate) => candidate.module === object.module && candidate.oid) ?? [];
+      const importedModule = moduleInputs.get(object.module)?.imports?.[object.parent];
+      const imported = importedModule ? byQualifiedSymbol.get(`${importedModule}\0${object.parent}`)?.filter((candidate) => candidate.oid) ?? [] : [];
       const global = bySymbol.get(object.parent)?.filter((candidate) => candidate.oid) ?? [];
-      const parentOids = new Set((local.length ? local : global).map((candidate) => candidate.oid));
-      const seed = seeds.get(object.parent);
+      const candidates = local.length ? local : imported.length ? imported : global;
+      const parentOids = new Set(candidates.map((candidate) => candidate.oid));
+      const seed = OID_SEEDS.get(object.parent);
       if (seed) parentOids.add(seed);
       if (parentOids.size !== 1) continue;
-      object.oid = `${[...parentOids][0]}.${object.arc}`;
+      object.oid = `${[...parentOids][0]}.${(object.arcs?.length ? object.arcs : [object.arc]).join(".")}`;
       object.oid_resolution = "source-graph";
       changed = true;
     }
@@ -526,7 +604,7 @@ async function main() {
     const text = source.bytes.toString("utf8");
     const objects = parseDefinitions(text, source.name);
     const dependencies = importsFor(text);
-    parsedModules.push({ module: source.name, objects });
+    parsedModules.push({ module: source.name, objects, imports: importBindingsFor(text) });
     manifestModules.push({
       id: source.name,
       publisher: source.publisher,
@@ -588,4 +666,12 @@ async function main() {
 }
 
 const invokedPath = process.argv[1] ? path.resolve(process.argv[1]) : null;
-if (invokedPath === fileURLToPath(import.meta.url)) await main();
+if (invokedPath === fileURLToPath(import.meta.url)) {
+  if (!process.argv.includes("--rebuild-rights-cleared-seed")) {
+    throw new Error(
+      "This command rebuilds the historical rights-cleared-2026-07-14.1 seed and would overwrite the active catalog. " +
+      "Use the corpus candidate and promotion workflow for active releases. Pass --rebuild-rights-cleared-seed only for an intentional seed rebuild.",
+    );
+  }
+  await main();
+}

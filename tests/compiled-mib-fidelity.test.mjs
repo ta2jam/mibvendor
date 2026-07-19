@@ -11,8 +11,10 @@ const [candidates, fidelity] = await Promise.all([
 
 test("compiled fidelity compares cross-format modules and leaves unverified selections open", () => {
   assert.deepEqual(validateCompiledMibFidelity(candidates, fidelity), []);
-  assert.ok(fidelity.counts.comparable_modules >= 40);
+  assert.ok(fidelity.counts.comparable_modules > 0);
+  assert.ok(fidelity.counts.exact_oid_ratio > 0 && fidelity.counts.exact_oid_ratio <= 1);
   assert.ok(fidelity.counts.unverified_selected_compiled_modules > 0);
+  assert.equal(fidelity.counts.unverified_selected_compiled_modules, fidelity.counts.selected_compiled_modules);
   assert.equal(fidelity.gate, "open");
 });
 

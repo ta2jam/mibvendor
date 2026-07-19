@@ -34,6 +34,14 @@ export function validateSourceDiscovery(registry, document) {
       && (source.repository_license?.files?.length ?? 0) > 0;
     const expectedLicenseStatus = licenseDerivedApproval ? "license-derived-approval" : "signal-only";
     if (source.repository_license?.status !== expectedLicenseStatus) failures.push(`Source ${source.id} repository license status drifted`);
+    const allowedRecognitionBasis = licenseDerivedApproval
+      ? new Set(["pinned-ref", "default-branch-classification-matching-pinned-blob"])
+      : new Set(["unrecognized"]);
+    if (!allowedRecognitionBasis.has(source.repository_license?.recognition_basis)) failures.push(`Source ${source.id} license recognition basis drifted`);
+    if (licenseDerivedApproval && !source.repository_license.files.some((file) => (
+      file.path === source.repository_license.classification_path
+      && file.git_blob_oid === source.repository_license.classification_git_blob_oid
+    ))) failures.push(`Source ${source.id} SPDX classification is not bound to a pinned license blob`);
     const minimum = registrySources.get(source.id)?.minimum_candidate_count;
     if (!Number.isSafeInteger(minimum) || minimum < 1 || source.minimum_candidate_count !== minimum) failures.push(`Source ${source.id} minimum candidate boundary drifted`);
     if (source.candidate_count < minimum) failures.push(`Source ${source.id} candidate inventory is below its reviewed minimum`);
@@ -43,6 +51,10 @@ export function validateSourceDiscovery(registry, document) {
     }
     for (const licenseFile of source.repository_license?.files ?? []) {
       if (!licenseFile.pinned_url.includes(`/${source.commit}/`)) failures.push(`Source ${source.id} license URL is not pinned`);
+    }
+    if (source.repository_license?.recognition_basis === "default-branch-classification-matching-pinned-blob"
+      && !source.repository_license.files.some((file) => source.repository_license.api_url?.includes(`/${source.commit}/${file.path}`))) {
+      failures.push(`Source ${source.id} fallback SPDX signal is not bound to its pinned license URL`);
     }
   }
 
@@ -83,7 +95,7 @@ export function validateSourceDiscovery(registry, document) {
   }
 
   const serialized = JSON.stringify(document);
-  if (/gh[opusr]_[A-Za-z0-9_]{20,}/.test(serialized) || /authorization/i.test(serialized)) failures.push("Discovery snapshot contains a credential marker");
+  if (/gh[opusr]_[A-Za-z0-9_]{20,}/.test(serialized) || /"authorization"\s*:/i.test(serialized)) failures.push("Discovery snapshot contains a credential marker");
   return failures;
 }
 

@@ -6,7 +6,7 @@
 
 [Open mibvendor](https://mibvendor.io) ·
 [Use it safely](#use-it-safely) ·
-[API](#public-alpha-api)
+[Free API](#permanently-free-public-api)
 
 </div>
 
@@ -27,18 +27,22 @@ It provides:
   email addresses;
 - evidence-bounded `sysObjectID` lookup with explicit exact,
   `enterprise_only`, `not_found`, and `unavailable_due_to_rights` states;
+- explicit identity claim strength, including platform-level matches that do
+  not assert a hardware model;
 - direct, transitive, missing, and cyclic module-dependency states;
 - a rights-cleared MIB catalog with source, revision, license, SHA-256, and
   raw-download availability;
 - browser-local decoding of numeric `snmpwalk` output.
 
-The active data release contains 110 redistributable modules and 5,392 parsed
-OID nodes: 72 file-reviewed IETF modules, all 20 MIB files directly linked from
-IANA's maintained-MIB registry group, and 18 Net-SNMP/UCD/LM-Sensors project
-modules from pinned Net-SNMP tag `v5.9.5.2`. Fourteen IETF candidate RFCs were
-quarantined because the required code-component notice was not established.
-The PEN registry remains complete for the bundled IANA snapshot. Unsupported
-vendors are not converted into guessed products or models.
+The active `license-signaled-2026-07-20.2` data release contains 702
+redistributable modules and 76,606 searchable catalog OID nodes. It also records
+4,138 textual-convention definitions and 1,273 notifications. The release
+preserves the 110-module IETF/IANA/Net-SNMP baseline and promotes 592 modules
+from nine additional pinned sources whose recognized repository license and
+license file satisfy the publication policy. The 32-source public directory
+separates 12 redistributable sources from 20 directory-only sources. The PEN
+registry remains complete for the bundled IANA snapshot. Unsupported vendors
+are not converted into guessed products or models.
 
 ## Use it safely
 
@@ -54,11 +58,16 @@ vendors are not converted into guessed products or models.
 - A MIB definition does not prove that a device or firmware implements the
   object. Verify the numeric target against an authorized device.
 
-## Public alpha API
+## Permanently free public API
 
-The public API is live at `https://mibvendor.io/v1`. It requires no API key
-during alpha, is limited to 120 requests per minute per client, and has no
-availability SLA. Every successful response identifies its immutable
+The public API is live at `https://mibvendor.io/v1` and is permanently free:
+there is no paid tier, subscription, billing, or paid quota upgrade. It
+currently requires no API key. If optional keys are introduced, they will be
+free abuse-control credentials only—not a paid feature.
+
+Free access is fair-use bounded, not unlimited use or an availability SLA. The
+current service limits each client to 120 requests per minute and bounds batch,
+body, query, and page sizes. Every successful response identifies its immutable
 `data_release`.
 
 | Method | Endpoint | Purpose |
@@ -67,7 +76,7 @@ availability SLA. Every successful response identifies its immutable
 | `GET` | `/v1/objects/{objectId}` | Structured object intelligence |
 | `GET` | `/v1/modules?q=BFD` | Rights-cleared MIB module catalog |
 | `GET` | `/v1/modules/{moduleId}` | License, provenance, checksums, dependencies |
-| `GET` | `/v1/modules/{moduleId}/raw` | Raw file only when redistribution is approved |
+| `GET` | `/v1/modules/{moduleId}/raw` | Exact raw MIB + license/notice + provenance TAR, only when approved |
 | `GET` | `/v1/sources` | Reviewed publication modes and rights scopes |
 | `GET` | `/v1/enterprises/{number}` | IANA PEN assignment |
 | `GET` | `/v1/sys-object-ids/{oid}` | Exact identity or PEN boundary |
@@ -89,14 +98,21 @@ Batch order and duplicate inputs are preserved. Per-item states distinguish
 `application/problem+json`.
 
 The live [OpenAPI 3.1 specification](https://mibvendor.io/openapi.json) is the
-machine-readable contract. Alpha limits may tighten to contain abuse; clients
-must read `RateLimit-*` and `Retry-After` headers instead of assuming a fixed
-quota.
+machine-readable contract. Fair-use limits may change to contain abuse;
+clients must read `RateLimit-*` and `Retry-After`, honor `429` responses, and
+use `Cache-Control` and `ETag` validators instead of assuming a fixed quota.
+GET responses advertise their own cache policy; body-dependent POST results are
+`no-store`. Module lists use cursor pagination. Rights-approved download
+archives are deterministic, but the active unversioned raw route revalidates
+publication controls on every use. The complete policy is recorded in
+[ADR 0009](docs/decisions/0009-permanently-free-api.md).
 
-Raw responses include `X-Content-SHA256` plus `Link` relations for the license
-and original source. A missing raw endpoint is not an invitation to obtain or
-republish the file indirectly; follow the module/source metadata to the
-publisher's official location.
+Raw responses are TAR archives containing the exact MIB, `LICENSE.txt`, and
+`PROVENANCE.json`. `X-Content-SHA256` identifies the archive and
+`X-MIB-SHA256` identifies the exact MIB entry; `Link` relations retain the
+license and original source. A missing raw endpoint is not an invitation to
+obtain or republish the file indirectly; follow the module/source metadata to
+the publisher's official location.
 
 ## Data trust
 
@@ -111,16 +127,20 @@ fail-closed publication modes:
   extracted;
 - `quarantine`: no source content reaches a public response.
 
-There are currently no vendor sources approved for `metadata-only`. The 19
-reviewed vendor families and legacy IETF class remain directory-only and their
-content intake remains quarantined. Public download or a factual-looking OID is
-not treated as permission.
+There are currently no vendor sources approved for `metadata-only`. One pinned
+Apache-2.0 SigScale source supports a single platform-level identity mapping;
+the 19 reviewed vendor families and legacy IETF class remain directory-only and
+their content intake remains quarantined. Public download or a factual-looking
+OID is not treated as permission.
 
 The IANA PEN snapshot retains only number and organization fields and records
-its source date and SHA-256. Exact Net-SNMP identities and raw project MIBs are
-pinned to a specific upstream revision. Every raw module is manifest-bound to
+its source date and SHA-256. Eighteen Net-SNMP platform identities and one
+SigScale OCS platform identity are pinned to exact upstream revisions; none is
+presented as an exact hardware model. Every raw module is manifest-bound to
 its original-source SHA-256, served-artifact SHA-256, license, dependencies,
-revision, and immutable data release.
+revision, and immutable data release. A two-event hash-chained publication log
+records the baseline and current release promotion; source and module kill
+switches default to fail closed.
 
 Current validation boundaries remain published in the
 [Phase 0 status](docs/PHASE-0.md) and [product definition](docs/PRODUCT.md).

@@ -52,7 +52,7 @@ function staticParseCompiledModule(text, filenameModule) {
   const exportModule = text.match(/mibBuilder\.exportSymbols\(\s*["']([^"']+)["']/)?.[1] ?? null;
   const dependencies = [...new Set([...text.matchAll(/mibBuilder\.importSymbols\(\s*["']([^"']+)["']/g)]
     .map((match) => match[1]))].sort();
-  const objectPattern = /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(MibScalar|MibTable|MibTableRow|MibTableColumn|NotificationType|MibIdentifier|ObjectIdentity|ModuleIdentity)\s*\(\s*\(\s*((?:\d+\s*,\s*)+\d+\s*,?)\s*\)/gm;
+  const objectPattern = /^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(MibScalar|MibTable|MibTableRow|MibTableColumn|NotificationType|MibIdentifier|ObjectIdentity|ModuleIdentity)\s*\(\s*(\(\s*\d+(?:\s*,\s*\d+)*\s*,?\s*\)(?:\s*\+\s*\(\s*\d+(?:\s*,\s*\d+)*\s*,?\s*\))*)/gm;
   const matches = [...text.matchAll(objectPattern)];
   const kindByConstructor = {
     MibScalar: "object-type",
@@ -67,7 +67,9 @@ function staticParseCompiledModule(text, filenameModule) {
   const module = exportModule ?? filenameModule;
   const objects = matches.map((match, index) => {
     const block = text.slice(match.index, matches[index + 1]?.index ?? text.length);
-    const arcs = match[3].split(",").map((arc) => arc.trim()).filter(Boolean).map(Number);
+    // PySNMP emits some notification OIDs as `(base) + (suffix)`. Only
+    // numeric tuple concatenation is accepted; source code is never run.
+    const arcs = [...match[3].matchAll(/\d+/g)].map((arc) => Number(arc[0]));
     return {
       id: `${module.toLowerCase()}--${match[1].toLowerCase()}`,
       module,

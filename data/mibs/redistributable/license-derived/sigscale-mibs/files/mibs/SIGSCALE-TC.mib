@@ -1,0 +1,35 @@
+-- SIGSCALE-TC.mib:  SigScale Textual Conventions
+
+SIGSCALE-TC DEFINITIONS ::= BEGIN
+
+IMPORTS
+    sigscaleManagement
+        FROM SIGSCALE-SMI
+    MODULE-IDENTITY
+        FROM SNMPv2-SMI
+    TEXTUAL-CONVENTION
+        FROM SNMPv2-TC;
+
+sigscaleTextualConvention MODULE-IDENTITY
+    LAST-UPDATED "201806190000Z"
+    ORGANIZATION "SigScale Global Inc."
+    CONTACT-INFO
+        "SigScale Global Inc.
+         716/1/3 Dr. Danister de Silva Mawatha
+         Colombo 00900
+         Sri Lanka
+         Tel: +94771231660
+         E-mail: support@sigscale.org"
+    DESCRIPTION
+        "This module defines textual conventions used within SigScale enterprise MIBs."
+    ::= {sigscaleManagement 1}
+
+--
+
+SigScaleCustomerName ::= TEXTUAL-CONVENTION
+    STATUS current
+    DESCRIPTION
+        "The common name of the customer."
+    SYNTAX OCTET STRING (SIZE(20))
+
+END

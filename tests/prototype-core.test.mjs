@@ -7,9 +7,11 @@ import {
   MAX_WALK_BYTES,
   MAX_WALK_LINES,
   classifySearchQuery,
+  createSearchIndex,
   oidStartsWith,
   parseOid,
   parseWalk,
+  rankSearchIndex,
   resolveOid,
   searchRecords
 } from "../prototype/core.mjs";
@@ -39,6 +41,16 @@ test("task, symbol, module-qualified, and numeric queries resolve", () => {
   assert.equal(searchRecords("processor load", records)[0].symbol, "hrProcessorLoad");
 });
 
+test("a reusable search index preserves ranking without rebuilding normalized text", () => {
+  const index = createSearchIndex(records);
+  for (const query of ["interface status", "IF-MIB::ifOperStatus", "processor load", "1.3.6.1.2.1.1.3.0"]) {
+    assert.deepEqual(
+      rankSearchIndex(query, index).map(({ record, score, matchKind }) => ({ id: `${record.module}::${record.symbol}`, score, matchKind })),
+      classifySearchQuery(query, records).matches.map(({ record, score, matchKind }) => ({ id: `${record.module}::${record.symbol}`, score, matchKind }))
+    );
+  }
+});
+
 test("search classifications preserve ranking, instances, and explicit failure states", () => {
   const task = classifySearchQuery("interface status", records);
   assert.equal(task.state, "matches");
@@ -58,7 +70,7 @@ test("search classifications preserve ranking, instances, and explicit failure s
 test("prototype records expose bounded trust and release metadata", () => {
   for (const record of records) {
     assert.equal(record.rightsTier, "A — mibvendor-authored metadata and paraphrase");
-    assert.equal(record.dataRelease, "rights-cleared-2026-07-14.1");
+    assert.equal(record.dataRelease, "license-signaled-2026-07-20.2");
     assert.match(record.sourceChecked, /^\d{4}-\d{2}-\d{2}$/);
     assert.ok(record.parseStatus);
     assert.deepEqual(record.rightsScopes, ["metadata", "rendered text", "API output"]);
@@ -127,7 +139,7 @@ test("public page states safe-use and API availability boundaries", async () => 
   assert.match(html, /Local walk parsing/);
   assert.match(html, /No device connections/);
   assert.match(html, /Public API/);
-  assert.match(html, /Live public alpha/);
+  assert.match(html, /Permanently free/);
   assert.match(html, /https:\/\/mibvendor\.io\/v1/);
   assert.match(html, /open source on GitHub/);
   assert.match(html, /id="search-results"/);
@@ -136,13 +148,25 @@ test("public page states safe-use and API availability boundaries", async () => 
 });
 
 test("developer mini documentation matches the live public alpha", async () => {
-  const html = await readFile(new URL("../prototype/index.html", import.meta.url), "utf8");
+  const [html, app] = await Promise.all([
+    readFile(new URL("../prototype/index.html", import.meta.url), "utf8"),
+    readFile(new URL("../prototype/app.js", import.meta.url), "utf8")
+  ]);
   assert.match(html, /id="developers"/);
-  assert.match(html, /Live public alpha/);
-  assert.match(html, /no availability SLA yet/);
+  assert.match(html, /Free · Public alpha/);
+  assert.match(html, /permanently free/);
+  assert.match(html, /free abuse-control credentials only/);
+  assert.match(html, /fair-use bounded, not unlimited use or an availability SLA/);
+  assert.match(html, /no availability SLA/);
+  assert.match(html, /RateLimit-\*/);
+  assert.match(html, /Retry-After/);
+  assert.match(html, /Cache-Control/);
+  assert.match(html, /ETag/);
+  assert.match(html, /Module lists use cursors/);
   for (const endpoint of [
     "/v1/search?q=interface+status",
     "/v1/objects/{objectId}",
+    "/v1/objects/{objectId}/navigation",
     "/v1/enterprises/{number}",
     "/v1/sys-object-ids/{oid}",
     "/v1/modules/{module}/dependencies",
@@ -154,6 +178,33 @@ test("developer mini documentation matches the live public alpha", async () => {
   assert.match(html, /200/);
   assert.match(html, /application\/problem\+json/);
   assert.match(html, /OpenAPI 3\.1 specification/);
+  assert.match(html, /Copy curl/);
+  assert.match(html, /Copy JavaScript/);
+  assert.match(html, /Copy Python/);
+  assert.match(html, /data-release-unavailable/);
+  assert.match(html, /standard library only/);
+  assert.match(app, /navigator\.clipboard\?\.writeText/);
   assert.match(html, /120/);
   assert.doesNotMatch(html, /Get (?:an )?API key/i);
+  assert.doesNotMatch(html, /(?:buy|purchase|upgrade to) (?:an )?(?:API )?(?:key|plan|quota)/i);
+});
+
+test("browser shell exposes canonical history-based routes without shipping a framework", async () => {
+  const [html, app, styles] = await Promise.all([
+    readFile(new URL("../prototype/index.html", import.meta.url), "utf8"),
+    readFile(new URL("../prototype/app.js", import.meta.url), "utf8"),
+    readFile(new URL("../prototype/styles.css", import.meta.url), "utf8")
+  ]);
+  assert.match(html, /id="canonical-url"/);
+  assert.match(html, /id="route-view"/);
+  assert.match(html, /src="\/app\.js"/);
+  assert.match(html, /href="\/styles\.css"/);
+  assert.match(app, /history\[replace \? "replaceState" : "pushState"\]/);
+  assert.match(app, /addEventListener\("popstate", renderCurrentRoute\)/);
+  for (const route of ["/search", "/objects/", "/modules/", "/enterprises/", "/sys-object-ids/", "/releases/"]) {
+    assert.ok(app.includes(route), `missing browser route ${route}`);
+  }
+  assert.match(styles, /grid-template-columns: repeat\(3, minmax\(0, 1fr\)\)/);
+  assert.doesNotMatch(styles, /\.site-header nav a:not\(:first-child\)[^{]*\{[^}]*display:\s*none/s);
+  assert.doesNotMatch(app, /React|Vue|Svelte|Angular/);
 });
