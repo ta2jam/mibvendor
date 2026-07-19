@@ -3,8 +3,9 @@
 - [`demand/`](demand/): desk evidence, task inventory, interview protocol, and
   demand gate status; the JSON evidence register is machine-checked and starts
   with zero invented observations.
-- [`rights/`](rights/): source-specific rights matrix, evidence, and permission
-  actions, including a ten-vendor first-wave request tracker.
+- [`rights/`](rights/): source-specific rights matrix, evidence, a checksummed
+  14-RFC file review, and permission actions including a ten-vendor first-wave
+  request tracker.
 - [`../../experiments/parser-bakeoff/`](../../experiments/parser-bakeoff/):
   reproducible parser comparison and decision evidence.
 

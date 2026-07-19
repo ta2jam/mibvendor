@@ -1,0 +1,630 @@
+{
+  "schema_version": 1,
+  "review_id": "ietf-transition-rfc-file-review-2026-07-20.1",
+  "reviewed_at": "2026-07-20",
+  "baseline_data_release": "license-signaled-2026-07-20.2",
+  "activation_policy": "review-does-not-activate-content",
+  "policy": "A decision applies only to the exact RFC bytes and listed module definitions. An embedded complete BSD-3-Clause grant is a file-specific controlling basis. Same-name artifacts from other licensed sources remain independent variants, not successors. Unknown or rejected records remain quarantined.",
+  "source_index": {
+    "url": "https://www.rfc-editor.org/rfc-index.xml",
+    "sha256": "efd301a86ca90354c45cfa57d476a21bbecbe7439a372f807db49783fcee8d08"
+  },
+  "fixed_universe": [
+    5427,
+    5428,
+    5488,
+    5519,
+    5525,
+    5542,
+    5591,
+    5592,
+    5601,
+    5602,
+    5603,
+    5604,
+    5605,
+    5643
+  ],
+  "counts": {
+    "candidates": 14,
+    "module_definitions": 15,
+    "accepted_for_candidate_build": 14,
+    "unknown": 0,
+    "rejected": 0,
+    "quarantined": 0,
+    "active_from_this_review": 0,
+    "active_same_name_alternates": 5
+  },
+  "candidates": [
+    {
+      "rfc": 5427,
+      "title": "Textual Conventions for Syslog Management",
+      "published": "2009-03",
+      "status": "PROPOSED STANDARD",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5427.txt",
+      "source_sha256": "e7bb1a674b5373aa1f8e4171eb943986f5c4bbc84f50998406ec223da1ded39d",
+      "source_bytes": 17829,
+      "modules": [
+        {
+          "name": "SYSLOG-TC-MIB",
+          "notice_in_module": true,
+          "active_same_name_variant": null
+        }
+      ],
+      "notice": {
+        "kind": "embedded-bsd-3-clause",
+        "location": "module-description",
+        "copyright_year": 2009,
+        "grant_occurrences": 1,
+        "conditions": [
+          "source-notice-retention",
+          "binary-notice-reproduction",
+          "non-endorsement",
+          "warranty-disclaimer"
+        ],
+        "document_pre_5378_legend": true
+      },
+      "relationships": {
+        "obsoletes": [],
+        "obsoleted_by": [],
+        "updates": [],
+        "updated_by": [],
+        "same_name_successor": null
+      },
+      "decision": "accepted-for-candidate-build",
+      "controlling_basis": "embedded-module-bsd-3-clause",
+      "decision_reason": "exact-rfc-embeds-complete-bsd-3-clause-in-each-listed-module",
+      "activation_state": "not-active"
+    },
+    {
+      "rfc": 5428,
+      "title": "Management Event Management Information Base (MIB) for PacketCable- and IPCablecom-Compliant Devices",
+      "published": "2009-04",
+      "status": "PROPOSED STANDARD",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5428.txt",
+      "source_sha256": "622bddb5d237ed4b000689ea757d0b179d4b2d728793e0c18a9adfe608e19b94",
+      "source_bytes": 78139,
+      "modules": [
+        {
+          "name": "PKTC-IETF-EVENT-MIB",
+          "notice_in_module": true,
+          "active_same_name_variant": null
+        }
+      ],
+      "notice": {
+        "kind": "embedded-bsd-3-clause",
+        "location": "module-description",
+        "copyright_year": 2009,
+        "grant_occurrences": 1,
+        "conditions": [
+          "source-notice-retention",
+          "binary-notice-reproduction",
+          "non-endorsement",
+          "warranty-disclaimer"
+        ],
+        "document_pre_5378_legend": false
+      },
+      "relationships": {
+        "obsoletes": [],
+        "obsoleted_by": [],
+        "updates": [],
+        "updated_by": [
+          9141
+        ],
+        "same_name_successor": null
+      },
+      "decision": "accepted-for-candidate-build",
+      "controlling_basis": "embedded-module-bsd-3-clause",
+      "decision_reason": "exact-rfc-embeds-complete-bsd-3-clause-in-each-listed-module",
+      "activation_state": "not-active"
+    },
+    {
+      "rfc": 5488,
+      "title": "Network Mobility (NEMO) Management Information Base",
+      "published": "2009-04",
+      "status": "PROPOSED STANDARD",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5488.txt",
+      "source_sha256": "0c8a8b11b1e3ba90bd2b2c6408a2dbf48be225fb383d9f50ea0589259d999081",
+      "source_bytes": 87041,
+      "modules": [
+        {
+          "name": "NEMO-MIB",
+          "notice_in_module": true,
+          "active_same_name_variant": null
+        }
+      ],
+      "notice": {
+        "kind": "embedded-bsd-3-clause",
+        "location": "module-description",
+        "copyright_year": 2009,
+        "grant_occurrences": 1,
+        "conditions": [
+          "source-notice-retention",
+          "binary-notice-reproduction",
+          "non-endorsement",
+          "warranty-disclaimer"
+        ],
+        "document_pre_5378_legend": false
+      },
+      "relationships": {
+        "obsoletes": [],
+        "obsoleted_by": [],
+        "updates": [],
+        "updated_by": [],
+        "same_name_successor": null
+      },
+      "decision": "accepted-for-candidate-build",
+      "controlling_basis": "embedded-module-bsd-3-clause",
+      "decision_reason": "exact-rfc-embeds-complete-bsd-3-clause-in-each-listed-module",
+      "activation_state": "not-active"
+    },
+    {
+      "rfc": 5519,
+      "title": "Multicast Group Membership Discovery MIB",
+      "published": "2009-04",
+      "status": "PROPOSED STANDARD",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5519.txt",
+      "source_sha256": "a5241c3522553b83bcbbda26035192c8648ef5f60795f01eff260da44791cac7",
+      "source_bytes": 76260,
+      "modules": [
+        {
+          "name": "MGMD-STD-MIB",
+          "notice_in_module": true,
+          "active_same_name_variant": {
+            "source_id": "kmalinich-snmp-mibs",
+            "artifact_sha256": "948ee820e69f4311a73ae06fd98f1e55593fac95785bbe8baa9cee165bcbea6b",
+            "relationship": "independently-licensed-variant-not-successor"
+          }
+        }
+      ],
+      "notice": {
+        "kind": "embedded-bsd-3-clause",
+        "location": "module-description",
+        "copyright_year": 2009,
+        "grant_occurrences": 1,
+        "conditions": [
+          "source-notice-retention",
+          "binary-notice-reproduction",
+          "non-endorsement",
+          "warranty-disclaimer"
+        ],
+        "document_pre_5378_legend": false
+      },
+      "relationships": {
+        "obsoletes": [
+          2933
+        ],
+        "obsoleted_by": [],
+        "updates": [],
+        "updated_by": [],
+        "same_name_successor": null
+      },
+      "decision": "accepted-for-candidate-build",
+      "controlling_basis": "embedded-module-bsd-3-clause",
+      "decision_reason": "exact-rfc-embeds-complete-bsd-3-clause-in-each-listed-module",
+      "activation_state": "not-active"
+    },
+    {
+      "rfc": 5525,
+      "title": "Reliable Server Pooling MIB Module Definition",
+      "published": "2009-04",
+      "status": "EXPERIMENTAL",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5525.txt",
+      "source_sha256": "c6748aab0f71488537b22386ffdc9d96a04bfa40077e348abaf4bb1b01ffccb7",
+      "source_bytes": 85897,
+      "modules": [
+        {
+          "name": "RSERPOOL-MIB",
+          "notice_in_module": true,
+          "active_same_name_variant": {
+            "source_id": "ntopng-mibs",
+            "artifact_sha256": "19acca3be07ead9ecf8362b022cfe88ce96bc4e9ce31754969c716221e425964",
+            "relationship": "independently-licensed-variant-not-successor"
+          }
+        }
+      ],
+      "notice": {
+        "kind": "embedded-bsd-3-clause",
+        "location": "module-description",
+        "copyright_year": 2009,
+        "grant_occurrences": 1,
+        "conditions": [
+          "source-notice-retention",
+          "binary-notice-reproduction",
+          "non-endorsement",
+          "warranty-disclaimer"
+        ],
+        "document_pre_5378_legend": false
+      },
+      "relationships": {
+        "obsoletes": [],
+        "obsoleted_by": [],
+        "updates": [],
+        "updated_by": [],
+        "same_name_successor": null
+      },
+      "decision": "accepted-for-candidate-build",
+      "controlling_basis": "embedded-module-bsd-3-clause",
+      "decision_reason": "exact-rfc-embeds-complete-bsd-3-clause-in-each-listed-module",
+      "activation_state": "not-active"
+    },
+    {
+      "rfc": 5542,
+      "title": "Definitions of Textual Conventions for Pseudowire (PW) Management",
+      "published": "2009-05",
+      "status": "PROPOSED STANDARD",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5542.txt",
+      "source_sha256": "32825e606b2e5efd2c9286d4ffabd34d967fff84427f5d2a9aa849ac5fb03c49",
+      "source_bytes": 19948,
+      "modules": [
+        {
+          "name": "PW-TC-STD-MIB",
+          "notice_in_module": true,
+          "active_same_name_variant": null
+        }
+      ],
+      "notice": {
+        "kind": "embedded-bsd-3-clause",
+        "location": "module-description",
+        "copyright_year": 2009,
+        "grant_occurrences": 1,
+        "conditions": [
+          "source-notice-retention",
+          "binary-notice-reproduction",
+          "non-endorsement",
+          "warranty-disclaimer"
+        ],
+        "document_pre_5378_legend": true
+      },
+      "relationships": {
+        "obsoletes": [],
+        "obsoleted_by": [],
+        "updates": [],
+        "updated_by": [],
+        "same_name_successor": null
+      },
+      "decision": "accepted-for-candidate-build",
+      "controlling_basis": "embedded-module-bsd-3-clause",
+      "decision_reason": "exact-rfc-embeds-complete-bsd-3-clause-in-each-listed-module",
+      "activation_state": "not-active"
+    },
+    {
+      "rfc": 5591,
+      "title": "Transport Security Model for the Simple Network Management Protocol (SNMP)",
+      "published": "2009-06",
+      "status": "INTERNET STANDARD",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5591.txt",
+      "source_sha256": "57893221b563d229444e7e35edca1c793e26ba039375461d6caa9e1fd8549b64",
+      "source_bytes": 61747,
+      "modules": [
+        {
+          "name": "SNMP-TSM-MIB",
+          "notice_in_module": true,
+          "active_same_name_variant": {
+            "source_id": "dynatrace-snmp-mib-files",
+            "artifact_sha256": "8b6c954c8a4e84c622104e88fc3f430ca4529fa8f131acc21c347f963287ae82",
+            "relationship": "independently-licensed-variant-not-successor"
+          }
+        }
+      ],
+      "notice": {
+        "kind": "embedded-bsd-3-clause",
+        "location": "module-description",
+        "copyright_year": 2009,
+        "grant_occurrences": 1,
+        "conditions": [
+          "source-notice-retention",
+          "binary-notice-reproduction",
+          "non-endorsement",
+          "warranty-disclaimer"
+        ],
+        "document_pre_5378_legend": true
+      },
+      "relationships": {
+        "obsoletes": [],
+        "obsoleted_by": [],
+        "updates": [],
+        "updated_by": [],
+        "same_name_successor": null
+      },
+      "decision": "accepted-for-candidate-build",
+      "controlling_basis": "embedded-module-bsd-3-clause",
+      "decision_reason": "exact-rfc-embeds-complete-bsd-3-clause-in-each-listed-module",
+      "activation_state": "not-active"
+    },
+    {
+      "rfc": 5592,
+      "title": "Secure Shell Transport Model for the Simple Network Management Protocol (SNMP)",
+      "published": "2009-06",
+      "status": "PROPOSED STANDARD",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5592.txt",
+      "source_sha256": "285a20651196723e0b44f10169ad6bb95c90eaa2faa0f0d11064681c5d65692e",
+      "source_bytes": 82822,
+      "modules": [
+        {
+          "name": "SNMP-SSH-TM-MIB",
+          "notice_in_module": true,
+          "active_same_name_variant": {
+            "source_id": "ntopng-mibs",
+            "artifact_sha256": "33bd82d8c5d1edde0743592564c40a3250d06e47d8e7be9df37998bd065914b8",
+            "relationship": "independently-licensed-variant-not-successor"
+          }
+        }
+      ],
+      "notice": {
+        "kind": "embedded-bsd-3-clause",
+        "location": "module-description",
+        "copyright_year": 2009,
+        "grant_occurrences": 1,
+        "conditions": [
+          "source-notice-retention",
+          "binary-notice-reproduction",
+          "non-endorsement",
+          "warranty-disclaimer"
+        ],
+        "document_pre_5378_legend": true
+      },
+      "relationships": {
+        "obsoletes": [],
+        "obsoleted_by": [],
+        "updates": [],
+        "updated_by": [],
+        "same_name_successor": null
+      },
+      "decision": "accepted-for-candidate-build",
+      "controlling_basis": "embedded-module-bsd-3-clause",
+      "decision_reason": "exact-rfc-embeds-complete-bsd-3-clause-in-each-listed-module",
+      "activation_state": "not-active"
+    },
+    {
+      "rfc": 5601,
+      "title": "Pseudowire (PW) Management Information Base (MIB)",
+      "published": "2009-07",
+      "status": "PROPOSED STANDARD",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5601.txt",
+      "source_sha256": "e047887c2b960205829dae44d7a79a269b529fbc3f9e90e5eafa3ee224ecc601",
+      "source_bytes": 129328,
+      "modules": [
+        {
+          "name": "IANA-PWE3-MIB",
+          "notice_in_module": true,
+          "active_same_name_variant": {
+            "source_id": "ntopng-mibs",
+            "artifact_sha256": "fd52403b80c203bf94f4266dab217681a8cab4e9ce655d4aaaf1e42c2144dc2b",
+            "relationship": "independently-licensed-variant-not-successor"
+          }
+        },
+        {
+          "name": "PW-STD-MIB",
+          "notice_in_module": true,
+          "active_same_name_variant": null
+        }
+      ],
+      "notice": {
+        "kind": "embedded-bsd-3-clause",
+        "location": "module-description",
+        "copyright_year": 2009,
+        "grant_occurrences": 2,
+        "conditions": [
+          "source-notice-retention",
+          "binary-notice-reproduction",
+          "non-endorsement",
+          "warranty-disclaimer"
+        ],
+        "document_pre_5378_legend": true
+      },
+      "relationships": {
+        "obsoletes": [],
+        "obsoleted_by": [],
+        "updates": [],
+        "updated_by": [],
+        "same_name_successor": null
+      },
+      "decision": "accepted-for-candidate-build",
+      "controlling_basis": "embedded-module-bsd-3-clause",
+      "decision_reason": "exact-rfc-embeds-complete-bsd-3-clause-in-each-listed-module",
+      "activation_state": "not-active"
+    },
+    {
+      "rfc": 5602,
+      "title": "Pseudowire (PW) over MPLS PSN Management Information Base (MIB)",
+      "published": "2009-07",
+      "status": "PROPOSED STANDARD",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5602.txt",
+      "source_sha256": "9615ad60914080d530ca7824fc9ecc24051a7c200e092d09d0cb640e0fa97e6e",
+      "source_bytes": 62005,
+      "modules": [
+        {
+          "name": "PW-MPLS-STD-MIB",
+          "notice_in_module": true,
+          "active_same_name_variant": null
+        }
+      ],
+      "notice": {
+        "kind": "embedded-bsd-3-clause",
+        "location": "module-description",
+        "copyright_year": 2009,
+        "grant_occurrences": 1,
+        "conditions": [
+          "source-notice-retention",
+          "binary-notice-reproduction",
+          "non-endorsement",
+          "warranty-disclaimer"
+        ],
+        "document_pre_5378_legend": true
+      },
+      "relationships": {
+        "obsoletes": [],
+        "obsoleted_by": [],
+        "updates": [],
+        "updated_by": [],
+        "same_name_successor": null
+      },
+      "decision": "accepted-for-candidate-build",
+      "controlling_basis": "embedded-module-bsd-3-clause",
+      "decision_reason": "exact-rfc-embeds-complete-bsd-3-clause-in-each-listed-module",
+      "activation_state": "not-active"
+    },
+    {
+      "rfc": 5603,
+      "title": "Ethernet Pseudowire (PW) Management Information Base (MIB)",
+      "published": "2009-07",
+      "status": "PROPOSED STANDARD",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5603.txt",
+      "source_sha256": "aae014b2eb4142cfd96c78b6838d03f2002319dc3701ac2eb0f79e556a7c49d5",
+      "source_bytes": 44125,
+      "modules": [
+        {
+          "name": "PW-ENET-STD-MIB",
+          "notice_in_module": true,
+          "active_same_name_variant": null
+        }
+      ],
+      "notice": {
+        "kind": "embedded-bsd-3-clause",
+        "location": "module-description",
+        "copyright_year": 2009,
+        "grant_occurrences": 1,
+        "conditions": [
+          "source-notice-retention",
+          "binary-notice-reproduction",
+          "non-endorsement",
+          "warranty-disclaimer"
+        ],
+        "document_pre_5378_legend": true
+      },
+      "relationships": {
+        "obsoletes": [],
+        "obsoleted_by": [],
+        "updates": [],
+        "updated_by": [],
+        "same_name_successor": null
+      },
+      "decision": "accepted-for-candidate-build",
+      "controlling_basis": "embedded-module-bsd-3-clause",
+      "decision_reason": "exact-rfc-embeds-complete-bsd-3-clause-in-each-listed-module",
+      "activation_state": "not-active"
+    },
+    {
+      "rfc": 5604,
+      "title": "Managed Objects for Time Division Multiplexing (TDM) over Packet Switched Networks (PSNs)",
+      "published": "2009-07",
+      "status": "PROPOSED STANDARD",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5604.txt",
+      "source_sha256": "a4ac0297436c90d7d7d6aec34589a7819181e14e0a167e3059d285652e9e2707",
+      "source_bytes": 80002,
+      "modules": [
+        {
+          "name": "PW-TDM-MIB",
+          "notice_in_module": true,
+          "active_same_name_variant": null
+        }
+      ],
+      "notice": {
+        "kind": "embedded-bsd-3-clause",
+        "location": "module-description",
+        "copyright_year": 2009,
+        "grant_occurrences": 1,
+        "conditions": [
+          "source-notice-retention",
+          "binary-notice-reproduction",
+          "non-endorsement",
+          "warranty-disclaimer"
+        ],
+        "document_pre_5378_legend": true
+      },
+      "relationships": {
+        "obsoletes": [],
+        "obsoleted_by": [],
+        "updates": [],
+        "updated_by": [],
+        "same_name_successor": null
+      },
+      "decision": "accepted-for-candidate-build",
+      "controlling_basis": "embedded-module-bsd-3-clause",
+      "decision_reason": "exact-rfc-embeds-complete-bsd-3-clause-in-each-listed-module",
+      "activation_state": "not-active"
+    },
+    {
+      "rfc": 5605,
+      "title": "Managed Objects for ATM over Packet Switched Networks (PSNs)",
+      "published": "2009-07",
+      "status": "PROPOSED STANDARD",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5605.txt",
+      "source_sha256": "614360068515ea5f05fdfc0fd3196f7fdbfd58793b16393acf786764525c8d4b",
+      "source_bytes": 69401,
+      "modules": [
+        {
+          "name": "PW-ATM-MIB",
+          "notice_in_module": true,
+          "active_same_name_variant": null
+        }
+      ],
+      "notice": {
+        "kind": "embedded-bsd-3-clause",
+        "location": "module-description",
+        "copyright_year": 2009,
+        "grant_occurrences": 1,
+        "conditions": [
+          "source-notice-retention",
+          "binary-notice-reproduction",
+          "non-endorsement",
+          "warranty-disclaimer"
+        ],
+        "document_pre_5378_legend": true
+      },
+      "relationships": {
+        "obsoletes": [],
+        "obsoleted_by": [],
+        "updates": [],
+        "updated_by": [],
+        "same_name_successor": null
+      },
+      "decision": "accepted-for-candidate-build",
+      "controlling_basis": "embedded-module-bsd-3-clause",
+      "decision_reason": "exact-rfc-embeds-complete-bsd-3-clause-in-each-listed-module",
+      "activation_state": "not-active"
+    },
+    {
+      "rfc": 5643,
+      "title": "Management Information Base for OSPFv3",
+      "published": "2009-08",
+      "status": "PROPOSED STANDARD",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5643.txt",
+      "source_sha256": "161f74152ef95e269bcdded4e8ac3943acdbd085320805da926ce788a74d4de7",
+      "source_bytes": 192945,
+      "modules": [
+        {
+          "name": "OSPFV3-MIB",
+          "notice_in_module": true,
+          "active_same_name_variant": null
+        }
+      ],
+      "notice": {
+        "kind": "embedded-bsd-3-clause",
+        "location": "module-description",
+        "copyright_year": 2009,
+        "grant_occurrences": 1,
+        "conditions": [
+          "source-notice-retention",
+          "binary-notice-reproduction",
+          "non-endorsement",
+          "warranty-disclaimer"
+        ],
+        "document_pre_5378_legend": true
+      },
+      "relationships": {
+        "obsoletes": [],
+        "obsoleted_by": [],
+        "updates": [],
+        "updated_by": [],
+        "same_name_successor": null
+      },
+      "decision": "accepted-for-candidate-build",
+      "controlling_basis": "embedded-module-bsd-3-clause",
+      "decision_reason": "exact-rfc-embeds-complete-bsd-3-clause-in-each-listed-module",
+      "activation_state": "not-active"
+    }
+  ],
+  "manifest_sha256": "fd582cecbeb601b64949d7ad3bef04527e1d4818512abe2e114c69c1a125222b"
+}

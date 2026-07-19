@@ -77,11 +77,23 @@ Acceptance criteria:
 
 ### DATA-03 — Legacy standards file-by-file review
 
-Status: `planned`
+Status: `complete`
 
-Re-evaluate pre-2008 IETF and other legacy standards modules through explicit
-code notices, author grants, IANA-maintained successors, or independently
-licensed implementations. Do not blanket-approve the legacy class.
+The completed, fixed review universe is the 14 transition-era RFCs already
+quarantined by the active release's generic front-matter matcher. These are
+March-August 2009 documents, not pre-2008 RFCs. Each exact RFC contains a
+complete BSD-3-Clause grant inside every listed MIB module, so all 14 RFCs and
+15 module definitions are accepted for a future candidate build. This review
+activates zero modules and does not alter the active data release.
+
+The machine-readable review is
+[`legacy-rfc-review.json`](./research/rights/legacy-rfc-review.json). It pins the
+RFC Editor index and exact RFC checksums, publication dates, embedded notice
+signals, RFC successor relationships, decision reasons, and five independently
+licensed active same-name variants. Those variants are explicitly not treated
+as RFC successors. The unbounded pre-2008 class is outside this fixed outcome
+and remains quarantined unless a later file-specific review supplies equivalent
+evidence.
 
 Acceptance criteria:
 
@@ -89,6 +101,10 @@ Acceptance criteria:
 - same-name successors and obsolete revisions remain distinguishable;
 - rejected and unknown candidates remain quarantined with a machine-readable
   reason.
+
+Verification: `npm run check:legacy-rfcs`; five tests cover the fixed universe,
+missing notices, false successor claims, digest mutation, and the rule that an
+unknown decision cannot escape quarantine.
 
 ### DATA-04 — Open-source device identity inventory and adapters
 

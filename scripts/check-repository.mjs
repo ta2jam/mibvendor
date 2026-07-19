@@ -67,6 +67,7 @@ for (const required of [
   "docs/research/demand/validation-evidence.json",
   "docs/research/demand/phase0-openapi.json",
   "docs/research/rights/permission-requests.json",
+  "docs/research/rights/legacy-rfc-review.json",
   "prototype/index.html",
   "prototype/app.js",
   "prototype/core.mjs",
@@ -106,6 +107,7 @@ for (const required of [
   "scripts/validate-raw-mib-analysis.mjs",
   "scripts/update-compiled-mib-fidelity.mjs",
   "scripts/validate-compiled-mib-fidelity.mjs",
+  "scripts/validate-legacy-rfc-review.mjs",
   "scripts/update-iana-pen.mjs",
   "src/publication-controls.mjs",
   "THIRD_PARTY_NOTICES.md"

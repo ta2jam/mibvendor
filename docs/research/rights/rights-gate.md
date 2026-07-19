@@ -39,8 +39,32 @@ yayınlanır.
 Aktif `license-signaled-2026-07-20.2` veri sürümü 702 ham modül, 76.606
 çözümlenmiş OID düğümü, 4.138 textual convention ve 1.273 notification içerir.
 Kaynak dizinindeki 32 kaynağın 12'si redistributable, 20'si directory-only'dir.
-IETF envanterindeki 14 aday RFC notice kontrolünü geçemediği için manifestte
-gerekçesiyle karantinadadır; metinleri repoya veya API'a girmez.
+Aktif release manifesti IETF envanterindeki 14 aday RFC'yi genel ön-metin
+notice eşleştiricisini geçemedikleri için karantinada tutar. Sonraki dosya bazlı
+inceleme, bu RFC'lerin her MIB tanımı içine tam BSD-3-Clause grant gömüldüğünü
+doğruladı. Bu karar yalnız gelecekteki candidate build için uygunluk verir;
+aktif release'i değiştirmez ve RFC metinlerini bu değişiklikle repoya veya
+API'a sokmaz.
+
+### 14 RFC'lik sabit geçiş dönemi incelemesi
+
+[`legacy-rfc-review.json`](./legacy-rfc-review.json), Mart-Ağustos 2009 arasında
+yayımlanan 14 RFC'nin ve içlerindeki 15 MIB tanımının sabit inceleme evrenidir.
+Her kayıt RFC numarası, yayın ayı, resmi RFC Editor URL'si, exact-file SHA-256,
+MIB içine gömülü notice sınıfı, RFC ilişki bilgisi, karar, gerekçe ve aktivasyon
+durumunu taşır. 14 kaydın tamamı her modül içine gömülü tam BSD-3-Clause metni
+nedeniyle `accepted-for-candidate-build`; `active_from_this_review` sıfırdır.
+
+Beş aynı-adlı modül aktif veri sürümünde ayrı repository lisansları üzerinden
+zaten vardır. İnceleme bunları `independently-licensed-variant-not-successor`
+olarak kaydeder; RFC'den çıkarılacak dosyayla veya bir successor revizyonla
+birleştirmez. RFC 5519'un RFC 2933'ü obsolete ettiği ve RFC 5428'in RFC 9141
+tarafından update edildiği ayrı ilişki alanlarında korunur. RFC Editor indexi
+inceleme tarihinde bu 14 belgenin hiçbirini obsolete eden bir RFC listelemez.
+
+Bu sabit evren pre-2008 sınıfını topluca onaylamaz. Bu sınıf için exact-file
+notice, yazar grant'i, IANA successor'ı veya bağımsız lisanslı implementation
+kanıtı yoksa karar `unknown` ve aktivasyon `quarantine` kalır.
 
 ## Kamu çekirdeğinin kabul koşulları
 
@@ -141,6 +165,7 @@ Hak kontrolünün çalışma zamanı maliyeti artifact başına sabit sayıda al
 
 - Matris şema testi: `python3 docs/research/rights/validate_rights_matrix.py`
 - İzin takip bütünlüğü: `node scripts/validate-rights-requests.mjs`
+- Sabit legacy RFC incelemesi: `node scripts/validate-legacy-rfc-review.mjs`
 - Negatif fixture: bir scope'u `unknown` olan A/B satırı doğrulamadan geçmemeli.
 - Notice fixture: attribution veya license notice kaybedilen IETF/IANA artifact'i aktive edilmemeli.
 - URL fixture: yalnız HTTPS primary source kabul edilmeli.
