@@ -92,7 +92,7 @@ Acceptance criteria:
 
 ### DATA-04 — Open-source device identity inventory and adapters
 
-Status: `planned`
+Status: `in-progress`
 
 Inventory independently authored device definitions and model mappings from
 projects such as LibreNMS, Netdisco, Zabbix, and OpenNMS. Keep project-authored
@@ -117,7 +117,7 @@ Acceptance criteria:
 
 ### DATA-05 — Evidence-backed model identity engine
 
-Status: `planned`
+Status: `in-progress`
 
 Correlate exact `sysObjectID`, chassis `ENTITY-MIB` fields, vendor model OIDs,
 `sysDescr` signatures, enterprise assignment, and capability evidence. The
@@ -151,7 +151,7 @@ Acceptance criteria:
 
 ### DATA-07 — Vendor-ready quarantine and promotion pipeline
 
-Status: `planned`
+Status: `in-progress`
 
 Implement `discover -> download -> verify -> parse -> normalize -> quarantine
 -> review -> activate -> rollback` for source adapters. Development uses
@@ -196,7 +196,7 @@ Acceptance criteria:
 
 ### DATA-10 — Storage and search scale bake-off
 
-Status: `planned`
+Status: `in-progress`
 
 Benchmark the current in-memory index, immutable SQLite/FTS5, and PostgreSQL
 with trigram/full-text indexes on real-shaped 100,000, 1,000,000, and 2,000,000
@@ -267,7 +267,7 @@ URLs, and shareable state.
 
 ### UI-02 — Unified omnibox and query classification
 
-Status: `planned`
+Status: `in-progress`
 
 Classify numeric OIDs, instances, `MODULE::symbol`, symbols, modules, vendors,
 models, `sysObjectID`, enterprise numbers, monitoring intent, notifications,
@@ -299,7 +299,7 @@ detail. Provide children, ancestors, and subtree-summary API operations.
 
 ### UI-06 — Device identity workbench
 
-Status: `planned`
+Status: `in-progress`
 
 Accept `sysObjectID`, `sysDescr`, `entPhysicalModelName`,
 `entPhysicalVendorType`, and local numeric walk fragments. Present exact model,
@@ -315,7 +315,7 @@ model.
 
 ### UI-08 — Operational object detail
 
-Status: `planned`
+Status: `in-progress`
 
 Add copy actions, scalar and table-index composers, enum rendering, related
 objects, table/row/index breadcrumbs, notification varbinds, read/write risk,
@@ -331,7 +331,7 @@ and dependency changes across module revisions or data releases.
 
 ### UI-10 — Accessible dependency graph
 
-Status: `planned`
+Status: `in-progress`
 
 Visualize direct, transitive, missing, cyclic, imported-symbol, and dependant
 relationships with an equivalent accessible table.
@@ -355,7 +355,7 @@ operation.
 
 ### UI-13 — Compact provenance and rights disclosure
 
-Status: `planned`
+Status: `in-progress`
 
 Keep source, revision, confidence, and publication state in the primary result;
 move checksums, full scope matrices, and license detail into an accessible
@@ -363,7 +363,7 @@ provenance drawer.
 
 ### UI-14 — Accessibility and responsive master-detail
 
-Status: `planned`
+Status: `in-progress`
 
 Add WCAG 2.2 AA browser checks, axe automation, keyboard golden flows, reduced
 motion, mobile result/detail history, 320 px overflow coverage, and accessible
@@ -379,7 +379,7 @@ limits, OpenAPI, health/status links, and prohibited sensitive inputs.
 
 ## Outcome-based release sequence
 
-### v0.3.0-alpha.1 — Corpus expansion engine
+### v0.3.0-alpha.2 — Corpus expansion engine
 
 Status: `complete`
 

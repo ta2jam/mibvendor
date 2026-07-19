@@ -34,9 +34,13 @@ that a production cache purge or VPS rollback was executed.
 ## Active release evidence
 
 Every active data release has an immutable evidence directory at
-`data/releases/<data_release>/`. `activation.json` binds the application
-version, predecessor, activation time, candidate report, active catalogs, and
-publication-control snapshot by exact SHA-256. The stored control snapshot must
+`data/releases/<data_release>/`. `activation.json` binds the first application
+version that activated it, predecessor, activation time, candidate report,
+active catalogs, and publication-control snapshot by exact SHA-256. Later
+application releases may consume those exact bytes without rewriting the
+activation record, but an application version older than the activating
+version fails closed. The activating version must also match the immutable
+release tag URL retained by the promotion event. The stored control snapshot must
 end with the promotion event named by the activation record. Later control
 events may be appended, but the activation history must remain an exact prefix
 of the current hash-chained history.
@@ -44,5 +48,6 @@ of the current hash-chained history.
 `node scripts/validate-release-evidence.mjs` fails closed on unsafe release
 identifiers or symlinks, missing evidence, byte drift, count drift, collisions,
 an unready candidate, predecessor or timestamp mismatch, rewritten control
-history, or a `VERSION` mismatch. This check is part of `npm run verify` and
+history, malformed release versions, or a consumer `VERSION` older than the
+activation version. This check is part of `npm run verify` and
 must pass before packaging or rollback.

@@ -161,6 +161,8 @@ for (const requiredMonitorBoundary of [
   "permissions:\n  contents: read",
   "fetch-depth: 0",
   "./scripts/resolve-production-commit.sh",
+  "git checkout --quiet --detach \"$EXPECTED_COMMIT\"",
+  "data/mib-catalog.json",
   "./scripts/verify-production.sh"
 ]) {
   if (!productionMonitor.includes(requiredMonitorBoundary)) {
@@ -170,8 +172,8 @@ for (const requiredMonitorBoundary of [
 if (productionMonitor.includes("EXPECTED_COMMIT: ${{ github.sha }}")) {
   failures.push("Production monitor must resolve the deployed release tag, not assume main is deployed");
 }
-if (!productionMonitor.includes("EXPECTED_DATA_RELEASE: license-signaled-2026-07-20.2")) {
-  failures.push("Production monitor and runtime data release differ");
+if (/EXPECTED_DATA_RELEASE:\s*\S/.test(productionMonitor)) {
+  failures.push("Production monitor must derive the data release from the immutable tagged catalog");
 }
 
 const sourceFreshnessWorkflow = await readFile(path.join(root, ".github", "workflows", "source-freshness.yml"), "utf8");
@@ -254,6 +256,7 @@ if (!healthTimer.includes("OnUnitActiveSec=5min") || !healthTimer.includes("Pers
 }
 
 const dockerfile = await readFile(path.join(root, "Dockerfile"), "utf8");
+const ciWorkflow = await readFile(path.join(root, ".github", "workflows", "ci.yml"), "utf8");
 const productionCompose = await readFile(path.join(root, "compose.production.yaml"), "utf8");
 const caddySite = await readFile(path.join(root, "deploy", "Caddyfile"), "utf8");
 for (const requiredRuntimeBoundary of [
@@ -263,6 +266,9 @@ for (const requiredRuntimeBoundary of [
   if (!dockerfile.includes(requiredRuntimeBoundary)) {
     failures.push(`Dockerfile is missing production boundary: ${requiredRuntimeBoundary}`);
   }
+}
+if (!dockerfile.includes("FROM node:22-") || !ciWorkflow.includes("node-version: 22")) {
+  failures.push("CI and the production image must use the same Node 22 major runtime");
 }
 for (const requiredProxyBoundary of [
   "www.mibvendor.io",

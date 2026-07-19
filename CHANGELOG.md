@@ -3,7 +3,7 @@
 All notable changes are documented here. The project uses Semantic Versioning
 while it is pre-1.0; research releases may remain unstable.
 
-## [0.3.0-alpha.1] - 2026-07-20
+## [0.3.0-alpha.2] - 2026-07-20
 
 ### Added
 
@@ -35,6 +35,25 @@ while it is pre-1.0; research releases may remain unstable.
 - Increased the production container memory limit from 192 MiB to 640 MiB for
   the measured corpus while keeping the database-free, dependency-light Node
   runtime and loopback-only service boundary.
+
+### Fixed
+
+- Aligned CI with the production Node 22 runtime and the measured 640 MiB
+  cgroup limit; the search gate now enforces both observed RSS and the process
+  lifetime high water mark.
+- Preserved the byte-identical data-release activation record across later
+  application releases and bound its activating version to the promotion tag.
+- Updated production verification for the licensed TAR download contract,
+  including exact archive, MIB, license, and provenance checksum checks.
+
+## [0.3.0-alpha.1] - 2026-07-20
+
+### Not deployed
+
+- The immutable tag failed its CI memory gate on GitHub's Node 24/x64 runner
+  and was superseded before a GitHub Release or VPS deployment. The corrected
+  gate uses the measured 640 MiB production limit and also checks process
+  lifetime high-water RSS.
 
 ## [0.2.0-alpha.1] - 2026-07-14
 
@@ -266,6 +285,7 @@ while it is pre-1.0; research releases may remain unstable.
   evidence cannot be marked complete.
 - Repository checks and CI without production MIB data.
 
+[0.3.0-alpha.2]: https://github.com/ta2jam/mibvendor/releases/tag/v0.3.0-alpha.2
 [0.3.0-alpha.1]: https://github.com/ta2jam/mibvendor/releases/tag/v0.3.0-alpha.1
 [0.2.0-alpha.1]: https://github.com/ta2jam/mibvendor/releases/tag/v0.2.0-alpha.1
 [0.1.0-alpha.13]: https://github.com/ta2jam/mibvendor/releases/tag/v0.1.0-alpha.13

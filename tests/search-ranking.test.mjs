@@ -116,7 +116,7 @@ test("40 concurrent full-runtime searches remain below the production RSS limit"
       env: {
         ...process.env,
         SEARCH_BENCHMARK_CONCURRENCY: "40",
-        SEARCH_BENCHMARK_RSS_LIMIT_BYTES: String(512 * 1024 * 1024)
+        SEARCH_BENCHMARK_RSS_LIMIT_BYTES: String(640 * 1024 * 1024)
       },
       maxBuffer: 1024 * 1024,
       timeout: 120_000
@@ -126,5 +126,6 @@ test("40 concurrent full-runtime searches remain below the production RSS limit"
   assert.equal(report.requests, 40);
   assert.equal(report.successful_responses, 40);
   assert.equal(report.maximum_results_per_response, MAX_SEARCH_RESULTS);
+  assert.equal(report.rss_limit_bytes, 640 * 1024 * 1024);
   assert.equal(report.within_rss_limit, true, JSON.stringify(report));
 });

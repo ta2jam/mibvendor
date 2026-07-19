@@ -23,10 +23,19 @@ jobs:
       - name: Verify public origin and governed release
         env:
           ORIGIN: https://mibvendor.io
-          EXPECTED_DATA_RELEASE: license-signaled-2026-07-20.2
         run: |
           EXPECTED_VERSION=$(tr -d '\r\n' < VERSION)
           EXPECTED_COMMIT=$(./scripts/resolve-production-commit.sh)
+          git checkout --quiet --detach "$EXPECTED_COMMIT"
+          TAGGED_VERSION=$(tr -d '\r\n' < VERSION)
+          test "$TAGGED_VERSION" = "$EXPECTED_VERSION"
+          EXPECTED_DATA_RELEASE=$(node -e '
+            const { readFileSync } = require("node:fs");
+            const value = JSON.parse(readFileSync("data/mib-catalog.json", "utf8")).data_release;
+            if (typeof value !== "string" || !/^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/.test(value)) process.exit(1);
+            process.stdout.write(value);
+          ')
           export EXPECTED_VERSION
           export EXPECTED_COMMIT
+          export EXPECTED_DATA_RELEASE
           ./scripts/verify-production.sh

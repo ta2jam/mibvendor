@@ -10,6 +10,7 @@ import {
 } from "../../src/publication-controls.mjs";
 
 const DIGEST_PATTERN = /^[0-9a-f]{64}$/;
+const SEMVER_PATTERN = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$/;
 const ACTIVATION_KEYS = new Set([
   "schema_version",
   "data_release",
@@ -101,6 +102,54 @@ function parseJson(bytes, label, failures) {
 
 function validateDigest(value, label, failures) {
   if (!DIGEST_PATTERN.test(value ?? "")) failures.push(`${label} must be a lowercase SHA-256 digest`);
+}
+
+function parseSemver(value) {
+  const match = typeof value === "string" ? value.match(SEMVER_PATTERN) : null;
+  if (!match) return null;
+  const core = match.slice(1, 4).map(Number);
+  const prerelease = match[4] === undefined ? null : match[4].split(".");
+  if (core.some((part) => !Number.isSafeInteger(part))) return null;
+  if (prerelease?.some((part) => /^\d+$/.test(part) && part.length > 1 && part.startsWith("0"))) return null;
+  return {
+    core,
+    prerelease
+  };
+}
+
+function compareSemver(left, right) {
+  for (let index = 0; index < left.core.length; index += 1) {
+    if (left.core[index] !== right.core[index]) return left.core[index] < right.core[index] ? -1 : 1;
+  }
+  if (left.prerelease === null || right.prerelease === null) {
+    if (left.prerelease === right.prerelease) return 0;
+    return left.prerelease === null ? 1 : -1;
+  }
+  const count = Math.max(left.prerelease.length, right.prerelease.length);
+  for (let index = 0; index < count; index += 1) {
+    const leftPart = left.prerelease[index];
+    const rightPart = right.prerelease[index];
+    if (leftPart === undefined || rightPart === undefined) return leftPart === undefined ? -1 : 1;
+    if (leftPart === rightPart) continue;
+    const leftNumeric = /^\d+$/.test(leftPart);
+    const rightNumeric = /^\d+$/.test(rightPart);
+    if (leftNumeric && rightNumeric) {
+      if (leftPart.length !== rightPart.length) return leftPart.length < rightPart.length ? -1 : 1;
+      return leftPart < rightPart ? -1 : 1;
+    }
+    if (leftNumeric !== rightNumeric) return leftNumeric ? -1 : 1;
+    return leftPart < rightPart ? -1 : 1;
+  }
+  return 0;
+}
+
+function isReleaseTagEvidenceUrl(value, version) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && url.pathname.endsWith(`/releases/tag/v${version}`) && !url.search && !url.hash;
+  } catch {
+    return false;
+  }
 }
 
 function validateCatalogCounts(catalog, objects, sources, report, failures) {
@@ -258,7 +307,14 @@ export async function validateActiveReleaseEvidence(rootDirectory) {
   if (!isTimestamp(activation.activated_at)) failures.push("Activation timestamp is invalid");
   if (Number.isFinite(Date.parse(activation.candidate_generated_at)) && Number.isFinite(Date.parse(activation.activated_at))
     && Date.parse(activation.activated_at) < Date.parse(activation.candidate_generated_at)) failures.push("Activation predates candidate generation");
-  if (activation.application_release !== version) failures.push("Activation application release differs from VERSION");
+  const activationApplicationRelease = parseSemver(activation.application_release);
+  const consumerApplicationRelease = parseSemver(version);
+  if (!activationApplicationRelease) failures.push("Activation application release is not a supported semantic version");
+  if (!consumerApplicationRelease) failures.push("VERSION is not a supported semantic version");
+  if (activationApplicationRelease && consumerApplicationRelease
+    && compareSemver(consumerApplicationRelease, activationApplicationRelease) < 0) {
+    failures.push("VERSION predates the application release that activated this data release");
+  }
   if (typeof activation.activation_basis !== "string" || !activation.activation_basis.trim()) failures.push("Activation basis is missing");
 
   validateDigest(activation.candidate_report_sha256, "Candidate report digest", failures);
@@ -309,6 +365,7 @@ export async function validateActiveReleaseEvidence(rootDirectory) {
     if (publicationControlEventDigest(promotion) !== promotion.event_sha256) failures.push("Activation promotion event digest is invalid");
     if (promotion.action !== "promotion" || promotion.target_type !== "release" || promotion.target_id !== releaseId) failures.push("Activation event is not a promotion of the active release");
     if (promotion.occurred_at !== activation.activated_at || snapshot.updated_at !== activation.activated_at) failures.push("Promotion, snapshot, and activation timestamps differ");
+    if (!isReleaseTagEvidenceUrl(promotion.evidence_url, activation.application_release)) failures.push("Activation application release differs from the promotion evidence tag");
     if (promotionIndex !== snapshotEvents.length - 1) failures.push("Activation promotion event must end the activation snapshot");
     const priorState = derivePublicationControlState(snapshotEvents.slice(0, promotionIndex));
     if (priorState.activeRelease !== activation.predecessor_data_release) failures.push("Promotion predecessor differs from the prior publication-control release");
@@ -330,7 +387,8 @@ export async function validateActiveReleaseEvidence(rootDirectory) {
     summary: {
       release_id: releaseId,
       predecessor_data_release: activation.predecessor_data_release,
-      application_release: version,
+      application_release: activation.application_release,
+      consumer_application_release: version,
       modules: Array.isArray(catalog.modules) ? catalog.modules.length : 0,
       objects: Array.isArray(objects.objects) ? objects.objects.length : 0,
       sources: Array.isArray(sources.sources) ? sources.sources.length : 0

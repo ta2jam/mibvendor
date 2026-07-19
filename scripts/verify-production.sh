@@ -117,11 +117,49 @@ dependencies_json=$(request "$ORIGIN/v1/modules/IF-MIB/dependencies")
 module_json=$(request "$ORIGIN/v1/modules/BFD-STD-MIB")
 source_json=$(request "$ORIGIN/v1/sources/cisco")
 raw_headers="$tmp_dir/raw.headers"
-raw_mib="$tmp_dir/BFD-STD-MIB.mib"
-request --dump-header "$raw_headers" --output "$raw_mib" "$ORIGIN/v1/modules/BFD-STD-MIB/raw"
+raw_archive="$tmp_dir/BFD-STD-MIB.tar"
+raw_dir="$tmp_dir/raw"
+mkdir "$raw_dir"
+request --dump-header "$raw_headers" --output "$raw_archive" "$ORIGIN/v1/modules/BFD-STD-MIB/raw"
+grep -Eiq '^content-type:[[:space:]]*application/x-tar' "$raw_headers" || fail "raw MIB archive content type is wrong"
+grep -Eiq '^cache-control:[[:space:]]*no-cache' "$raw_headers" || fail "raw MIB archive can bypass publication-control revalidation"
 grep -Eiq '^x-content-sha256:[[:space:]]*[0-9a-f]{64}' "$raw_headers" || fail "raw MIB checksum header is missing"
+grep -Eiq '^x-mib-sha256:[[:space:]]*[0-9a-f]{64}' "$raw_headers" || fail "exact MIB checksum header is missing"
 grep -Eiq '^link:.*rel="license".*rel="original"' "$raw_headers" || fail "raw MIB license/source links are missing"
-grep -q 'BFD-STD-MIB DEFINITIONS ::= BEGIN' "$raw_mib" || fail "raw MIB body is wrong"
+tar -tf "$raw_archive" > "$tmp_dir/raw.entries"
+printf '%s\n' BFD-STD-MIB.mib LICENSE.txt PROVENANCE.json > "$tmp_dir/raw.expected-entries"
+cmp -s "$tmp_dir/raw.expected-entries" "$tmp_dir/raw.entries" || fail "raw MIB archive entries are wrong"
+tar -xf "$raw_archive" -C "$raw_dir"
+grep -q 'BFD-STD-MIB DEFINITIONS ::= BEGIN' "$raw_dir/BFD-STD-MIB.mib" || fail "raw MIB body is wrong"
+[ -s "$raw_dir/LICENSE.txt" ] || fail "raw MIB license is empty"
+RAW_HEADERS=$raw_headers RAW_ARCHIVE=$raw_archive RAW_DIR=$raw_dir python3 - <<'PY'
+import hashlib
+import json
+import os
+from pathlib import Path
+
+headers = {}
+for line in Path(os.environ["RAW_HEADERS"]).read_text(encoding="utf-8").splitlines():
+    if ":" in line:
+        name, value = line.split(":", 1)
+        headers[name.lower()] = value.strip()
+
+archive = Path(os.environ["RAW_ARCHIVE"]).read_bytes()
+raw_dir = Path(os.environ["RAW_DIR"])
+mib = (raw_dir / "BFD-STD-MIB.mib").read_bytes()
+license_bytes = (raw_dir / "LICENSE.txt").read_bytes()
+provenance = json.loads((raw_dir / "PROVENANCE.json").read_text(encoding="utf-8"))
+
+archive_sha = hashlib.sha256(archive).hexdigest()
+mib_sha = hashlib.sha256(mib).hexdigest()
+license_sha = hashlib.sha256(license_bytes).hexdigest()
+assert headers.get("x-content-sha256") == archive_sha
+assert headers.get("x-mib-sha256") == mib_sha
+assert provenance["schema_version"] == 1
+assert provenance["module"]["id"] == "BFD-STD-MIB"
+assert provenance["files"]["BFD-STD-MIB.mib"]["sha256"] == mib_sha
+assert provenance["files"]["LICENSE.txt"]["sha256"] == license_sha
+PY
 batch_json=$(request --request POST --header 'content-type: application/json' \
     --data '{"oids":["1.3.6.1.2.1.2.2.1.8.7","bad"]}' "$ORIGIN/v1/resolve:batch")
 openapi_json=$(request "$ORIGIN/openapi.json")

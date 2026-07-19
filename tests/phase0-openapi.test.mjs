@@ -54,7 +54,7 @@ async function withServer(callback) {
 
 test("OpenAPI surface is exact and explicitly public alpha", () => {
   assert.equal(specification.openapi, "3.1.0");
-  assert.equal(packageDocument.version, "0.3.0-alpha.1");
+  assert.equal(packageDocument.version, "0.3.0-alpha.2");
   assert.equal(specification.info.version, packageDocument.version);
   assert.equal(specification.info.title, "mibvendor Permanently Free Public API");
   assert.match(specification.info.description, /Permanently free/);

@@ -3,7 +3,7 @@ import { once } from "node:events";
 import { fileURLToPath } from "node:url";
 
 const requestCount = Number.parseInt(process.env.SEARCH_BENCHMARK_CONCURRENCY ?? "40", 10);
-const rssLimitBytes = Number.parseInt(process.env.SEARCH_BENCHMARK_RSS_LIMIT_BYTES ?? String(512 * 1024 * 1024), 10);
+const rssLimitBytes = Number.parseInt(process.env.SEARCH_BENCHMARK_RSS_LIMIT_BYTES ?? String(640 * 1024 * 1024), 10);
 if (!Number.isSafeInteger(requestCount) || requestCount < 1 || requestCount > 120) {
   throw new Error("SEARCH_BENCHMARK_CONCURRENCY must be an integer from 1 to 120");
 }
@@ -75,7 +75,7 @@ try {
     observed_growth_bytes: Math.max(0, measurement.observed_rss_bytes - ready.baseline_rss_bytes),
     process_lifetime_high_water_rss_bytes: measurement.process_lifetime_high_water_rss_bytes,
     rss_limit_bytes: rssLimitBytes,
-    within_rss_limit: measurement.observed_rss_bytes <= rssLimitBytes
+    within_rss_limit: Math.max(measurement.observed_rss_bytes, measurement.process_lifetime_high_water_rss_bytes) <= rssLimitBytes
   };
 } finally {
   if (child.exitCode === null && child.signalCode === null) {

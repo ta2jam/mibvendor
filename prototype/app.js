@@ -240,7 +240,7 @@ function renderCatalogModules(body) {
       <div class="module-actions">
         <a href="/modules/${encodeURIComponent(module.id)}" data-route>Module detail</a>
         <a href="${escapeHtml(module.source_url)}">Official source</a>
-        ${module.raw_download ? `<a href="${escapeHtml(module.raw_url)}">Download licensed MIB</a>` : ""}
+        ${module.raw_download ? `<a href="${escapeHtml(module.raw_url)}">Download MIB + license bundle</a>` : ""}
       </div>
     </article>`).join("");
 }
@@ -525,7 +525,7 @@ async function loadModuleRoute(moduleId, generation) {
         <div><dt>Revision</dt><dd>${escapeHtml(module.revision ?? "not specified")}</dd></div>
         <div><dt>Resolved / declared</dt><dd>${module.resolved_oid_count.toLocaleString()} / ${module.declared_oid_count.toLocaleString()}</dd></div>
         <div><dt>Dependency status</dt><dd>${escapeHtml(dependencies.status)}</dd></div>
-        <div><dt>Raw file</dt><dd>${module.raw_download ? `<a href="${escapeHtml(module.raw_url)}">Licensed download</a>` : "Unavailable"}</dd></div>
+        <div><dt>Download</dt><dd>${module.raw_download ? `<a href="${escapeHtml(module.raw_url)}">MIB + license bundle</a>` : "Unavailable"}</dd></div>
         <div><dt>License</dt><dd><a href="${escapeHtml(module.license.url)}">${escapeHtml(module.license.name)}</a></dd></div>
         <div><dt>Source</dt><dd><a href="${escapeHtml(module.source_url)}">Pinned official source</a></dd></div>
         <div><dt>Source revision</dt><dd><code>${escapeHtml(module.source_revision)}</code></dd></div>

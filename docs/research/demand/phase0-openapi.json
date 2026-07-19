@@ -3,7 +3,7 @@
   "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
   "info": {
     "title": "mibvendor Permanently Free Public API",
-    "version": "0.3.0-alpha.1",
+    "version": "0.3.0-alpha.2",
     "description": "Permanently free, source-aware OID intelligence plus a fail-closed MIB source catalog. There is no paid tier, billing, subscription, or paid quota upgrade. Free access is fair-use bounded, not unlimited use or an availability SLA. Raw files are served only for modules approved by file-specific or recognized pinned repository-license evidence; unapproved vendor sources remain directory-only."
   },
   "x-mibvendor-status": "public-alpha",
@@ -135,7 +135,7 @@
     "/v1/modules/{moduleId}/raw": {
       "get": {
         "operationId": "downloadRawModule",
-        "summary": "Download an exact raw MIB with its retained license or notice when redistribution is explicitly approved",
+        "summary": "Download a deterministic bundle containing the exact raw MIB, retained license or notice, and provenance when redistribution is approved",
         "parameters": [{ "$ref": "#/components/parameters/ModuleId" }],
         "responses": {
           "200": { "description": "Deterministic TAR containing the exact source MIB, retained license or generated notice, and provenance. The active unversioned route always revalidates publication controls.", "headers": { "Cache-Control": { "$ref": "#/components/headers/CacheControl" }, "ETag": { "$ref": "#/components/headers/ETag" }, "X-Content-SHA256": { "schema": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "SHA-256 of the served TAR bytes." } }, "X-MIB-SHA256": { "schema": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "SHA-256 of the exact MIB entry inside the TAR." } }, "Link": { "schema": { "type": "string" } } }, "content": { "application/x-tar": { "schema": { "type": "string", "format": "binary" } } } },

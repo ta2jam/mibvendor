@@ -8,5 +8,5 @@ if (!result.ok) {
   process.exitCode = 1;
 } else {
   const summary = result.summary;
-  console.log(`Release evidence passed: ${summary.release_id} (${summary.modules} modules, ${summary.objects} objects, ${summary.sources} sources; application ${summary.application_release}).`);
+  console.log(`Release evidence passed: ${summary.release_id} (${summary.modules} modules, ${summary.objects} objects, ${summary.sources} sources; activated by ${summary.application_release}, consumed by ${summary.consumer_application_release}).`);
 }

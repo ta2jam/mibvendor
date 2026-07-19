@@ -38,7 +38,7 @@ VPS is also not production completion.
 
 ## Current Phase 0 release candidate
 
-`v0.3.0-alpha.1` defines the corpus-expansion release contract. Its immutable
+`v0.3.0-alpha.2` defines the corpus-expansion release contract. Its immutable
 `license-signaled-2026-07-20.2` data release contains 702 redistributable
 modules, 76,606 searchable catalog OID nodes, 4,138 textual conventions, 1,273
 notifications, file/source checksums, retained notices, and fail-closed raw

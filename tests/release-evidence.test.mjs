@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { mkdir, mkdtemp, rename, rm, symlink, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rename, rm, symlink, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -26,7 +26,9 @@ function event(sequence, action, targetType, targetId, previous, occurredAt = AC
     target_type: targetType,
     target_id: targetId,
     reason: `${action} evidence fixture`,
-    evidence_url: "https://example.invalid/release",
+    evidence_url: action === "promotion"
+      ? `https://example.invalid/releases/tag/v${VERSION}`
+      : "https://example.invalid/release",
     supersedes_event_sha256: null,
     previous_event_sha256: previous,
     event_sha256: null
@@ -168,10 +170,39 @@ test("active release evidence verifies exact bytes and permits appended control 
     release_id: RELEASE,
     predecessor_data_release: PREDECESSOR,
     application_release: VERSION,
+    consumer_application_release: VERSION,
     modules: 1,
     objects: 1,
     sources: 2
   });
+});
+
+test("a later application release can consume immutable activation evidence", async (context) => {
+  const fixture = await buildFixture();
+  context.after(() => rm(fixture.root, { recursive: true, force: true }));
+  const activationPath = path.join(fixture.releaseDirectory, "activation.json");
+  const activationBefore = await readFile(activationPath);
+  await writeFile(path.join(fixture.root, "VERSION"), "1.2.4\n");
+
+  const result = await validateActiveReleaseEvidence(fixture.root);
+
+  assert.equal(result.ok, true, result.failures.join("\n"));
+  assert.equal(result.summary.application_release, VERSION);
+  assert.equal(result.summary.consumer_application_release, "1.2.4");
+  assert.deepEqual(await readFile(activationPath), activationBefore);
+});
+
+test("activation application release stays bound to the promotion evidence tag", async (context) => {
+  const fixture = await buildFixture();
+  context.after(() => rm(fixture.root, { recursive: true, force: true }));
+  fixture.activation.application_release = "1.2.4";
+  await writeJson(path.join(fixture.releaseDirectory, "activation.json"), fixture.activation);
+  await writeFile(path.join(fixture.root, "VERSION"), "1.2.4\n");
+
+  const result = await validateActiveReleaseEvidence(fixture.root);
+
+  assert.equal(result.ok, false);
+  assert.ok(result.failures.some((failure) => failure.includes("promotion evidence tag")));
 });
 
 test("active data tampering fails its exact digest and row-count gates", async (context) => {
@@ -213,20 +244,20 @@ test("a replaced activation-history prefix fails even when current controls reha
   assert.ok(result.failures.some((failure) => failure.includes("replaced activation event 2")));
 });
 
-test("readiness, collision, predecessor, and application-version drift all fail closed", async (context) => {
+test("readiness, collision, predecessor, and pre-activation application versions fail closed", async (context) => {
   const fixture = await buildFixture();
   context.after(() => rm(fixture.root, { recursive: true, force: true }));
   fixture.report.readiness.activation_ready = false;
   fixture.report.counts.stable_object_id_collisions = 1;
   fixture.report.baseline_data_release = "release-0.9";
   await writeJson(path.join(fixture.releaseDirectory, "corpus-release-report.json"), fixture.report);
-  await writeFile(path.join(fixture.root, "VERSION"), "9.9.9\n");
+  await writeFile(path.join(fixture.root, "VERSION"), "1.2.2\n");
 
   const result = await validateActiveReleaseEvidence(fixture.root);
 
   assert.equal(result.ok, false);
   assert.ok(result.failures.some((failure) => failure.includes("baseline differs")));
-  assert.ok(result.failures.some((failure) => failure.includes("application release differs")));
+  assert.ok(result.failures.some((failure) => failure.includes("predates the application release")));
   assert.ok(result.failures.some((failure) => failure.includes("non-zero stable-ID collision")));
   assert.ok(result.failures.some((failure) => failure.includes("not activation-ready")));
 });
