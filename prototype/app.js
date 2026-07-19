@@ -21,7 +21,12 @@ const routeView = document.querySelector("#route-view");
 const routeContent = document.querySelector("#route-content");
 const routeKind = document.querySelector("#route-kind");
 const canonicalUrl = document.querySelector("#canonical-url");
+const apiLiveFirst = document.querySelector("#api-live-first");
+const apiLiveNext = document.querySelector("#api-live-next");
+const apiLiveStatus = document.querySelector("#api-live-status");
+const apiLiveResponse = document.querySelector("#api-live-response");
 let routeGeneration = 0;
+let apiLiveNextCursor = null;
 
 function stableObjectPath(record) {
   const id = record.id ?? `${record.module.toLowerCase()}--${record.symbol.toLowerCase()}`;
@@ -709,6 +714,49 @@ document.querySelectorAll("[data-copy-target]").forEach((button) => {
       status.textContent = "Copy permission was denied; select the example manually.";
     }
   });
+});
+
+async function loadLiveModulePage(cursor) {
+  if (!Number.isSafeInteger(cursor) || cursor < 0) return;
+  apiLiveFirst.disabled = true;
+  apiLiveNext.disabled = true;
+  apiLiveStatus.textContent = `Loading cursor ${cursor} from the active release…`;
+  apiLiveResponse.closest("pre").setAttribute("aria-busy", "true");
+  try {
+    const response = await fetch(`/v1/modules?q=IANA&limit=1&cursor=${cursor}`, {
+      headers: { accept: "application/json" }
+    });
+    const body = await response.json();
+    if (!response.ok) throw new Error(body.detail ?? `Request failed with HTTP ${response.status}`);
+    if (
+      body?.query !== "IANA"
+      || body.cursor !== cursor
+      || body.limit !== 1
+      || typeof body.data_release !== "string"
+      || !Array.isArray(body.results)
+      || !(body.next_cursor === null || (Number.isSafeInteger(body.next_cursor) && body.next_cursor >= 0))
+    ) throw new Error("The module page did not match the documented cursor contract.");
+    apiLiveNextCursor = body.next_cursor;
+    apiLiveResponse.textContent = JSON.stringify(body, null, 2);
+    apiLiveStatus.textContent = body.next_cursor === null
+      ? `Cursor ${body.cursor} loaded from ${body.data_release}; this is the final page.`
+      : `Cursor ${body.cursor} loaded from ${body.data_release}; next_cursor is ${body.next_cursor}.`;
+  } catch (error) {
+    apiLiveNextCursor = null;
+    apiLiveResponse.textContent = JSON.stringify({
+      error: error instanceof Error ? error.message : "The live example failed."
+    }, null, 2);
+    apiLiveStatus.textContent = "The live example failed; no cursor was accepted.";
+  } finally {
+    apiLiveFirst.disabled = false;
+    apiLiveNext.disabled = apiLiveNextCursor === null;
+    apiLiveResponse.closest("pre").setAttribute("aria-busy", "false");
+  }
+}
+
+apiLiveFirst.addEventListener("click", () => loadLiveModulePage(0));
+apiLiveNext.addEventListener("click", () => {
+  if (apiLiveNextCursor !== null) loadLiveModulePage(apiLiveNextCursor);
 });
 
 document.addEventListener("click", (event) => {

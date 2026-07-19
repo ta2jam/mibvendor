@@ -303,13 +303,24 @@
             <p class="preview-note">Fair-use limits may change to contain abuse. Read <code>RateLimit-*</code> and <code>Retry-After</code>, honor <code>429</code>, and follow each response's <code>Cache-Control</code> and <code>ETag</code>. Batch POST results are <code>no-store</code>; active raw routes revalidate withdrawal controls. Module lists use cursors; the service provides no availability SLA.</p>
           </div>
 
-          <div class="example-panel" aria-label="Synthetic batch resolution example">
+          <div class="example-panel" aria-label="Public API examples">
             <div class="code-heading">
               <span>curl · inspect release and cache headers</span>
               <button type="button" class="copy-code" data-copy-target="api-curl-example">Copy curl</button>
             </div>
             <pre class="api-code"><code id="api-curl-example">curl --fail-with-body --compressed -i \
   'https://mibvendor.io/v1/data-release'</code></pre>
+
+            <div class="code-heading response-heading">
+              <span>curl · follow the returned cursor</span>
+              <button type="button" class="copy-code" data-copy-target="api-pagination-example">Copy pagination</button>
+            </div>
+            <pre class="api-code"><code id="api-pagination-example">curl --fail-with-body --compressed \
+  'https://mibvendor.io/v1/modules?q=IANA&amp;limit=1&amp;cursor=0'
+
+# Read next_cursor from that response and pass it unchanged:
+curl --fail-with-body --compressed \
+  'https://mibvendor.io/v1/modules?q=IANA&amp;limit=1&amp;cursor=1'</code></pre>
 
             <div class="code-heading response-heading">
               <span>JavaScript · release-pinned batch</span>
@@ -351,6 +362,18 @@ request = Request(f"{origin}/v1/resolve:batch", data=body,
 with urlopen(request, timeout=10) as response:
     print(json.load(response))</code></pre>
 
+            <div class="live-api-example">
+              <div class="code-heading response-heading">
+                <span>Live success JSON · module cursor page</span>
+                <div class="live-api-actions">
+                  <button id="api-live-first" type="button" class="copy-code" aria-controls="api-live-response">Run first page</button>
+                  <button id="api-live-next" type="button" class="copy-code" aria-controls="api-live-response" disabled>Load next page</button>
+                </div>
+              </div>
+              <p id="api-live-status" class="copy-status" role="status" aria-live="polite">No request has been sent.</p>
+              <pre class="api-code"><code id="api-live-response">Run the fixed same-origin example to inspect the actual JSON response.</code></pre>
+            </div>
+
             <details class="api-error-example">
               <summary>Error contract example</summary>
               <pre class="api-code"><code>{
@@ -369,6 +392,7 @@ with urlopen(request, timeout=10) as response:
           <div class="developer-links">
             <a href="/openapi.json">OpenAPI 3.1 specification</a>
             <a href="/healthz">Service health</a>
+            <a href="/status">Service status</a>
             <a href="#safe-use">API safety</a>
           </div>
         </div>

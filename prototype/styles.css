@@ -1059,6 +1059,21 @@ textarea,
   background: rgb(141 230 204 / 15%);
 }
 
+.copy-code:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.live-api-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.live-api-example .copy-status {
+  margin-bottom: 0.55rem;
+}
+
 .response-heading {
   margin-top: 1rem;
   padding-top: 1rem;

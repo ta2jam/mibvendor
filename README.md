@@ -70,6 +70,11 @@ current service limits each client to 120 requests per minute and bounds batch,
 body, query, and page sizes. Every successful response identifies its immutable
 `data_release`.
 
+Operational links: [service status](https://mibvendor.io/status),
+[health probe](https://mibvendor.io/healthz), and
+[production-monitor history](https://github.com/ta2jam/mibvendor/actions/workflows/production-monitor.yml).
+The status endpoint is a live-process self-check, not uptime history or an SLA.
+
 | Method | Endpoint | Purpose |
 |---|---|---|
 | `GET` | `/v1/search?q=interface+status` | Ranked object discovery |
@@ -96,6 +101,39 @@ Batch order and duplicate inputs are preserved. Per-item states distinguish
 `resolved`, `not_found`, `invalid`, `ambiguous`, and
 `unavailable_due_to_rights`. Request failures use RFC 9457
 `application/problem+json`.
+
+A real `200` response from `GET /v1/enterprises/8072` is:
+
+```json
+{
+  "data_release": "license-signaled-2026-07-20.2",
+  "enterprise": {
+    "number": 8072,
+    "oid": "1.3.6.1.4.1.8072",
+    "organization": "net-snmp",
+    "registry_status": "assigned",
+    "source": {
+      "url": "https://www.iana.org/assignments/enterprise-numbers/enterprise-numbers",
+      "updated": "2026-07-10",
+      "retrieved_at": "2026-07-14T12:45:22.136Z",
+      "sha256": "aca0fe8748ed2d6b9c8f159cd3cc672387e47d6df2bdd21d5a139341fad7eda8",
+      "rights": "CC0-1.0"
+    },
+    "caveat": "A PEN registration identifies the registry assignee; it does not prove device manufacturer, product model, ownership, or authenticity."
+  }
+}
+```
+
+For module pagination, send the returned `next_cursor` unchanged; do not derive
+it from result counts:
+
+```sh
+curl --fail-with-body \
+  'https://mibvendor.io/v1/modules?q=IANA&limit=1&cursor=0'
+# The documented response returns next_cursor: 1.
+curl --fail-with-body \
+  'https://mibvendor.io/v1/modules?q=IANA&limit=1&cursor=1'
+```
 
 The live [OpenAPI 3.1 specification](https://mibvendor.io/openapi.json) is the
 machine-readable contract. Fair-use limits may change to contain abuse;

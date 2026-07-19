@@ -8,6 +8,7 @@ import { DATA_RELEASE, createApiHandler } from "./src/api.mjs";
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(projectRoot, "prototype");
 const openApiPath = path.join(projectRoot, "docs", "research", "demand", "phase0-openapi.json");
+const productionMonitorUrl = "https://github.com/ta2jam/mibvendor/actions/workflows/production-monitor.yml";
 const contentTypes = new Map([
   [".css", "text/css; charset=utf-8"],
   [".html", "text/html; charset=utf-8"],
@@ -88,6 +89,35 @@ function serveOpenApi(request, response) {
   }
 }
 
+function serveStatus(request, response) {
+  if (!new Set(["GET", "HEAD"]).has(request.method)) {
+    response.writeHead(405, { allow: "GET, HEAD", "content-type": "text/plain; charset=utf-8", "cache-control": "no-store" });
+    response.end("Method not allowed\n");
+    return;
+  }
+  const payload = Buffer.from(`${JSON.stringify({
+    schema_version: 1,
+    status: "operational",
+    checked_at: new Date().toISOString(),
+    version: process.env.APP_VERSION ?? "development",
+    commit: process.env.VCS_REF ?? "development",
+    data_release: process.env.DATA_RELEASE ?? DATA_RELEASE,
+    scope: "Live process self-check only; no uptime SLA or incident history.",
+    links: {
+      health: "/healthz",
+      production_monitor: productionMonitorUrl
+    }
+  })}\n`);
+  response.writeHead(200, {
+    "content-type": "application/json; charset=utf-8",
+    "content-length": payload.length,
+    "cache-control": "no-store",
+    "x-content-type-options": "nosniff"
+  });
+  if (request.method === "HEAD") response.end();
+  else response.end(payload);
+}
+
 export function createMibvendorServer() {
   const apiHandler = createApiHandler();
   return createServer(async (request, response) => {
@@ -106,6 +136,10 @@ export function createMibvendorServer() {
           commit: process.env.VCS_REF ?? "development",
           data_release: process.env.DATA_RELEASE ?? DATA_RELEASE
         }));
+        return;
+      }
+      if (url.pathname === "/status") {
+        serveStatus(request, response);
         return;
       }
       if (new Set(["GET", "HEAD"]).has(request.method) && url.pathname === "/openapi.json") {

@@ -66,6 +66,43 @@ test("production server exposes UI, health, version, OpenAPI, and API on one ori
   });
 });
 
+test("status is a no-store live-process contract for GET and HEAD", async () => {
+  await withServer(async (base) => {
+    const response = await fetch(`${base}/status`);
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get("content-type"), "application/json; charset=utf-8");
+    assert.equal(response.headers.get("cache-control"), "no-store");
+    assert.equal(response.headers.get("x-content-type-options"), "nosniff");
+    const status = await response.json();
+    assert.deepEqual(Object.keys(status), [
+      "schema_version", "status", "checked_at", "version", "commit", "data_release", "scope", "links",
+    ]);
+    assert.equal(status.schema_version, 1);
+    assert.equal(status.status, "operational");
+    assert.equal(Number.isNaN(Date.parse(status.checked_at)), false);
+    assert.equal(status.version, process.env.APP_VERSION ?? "development");
+    assert.equal(status.commit, process.env.VCS_REF ?? "development");
+    assert.equal(status.data_release, process.env.DATA_RELEASE ?? DATA_RELEASE);
+    assert.equal(status.scope, "Live process self-check only; no uptime SLA or incident history.");
+    assert.deepEqual(status.links, {
+      health: "/healthz",
+      production_monitor: "https://github.com/ta2jam/mibvendor/actions/workflows/production-monitor.yml",
+    });
+
+    const head = await fetch(`${base}/status`, { method: "HEAD" });
+    assert.equal(head.status, 200);
+    assert.equal(head.headers.get("content-type"), "application/json; charset=utf-8");
+    assert.equal(head.headers.get("cache-control"), "no-store");
+    assert.match(head.headers.get("content-length"), /^[1-9][0-9]*$/);
+    assert.equal(await head.text(), "");
+
+    const rejected = await fetch(`${base}/status`, { method: "POST" });
+    assert.equal(rejected.status, 405);
+    assert.equal(rejected.headers.get("allow"), "GET, HEAD");
+    assert.equal(rejected.headers.get("cache-control"), "no-store");
+  });
+});
+
 test("static server rejects traversal and unsupported methods", async () => {
   await withServer(async (base) => {
     assert.equal((await fetch(`${base}/.release.json`)).status, 404);

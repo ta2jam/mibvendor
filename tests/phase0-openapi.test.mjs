@@ -23,6 +23,7 @@ const specification = JSON.parse(
 const packageDocument = JSON.parse(
   await readFile(new URL("../package.json", import.meta.url), "utf8"),
 );
+const readme = await readFile(new URL("../README.md", import.meta.url), "utf8");
 
 const expectedOperations = {
   "/v1/data-release": ["get"],
@@ -63,6 +64,11 @@ test("OpenAPI surface is exact and explicitly public alpha", () => {
   assert.deepEqual(specification.security, []);
   assert.deepEqual(Object.keys(specification.paths), Object.keys(expectedOperations));
   assert.equal(specification.servers[0].url, "https://mibvendor.io");
+  assert.deepEqual(specification["x-service-links"], {
+    health: "https://mibvendor.io/healthz",
+    status: "https://mibvendor.io/status",
+    production_monitor: "https://github.com/ta2jam/mibvendor/actions/workflows/production-monitor.yml",
+  });
 
   const operationIds = new Set();
   for (const [path, methods] of Object.entries(expectedOperations)) {
@@ -75,6 +81,43 @@ test("OpenAPI surface is exact and explicitly public alpha", () => {
       assert.ok(operation.responses["200"]);
     }
   }
+});
+
+test("real success and cursor examples stay synchronized with executable responses", async () => {
+  const enterpriseExample = specification.paths["/v1/enterprises/{enterpriseNumber}"]
+    .get.responses["200"].content["application/json"].examples.netSnmp.value;
+  const moduleExamples = specification.paths["/v1/modules"]
+    .get.responses["200"].content["application/json"].examples;
+  const cursorParameter = specification.paths["/v1/modules"].get.parameters
+    .find((parameter) => parameter.name === "cursor");
+  assert.match(cursorParameter.description, /pass .*next_cursor unchanged/i);
+  assert.match(specification.components.schemas.ModuleListResponse.properties.next_cursor.description, /unchanged/);
+  assert.match(readme, /A real `200` response from `GET \/v1\/enterprises\/8072` is/);
+  assert.ok(
+    readme.includes(`\`\`\`json\n${JSON.stringify(enterpriseExample, null, 2)}\n\`\`\``),
+    "README enterprise success JSON drifted from the executable OpenAPI example",
+  );
+  assert.match(readme, /send the returned `next_cursor` unchanged/);
+  assert.ok(readme.includes("https://mibvendor.io/v1/modules?q=IANA&limit=1&cursor=0"));
+  assert.ok(readme.includes("https://mibvendor.io/v1/modules?q=IANA&limit=1&cursor=1"));
+  assert.match(readme, /https:\/\/mibvendor\.io\/status/);
+
+  await withServer(async (base) => {
+    const enterprise = await (await fetch(`${base}/v1/enterprises/8072`)).json();
+    assert.deepEqual(enterprise, enterpriseExample);
+
+    const firstPage = await (await fetch(`${base}/v1/modules?q=IANA&limit=1&cursor=0`)).json();
+    assert.deepEqual(firstPage, moduleExamples.firstPage.value);
+    assert.equal(firstPage.cursor, 0);
+    assert.equal(firstPage.next_cursor, 1);
+
+    const nextPage = await (await fetch(
+      `${base}/v1/modules?q=IANA&limit=1&cursor=${firstPage.next_cursor}`,
+    )).json();
+    assert.deepEqual(nextPage, moduleExamples.nextPage.value);
+    assert.equal(nextPage.cursor, firstPage.next_cursor);
+    assert.notEqual(nextPage.results[0].id, firstPage.results[0].id);
+  });
 });
 
 test("OpenAPI makes the permanently-free fair-use boundary machine-readable", () => {

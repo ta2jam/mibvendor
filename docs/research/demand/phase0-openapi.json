@@ -33,6 +33,11 @@
       "active_raw_revalidation": true
     }
   },
+  "x-service-links": {
+    "health": "https://mibvendor.io/healthz",
+    "status": "https://mibvendor.io/status",
+    "production_monitor": "https://github.com/ta2jam/mibvendor/actions/workflows/production-monitor.yml"
+  },
   "servers": [{ "url": "https://mibvendor.io", "description": "Official public service" }],
   "security": [],
   "paths": {
@@ -111,10 +116,97 @@
           { "name": "q", "in": "query", "schema": { "type": "string", "maxLength": 200 } },
           { "name": "publisher", "in": "query", "schema": { "type": "string", "maxLength": 64 } },
           { "name": "limit", "in": "query", "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 50 } },
-          { "name": "cursor", "in": "query", "schema": { "type": "integer", "minimum": 0, "default": 0 } }
+          { "name": "cursor", "in": "query", "description": "Start at 0, then pass the preceding response's non-null next_cursor unchanged. A null next_cursor marks the final page.", "schema": { "type": "integer", "minimum": 0, "default": 0 } }
         ],
         "responses": {
-          "200": { "description": "Paginated module catalog", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ModuleListResponse" } } } },
+          "200": {
+            "description": "Paginated module catalog. Follow next_cursor exactly; do not derive it from counts.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ModuleListResponse" },
+                "examples": {
+                  "firstPage": {
+                    "summary": "First IANA module page",
+                    "value": {
+                      "data_release": "license-signaled-2026-07-20.2",
+                      "query": "IANA",
+                      "publisher": "",
+                      "cursor": 0,
+                      "limit": 1,
+                      "total": 22,
+                      "next_cursor": 1,
+                      "results": [{
+                        "id": "IANA-ADDRESS-FAMILY-NUMBERS-MIB",
+                        "publisher": "IANA",
+                        "publication_mode": "redistributable",
+                        "raw_download": true,
+                        "raw_url": "/v1/modules/IANA-ADDRESS-FAMILY-NUMBERS-MIB/raw",
+                        "source_url": "https://www.iana.org/assignments/ianaaddressfamilynumbers-mib/ianaaddressfamilynumbers-mib",
+                        "source_revision": "retrieved 2026-07-14",
+                        "source_sha256": "199cb8484daf5a99e1ca01ce7dfc169f4221d1eccdf5ce712e293786d80753fa",
+                        "artifact_sha256": "199cb8484daf5a99e1ca01ce7dfc169f4221d1eccdf5ce712e293786d80753fa",
+                        "revision": "2021-10-19",
+                        "license": {
+                          "spdx": "CC0-1.0",
+                          "name": "IANA Protocol Registries CC0 1.0",
+                          "url": "https://www.iana.org/help/licensing-terms",
+                          "notice_required": true
+                        },
+                        "dependencies": ["SNMPv2-SMI", "SNMPv2-TC"],
+                        "root_objects": [{
+                          "id": "iana-address-family-numbers-mib--ianaaddressfamilynumbers",
+                          "symbol": "ianaAddressFamilyNumbers",
+                          "oid": "1.3.6.1.2.1.72",
+                          "kind": "module-identity"
+                        }],
+                        "declared_oid_count": 1,
+                        "resolved_oid_count": 1
+                      }]
+                    }
+                  },
+                  "nextPage": {
+                    "summary": "Next page using the returned cursor",
+                    "value": {
+                      "data_release": "license-signaled-2026-07-20.2",
+                      "query": "IANA",
+                      "publisher": "",
+                      "cursor": 1,
+                      "limit": 1,
+                      "total": 22,
+                      "next_cursor": 2,
+                      "results": [{
+                        "id": "IANA-BFD-TC-STD-MIB",
+                        "publisher": "IANA",
+                        "publication_mode": "redistributable",
+                        "raw_download": true,
+                        "raw_url": "/v1/modules/IANA-BFD-TC-STD-MIB/raw",
+                        "source_url": "https://www.iana.org/assignments/ianabfdtcstd-mib/ianabfdtcstd-mib",
+                        "source_revision": "retrieved 2026-07-14",
+                        "source_sha256": "5617e0077c1e21cce1e3fc318cd2d2d1ff49c495c7b8f405f226141f3176d02d",
+                        "artifact_sha256": "5617e0077c1e21cce1e3fc318cd2d2d1ff49c495c7b8f405f226141f3176d02d",
+                        "revision": "2025-11-25",
+                        "license": {
+                          "spdx": "CC0-1.0",
+                          "name": "IANA Protocol Registries CC0 1.0",
+                          "url": "https://www.iana.org/help/licensing-terms",
+                          "notice_required": true
+                        },
+                        "dependencies": ["SNMPv2-SMI", "SNMPv2-TC"],
+                        "root_objects": [{
+                          "id": "iana-bfd-tc-std-mib--ianabfdtcstdmib",
+                          "symbol": "ianaBfdTCStdMib",
+                          "oid": "1.3.6.1.2.1.224",
+                          "kind": "module-identity"
+                        }],
+                        "declared_oid_count": 1,
+                        "resolved_oid_count": 1
+                      }]
+                    }
+                  }
+                }
+              }
+            }
+          },
           "422": { "$ref": "#/components/responses/Problem" },
           "429": { "$ref": "#/components/responses/Problem" }
         }
@@ -175,7 +267,36 @@
         "summary": "Look up an IANA Private Enterprise Number",
         "parameters": [{ "$ref": "#/components/parameters/EnterpriseNumber" }],
         "responses": {
-          "200": { "description": "IANA registry assignment with identity caveat", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/EnterpriseResponse" } } } },
+          "200": {
+            "description": "IANA registry assignment with identity caveat",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/EnterpriseResponse" },
+                "examples": {
+                  "netSnmp": {
+                    "summary": "PEN 8072 registry assignment",
+                    "value": {
+                      "data_release": "license-signaled-2026-07-20.2",
+                      "enterprise": {
+                        "number": 8072,
+                        "oid": "1.3.6.1.4.1.8072",
+                        "organization": "net-snmp",
+                        "registry_status": "assigned",
+                        "source": {
+                          "url": "https://www.iana.org/assignments/enterprise-numbers/enterprise-numbers",
+                          "updated": "2026-07-10",
+                          "retrieved_at": "2026-07-14T12:45:22.136Z",
+                          "sha256": "aca0fe8748ed2d6b9c8f159cd3cc672387e47d6df2bdd21d5a139341fad7eda8",
+                          "rights": "CC0-1.0"
+                        },
+                        "caveat": "A PEN registration identifies the registry assignee; it does not prove device manufacturer, product model, ownership, or authenticity."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "404": { "$ref": "#/components/responses/Problem" },
           "422": { "$ref": "#/components/responses/Problem" },
           "429": { "$ref": "#/components/responses/Problem" }
@@ -444,7 +565,7 @@
           "total": { "type": "integer", "minimum": 0 },
           "cursor": { "type": "integer", "minimum": 0 },
           "limit": { "type": "integer", "minimum": 1, "maximum": 100 },
-          "next_cursor": { "type": ["integer", "null"], "minimum": 0 },
+          "next_cursor": { "type": ["integer", "null"], "minimum": 0, "description": "Pass a non-null value unchanged as the next request's cursor. Null marks the final page." },
           "results": { "type": "array", "maxItems": 100, "items": { "$ref": "#/components/schemas/MibObject" } }
         }
       },
@@ -724,7 +845,7 @@
           "cursor": { "type": "integer", "minimum": 0 },
           "limit": { "type": "integer", "minimum": 1, "maximum": 100 },
           "total": { "type": "integer", "minimum": 0 },
-          "next_cursor": { "type": ["integer", "null"], "minimum": 0 },
+          "next_cursor": { "type": ["integer", "null"], "minimum": 0, "description": "Pass a non-null value unchanged as the next request's cursor. Null marks the final page." },
           "results": { "type": "array", "items": { "$ref": "#/components/schemas/Module" } }
         }
       },
