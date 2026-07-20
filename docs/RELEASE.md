@@ -69,14 +69,13 @@ timer checks the container, loopback bind, release identity, public/local
 health, Caddy, disk threshold, and representative API results every five
 minutes.
 
-## v0.4 device-identity candidate
+## v0.4 device-identity release
 
-`v0.4.0-alpha.1` is not a production release until every completion rule above
-passes. Its candidate outcome is an evidence-bounded identity flow spanning the
-web workbench, exact lookup, multi-signal assessment, OpenAPI contract, and
+`v0.4.0-alpha.1` delivers an evidence-bounded identity flow spanning the web
+workbench, exact lookup, multi-signal assessment, OpenAPI contract, and
 production probes.
 
-The immutable `device-identity-2026-07-20.1` candidate contains 6,199 exact
+The immutable `device-identity-2026-07-20.1` release contains 6,199 exact
 vendor-MIB OID assignments across ten vendor families: 36 narrow reviewed
 device-model normalizations, 1,491 product-family/category assignments, and
 4,672 generic vendor identifiers that assert neither a whole-device model nor
@@ -90,9 +89,21 @@ release and carries a positive control revision plus sorted source kill
 switches. API responses expose the release digest, control digest/revision, and
 derived `identity_view`; a control change is therefore observable without
 mutating the immutable release. The fair-use bucket is 120 units per client per
-minute and device assessment consumes four units. No v0.4 production,
-performance, CI, tag, or browser result is claimed in this document until that
-evidence exists.
+minute and device assessment consumes four units. Every singular identity and
+candidate explicitly reports `firmware_scope: "not_established"`; unknown or
+conflicting outcomes use `null` instead of implying firmware-wide support.
+
+Production status: complete on 2026-07-20 after the immutable tag, green CI,
+VPS deployment, public UI/API checks, production monitor, and release identity
+were reconciled. Before cutover, the runtime-equivalent Node 22 Alpine image
+passed three cold-start mixed-load runs with a 640 MiB memory limit, 1 vCPU,
+and no swap. Each run issued a 75-request mixed burst with up to 40 concurrent
+requests, consuming exactly 120 fair-use units. Listen readiness was 8.0–8.5
+seconds, p95 response latency was
+4.1–4.4 seconds, and memory peaks were 231,550,976–237,666,304 bytes, with zero
+memory-limit, OOM, OOM-kill, or restart events. The previous 0.25-vCPU cap
+produced a measured 17.2-second p95 under the same burst and was raised to
+1 vCPU; idle resource use is unaffected by that ceiling.
 
 The GitHub production monitor resolves the expected commit from the immutable
 `v${VERSION}` release tag. It does not assume that every `main` commit has been

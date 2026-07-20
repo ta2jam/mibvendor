@@ -340,8 +340,10 @@ reason, evidence, alternatives, conflicts, firmware scope, and confidence.
 Current evidence: the responsive workbench submits only four bounded fields,
 renders model/family/vendor-identifier/platform/vendor/conflict/unknown states,
 separates evidence layers, exposes confidence and source links, and passed local
-desktop/mobile browser flows. It remains open because walk-fragment handoff and
-an explicit firmware-scope field are not implemented.
+desktop/mobile browser flows. Singular results and every candidate now expose
+`firmware_scope: "not_established"`; unknown and conflicting results expose
+`null`. This item remains open only because walk-fragment handoff is not
+implemented.
 
 ### UI-07 — Identity conflict and uncertainty presentation
 
@@ -435,16 +437,15 @@ tag, CI, VPS deployment, and live release identity are reconciled.
 
 ### v0.4.0-alpha.1 — Device identity
 
-Status: `in-progress`
+Status: `complete`
 
 One result: evidence-backed model identity works end to end without converting
 generic MIB symbols into device-model claims. The candidate contains 6,199
 exact vendor OID assignments across ten vendor families, including 36 reviewed
 exact device-model normalizations, 1,491 family/category assignments, 4,672
 generic vendor identifiers, and positive, negative, and conflict-tested
-Catalyst 9300 identification. It remains in progress until the immutable tag,
-CI, VPS deployment, public API/UI smoke, production monitor, and release
-identity are reconciled.
+Catalyst 9300 identification. The immutable tag, CI, VPS deployment, public
+API/UI smoke, production monitor, and release identity are reconciled.
 
 ### v0.5.0-alpha.1 — Browse at scale
 
@@ -588,7 +589,7 @@ with no billing code.
   preflight. Device/model identity scale and Phase 0 external-demand evidence
   remain open; no corpus count closes either gate.
 
-### 2026-07-20 — v0.4 device-identity candidate
+### 2026-07-20 — v0.4 device-identity release
 
 - Completed DATA-05 with an immutable, source-bound identity release, 36 narrow
   reviewed model normalizations, deterministic Catalyst 9300 positive/negative/
@@ -603,5 +604,9 @@ with no billing code.
   disabled source removes its claims instead of creating a replacement.
 - Added the responsive workbench and API contract with `vendor_identifier` as a
   first-class weaker state, four-unit assessment cost, bounded inputs/results,
-  `no-store` responses, and raw-signal non-echo rules. Local desktop/mobile
-  browser flows passed; production evidence is deliberately not claimed yet.
+  `no-store` responses, raw-signal non-echo rules, and an explicit unestablished
+  firmware scope. Local and production browser/API flows passed.
+- Published the immutable tag after green CI and three Node 22 Alpine cgroup
+  runs. The measured 640 MiB/1-vCPU mixed-load peak was 237,666,304 bytes with
+  zero memory-limit, OOM, OOM-kill, or restart events; the tag, VPS SHA,
+  production monitor, and public release identity are reconciled.

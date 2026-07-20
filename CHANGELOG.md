@@ -56,6 +56,9 @@ while it is pre-1.0; research releases may remain unstable.
   recompute effective conflicts and cannot resurrect reviewed model claims.
 - Exposes ETag, fair-use, retry, and raw-archive integrity headers to permitted
   cross-origin API clients.
+- Raises the application burst ceiling from 0.25 to 1 vCPU after the measured
+  mixed identity/search workload showed 17-second p95 latency at the old cap;
+  idle allocation is unchanged.
 
 ## [0.3.0-alpha.2] - 2026-07-20
 
