@@ -128,9 +128,11 @@ test("enterprise and sysObjectID lookup separate registry identity from exact ev
     assert.equal(boundary.result.match, null);
     assert.match(boundary.result.caveat, /no product or model/i);
 
-    const restricted = await (await fetch(`${base}/v1/sys-object-ids/1.3.6.1.4.1.9.999999`)).json();
-    assert.equal(restricted.result.status, "unavailable_due_to_rights");
-    assert.equal(restricted.result.rights.api_output, "denied");
+    const ciscoBoundary = await (await fetch(`${base}/v1/sys-object-ids/1.3.6.1.4.1.9.999999`)).json();
+    assert.equal(ciscoBoundary.result.status, "enterprise_only");
+    assert.equal(ciscoBoundary.result.enterprise_number, 9);
+    assert.equal(ciscoBoundary.result.organization_key, "Q173395");
+    assert.equal(ciscoBoundary.result.identity_status, "vendor_only");
   });
 });
 

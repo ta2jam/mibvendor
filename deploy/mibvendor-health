@@ -17,6 +17,7 @@ fail() {
 : "${APP_VERSION:?APP_VERSION is missing from release.env}"
 : "${VCS_REF:?VCS_REF is missing from release.env}"
 : "${DATA_RELEASE:?DATA_RELEASE is missing from release.env}"
+: "${IDENTITY_RELEASE:?IDENTITY_RELEASE is missing from release.env}"
 
 systemctl is-active --quiet caddy || fail "caddy is inactive"
 
@@ -40,7 +41,7 @@ local_health=$(curl --fail --silent --show-error --connect-timeout 3 --max-time 
 
 check_version() {
     VERSION_JSON=$1 EXPECTED_VERSION=$APP_VERSION EXPECTED_COMMIT=$VCS_REF \
-    EXPECTED_DATA_RELEASE=$DATA_RELEASE python3 - <<'PY'
+    EXPECTED_DATA_RELEASE=$DATA_RELEASE EXPECTED_IDENTITY_RELEASE=$IDENTITY_RELEASE python3 - <<'PY'
 import json
 import os
 
@@ -50,6 +51,7 @@ expected = {
     "version": os.environ["EXPECTED_VERSION"],
     "commit": os.environ["EXPECTED_COMMIT"],
     "data_release": os.environ["EXPECTED_DATA_RELEASE"],
+    "identity_release": os.environ["EXPECTED_IDENTITY_RELEASE"],
 }
 for key, value in expected.items():
     if document.get(key) != value:
@@ -59,13 +61,15 @@ PY
 
 check_version "$(curl --fail --silent --show-error --connect-timeout 3 --max-time 8 http://127.0.0.1:3001/version)" 
 api_release=$(curl --fail --silent --show-error --connect-timeout 3 --max-time 8 http://127.0.0.1:3001/v1/data-release)
-API_RELEASE_JSON=$api_release EXPECTED_DATA_RELEASE=$DATA_RELEASE python3 - <<'PY'
+API_RELEASE_JSON=$api_release EXPECTED_DATA_RELEASE=$DATA_RELEASE EXPECTED_IDENTITY_RELEASE=$IDENTITY_RELEASE python3 - <<'PY'
 import json
 import os
 
 document = json.loads(os.environ["API_RELEASE_JSON"])
 if document.get("data_release") != os.environ["EXPECTED_DATA_RELEASE"]:
     raise SystemExit("API release mismatch")
+if document.get("identity_release") != os.environ["EXPECTED_IDENTITY_RELEASE"]:
+    raise SystemExit("API identity release mismatch")
 if document.get("status") != "public-alpha" or document.get("enterprise_count", 0) < 60000:
     raise SystemExit("API intelligence corpus is unhealthy")
 PY
@@ -76,4 +80,4 @@ check_version "$(curl --fail --silent --show-error --retry 1 --connect-timeout 5
 disk_used=$(df -P / | awk 'NR == 2 {gsub(/%/, "", $5); print $5}')
 [ "$disk_used" -lt "$disk_limit" ] || fail "root filesystem is ${disk_used}% full (limit ${disk_limit}%)"
 
-printf 'mibvendor health passed: version=%s commit=%s disk=%s%%\n' "$APP_VERSION" "$VCS_REF" "$disk_used"
+printf 'mibvendor health passed: version=%s commit=%s identity=%s disk=%s%%\n' "$APP_VERSION" "$VCS_REF" "$IDENTITY_RELEASE" "$disk_used"

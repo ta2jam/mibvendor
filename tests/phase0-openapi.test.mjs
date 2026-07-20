@@ -12,6 +12,14 @@ import {
   createPhase0ApiMock,
 } from "../scripts/phase0-api-mock.mjs";
 import {
+  IDENTITY_PUBLICATION_STATE,
+  IDENTITY_RELEASE,
+  IDENTITY_SOURCES,
+  IDENTITY_STATISTICS,
+  MAX_IDENTITY_BODY_BYTES,
+  MAX_IDENTITY_MODEL_LENGTH,
+  MAX_IDENTITY_RESULTS,
+  MAX_IDENTITY_SYS_DESCR_LENGTH,
   MAX_NAVIGATION_CHILDREN,
   MAX_NAVIGATION_DEPTH,
   MAX_NAVIGATION_SUBTREE_NODES,
@@ -26,7 +34,10 @@ const packageDocument = JSON.parse(
 const readme = await readFile(new URL("../README.md", import.meta.url), "utf8");
 
 const expectedOperations = {
+  "/status": ["get", "head"],
+  "/version": ["get", "head"],
   "/v1/data-release": ["get"],
+  "/v1/device-identities:assess": ["post"],
   "/v1/resolve:batch": ["post"],
   "/v1/search": ["get"],
   "/v1/objects/{objectId}": ["get"],
@@ -53,9 +64,98 @@ async function withServer(callback) {
   }
 }
 
+function schemaValueType(value) {
+  if (value === null) return "null";
+  if (Array.isArray(value)) return "array";
+  if (Number.isInteger(value)) return "integer";
+  return typeof value;
+}
+
+function resolveSchema(schema) {
+  if (!schema?.$ref) return schema;
+  const prefix = "#/components/schemas/";
+  assert.ok(schema.$ref.startsWith(prefix), `unsupported schema reference ${schema.$ref}`);
+  return specification.components.schemas[schema.$ref.slice(prefix.length)];
+}
+
+function schemaErrors(value, inputSchema, path = "$") {
+  const schema = resolveSchema(inputSchema);
+  const errors = [];
+  if (!schema) return [`${path}: schema is missing`];
+
+  if (Object.hasOwn(schema, "const") && !Object.is(value, schema.const)) {
+    errors.push(`${path}: expected constant ${JSON.stringify(schema.const)}`);
+  }
+  if (schema.enum && !schema.enum.some((item) => Object.is(item, value))) {
+    errors.push(`${path}: value is outside the documented enum`);
+  }
+
+  if (schema.type) {
+    const actual = schemaValueType(value);
+    const accepted = Array.isArray(schema.type) ? schema.type : [schema.type];
+    const typeMatches = accepted.includes(actual)
+      || (actual === "integer" && accepted.includes("number"));
+    if (!typeMatches) return [...errors, `${path}: expected ${accepted.join("|")}, received ${actual}`];
+  }
+
+  if (typeof value === "string") {
+    if (schema.minLength !== undefined && value.length < schema.minLength) errors.push(`${path}: shorter than minLength`);
+    if (schema.maxLength !== undefined && value.length > schema.maxLength) errors.push(`${path}: longer than maxLength`);
+    if (schema.pattern && !(new RegExp(schema.pattern).test(value))) errors.push(`${path}: does not match pattern`);
+  }
+
+  if (typeof value === "number") {
+    if (schema.minimum !== undefined && value < schema.minimum) errors.push(`${path}: below minimum`);
+    if (schema.maximum !== undefined && value > schema.maximum) errors.push(`${path}: above maximum`);
+  }
+
+  if (Array.isArray(value)) {
+    if (schema.minItems !== undefined && value.length < schema.minItems) errors.push(`${path}: shorter than minItems`);
+    if (schema.maxItems !== undefined && value.length > schema.maxItems) errors.push(`${path}: longer than maxItems`);
+    if (schema.uniqueItems && new Set(value.map((item) => JSON.stringify(item))).size !== value.length) {
+      errors.push(`${path}: items are not unique`);
+    }
+    if (schema.items) value.forEach((item, index) => errors.push(...schemaErrors(item, schema.items, `${path}[${index}]`)));
+  }
+
+  if (value !== null && !Array.isArray(value) && typeof value === "object") {
+    for (const required of schema.required ?? []) {
+      if (!Object.hasOwn(value, required)) errors.push(`${path}.${required}: required property is missing`);
+    }
+    const properties = schema.properties ?? {};
+    for (const [key, item] of Object.entries(value)) {
+      if (properties[key]) errors.push(...schemaErrors(item, properties[key], `${path}.${key}`));
+      else if (schema.additionalProperties === false) errors.push(`${path}.${key}: undocumented additional property`);
+      else if (schema.additionalProperties && typeof schema.additionalProperties === "object") {
+        errors.push(...schemaErrors(item, schema.additionalProperties, `${path}.${key}`));
+      }
+    }
+  }
+
+  for (const keyword of ["anyOf", "oneOf"]) {
+    if (!schema[keyword]) continue;
+    const alternatives = schema[keyword].map((candidate) => schemaErrors(value, candidate, path));
+    const matches = alternatives.filter((candidateErrors) => candidateErrors.length === 0).length;
+    if ((keyword === "anyOf" && matches === 0) || (keyword === "oneOf" && matches !== 1)) {
+      errors.push(`${path}: does not satisfy ${keyword}`);
+      errors.push(...alternatives.sort((left, right) => left.length - right.length)[0]);
+    }
+  }
+
+  return errors;
+}
+
+function assertConformsToOpenApi(value, schemaName) {
+  assert.deepEqual(
+    schemaErrors(value, specification.components.schemas[schemaName]),
+    [],
+    `${schemaName} response drifted from OpenAPI`,
+  );
+}
+
 test("OpenAPI surface is exact and explicitly public alpha", () => {
   assert.equal(specification.openapi, "3.1.0");
-  assert.equal(packageDocument.version, "0.3.0-alpha.2");
+  assert.equal(packageDocument.version, "0.4.0-alpha.1");
   assert.equal(specification.info.version, packageDocument.version);
   assert.equal(specification.info.title, "mibvendor Permanently Free Public API");
   assert.match(specification.info.description, /Permanently free/);
@@ -67,8 +167,12 @@ test("OpenAPI surface is exact and explicitly public alpha", () => {
   assert.deepEqual(specification["x-service-links"], {
     health: "https://mibvendor.io/healthz",
     status: "https://mibvendor.io/status",
+    version: "https://mibvendor.io/version",
+    openapi: "https://mibvendor.io/openapi.json",
     production_monitor: "https://github.com/ta2jam/mibvendor/actions/workflows/production-monitor.yml",
   });
+  assert.equal(specification.paths["/status"].get.responses["200"].headers["Cache-Control"].$ref, "#/components/headers/NoStore");
+  assert.equal(specification.paths["/version"].head.responses["200"].headers["Cache-Control"].$ref, "#/components/headers/NoStore");
 
   const operationIds = new Set();
   for (const [path, methods] of Object.entries(expectedOperations)) {
@@ -88,6 +192,10 @@ test("real success and cursor examples stay synchronized with executable respons
     .get.responses["200"].content["application/json"].examples.netSnmp.value;
   const moduleExamples = specification.paths["/v1/modules"]
     .get.responses["200"].content["application/json"].examples;
+  const identityExample = specification.paths["/v1/device-identities:assess"]
+    .post.responses["200"].content["application/json"].examples.c9300.value;
+  const identityRequestExample = specification.paths["/v1/device-identities:assess"]
+    .post.requestBody.content["application/json"].examples.c9300.value;
   const cursorParameter = specification.paths["/v1/modules"].get.parameters
     .find((parameter) => parameter.name === "cursor");
   assert.match(cursorParameter.description, /pass .*next_cursor unchanged/i);
@@ -117,6 +225,43 @@ test("real success and cursor examples stay synchronized with executable respons
     assert.deepEqual(nextPage, moduleExamples.nextPage.value);
     assert.equal(nextPage.cursor, firstPage.next_cursor);
     assert.notEqual(nextPage.results[0].id, firstPage.results[0].id);
+
+    const assessed = await (await fetch(`${base}/v1/device-identities:assess`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(identityRequestExample),
+    })).json();
+    assert.deepEqual(assessed, identityExample);
+    assertConformsToOpenApi(identityExample, "DeviceIdentityAssessmentResponse");
+  });
+});
+
+test("identity examples and runtime responses reject undocumented properties", async () => {
+  const identityExample = specification.paths["/v1/device-identities:assess"]
+    .post.responses["200"].content["application/json"].examples.c9300.value;
+  const invalidExample = structuredClone(identityExample);
+  invalidExample.assessment.candidates[0].undocumented_field = true;
+  assert.match(
+    schemaErrors(invalidExample, specification.components.schemas.DeviceIdentityAssessmentResponse).join("\n"),
+    /undocumented additional property/,
+    "contract canary did not detect an undocumented nested response property",
+  );
+
+  await withServer(async (base) => {
+    const release = await (await fetch(`${base}/v1/data-release`)).json();
+    assertConformsToOpenApi(release, "DataRelease");
+
+    const assessment = await (await fetch(`${base}/v1/device-identities:assess`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ signals: { sys_object_id: "1.3.6.1.4.1.9.1.2435" } }),
+    })).json();
+    assertConformsToOpenApi(assessment, "DeviceIdentityAssessmentResponse");
+
+    for (const oid of ["1.3.6.1.4.1.9.1.2435", "1.3.6.1.4.1.8072.3.2.10"]) {
+      const lookup = await (await fetch(`${base}/v1/sys-object-ids/${oid}`)).json();
+      assertConformsToOpenApi(lookup, "SysObjectIdResponse");
+    }
   });
 });
 
@@ -132,10 +277,13 @@ test("OpenAPI makes the permanently-free fair-use boundary machine-readable", ()
     optional_keys: "free-abuse-control-only",
   });
   assert.deepEqual(policy.fair_use, {
-    requests_per_client: 120,
+    rate_limit_units_per_client: 120,
+    default_request_units: 1,
     window_seconds: 60,
     limits_may_change: true,
+    operation_costs: { "POST /v1/device-identities:assess": 4 },
     response_headers: ["RateLimit-Limit", "RateLimit-Remaining", "RateLimit-Reset", "Retry-After"],
+    cors_exposed_response_headers: ["Content-Disposition", "ETag", "Link", "RateLimit-Limit", "RateLimit-Remaining", "RateLimit-Reset", "Retry-After", "X-Content-SHA256", "X-MIB-SHA256"],
   });
   assert.deepEqual(policy.caching, {
     cache_control: true,
@@ -147,12 +295,15 @@ test("OpenAPI makes the permanently-free fair-use boundary machine-readable", ()
     active_raw_revalidation: true,
   });
   for (const header of [
-    "CacheControl", "ETag", "RateLimitLimit", "RateLimitRemaining", "RateLimitReset", "RetryAfter",
+    "CacheControl", "NoCache", "ETag", "RateLimitLimit", "RateLimitRemaining", "RateLimitReset", "RetryAfter",
   ]) assert.ok(specification.components.headers[header], `missing reusable header ${header}`);
   const releaseHeaders = specification.paths["/v1/data-release"].get.responses["200"].headers;
   assert.equal(releaseHeaders.ETag.$ref, "#/components/headers/ETag");
-  assert.equal(releaseHeaders["Cache-Control"].$ref, "#/components/headers/CacheControl");
+  assert.equal(releaseHeaders["Cache-Control"].$ref, "#/components/headers/NoCache");
   assert.equal(releaseHeaders["RateLimit-Limit"].$ref, "#/components/headers/RateLimitLimit");
+  const sysObjectIdHeaders = specification.paths["/v1/sys-object-ids/{oid}"].get.responses["200"].headers;
+  assert.equal(sysObjectIdHeaders.ETag.$ref, "#/components/headers/ETag");
+  assert.equal(sysObjectIdHeaders["Cache-Control"].$ref, "#/components/headers/NoCache");
   const rawHeaders = specification.paths["/v1/modules/{moduleId}/raw"].get.responses["200"].headers;
   assert.equal(rawHeaders.ETag.$ref, "#/components/headers/ETag");
   assert.equal(rawHeaders["Cache-Control"].$ref, "#/components/headers/CacheControl");
@@ -170,6 +321,16 @@ test("OpenAPI bounds and trust fields match the executable probe", () => {
     specification.paths["/v1/resolve:batch"].post["x-max-body-bytes"],
     MAX_BODY_BYTES,
   );
+  const assessmentOperation = specification.paths["/v1/device-identities:assess"].post;
+  assert.equal(assessmentOperation["x-max-body-bytes"], MAX_IDENTITY_BODY_BYTES);
+  assert.equal(assessmentOperation["x-rate-limit-units"], 4);
+  assert.equal(schemas.DeviceIdentitySignals.properties.sys_object_id.maxLength, MAX_OID_LENGTH);
+  assert.equal(schemas.DeviceIdentitySignals.properties.ent_physical_vendor_type.maxLength, MAX_OID_LENGTH);
+  assert.equal(schemas.DeviceIdentitySignals.properties.ent_physical_model_name.maxLength, MAX_IDENTITY_MODEL_LENGTH);
+  assert.equal(schemas.DeviceIdentitySignals.properties.sys_descr.maxLength, MAX_IDENTITY_SYS_DESCR_LENGTH);
+  assert.equal(schemas.DeviceIdentityAssessment.properties.candidates.maxItems, MAX_IDENTITY_RESULTS);
+  assert.equal(schemas.DeviceIdentityAssessment.properties.conflicts.maxItems, MAX_IDENTITY_RESULTS);
+  assert.match(assessmentOperation.description, /neither echoed nor part of the response evidence/);
   assert.equal(
     specification.paths["/v1/search"].get.parameters[0].schema.maxLength,
     MAX_QUERY_LENGTH,
@@ -179,7 +340,13 @@ test("OpenAPI bounds and trust fields match the executable probe", () => {
   assert.deepEqual(schemas.Provenance.properties.rights_tier.enum, ["A", "B"]);
   assert.equal(schemas.RegistrySource.properties.rights.const, "CC0-1.0");
   assert.ok(schemas.SysObjectIdMatch.required.includes("claim_strength"));
-  assert.deepEqual(schemas.SysObjectIdMatch.properties.claim_strength.enum, ["exact_model", "product_family", "platform", "vendor_only"]);
+  assert.deepEqual(schemas.SysObjectIdMatch.properties.claim_strength.enum, ["exact_model", "product_family", "vendor_identifier", "platform", "vendor_only"]);
+  assert.equal(schemas.FirmwareScope.const, "not_established");
+  assert.ok(schemas.DeviceIdentityCandidate.required.includes("firmware_scope"));
+  assert.ok(schemas.DeviceIdentityAssessment.required.includes("firmware_scope"));
+  assert.ok(schemas.SysObjectIdMatch.required.includes("firmware_scope"));
+  assert.ok(schemas.ProjectObservationCandidate.required.includes("firmware_scope"));
+  assert.ok(schemas.SysObjectIdResult.required.includes("firmware_scope"));
   assert.equal(schemas.SysObjectIdMatch.properties.provenance.$ref, "#/components/schemas/IdentityProvenance");
   assert.deepEqual(schemas.IdentityArtifactEvidence.required, ["fields", "symbols", "source_path", "source_url", "git_blob_oid", "sha256"]);
   assert.ok(schemas.MibObject.required.includes("description"));
@@ -191,6 +358,18 @@ test("OpenAPI bounds and trust fields match the executable probe", () => {
   assert.equal(schemas.OidNodeStatistics.properties.searchable_records.const, 76_606);
   assert.equal(schemas.DefinitionStatistics.properties.textual_conventions.properties.active_module_definitions.const, 4_138);
   assert.equal(schemas.DefinitionStatistics.properties.notifications.properties.searchable_records.const, 1_273);
+  assert.equal(schemas.IdentityStatistics.properties.sys_object_id_mappings.maximum, IDENTITY_STATISTICS.sys_object_id_mappings);
+  assert.equal(schemas.IdentityStatistics.properties.product_families.maximum, IDENTITY_STATISTICS.product_families);
+  assert.equal(schemas.DeviceIdentityStatistics.properties.sys_object_id_mappings.maximum, IDENTITY_STATISTICS.sys_object_id_mappings);
+  assert.equal(schemas.DeviceIdentityStatistics.properties.exact_models.maximum, IDENTITY_STATISTICS.exact_models);
+  assert.equal(schemas.DeviceIdentityStatistics.properties.product_families.maximum, IDENTITY_STATISTICS.product_families);
+  assert.equal(schemas.DeviceIdentityStatistics.properties.vendor_identifiers.maximum, IDENTITY_STATISTICS.vendor_identifiers);
+  assert.equal(schemas.DeviceIdentityStatistics.properties.project_observation_oids.maximum, IDENTITY_STATISTICS.project_observation_oids);
+  assert.equal(schemas.DeviceIdentityStatistics.properties.disabled_sources.maximum, IDENTITY_SOURCES.length);
+  assert.equal(schemas.DataRelease.properties.identity_sources.minItems, IDENTITY_SOURCES.length);
+  assert.equal(schemas.DataRelease.properties.identity_sources.maxItems, IDENTITY_SOURCES.length);
+  assert.equal(schemas.IdentityReleaseId.const, IDENTITY_RELEASE);
+  assert.deepEqual(Object.keys(IDENTITY_PUBLICATION_STATE), schemas.IdentityPublication.required);
   assert.equal(schemas.SourceStatistics.properties.total.const, 32);
   assert.equal(schemas.SourceStatistics.properties.publication_modes.properties.redistributable.const, 12);
   assert.equal(schemas.SourceStatistics.properties.publication_modes.properties["directory-only"].const, 20);
@@ -214,6 +393,11 @@ test("every documented operation is reachable with its documented media type", a
   await withServer(async (base) => {
     const requests = [
       ["/v1/data-release", {}, "application/json"],
+      ["/v1/device-identities:assess", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ signals: { sys_object_id: "1.3.6.1.4.1.9.1.2435" } }),
+      }, "application/json"],
       ["/v1/resolve:batch", {
         method: "POST",
         headers: { "content-type": "application/json" },

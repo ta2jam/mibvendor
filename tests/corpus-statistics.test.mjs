@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import { createMibvendorServer } from "../server.mjs";
-import { PUBLIC_CORPUS_STATISTICS } from "../src/intelligence.mjs";
+import { IDENTITY_STATISTICS, PUBLIC_CORPUS_STATISTICS } from "../src/intelligence.mjs";
 
 const specification = JSON.parse(
   await readFile(new URL("../docs/research/demand/phase0-openapi.json", import.meta.url), "utf8")
@@ -51,7 +51,12 @@ test("public corpus statistics keep catalog, search, definition, and identity co
   );
 
   assert.equal(stats.identity.enterprise_records, 66_266);
-  assert.equal(stats.identity.sys_object_id_mappings, 19);
+  assert.equal(stats.identity.sys_object_id_mappings, IDENTITY_STATISTICS.sys_object_id_mappings);
+  assert.equal(stats.identity.identity_release, IDENTITY_STATISTICS.identity_release);
+  assert.equal(stats.identity.exact_models, IDENTITY_STATISTICS.exact_models);
+  assert.equal(stats.identity.product_families, IDENTITY_STATISTICS.product_families);
+  assert.equal(stats.identity.platforms, IDENTITY_STATISTICS.platforms);
+  assert.equal(stats.identity.project_observation_oids, IDENTITY_STATISTICS.project_observation_oids);
   assert.equal(stats.sources.total, 32);
   assert.deepEqual(stats.sources.publication_modes, {
     redistributable: 12,
@@ -101,7 +106,7 @@ test("OpenAPI pins the immutable statistics contract and deprecates ambiguous ob
     PUBLIC_CORPUS_STATISTICS.identity.enterprise_records
   );
   assert.equal(
-    schemas.IdentityStatistics.properties.sys_object_id_mappings.const,
+    schemas.IdentityStatistics.properties.sys_object_id_mappings.maximum,
     PUBLIC_CORPUS_STATISTICS.identity.sys_object_id_mappings
   );
   assert.equal(schemas.SourceStatistics.properties.total.const, PUBLIC_CORPUS_STATISTICS.sources.total);

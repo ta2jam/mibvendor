@@ -29,7 +29,9 @@ consistency, and the golden-task set. Contract validation is linear outside JCS
 object-key sorting; digest construction is O(n + sum(k log k)).
 
 These documents do not authorize a production database/importer, stable API
-claim, or unknown-rights vendor data. A separately bounded public-alpha API now
-serves only the reviewed synthetic object set, IANA CC0 PEN registry fields,
-and pinned BSD-family Net-SNMP identity records. The binding gate remains
+claim, or unknown-rights vendor data. The bounded public-alpha API now serves
+the immutable licensed MIB catalog, contact-free IANA CC0 PEN fields, pinned
+Net-SNMP/SigScale platform identities, and a separate content-addressed
+metadata-only device-identity release. Project fixtures remain an
+observation-only corroboration layer. The binding gate remains
 [Phase 0](../PHASE-0.md).

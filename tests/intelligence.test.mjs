@@ -36,17 +36,19 @@ test("sysObjectID lookup never upgrades an enterprise-only match to a product gu
   assert.equal(enterpriseOnly.enterprise.number, 2);
   assert.equal(enterpriseOnly.match, null);
 
-  const rightsRestricted = lookupSysObjectId("1.3.6.1.4.1.9.1.999999");
-  assert.equal(rightsRestricted.status, "unavailable_due_to_rights");
-  assert.equal(rightsRestricted.rights.api_output, "denied");
-  assert.equal(rightsRestricted.match, null);
+  const ciscoEnterpriseOnly = lookupSysObjectId("1.3.6.1.4.1.9.1.999999");
+  assert.equal(ciscoEnterpriseOnly.status, "enterprise_only");
+  assert.equal(ciscoEnterpriseOnly.enterprise_number, 9);
+  assert.equal(ciscoEnterpriseOnly.organization_key, "Q173395");
+  assert.equal(ciscoEnterpriseOnly.identity_status, "vendor_only");
+  assert.equal(ciscoEnterpriseOnly.match, null);
 
   assert.equal(lookupSysObjectId("not-an-oid").status, "invalid");
   assert.equal(lookupSysObjectId("1.3.6.1.2.1.1.2").status, "not_found");
 });
 
 test("SigScale OCS is an exact platform claim with artifact-level provenance, never a model guess", () => {
-  assert.equal(SYS_OBJECT_ID_COUNT, 19);
+  assert.equal(SYS_OBJECT_ID_COUNT, 6218);
 
   const exact = lookupSysObjectId("1.3.6.1.4.1.50386.1.1");
   assert.equal(exact.status, "resolved");

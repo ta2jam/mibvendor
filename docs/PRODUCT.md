@@ -13,8 +13,8 @@ It must let a user:
 2. understand scalar, table, index, notification, and revision context;
 3. turn existing walk output into named, grouped, readable rows without sending
    raw values to the server;
-4. distinguish PEN assignment, exact `sysObjectID` evidence, and unsupported
-   device identity;
+4. correlate PEN assignment, exact `sysObjectID`, ENTITY-MIB model fields, and
+   bounded platform signatures without hiding conflicts or unsupported claims;
 5. consume the same resolution and provenance model through a versioned API.
 6. distinguish redistributable, metadata-only, directory-only, and quarantined
    sources without mistaking a download link for permission.
@@ -61,7 +61,15 @@ and bounded API from one process. It uses no production database and loads only
 reviewed immutable snapshots. The active `license-signaled-2026-07-20.2`
 release contains 702 redistributable modules, 76,606 searchable catalog OID
 nodes, 4,138 textual conventions, 1,273 notifications, the IANA PEN registry,
-and 19 exact platform-level `sysObjectID` mappings. The public source catalog
+and 6,218 exact identity lookup keys. The separate
+`device-identity-2026-07-20.1` release includes 6,199 vendor-MIB mappings across
+ten vendor families: 36 reviewed exact device models, 1,491 product-family or
+category assignments, and 4,672 generic vendor identifiers that assert neither
+model nor family. Nineteen platform mappings complete the runtime lookup set;
+713 project-observation OIDs are kept outside the primary mapping count and
+used only as corroboration. An immutable release digest and a separately
+hashed, revisioned publication-control view make source kill-switch changes
+observable without rewriting historical evidence. The public source catalog
 contains 12 redistributable and 20 directory-only sources. This remains smaller
 than the later data-engine hypothesis:
 
@@ -74,6 +82,8 @@ No database stack is selected until parser, corpus, demand, and target workloads
 pass Phase 0. The current in-memory resolver hashes each known numeric prefix;
 exact/ancestor resolution is `O(d)` time for OID depth `d` and `O(N)` index
 memory for `N` definitions. Text search is currently `O(N*t)` for `t` query
-tokens. SNMP permits up to 128 subidentifiers, so no design may assume a depth
+tokens. Device identity exact lookup is `O(1)` after an `O(I+E)` startup build
+for `I` primary identity records and `E` observation records. SNMP permits up to
+128 subidentifiers, so no design may assume a depth
 near 20. Measured latency and memory, not dataset size alone, decide when a
 database/search index is justified.

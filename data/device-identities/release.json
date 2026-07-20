@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "identity_release": "device-identity-2026-07-20.1",
+  "release_sha256": "98c71804b97e4c03fd8a64e272b3c3fbcd106ab894a4a4d35c5954a19aa3359f",
+  "datasets": {
+    "builtin_claims": {
+      "net-snmp": {
+        "record_count": 18,
+        "source_revision": "319bbd0bb36547992c0e1302fef278c6f49d0c80",
+        "artifact_sha256": "bf111deffcc7c36262d2e47ff8fd7d49eee8a3f1bdad6236367660da6854a233"
+      },
+      "sigscale-mibs": {
+        "record_count": 1,
+        "source_revision": "14259b9e52a5cd7ff0fd60b33728da616792887d",
+        "artifact_sha256": "53f5cb591c5af28c2c9783b8f7e0b897059202771cf6b931b72e639f25d793a1"
+      }
+    },
+    "license_evidence": {
+      "librenms_license_sha256": "67c255477940ba46460c0e6774401897e99ef9e1f82fb08d6a9b7680f39dd038",
+      "librenms_readme_sha256": "83c5e62a686a95f178a00c2bfbd25a7cdc4a0b2880ebfda250fb72e70e0d2ae3",
+      "snmp_info_license_sha256": "2052b8696fbcee7d026c45be0d007cd164a261ad08843e73164913364dc408ce"
+    },
+    "vendor_mib": {
+      "snapshot_id": "librenms-vendor-mib-identity-dfba713a-2026-07-20",
+      "dataset_sha256": "578d4add0eb1f28ca394b54dcb2b1837c3d17b4027e08336b2cd22b18fec9cf0",
+      "file_sha256": "1ec972f5d341dedcd248ffddc2790b1b25575e0365932b5e2fefb363d04c926d",
+      "source_manifest_sha256": "5cae4d24747a9b5f673affc402e5f54862c3ae35143fd9f92d598f3f779f7295",
+      "source_manifest_file_sha256": "7548580185ef694be3c3e23f93032a4fde5e7dd2a36837001e75c07ca7393ab6",
+      "record_count": 6199
+    },
+    "project_fixtures": {
+      "dataset_id": "project-authored-device-identity-fixtures",
+      "document_sha256": "4472fd539647050d784c5a83f2b70aa0598e89afda071b2a97fdff8029552d66",
+      "file_sha256": "e1f73eb5bf973c8945e1c2c86262254509c807422f95c8c22d1ce7287c8918ee",
+      "manifest_sha256": "77cb5703e60861c099f375c35c43e1dd65cc03805a520ca99089dbf24d3e0dec",
+      "manifest_file_sha256": "3e2e0ae316565fbf821063096c87e63b1d92038cb3d12ca5b371960c4ef9eb6a",
+      "observation_count": 1023
+    },
+    "runtime_index": {
+      "schema_version": 1,
+      "runtime_index_sha256": "cb224e4a8815b00ae82675fad4863fdce8cf2561526a464a9d8dfbc1532b4074",
+      "file_sha256": "ed87e68ac623e155834e257ca605abe611c81bc749203085b040aee2383a097e",
+      "vendor_claim_count": 6199,
+      "project_fixture_oid_count": 713
+    }
+  },
+  "source_ids": [
+    "3com-products",
+    "brocade-foundry-products",
+    "ciena-wwp-products",
+    "cisco-products",
+    "colubris-products",
+    "dasan-products",
+    "librenms-project-tests",
+    "net-snmp",
+    "netscreen-products",
+    "patton-smartnode-products",
+    "sigscale-mibs",
+    "silverpeak-products",
+    "snmp-info-project-tests",
+    "vmware-products"
+  ]
+}

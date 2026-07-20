@@ -3,8 +3,8 @@
   "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
   "info": {
     "title": "mibvendor Permanently Free Public API",
-    "version": "0.3.0-alpha.2",
-    "description": "Permanently free, source-aware OID intelligence plus a fail-closed MIB source catalog. There is no paid tier, billing, subscription, or paid quota upgrade. Free access is fair-use bounded, not unlimited use or an availability SLA. Raw files are served only for modules approved by file-specific or recognized pinned repository-license evidence; unapproved vendor sources remain directory-only."
+    "version": "0.4.0-alpha.1",
+    "description": "Permanently free, source-aware OID and bounded device-identity intelligence plus a fail-closed MIB source catalog. Direct PEN and reviewed organization-key fields avoid name-only correlation; unavailable keys stay null. The assessment endpoint accepts only four bounded identity signals, never a raw SNMP walk. There is no paid tier, billing, subscription, or paid quota upgrade. Free access is fair-use bounded, not unlimited use or an availability SLA. Raw files are served only for modules approved by file-specific or recognized pinned repository-license evidence; unapproved vendor sources remain directory-only."
   },
   "x-mibvendor-status": "public-alpha",
   "x-mibvendor-access-policy": {
@@ -18,10 +18,13 @@
       "optional_keys": "free-abuse-control-only"
     },
     "fair_use": {
-      "requests_per_client": 120,
+      "rate_limit_units_per_client": 120,
+      "default_request_units": 1,
       "window_seconds": 60,
       "limits_may_change": true,
-      "response_headers": ["RateLimit-Limit", "RateLimit-Remaining", "RateLimit-Reset", "Retry-After"]
+      "operation_costs": { "POST /v1/device-identities:assess": 4 },
+      "response_headers": ["RateLimit-Limit", "RateLimit-Remaining", "RateLimit-Reset", "Retry-After"],
+      "cors_exposed_response_headers": ["Content-Disposition", "ETag", "Link", "RateLimit-Limit", "RateLimit-Remaining", "RateLimit-Reset", "Retry-After", "X-Content-SHA256", "X-MIB-SHA256"]
     },
     "caching": {
       "cache_control": true,
@@ -36,16 +39,153 @@
   "x-service-links": {
     "health": "https://mibvendor.io/healthz",
     "status": "https://mibvendor.io/status",
+    "version": "https://mibvendor.io/version",
+    "openapi": "https://mibvendor.io/openapi.json",
     "production_monitor": "https://github.com/ta2jam/mibvendor/actions/workflows/production-monitor.yml"
   },
   "servers": [{ "url": "https://mibvendor.io", "description": "Official public service" }],
   "security": [],
   "paths": {
+    "/status": {
+      "get": {
+        "operationId": "getServiceStatus",
+        "summary": "Inspect the live process self-check",
+        "responses": { "200": { "description": "Current process status; this is not uptime history or an SLA", "headers": { "Cache-Control": { "$ref": "#/components/headers/NoStore" } }, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/StatusResponse" } } } }, "405": { "description": "Only GET and HEAD are allowed" } }
+      },
+      "head": {
+        "operationId": "headServiceStatus",
+        "summary": "Check service status without a response body",
+        "responses": { "200": { "description": "Same status and no-store headers as GET, without a body", "headers": { "Cache-Control": { "$ref": "#/components/headers/NoStore" } } } }
+      }
+    },
+    "/version": {
+      "get": {
+        "operationId": "getServiceVersion",
+        "summary": "Inspect deployed code, MIB data, and identity release identifiers",
+        "responses": { "200": { "description": "Deployed immutable identifiers and identity statistics", "headers": { "Cache-Control": { "$ref": "#/components/headers/NoStore" } }, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/VersionResponse" } } } }, "405": { "description": "Only GET and HEAD are allowed" } }
+      },
+      "head": {
+        "operationId": "headServiceVersion",
+        "summary": "Check version metadata without a response body",
+        "responses": { "200": { "description": "Same version and no-store headers as GET, without a body", "headers": { "Cache-Control": { "$ref": "#/components/headers/NoStore" } } } }
+      }
+    },
     "/v1/data-release": {
       "get": {
         "operationId": "getDataRelease",
         "summary": "Inspect the active immutable data release",
-        "responses": { "200": { "description": "Release identity and active-public corpus statistics; staged and quarantined content is excluded", "headers": { "Cache-Control": { "$ref": "#/components/headers/CacheControl" }, "ETag": { "$ref": "#/components/headers/ETag" }, "RateLimit-Limit": { "$ref": "#/components/headers/RateLimitLimit" }, "RateLimit-Remaining": { "$ref": "#/components/headers/RateLimitRemaining" }, "RateLimit-Reset": { "$ref": "#/components/headers/RateLimitReset" } }, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DataRelease" } } } } }
+        "responses": { "200": { "description": "Release identity, effective publication view, bounded source catalog, and active-public statistics; clients must revalidate before reuse", "headers": { "Cache-Control": { "$ref": "#/components/headers/NoCache" }, "ETag": { "$ref": "#/components/headers/ETag" }, "RateLimit-Limit": { "$ref": "#/components/headers/RateLimitLimit" }, "RateLimit-Remaining": { "$ref": "#/components/headers/RateLimitRemaining" }, "RateLimit-Reset": { "$ref": "#/components/headers/RateLimitReset" } }, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DataRelease" } } } } }
+      }
+    },
+    "/v1/device-identities:assess": {
+      "post": {
+        "operationId": "assessDeviceIdentity",
+        "summary": "Assess bounded SNMP identity signals without accepting or retaining a raw walk",
+        "description": "Submit only the minimum identity fields. Arrays, raw SNMP walks, and extra fields are rejected; there is no serial-number field, so do not place serials in text signals. sys_descr is processed in memory and is neither echoed nor part of the response evidence.",
+        "x-max-body-bytes": 16384,
+        "x-rate-limit-units": 4,
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DeviceIdentityAssessmentRequest" }, "examples": { "c9300": { "value": { "signals": { "sys_object_id": "1.3.6.1.4.1.9.1.2435", "ent_physical_model_name": "C9300-24T" } } } } } } },
+        "responses": {
+          "200": {
+            "description": "Evidence-separated assessment; conflicts remain explicit and body-dependent results are never shared-cacheable",
+            "headers": { "Cache-Control": { "$ref": "#/components/headers/NoStore" }, "RateLimit-Limit": { "$ref": "#/components/headers/RateLimitLimit" }, "RateLimit-Remaining": { "$ref": "#/components/headers/RateLimitRemaining" }, "RateLimit-Reset": { "$ref": "#/components/headers/RateLimitReset" } },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DeviceIdentityAssessmentResponse" },
+                "examples": {
+                  "c9300": {
+                    "summary": "Exact C9300-24T assignment with direct PEN and reviewed organization key",
+                    "value": {
+                      "data_release": "license-signaled-2026-07-20.2",
+                      "identity_release": "device-identity-2026-07-20.1",
+                      "identity_publication": {
+                        "identity_release": "device-identity-2026-07-20.1",
+                        "identity_release_sha256": "98c71804b97e4c03fd8a64e272b3c3fbcd106ab894a4a4d35c5954a19aa3359f",
+                        "control_revision": 1,
+                        "control_sha256": "458d353cb2458ecd50ff47e5a821ec759d2dbcbe807f306ed5affb76bed9768a",
+                        "disabled_sources": [],
+                        "identity_view": "device-identity-2026-07-20.1.98c71804b97e.c1.458d353cb245"
+                      },
+                      "assessment": {
+                        "status": "resolved",
+                        "identity_status": "exact_model",
+                        "firmware_scope": "not_established",
+                        "enterprise_number": 9,
+                        "organization_name": "ciscoSystems",
+                        "organization_key": "Q173395",
+                        "organization_key_status": "reviewed",
+                        "model": "C9300-24T",
+                        "product_family": "Catalyst 9300",
+                        "mib_identifier": "ciscoCat930024T",
+                        "platform": null,
+                        "confidence": "high",
+                        "candidates": [
+                          {
+                            "identity_status": "exact_model",
+                            "firmware_scope": "not_established",
+                            "enterprise_number": 9,
+                            "organization_name": "ciscoSystems",
+                            "organization_key": "Q173395",
+                            "model": "C9300-24T",
+                            "product_family": "Catalyst 9300",
+                            "mib_identifier": "ciscoCat930024T",
+                            "platform": null,
+                            "confidence": "high",
+                            "source_assignment_confidence": "high",
+                            "claim_scope": "device-model",
+                            "match_type": "exact",
+                            "evidence": [{ "type": "sys_object_id", "source_id": "cisco-products", "source_url": "https://github.com/librenms/librenms/blob/dfba713a2ffd39c2b6619cccdec016e04a06a027/mibs/cisco/CISCO-PRODUCTS-MIB", "publication_mode": "metadata-only", "raw_download": false, "signal": "sys_object_id" }]
+                          },
+                          {
+                            "identity_status": "exact_model",
+                            "firmware_scope": "not_established",
+                            "enterprise_number": 9,
+                            "organization_name": "ciscoSystems",
+                            "organization_key": "Q173395",
+                            "model": "C9300-24T",
+                            "product_family": "Catalyst 9300",
+                            "platform": null,
+                            "confidence": "medium",
+                            "source_assignment_confidence": "device-reported-reviewed-model",
+                            "claim_scope": "device-reported-model",
+                            "match_type": "signature",
+                            "evidence": [{ "type": "device-reported-model", "source_id": null, "source_url": null, "publication_mode": null, "raw_download": false }]
+                          }
+                        ],
+                        "conflicts": [],
+                        "evidence": [
+                          { "type": "iana-pen-registry", "enterprise_number": 9, "registry_status": "assigned", "source_url": "https://www.iana.org/assignments/enterprise-numbers/enterprise-numbers" },
+                          { "signal": "sys_object_id", "match_type": "exact" },
+                          { "signal": "ent_physical_model_name", "match_type": "corroborated-model" }
+                        ],
+                        "signals_used": ["sys_object_id", "ent_physical_model_name"],
+                        "identity_release": "device-identity-2026-07-20.1",
+                        "identity_view": "device-identity-2026-07-20.1.98c71804b97e.c1.458d353cb245",
+                        "identity_release_sha256": "98c71804b97e4c03fd8a64e272b3c3fbcd106ab894a4a4d35c5954a19aa3359f",
+                        "publication_control": {
+                          "identity_release": "device-identity-2026-07-20.1",
+                          "identity_release_sha256": "98c71804b97e4c03fd8a64e272b3c3fbcd106ab894a4a4d35c5954a19aa3359f",
+                          "control_revision": 1,
+                          "control_sha256": "458d353cb2458ecd50ff47e5a821ec759d2dbcbe807f306ed5affb76bed9768a",
+                          "disabled_sources": [],
+                          "identity_view": "device-identity-2026-07-20.1.98c71804b97e.c1.458d353cb245"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/Problem" },
+          "405": { "$ref": "#/components/responses/Problem" },
+          "409": { "$ref": "#/components/responses/Problem" },
+          "413": { "$ref": "#/components/responses/Problem" },
+          "415": { "$ref": "#/components/responses/Problem" },
+          "422": { "$ref": "#/components/responses/Problem" },
+          "429": { "$ref": "#/components/responses/Problem" },
+          "500": { "$ref": "#/components/responses/Problem" }
+        }
       }
     },
     "/v1/resolve:batch": {
@@ -306,10 +446,10 @@
     "/v1/sys-object-ids/{oid}": {
       "get": {
         "operationId": "getSysObjectId",
-        "summary": "Resolve an exact rights-approved sysObjectID or return its PEN boundary",
+        "summary": "Resolve a published exact sysObjectID claim or return its PEN boundary",
         "parameters": [{ "$ref": "#/components/parameters/OidPath" }],
         "responses": {
-          "200": { "description": "Resolved, enterprise-only, or not-found result", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SysObjectIdResponse" } } } },
+          "200": { "description": "Resolved, enterprise-only, or not-found result in the effective publication view; clients must revalidate before reuse", "headers": { "Cache-Control": { "$ref": "#/components/headers/NoCache" }, "ETag": { "$ref": "#/components/headers/ETag" } }, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SysObjectIdResponse" } } } },
           "422": { "$ref": "#/components/responses/Problem" },
           "429": { "$ref": "#/components/responses/Problem" }
         }
@@ -334,16 +474,24 @@
         "description": "Cache policy for this response; clients should reuse cacheable public results.",
         "schema": { "type": "string" }
       },
+      "NoStore": {
+        "description": "Sensitive or live response data is not stored by shared or private caches.",
+        "schema": { "type": "string", "const": "no-store" }
+      },
+      "NoCache": {
+        "description": "Clients may store the representation but must revalidate it so publication-control changes are not served stale.",
+        "schema": { "type": "string", "const": "no-cache" }
+      },
       "ETag": {
         "description": "Strong validator for the exact response bytes. Send it in If-None-Match on later GET requests.",
         "schema": { "type": "string" }
       },
       "RateLimitLimit": {
-        "description": "Current fair-use request limit for the client window; this operational value may change.",
+        "description": "Current fair-use unit limit for the client window; this operational value may change.",
         "schema": { "type": "integer", "minimum": 1 }
       },
       "RateLimitRemaining": {
-        "description": "Requests remaining in the current client window.",
+        "description": "Fair-use units remaining in the current client window.",
         "schema": { "type": "integer", "minimum": 0 }
       },
       "RateLimitReset": {
@@ -366,12 +514,244 @@
     },
     "schemas": {
       "DataReleaseId": { "type": "string", "const": "license-signaled-2026-07-20.2" },
+      "IdentityReleaseId": { "type": "string", "const": "device-identity-2026-07-20.1" },
+      "FirmwareScope": {
+        "type": "string",
+        "const": "not_established",
+        "description": "The identity evidence establishes no firmware version, range, compatibility, or feature support; this is not an all-firmware claim."
+      },
+      "IdentityPublication": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["identity_release", "identity_release_sha256", "control_revision", "control_sha256", "disabled_sources", "identity_view"],
+        "properties": {
+          "identity_release": { "$ref": "#/components/schemas/IdentityReleaseId" },
+          "identity_release_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "control_revision": { "type": "integer", "minimum": 1 },
+          "control_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "disabled_sources": { "type": "array", "maxItems": 14, "uniqueItems": true, "items": { "type": "string" } },
+          "identity_view": { "type": "string", "pattern": "^device-identity-2026-07-20\\.1\\.[0-9a-f]{12}\\.c[1-9][0-9]*\\.[0-9a-f]{12}$" }
+        }
+      },
+      "IdentitySource": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_id", "enabled", "source_status", "source_type", "evidence_layer", "enterprise_number", "organization_key", "repository_revision", "repository_license_signal", "artifact_rights", "publication_mode", "raw_distribution", "source_url", "official_source_status", "official_source_url"],
+        "properties": {
+          "source_id": { "type": "string" },
+          "enabled": { "type": "boolean" },
+          "source_status": { "type": "string", "enum": ["active", "disabled-by-publication-control"] },
+          "source_type": { "type": "string", "enum": ["vendor-mib", "project-fixture", "builtin"] },
+          "evidence_layer": { "type": "string", "enum": ["vendor-mib-factual-metadata", "project-fixture-observation", "rights-cleared-builtin"] },
+          "enterprise_number": { "type": ["integer", "null"], "minimum": 0, "maximum": 4294967295 },
+          "organization_key": { "type": ["string", "null"] },
+          "repository_revision": { "type": ["string", "null"] },
+          "repository_license_signal": { "type": ["string", "null"], "description": "Repository-level license signal; this does not override rights found in the source artifact." },
+          "artifact_rights": { "type": ["string", "null"], "description": "Rights classification of the referenced artifact itself." },
+          "publication_mode": { "type": "string", "enum": ["metadata-only", "observation-only", "release-governed"] },
+          "raw_distribution": { "type": "string", "enum": ["denied", "not-provided"] },
+          "source_url": { "type": "string", "format": "uri" },
+          "official_source_status": { "type": ["string", "null"] },
+          "official_source_url": { "type": ["string", "null"], "format": "uri" }
+        }
+      },
+      "StatusResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["schema_version", "status", "checked_at", "version", "commit", "data_release", "identity_release", "identity_publication", "identity_statistics", "scope", "links"],
+        "properties": {
+          "schema_version": { "const": 1 },
+          "status": { "const": "operational" },
+          "checked_at": { "type": "string", "format": "date-time" },
+          "version": { "type": "string" },
+          "commit": { "type": "string" },
+          "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
+          "identity_release": { "$ref": "#/components/schemas/IdentityReleaseId" },
+          "identity_publication": { "$ref": "#/components/schemas/IdentityPublication" },
+          "identity_statistics": { "$ref": "#/components/schemas/DeviceIdentityStatistics" },
+          "scope": { "const": "Live process self-check only; no uptime SLA or incident history." },
+          "links": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["health", "production_monitor"],
+            "properties": {
+              "health": { "const": "/healthz" },
+              "production_monitor": { "type": "string", "format": "uri" }
+            }
+          }
+        }
+      },
+      "VersionResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["schema_version", "version", "commit", "data_release", "identity_release", "identity_publication", "identity_statistics"],
+        "properties": {
+          "schema_version": { "const": 1 },
+          "version": { "type": "string" },
+          "commit": { "type": "string" },
+          "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
+          "identity_release": { "$ref": "#/components/schemas/IdentityReleaseId" },
+          "identity_publication": { "$ref": "#/components/schemas/IdentityPublication" },
+          "identity_statistics": { "$ref": "#/components/schemas/DeviceIdentityStatistics" }
+        }
+      },
+      "DeviceIdentityStatistics": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["identity_release", "identity_release_sha256", "identity_view", "publication_control_revision", "publication_control_sha256", "runtime_index_sha256", "sys_object_id_mappings", "claims", "exact_models", "product_families", "vendor_identifiers", "platforms", "vendor_families", "project_observation_oids", "conflicting_observation_oids", "reviewed_organization_keys", "disabled_sources"],
+        "properties": {
+          "identity_release": { "$ref": "#/components/schemas/IdentityReleaseId" },
+          "identity_release_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "identity_view": { "type": "string" },
+          "publication_control_revision": { "type": "integer", "minimum": 1 },
+          "publication_control_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "runtime_index_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "sys_object_id_mappings": { "type": "integer", "minimum": 0, "maximum": 6218, "description": "Unique exact sysObjectID keys enabled in the effective publication view." },
+          "claims": { "type": "integer", "minimum": 0, "maximum": 6218 },
+          "exact_models": { "type": "integer", "minimum": 0, "maximum": 36 },
+          "product_families": { "type": "integer", "minimum": 0, "maximum": 1491 },
+          "vendor_identifiers": { "type": "integer", "minimum": 0, "maximum": 4672, "description": "Exact vendor-MIB identifier assignments whose symbols may denote devices, chassis, modules, line cards, or components; these are not whole-device model claims." },
+          "platforms": { "type": "integer", "minimum": 0, "maximum": 19 },
+          "vendor_families": { "type": "integer", "minimum": 0, "maximum": 12 },
+          "project_observation_oids": { "type": "integer", "minimum": 0, "maximum": 713, "description": "Project-fixture observations are corroboration only, not universal model assignments." },
+          "conflicting_observation_oids": { "type": "integer", "minimum": 0, "maximum": 72 },
+          "reviewed_organization_keys": { "type": "integer", "const": 7 },
+          "disabled_sources": { "type": "integer", "minimum": 0, "maximum": 14 }
+        }
+      },
+      "DeviceIdentitySignals": {
+        "type": "object",
+        "additionalProperties": false,
+        "minProperties": 1,
+        "maxProperties": 4,
+        "properties": {
+          "sys_object_id": { "type": "string", "pattern": "^\\.?[0-9]+(?:\\.[0-9]+)+$", "maxLength": 512, "description": "Numeric OID with uint32 arcs; one leading dot is accepted." },
+          "ent_physical_vendor_type": { "type": "string", "pattern": "^\\.?[0-9]+(?:\\.[0-9]+)+$", "maxLength": 512, "description": "Numeric ENTITY-MIB vendor-type OID with uint32 arcs; one leading dot is accepted." },
+          "ent_physical_model_name": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "sys_descr": { "type": "string", "minLength": 1, "maxLength": 2048, "writeOnly": true, "description": "Processed in memory for bounded platform signatures; never echoed, stored, or returned as evidence." }
+        }
+      },
+      "DeviceIdentityAssessmentRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["signals"],
+        "properties": {
+          "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
+          "identity_release": { "$ref": "#/components/schemas/IdentityReleaseId" },
+          "signals": { "$ref": "#/components/schemas/DeviceIdentitySignals" }
+        }
+      },
+      "IdentityEvidence": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "source_id", "source_url", "publication_mode", "raw_download"],
+        "properties": {
+          "type": { "type": "string" },
+          "source_id": { "type": ["string", "null"] },
+          "source_url": { "type": ["string", "null"], "format": "uri" },
+          "publication_mode": { "type": ["string", "null"], "enum": ["metadata-only", "redistributable", "registry", null] },
+          "raw_download": { "const": false },
+          "signal": { "type": "string", "enum": ["sys_object_id", "ent_physical_vendor_type", "ent_physical_model_name", "sys_descr"] }
+        }
+      },
+      "DeviceIdentityCandidate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["identity_status", "firmware_scope", "enterprise_number", "organization_name", "organization_key", "model", "product_family", "platform", "confidence", "source_assignment_confidence", "claim_scope", "match_type", "evidence"],
+        "properties": {
+          "identity_status": { "type": "string", "enum": ["exact_model", "product_family", "vendor_identifier", "platform", "vendor_only"] },
+          "firmware_scope": { "$ref": "#/components/schemas/FirmwareScope" },
+          "enterprise_number": { "type": ["integer", "null"], "minimum": 0, "maximum": 4294967295 },
+          "organization_name": { "type": ["string", "null"] },
+          "organization_key": { "type": ["string", "null"], "description": "Reviewed stable organization key when available; null is explicit and must not be inferred from a name." },
+          "model": { "type": ["string", "null"] },
+          "product_family": { "type": ["string", "null"] },
+          "mib_identifier": { "type": ["string", "null"], "description": "Vendor MIB symbol when the source supplies one; this is not automatically a whole-device model." },
+          "platform": { "type": ["string", "null"] },
+          "confidence": { "type": "string", "enum": ["high", "medium", "registry"] },
+          "source_assignment_confidence": { "type": "string", "enum": ["high", "medium", "registry", "signature", "device-reported-reviewed-model"] },
+          "claim_scope": { "type": "string", "enum": ["device-model", "vendor-mib-object-identifier", "product-family", "agent-platform", "pen-registry-assignee", "device-reported-model"] },
+          "match_type": { "type": "string", "enum": ["exact", "prefix", "signature", "registry"] },
+          "evidence": { "type": "array", "maxItems": 32, "items": { "$ref": "#/components/schemas/IdentityEvidence" } }
+        }
+      },
+      "DeviceIdentityConflict": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type"],
+        "properties": {
+          "type": { "type": "string", "enum": ["cross_vendor", "model_mismatch", "family_mismatch"] },
+          "enterprise_number": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+          "enterprise_numbers": { "type": "array", "minItems": 2, "maxItems": 32, "items": { "type": "integer", "minimum": 0, "maximum": 4294967295 } },
+          "models": { "type": "array", "minItems": 2, "maxItems": 32, "items": { "type": "string" } },
+          "product_families": { "type": "array", "minItems": 2, "maxItems": 32, "items": { "type": "string" } }
+        }
+      },
+      "AssessmentEvidence": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "signal": { "type": "string", "enum": ["sys_object_id", "ent_physical_vendor_type", "ent_physical_model_name", "sys_descr"] },
+          "match_type": { "type": "string", "enum": ["exact", "signature", "corroborated-model", "registry", "none"] },
+          "type": { "type": "string", "enum": ["project-fixture-corroboration", "iana-pen-registry"] },
+          "sys_object_id": { "$ref": "#/components/schemas/Oid" },
+          "evidence_state": { "type": "string" },
+          "candidate_count": { "type": "integer", "minimum": 1, "maximum": 32 },
+          "corroborates_reported_model": { "type": "boolean" },
+          "enterprise_number": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+          "registry_status": { "type": "string", "enum": ["assigned", "reserved"] },
+          "source_url": { "type": "string", "format": "uri" }
+        },
+        "anyOf": [{ "required": ["signal", "match_type"] }, { "required": ["type", "sys_object_id", "evidence_state", "candidate_count"] }, { "required": ["type", "enterprise_number", "registry_status", "source_url"] }]
+      },
+      "DeviceIdentityAssessment": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["status", "identity_status", "firmware_scope", "enterprise_number", "organization_name", "organization_key", "organization_key_status", "model", "product_family", "mib_identifier", "platform", "confidence", "candidates", "conflicts", "evidence", "signals_used", "identity_release", "identity_view", "identity_release_sha256", "publication_control"],
+        "properties": {
+          "status": { "type": "string", "enum": ["resolved", "vendor_only", "ambiguous", "not_found"] },
+          "identity_status": { "type": "string", "enum": ["exact_model", "product_family", "vendor_identifier", "platform", "vendor_only", "conflicting_evidence", "unknown"] },
+          "firmware_scope": { "anyOf": [{ "$ref": "#/components/schemas/FirmwareScope" }, { "type": "null" }], "description": "Null only when no singular identity result exists (unknown or conflicting evidence)." },
+          "enterprise_number": { "type": ["integer", "null"], "minimum": 0, "maximum": 4294967295 },
+          "organization_name": { "type": ["string", "null"] },
+          "organization_key": { "type": ["string", "null"] },
+          "organization_key_status": { "type": "string", "enum": ["reviewed", "not_available"] },
+          "model": { "type": ["string", "null"] },
+          "product_family": { "type": ["string", "null"] },
+          "mib_identifier": { "type": ["string", "null"] },
+          "platform": { "type": ["string", "null"] },
+          "confidence": { "type": ["string", "null"], "enum": ["high", "medium", "registry", null] },
+          "candidates": { "type": "array", "maxItems": 32, "items": { "$ref": "#/components/schemas/DeviceIdentityCandidate" } },
+          "conflicts": { "type": "array", "maxItems": 32, "items": { "$ref": "#/components/schemas/DeviceIdentityConflict" } },
+          "evidence": { "type": "array", "maxItems": 32, "items": { "$ref": "#/components/schemas/AssessmentEvidence" } },
+          "signals_used": { "type": "array", "minItems": 1, "maxItems": 4, "uniqueItems": true, "items": { "type": "string", "enum": ["sys_object_id", "ent_physical_vendor_type", "ent_physical_model_name", "sys_descr"] } },
+          "identity_release": { "$ref": "#/components/schemas/IdentityReleaseId" },
+          "identity_view": { "type": "string" },
+          "identity_release_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "publication_control": { "$ref": "#/components/schemas/IdentityPublication" }
+        }
+      },
+      "DeviceIdentityAssessmentResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["data_release", "identity_release", "identity_publication", "assessment"],
+        "properties": {
+          "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
+          "identity_release": { "$ref": "#/components/schemas/IdentityReleaseId" },
+          "identity_publication": { "$ref": "#/components/schemas/IdentityPublication" },
+          "assessment": { "$ref": "#/components/schemas/DeviceIdentityAssessment" }
+        }
+      },
       "DataRelease": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["data_release", "status", "production_data", "statistics", "object_count", "enterprise_count", "sys_object_id_count", "module_count", "redistributable_module_count", "directory_only_source_count", "enterprise_registry"],
+        "required": ["data_release", "identity_release", "identity_publication", "identity_statistics", "identity_sources", "status", "production_data", "statistics", "object_count", "enterprise_count", "sys_object_id_count", "module_count", "redistributable_module_count", "directory_only_source_count", "enterprise_registry"],
         "properties": {
           "data_release": { "$ref": "#/components/schemas/DataReleaseId" },
+          "identity_release": { "$ref": "#/components/schemas/IdentityReleaseId" },
+          "identity_publication": { "$ref": "#/components/schemas/IdentityPublication" },
+          "identity_statistics": { "$ref": "#/components/schemas/DeviceIdentityStatistics" },
+          "identity_sources": { "type": "array", "minItems": 14, "maxItems": 14, "items": { "$ref": "#/components/schemas/IdentitySource" } },
           "status": { "const": "public-alpha" },
           "production_data": { "const": true },
           "statistics": { "$ref": "#/components/schemas/CorpusStatistics" },
@@ -456,10 +836,15 @@
       "IdentityStatistics": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["enterprise_records", "sys_object_id_mappings"],
+        "required": ["enterprise_records", "sys_object_id_mappings", "identity_release", "exact_models", "product_families", "platforms", "project_observation_oids"],
         "properties": {
           "enterprise_records": { "type": "integer", "const": 66266, "description": "IANA PEN registry records; these are registry assignments, not device identities." },
-          "sys_object_id_mappings": { "type": "integer", "const": 19, "description": "Exact rights-approved sysObjectID mappings. Claim strength remains separate from exact OID match method." }
+          "sys_object_id_mappings": { "type": "integer", "minimum": 0, "maximum": 6218, "description": "Published exact sysObjectID mappings in the effective publication view. Exact OID match remains separate from claim strength." },
+          "identity_release": { "$ref": "#/components/schemas/IdentityReleaseId" },
+          "exact_models": { "type": "integer", "minimum": 0, "maximum": 36 },
+          "product_families": { "type": "integer", "minimum": 0, "maximum": 1491 },
+          "platforms": { "type": "integer", "minimum": 0, "maximum": 19 },
+          "project_observation_oids": { "type": "integer", "minimum": 0, "maximum": 713 }
         }
       },
       "SourceStatistics": {
@@ -489,7 +874,7 @@
           "event_count": { "type": "integer", "const": 2 },
           "disabled_sources": { "type": "integer", "const": 0 },
           "disabled_modules": { "type": "integer", "const": 0 },
-          "latest_event_sha256": { "type": "string", "const": "b16512f0c29e62a6dc183b6000804090e484e004b80e8b2b5c88400e5cb991e5", "pattern": "^[0-9a-f]{64}$" }
+          "latest_event_sha256": { "type": "string", "const": "df23577bee9ae71f4aa71e951cb66c23fc3d4bf45f1f937b14dcf212afde8750", "pattern": "^[0-9a-f]{64}$" }
         }
       },
       "BatchRequest": {
@@ -716,18 +1101,29 @@
       "IdentityProvenance": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["source", "source_url", "source_revision", "checked_at"],
+        "required": ["source_id", "source", "source_url", "source_revision"],
         "properties": {
           "source_id": { "type": "string" },
           "source": { "type": "string" },
+          "source_symbol": { "type": "string" },
           "source_url": { "type": "string", "format": "uri" },
           "source_revision": { "type": "string" },
           "source_path": { "type": "string" },
           "git_blob_oid": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
           "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
-          "source_license": { "type": "string" },
-          "license_basis": { "type": "string" },
-          "rights": { "type": "string" },
+          "source_license": { "type": "string", "description": "Legacy rights-cleared built-in source license field." },
+          "license_basis": { "type": "string", "description": "Legacy rights-cleared built-in evidence basis." },
+          "rights": { "type": "string", "description": "Rights statement for a rights-cleared built-in source." },
+          "repository_license_signal": { "type": "string", "description": "License detected for the containing repository; it is not the rights classification of the referenced MIB artifact." },
+          "artifact_rights": { "type": "string", "enum": ["restrictive-notice", "copyright-no-redistribution-grant", "no-redistribution-grant-found"] },
+          "publication_basis": { "const": "independently-authored factual metadata; artifact rights deny raw redistribution" },
+          "publication_mode": { "type": "string", "enum": ["redistributable", "metadata-only"] },
+          "raw_download": { "const": false },
+          "raw_distribution": { "const": "denied" },
+          "official_source_url": { "type": ["string", "null"], "format": "uri" },
+          "official_source_status": { "type": ["string", "null"] },
+          "official_source_byte_verified": { "type": "boolean" },
+          "field_provenance": { "type": "string" },
           "license": { "$ref": "#/components/schemas/IdentityLicenseEvidence" },
           "field_evidence": { "type": "array", "items": { "$ref": "#/components/schemas/IdentityArtifactEvidence" } },
           "claim_boundary": { "type": "string" },
@@ -737,30 +1133,86 @@
       "SysObjectIdMatch": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["oid", "organization", "product_family", "model", "platform", "identity_type", "match_type", "claim_strength", "confidence", "provenance"],
+        "required": ["oid", "enterprise_number", "organization_name", "organization_key", "organization", "product_family", "model", "platform", "firmware_scope", "identity_type", "match_type", "claim_strength", "claim_scope", "confidence", "source_assignment_confidence", "provenance"],
         "properties": {
           "oid": { "$ref": "#/components/schemas/Oid" },
+          "enterprise_number": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+          "organization_name": { "type": "string" },
+          "organization_key": { "type": ["string", "null"] },
           "organization": { "type": "string" },
-          "product_family": { "type": "string" },
+          "vendor": { "type": "string" },
+          "product_family": { "type": ["string", "null"] },
+          "mib_identifier": { "type": "string", "description": "Vendor MIB symbol; its presence does not by itself assert a whole-device model." },
           "model": { "type": ["string", "null"] },
           "platform": { "type": ["string", "null"] },
+          "firmware_scope": { "$ref": "#/components/schemas/FirmwareScope" },
           "identity_type": { "type": "string" },
           "match_type": { "const": "exact" },
-          "claim_strength": { "type": "string", "enum": ["exact_model", "product_family", "platform", "vendor_only"], "description": "Strength of the identity assertion. An exact OID match does not imply an exact-model claim." },
-          "confidence": { "const": "high" },
+          "claim_strength": { "type": "string", "enum": ["exact_model", "product_family", "vendor_identifier", "platform", "vendor_only"], "description": "Strength of the identity assertion. An exact OID match does not imply an exact-model claim." },
+          "claim_scope": { "type": "string" },
+          "confidence": { "type": "string", "enum": ["high", "medium"] },
+          "source_assignment_confidence": { "type": "string", "enum": ["high", "medium"] },
           "provenance": { "$ref": "#/components/schemas/IdentityProvenance" }
+        }
+      },
+      "ProjectObservationCandidate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["model", "product_family", "platform", "firmware_scope", "device_class", "source_id", "confidence", "entity_corroborated"],
+        "properties": {
+          "model": { "type": ["string", "null"] },
+          "product_family": { "type": ["string", "null"] },
+          "platform": { "type": ["string", "null"] },
+          "firmware_scope": { "$ref": "#/components/schemas/FirmwareScope" },
+          "device_class": { "type": ["string", "null"] },
+          "source_id": { "type": "string" },
+          "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+          "entity_corroborated": { "type": "boolean" }
+        }
+      },
+      "ProjectObservation": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["sys_object_id", "evidence_state", "confidence", "candidates"],
+        "properties": {
+          "sys_object_id": { "$ref": "#/components/schemas/Oid" },
+          "evidence_state": { "type": "string" },
+          "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+          "candidates": { "type": "array", "maxItems": 32, "items": { "$ref": "#/components/schemas/ProjectObservationCandidate" } }
+        }
+      },
+      "SysObjectIdAssessment": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["candidates", "conflicts", "corroboration", "evidence"],
+        "properties": {
+          "candidates": { "type": "array", "maxItems": 32, "items": { "$ref": "#/components/schemas/DeviceIdentityCandidate" } },
+          "conflicts": { "type": "array", "maxItems": 32, "items": { "$ref": "#/components/schemas/DeviceIdentityConflict" } },
+          "corroboration": { "type": "array", "maxItems": 32, "items": { "$ref": "#/components/schemas/ProjectObservation" } },
+          "evidence": { "type": "array", "maxItems": 32, "items": { "$ref": "#/components/schemas/AssessmentEvidence" } }
         }
       },
       "SysObjectIdResult": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["input", "normalized_oid", "status", "enterprise", "match"],
+        "required": ["input", "normalized_oid", "status", "enterprise", "enterprise_number", "organization_name", "organization_key", "organization_key_status", "identity_status", "firmware_scope", "identity_release", "identity_view", "identity_release_sha256", "publication_control", "match", "assessment"],
         "properties": {
           "input": { "type": "string" },
           "normalized_oid": { "$ref": "#/components/schemas/Oid" },
           "status": { "type": "string", "enum": ["resolved", "enterprise_only", "not_found", "ambiguous", "unavailable_due_to_rights"] },
           "enterprise": { "anyOf": [{ "$ref": "#/components/schemas/Enterprise" }, { "type": "null" }] },
+          "enterprise_number": { "type": ["integer", "null"], "minimum": 0, "maximum": 4294967295 },
+          "organization_name": { "type": ["string", "null"] },
+          "organization_key": { "type": ["string", "null"] },
+          "organization_key_status": { "type": "string", "enum": ["reviewed", "not_available"] },
+          "identity_status": { "type": "string", "enum": ["exact_model", "product_family", "vendor_identifier", "platform", "vendor_only", "conflicting_evidence", "unknown"] },
+          "firmware_scope": { "anyOf": [{ "$ref": "#/components/schemas/FirmwareScope" }, { "type": "null" }], "description": "Null only when no singular identity result exists (unknown or conflicting evidence)." },
+          "identity_release": { "$ref": "#/components/schemas/IdentityReleaseId" },
+          "identity_view": { "type": "string" },
+          "identity_release_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "publication_control": { "$ref": "#/components/schemas/IdentityPublication" },
           "match": { "anyOf": [{ "$ref": "#/components/schemas/SysObjectIdMatch" }, { "type": "null" }] },
+          "assessment": { "$ref": "#/components/schemas/SysObjectIdAssessment" },
           "rights": { "$ref": "#/components/schemas/RightsRestriction" },
           "caveat": { "type": "string" }
         }
@@ -779,8 +1231,8 @@
       "SysObjectIdResponse": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["data_release", "result"],
-        "properties": { "data_release": { "$ref": "#/components/schemas/DataReleaseId" }, "result": { "$ref": "#/components/schemas/SysObjectIdResult" } }
+        "required": ["data_release", "identity_release", "identity_publication", "result"],
+        "properties": { "data_release": { "$ref": "#/components/schemas/DataReleaseId" }, "identity_release": { "$ref": "#/components/schemas/IdentityReleaseId" }, "identity_publication": { "$ref": "#/components/schemas/IdentityPublication" }, "result": { "$ref": "#/components/schemas/SysObjectIdResult" } }
       },
       "License": {
         "type": "object",

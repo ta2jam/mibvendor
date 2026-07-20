@@ -5,7 +5,15 @@ import { fileURLToPath } from "node:url";
 
 import { records as legacyRecords } from "../prototype/data.mjs";
 import { createSearchIndex, parseOid, rankSearchIndex } from "../prototype/core.mjs";
+import {
+  IDENTITY_PUBLICATION_CONTROL_REVISION,
+  IDENTITY_PUBLICATION_STATE,
+  IDENTITY_RELEASE,
+  createDeviceIdentityEngine
+} from "./device-identity.mjs";
 import { derivePublicationControlState, isPublicationEnabled, validatePublicationControls } from "./publication-controls.mjs";
+
+export { IDENTITY_PUBLICATION_CONTROL_REVISION, IDENTITY_PUBLICATION_STATE, IDENTITY_RELEASE };
 
 const projectRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 function readJson(relativePath) {
@@ -105,6 +113,9 @@ if (identityEvidenceEnabled("net-snmp", ["NET-SNMP-TC"])) {
     const oid = `1.3.6.1.4.1.8072.3.2.${suffix}`;
     sysObjectIds.set(oid, Object.freeze({
     oid,
+    enterprise_number: 8072,
+    organization_name: "net-snmp",
+    organization_key: null,
     organization: "net-snmp",
     product_family: "Net-SNMP agent",
     model: null,
@@ -112,11 +123,15 @@ if (identityEvidenceEnabled("net-snmp", ["NET-SNMP-TC"])) {
     identity_type: "agent-platform",
     match_type: "exact",
     claim_strength: "platform",
+    claim_scope: "agent-platform",
     confidence: "high",
+    source_assignment_confidence: "high",
     provenance: {
+      source_id: "net-snmp",
       source: "Net-SNMP NET-SNMP-TC",
       source_url: `https://github.com/net-snmp/net-snmp/blob/${mibCatalog.source_snapshots.net_snmp.commit}/mibs/NET-SNMP-TC.txt`,
       source_revision: mibCatalog.source_snapshots.net_snmp.commit,
+      sha256: "bf111deffcc7c36262d2e47ff8fd7d49eee8a3f1bdad6236367660da6854a233",
       rights: "BSD-family",
       checked_at: mibCatalog.generated_at.slice(0, 10)
     }
@@ -128,6 +143,9 @@ const sigScaleRevision = "14259b9e52a5cd7ff0fd60b33728da616792887d";
 const sigScaleProductOid = "1.3.6.1.4.1.50386.1.1";
 if (identityEvidenceEnabled("sigscale-mibs", ["SIGSCALE-PRODUCTS-MIB", "SIGSCALE-SMI"])) sysObjectIds.set(sigScaleProductOid, Object.freeze({
   oid: sigScaleProductOid,
+  enterprise_number: 50386,
+  organization_name: "SigScale Global Inc.",
+  organization_key: null,
   organization: "SigScale Global Inc.",
   product_family: "SigScale OCS",
   model: null,
@@ -135,7 +153,9 @@ if (identityEvidenceEnabled("sigscale-mibs", ["SIGSCALE-PRODUCTS-MIB", "SIGSCALE
   identity_type: "software-platform",
   match_type: "exact",
   claim_strength: "platform",
+  claim_scope: "agent-platform",
   confidence: "high",
+  source_assignment_confidence: "high",
   provenance: {
     source_id: "sigscale-mibs",
     source: "SigScale SIGSCALE-PRODUCTS-MIB",
@@ -175,16 +195,13 @@ if (identityEvidenceEnabled("sigscale-mibs", ["SIGSCALE-PRODUCTS-MIB", "SIGSCALE
   }
 }));
 
-const restrictedEnterpriseSources = new Map([
-  [9, {
-    source_family: "Cisco enterprise MIBs",
-    api_output: "denied",
-    checked_at: "2026-07-13",
-    detail: "Exact product mapping is not published because the reviewed Cisco source does not grant public API-output rights."
-  }]
-]);
-
-export const SYS_OBJECT_ID_COUNT = sysObjectIds.size;
+const deviceIdentityEngine = createDeviceIdentityEngine({
+  lookupEnterprise,
+  builtinClaims: [...sysObjectIds.values()]
+});
+export const IDENTITY_STATISTICS = deviceIdentityEngine.statistics;
+export const IDENTITY_SOURCES = deviceIdentityEngine.sources;
+export const SYS_OBJECT_ID_COUNT = IDENTITY_STATISTICS.sys_object_id_mappings;
 
 const legacyModuleImports = Object.freeze({
   "IF-MIB": ["SNMPv2-SMI", "SNMPv2-TC", "SNMPv2-CONF"],
@@ -387,7 +404,12 @@ export const PUBLIC_CORPUS_STATISTICS = Object.freeze({
   }),
   identity: Object.freeze({
     enterprise_records: ENTERPRISE_COUNT,
-    sys_object_id_mappings: SYS_OBJECT_ID_COUNT
+    sys_object_id_mappings: SYS_OBJECT_ID_COUNT,
+    identity_release: IDENTITY_RELEASE,
+    exact_models: IDENTITY_STATISTICS.exact_models,
+    product_families: IDENTITY_STATISTICS.product_families,
+    platforms: IDENTITY_STATISTICS.platforms,
+    project_observation_oids: IDENTITY_STATISTICS.project_observation_oids
   }),
   sources: Object.freeze({
     total: sources.size,
@@ -640,19 +662,11 @@ export function lookupEnterprise(number) {
 }
 
 export function lookupSysObjectId(input) {
-  const arcs = parseOid(input);
-  if (!arcs) return { input, status: "invalid" };
-  const normalized = arcs.join(".");
-  const enterprisePrefix = [1, 3, 6, 1, 4, 1];
-  const underEnterprise = enterprisePrefix.every((arc, index) => arcs[index] === arc);
-  if (!underEnterprise || arcs.length <= enterprisePrefix.length) return { input, normalized_oid: normalized, status: "not_found", enterprise: null, match: null };
-  const enterprise = lookupEnterprise(arcs[enterprisePrefix.length]);
-  const match = sysObjectIds.get(normalized) ?? null;
-  if (match) return { input, normalized_oid: normalized, status: "resolved", enterprise, match, caveat: "This identifies the agent platform declared by the exact OID, not the hardware model or current firmware." };
-  const rightsRestriction = restrictedEnterpriseSources.get(arcs[enterprisePrefix.length]);
-  if (enterprise && rightsRestriction) return { input, normalized_oid: normalized, status: "unavailable_due_to_rights", enterprise, match: null, rights: rightsRestriction, caveat: "The PEN registry assignment is visible, but exact product or model data is withheld under the source-specific publication policy." };
-  if (enterprise) return { input, normalized_oid: normalized, status: "enterprise_only", enterprise, match: null, caveat: "Only the PEN registry boundary is known. No product or model identity is asserted for this OID." };
-  return { input, normalized_oid: normalized, status: "not_found", enterprise: null, match: null };
+  return deviceIdentityEngine.lookup(input);
+}
+
+export function assessDeviceIdentity(signals) {
+  return deviceIdentityEngine.assess(signals);
 }
 
 export function publicModule(module) {

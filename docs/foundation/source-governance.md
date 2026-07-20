@@ -41,6 +41,15 @@ row. `directory-only` exposes no derived MIB fields; even a vendor file checksum
 is withheld because producing it would require acquiring and processing content
 without an approved metadata scope.
 
+Device identity uses an independent immutable release. Vendor-MIB intake from
+a license-signaled project is reduced to factual numeric assignments, source
+symbols, source URLs, revisions, and checksums when an artifact-specific notice
+blocks raw redistribution. Raw text and descriptions are excluded. Sanitized
+project test fixtures are stored in a separate observation-only layer and may
+corroborate but never create a universal exact-model mapping. A separate
+publication-control document can disable one identity source without rewriting
+the immutable release manifest.
+
 The executable gate is `scripts/validate-mib-catalog.mjs`. It verifies all raw
 paths remain below the approved directory, source and served SHA-256 values,
 license/notice mapping, source scopes, manifest completeness, object ownership,

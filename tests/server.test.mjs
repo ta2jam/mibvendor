@@ -3,10 +3,10 @@ import { once } from "node:events";
 import test from "node:test";
 
 import { createMibvendorServer } from "../server.mjs";
-import { DATA_RELEASE } from "../src/intelligence.mjs";
+import { DATA_RELEASE, IDENTITY_PUBLICATION_STATE, IDENTITY_RELEASE, IDENTITY_STATISTICS } from "../src/intelligence.mjs";
 
-async function withServer(callback) {
-  const server = createMibvendorServer();
+async function withServer(callback, options) {
+  const server = createMibvendorServer(options);
   server.listen(0, "127.0.0.1");
   await once(server, "listening");
   try {
@@ -34,6 +34,9 @@ test("production server exposes UI, health, version, OpenAPI, and API on one ori
     const version = await (await fetch(`${base}/version`)).json();
     assert.equal(version.schema_version, 1);
     assert.equal(version.data_release, DATA_RELEASE);
+    assert.equal(version.identity_release, IDENTITY_RELEASE);
+    assert.deepEqual(version.identity_publication, IDENTITY_PUBLICATION_STATE);
+    assert.deepEqual(version.identity_statistics, IDENTITY_STATISTICS);
 
     const specification = await (await fetch(`${base}/openapi.json`)).json();
     assert.equal(specification["x-mibvendor-status"], "public-alpha");
@@ -75,7 +78,7 @@ test("status is a no-store live-process contract for GET and HEAD", async () => 
     assert.equal(response.headers.get("x-content-type-options"), "nosniff");
     const status = await response.json();
     assert.deepEqual(Object.keys(status), [
-      "schema_version", "status", "checked_at", "version", "commit", "data_release", "scope", "links",
+      "schema_version", "status", "checked_at", "version", "commit", "data_release", "identity_release", "identity_publication", "identity_statistics", "scope", "links",
     ]);
     assert.equal(status.schema_version, 1);
     assert.equal(status.status, "operational");
@@ -83,6 +86,9 @@ test("status is a no-store live-process contract for GET and HEAD", async () => 
     assert.equal(status.version, process.env.APP_VERSION ?? "development");
     assert.equal(status.commit, process.env.VCS_REF ?? "development");
     assert.equal(status.data_release, process.env.DATA_RELEASE ?? DATA_RELEASE);
+    assert.equal(status.identity_release, process.env.IDENTITY_RELEASE ?? IDENTITY_RELEASE);
+    assert.deepEqual(status.identity_publication, IDENTITY_PUBLICATION_STATE);
+    assert.deepEqual(status.identity_statistics, IDENTITY_STATISTICS);
     assert.equal(status.scope, "Live process self-check only; no uptime SLA or incident history.");
     assert.deepEqual(status.links, {
       health: "/healthz",
@@ -100,6 +106,34 @@ test("status is a no-store live-process contract for GET and HEAD", async () => 
     assert.equal(rejected.status, 405);
     assert.equal(rejected.headers.get("allow"), "GET, HEAD");
     assert.equal(rejected.headers.get("cache-control"), "no-store");
+  });
+});
+
+test("version is a no-store GET and HEAD contract", async () => {
+  await withServer(async (base) => {
+    const get = await fetch(`${base}/version`);
+    assert.equal(get.status, 200);
+    assert.equal(get.headers.get("content-type"), "application/json; charset=utf-8");
+    assert.equal(get.headers.get("cache-control"), "no-store");
+    assert.equal(get.headers.get("etag"), null);
+    const version = await get.json();
+    assert.deepEqual(Object.keys(version), [
+      "schema_version", "version", "commit", "data_release", "identity_release", "identity_publication", "identity_statistics",
+    ]);
+    assert.equal(version.identity_release, IDENTITY_RELEASE);
+    assert.deepEqual(version.identity_publication, IDENTITY_PUBLICATION_STATE);
+    assert.deepEqual(version.identity_statistics, IDENTITY_STATISTICS);
+
+    const head = await fetch(`${base}/version`, { method: "HEAD" });
+    assert.equal(head.status, 200);
+    assert.equal(head.headers.get("content-type"), "application/json; charset=utf-8");
+    assert.equal(head.headers.get("cache-control"), "no-store");
+    assert.match(head.headers.get("content-length"), /^[1-9][0-9]*$/);
+    assert.equal(await head.text(), "");
+
+    const rejected = await fetch(`${base}/version`, { method: "POST" });
+    assert.equal(rejected.status, 405);
+    assert.equal(rejected.headers.get("allow"), "GET, HEAD");
   });
 });
 
@@ -161,18 +195,23 @@ test("public API exposes rate limit headers and CORS preflight", async () => {
     const response = await fetch(`${base}/v1/data-release`);
     assert.equal(response.headers.get("ratelimit-limit"), "120");
     assert.equal(response.headers.get("ratelimit-remaining"), "119");
+    assert.equal(
+      response.headers.get("access-control-expose-headers"),
+      "Content-Disposition, ETag, Link, RateLimit-Limit, RateLimit-Remaining, RateLimit-Reset, Retry-After, X-Content-SHA256, X-MIB-SHA256"
+    );
 
     const preflight = await fetch(`${base}/v1/resolve:batch`, { method: "OPTIONS" });
     assert.equal(preflight.status, 204);
     assert.equal(preflight.headers.get("access-control-allow-methods"), "GET, POST, OPTIONS");
+    assert.match(preflight.headers.get("access-control-expose-headers"), /Retry-After/);
   });
 });
 
-test("cacheable JSON responses expose strong ETags and honor If-None-Match", async () => {
+test("release-view JSON requires revalidation and honors If-None-Match", async () => {
   await withServer(async (base) => {
     const first = await fetch(`${base}/v1/data-release`);
     assert.equal(first.status, 200);
-    assert.equal(first.headers.get("cache-control"), "public, max-age=300, must-revalidate");
+    assert.equal(first.headers.get("cache-control"), "no-cache");
     const etag = first.headers.get("etag");
     assert.match(etag, /^"sha256-[A-Za-z0-9_-]{43}"$/);
     await first.arrayBuffer();
@@ -182,6 +221,7 @@ test("cacheable JSON responses expose strong ETags and honor If-None-Match", asy
     });
     assert.equal(cached.status, 304);
     assert.equal(cached.headers.get("etag"), etag);
+    assert.equal(cached.headers.get("cache-control"), "no-cache");
     assert.equal(cached.headers.get("content-type"), null);
     assert.equal(await cached.text(), "");
   });
@@ -216,4 +256,51 @@ test("fair-use exhaustion returns 429 with Retry-After instead of a billing path
     assert.equal(problem.type, "https://mibvendor.io/problems/rate-limit-exceeded");
     assert.doesNotMatch(JSON.stringify(problem), /(?:payment|billing|subscription|paid plan)/i);
   });
+});
+
+test("direct X-Real-IP input cannot shard the rate-limit bucket", async () => {
+  await withServer(async (base) => {
+    const request = (sequence) => fetch(`${base}/v1/device-identities:assess`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "cf-connecting-ip": `198.51.100.${sequence}`,
+        "x-real-ip": `198.51.100.${sequence}`
+      },
+      body: JSON.stringify({ signals: { sys_object_id: "1.3.6.1.4.1.9.1.2435" } })
+    });
+    for (let sequence = 1; sequence <= 30; sequence += 1) {
+      const response = await request(sequence);
+      assert.equal(response.status, 200, `weighted request ${sequence}`);
+      await response.arrayBuffer();
+    }
+    const limited = await request(31);
+    assert.equal(limited.status, 429);
+    assert.equal(limited.headers.get("ratelimit-remaining"), "0");
+  });
+});
+
+test("explicit trusted-proxy mode uses only matching validated Cloudflare client headers", async () => {
+  await withServer(async (base) => {
+    const request = (client) => fetch(`${base}/v1/device-identities:assess`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "cf-connecting-ip": client,
+        "x-real-ip": client
+      },
+      body: JSON.stringify({ signals: { sys_object_id: "1.3.6.1.4.1.9.1.2435" } })
+    });
+
+    for (let sequence = 1; sequence <= 30; sequence += 1) {
+      const response = await request("198.51.100.10");
+      assert.equal(response.status, 200, `trusted weighted request ${sequence}`);
+      await response.arrayBuffer();
+    }
+    assert.equal((await request("198.51.100.10")).status, 429);
+    const independentClient = await request("198.51.100.11");
+    assert.equal(independentClient.status, 200);
+    assert.equal(independentClient.headers.get("ratelimit-remaining"), "116");
+    await independentClient.arrayBuffer();
+  }, { trustProxyHeaders: true });
 });

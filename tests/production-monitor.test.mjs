@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 
 const resolver = fileURLToPath(new URL("../scripts/resolve-production-commit.sh", import.meta.url));
 const workflow = fileURLToPath(new URL("../.github/workflows/production-monitor.yml", import.meta.url));
+const verifier = fileURLToPath(new URL("../scripts/verify-production.sh", import.meta.url));
 
 function git(cwd, ...args) {
   return execFileSync("git", args, { cwd, encoding: "utf8" }).trim();
@@ -60,7 +61,27 @@ test("production monitor workflow pins code and data expectations to the release
 
   assert.ok(checkoutIndex >= 0 && checkoutIndex < verifyIndex);
   assert.match(contents, /EXPECTED_DATA_RELEASE=\$\(node -e/);
+  assert.match(contents, /EXPECTED_IDENTITY_RELEASE=\$\(node -e/);
+  assert.match(contents, /data\/device-identities\/release\.json/);
   assert.doesNotMatch(contents, /EXPECTED_DATA_RELEASE:\s*\S/);
+  assert.doesNotMatch(contents, /EXPECTED_IDENTITY_RELEASE:\s*\S/);
+});
+
+test("production verifier pins identity requests and validates the effective publication view", async () => {
+  const contents = await readFile(verifier, "utf8");
+
+  assert.match(contents, /identity_release_for_request=.*EXPECTED_IDENTITY_RELEASE/s);
+  assert.match(contents, /--data "\$identity_payload"/);
+  assert.match(contents, /--data "\$identity_conflict_payload"/);
+  assert.doesNotMatch(contents, /--data '\{"identity_release":"device-identity-/);
+  assert.match(contents, /identity_release_sha256/);
+  assert.match(contents, /control_revision/);
+  assert.match(contents, /control_sha256/);
+  assert.match(contents, /identity_view/);
+  assert.match(contents, /disabled_sources != sorted\(set\(disabled_sources\)\)/);
+  assert.doesNotMatch(contents, /identity\.get\("disabled_sources"\)\s*!=\s*0/);
+  assert.doesNotMatch(contents, /identity\.get\("exact_models"\)\s*!=\s*\d+/);
+  assert.match(contents, /vendor_identifier/);
 });
 
 test("production monitor fails closed when the release tag is absent", async (context) => {

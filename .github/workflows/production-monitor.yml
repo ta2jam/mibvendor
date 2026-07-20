@@ -35,7 +35,14 @@ jobs:
             if (typeof value !== "string" || !/^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/.test(value)) process.exit(1);
             process.stdout.write(value);
           ')
+          EXPECTED_IDENTITY_RELEASE=$(node -e '
+            const { readFileSync } = require("node:fs");
+            const value = JSON.parse(readFileSync("data/device-identities/release.json", "utf8")).identity_release;
+            if (typeof value !== "string" || !/^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/.test(value)) process.exit(1);
+            process.stdout.write(value);
+          ')
           export EXPECTED_VERSION
           export EXPECTED_COMMIT
           export EXPECTED_DATA_RELEASE
+          export EXPECTED_IDENTITY_RELEASE
           ./scripts/verify-production.sh

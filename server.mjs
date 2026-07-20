@@ -1,14 +1,19 @@
 import { createReadStream, statSync } from "node:fs";
 import { createServer } from "node:http";
+import { isIP } from "node:net";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { DATA_RELEASE, createApiHandler } from "./src/api.mjs";
+import { DATA_RELEASE, createApiHandler, setNormalizedRateLimitClient } from "./src/api.mjs";
+import { IDENTITY_PUBLICATION_STATE, IDENTITY_RELEASE, IDENTITY_STATISTICS } from "./src/intelligence.mjs";
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(projectRoot, "prototype");
 const openApiPath = path.join(projectRoot, "docs", "research", "demand", "phase0-openapi.json");
 const productionMonitorUrl = "https://github.com/ta2jam/mibvendor/actions/workflows/production-monitor.yml";
+const trustProxyHeadersByDefault = process.env.TRUST_PROXY_HEADERS === "1";
+const configuredTrustedProxyAddresses = new Set((process.env.TRUSTED_PROXY_ADDRESSES ?? "")
+  .split(",").map((item) => item.trim().toLowerCase()).filter(Boolean));
 const contentTypes = new Map([
   [".css", "text/css; charset=utf-8"],
   [".html", "text/html; charset=utf-8"],
@@ -26,6 +31,33 @@ const spaRoutes = [
   /^\/sys-object-ids\/[0-9.]{1,512}$/,
   /^\/releases\/[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/
 ];
+
+function headerValue(request, name) {
+  const value = request.headers[name];
+  return typeof value === "string" && !value.includes(",") ? value.trim() : null;
+}
+
+function isTrustedProxyHop(address) {
+  if (!address) return false;
+  const normalized = address.toLowerCase().replace(/^::ffff:/, "");
+  if (configuredTrustedProxyAddresses.has(address.toLowerCase()) || configuredTrustedProxyAddresses.has(normalized)) return true;
+  if (normalized === "::1") return true;
+  if (isIP(normalized) === 4) {
+    const [a, b] = normalized.split(".").map(Number);
+    return a === 127 || a === 10 || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168) || (a === 169 && b === 254);
+  }
+  return isIP(address) === 6 && (/^f[cd]/.test(address.toLowerCase()) || address.toLowerCase().startsWith("fe80:"));
+}
+
+function normalizedRateLimitClient(request, trustProxyHeaders) {
+  const peer = request.socket.remoteAddress ?? "unknown";
+  const cloudflareClient = headerValue(request, "cf-connecting-ip");
+  const proxyClient = headerValue(request, "x-real-ip");
+  if (trustProxyHeaders && isTrustedProxyHop(peer) && cloudflareClient && proxyClient?.toLowerCase() === cloudflareClient.toLowerCase() && isIP(cloudflareClient)) {
+    return `cf:${cloudflareClient.toLowerCase()}`;
+  }
+  return `peer:${peer.toLowerCase()}`;
+}
 
 function isSpaRoute(pathname) {
   return spaRoutes.some((pattern) => pattern.test(pathname));
@@ -102,6 +134,9 @@ function serveStatus(request, response) {
     version: process.env.APP_VERSION ?? "development",
     commit: process.env.VCS_REF ?? "development",
     data_release: process.env.DATA_RELEASE ?? DATA_RELEASE,
+    identity_release: process.env.IDENTITY_RELEASE ?? IDENTITY_RELEASE,
+    identity_publication: IDENTITY_PUBLICATION_STATE,
+    identity_statistics: IDENTITY_STATISTICS,
     scope: "Live process self-check only; no uptime SLA or incident history.",
     links: {
       health: "/healthz",
@@ -118,24 +153,44 @@ function serveStatus(request, response) {
   else response.end(payload);
 }
 
-export function createMibvendorServer() {
+function serveVersion(request, response) {
+  if (!new Set(["GET", "HEAD"]).has(request.method)) {
+    response.writeHead(405, { allow: "GET, HEAD", "content-type": "text/plain; charset=utf-8", "cache-control": "no-store" });
+    response.end("Method not allowed\n");
+    return;
+  }
+  const payload = Buffer.from(`${JSON.stringify({
+    schema_version: 1,
+    version: process.env.APP_VERSION ?? "development",
+    commit: process.env.VCS_REF ?? "development",
+    data_release: process.env.DATA_RELEASE ?? DATA_RELEASE,
+    identity_release: process.env.IDENTITY_RELEASE ?? IDENTITY_RELEASE,
+    identity_publication: IDENTITY_PUBLICATION_STATE,
+    identity_statistics: IDENTITY_STATISTICS
+  })}\n`);
+  response.writeHead(200, {
+    "content-type": "application/json; charset=utf-8",
+    "content-length": payload.length,
+    "cache-control": "no-store",
+    "x-content-type-options": "nosniff"
+  });
+  if (request.method === "HEAD") response.end();
+  else response.end(payload);
+}
+
+export function createMibvendorServer({ trustProxyHeaders = trustProxyHeadersByDefault } = {}) {
   const apiHandler = createApiHandler();
   return createServer(async (request, response) => {
     try {
       const url = new URL(request.url ?? "/", `http://${request.headers.host ?? "127.0.0.1"}`);
+      setNormalizedRateLimitClient(request, normalizedRateLimitClient(request, trustProxyHeaders));
       if (request.method === "GET" && url.pathname === "/healthz") {
         response.writeHead(200, { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store" });
         response.end("ok\n");
         return;
       }
-      if (request.method === "GET" && url.pathname === "/version") {
-        response.writeHead(200, { "content-type": "application/json", "cache-control": "no-store" });
-        response.end(JSON.stringify({
-          schema_version: 1,
-          version: process.env.APP_VERSION ?? "development",
-          commit: process.env.VCS_REF ?? "development",
-          data_release: process.env.DATA_RELEASE ?? DATA_RELEASE
-        }));
+      if (url.pathname === "/version") {
+        serveVersion(request, response);
         return;
       }
       if (url.pathname === "/status") {

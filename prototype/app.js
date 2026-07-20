@@ -12,6 +12,12 @@ const walkCaption = document.querySelector("#walk-caption");
 const decoderSummary = document.querySelector("#decoder-summary");
 const enterpriseForm = document.querySelector("#enterprise-form");
 const sysObjectIdForm = document.querySelector("#sysobjectid-form");
+const deviceIdentityForm = document.querySelector("#device-identity-form");
+const deviceIdentityResult = document.querySelector("#device-identity-result");
+const deviceIdentitySysObjectId = document.querySelector("#identity-sys-object-id");
+const deviceIdentityVendorType = document.querySelector("#identity-vendor-type");
+const deviceIdentityModelName = document.querySelector("#identity-model-name");
+const deviceIdentitySysDescr = document.querySelector("#identity-sys-descr");
 const dependencyForm = document.querySelector("#dependency-form");
 const catalogForm = document.querySelector("#catalog-search");
 const catalogQuery = document.querySelector("#catalog-query");
@@ -27,6 +33,9 @@ const apiLiveStatus = document.querySelector("#api-live-status");
 const apiLiveResponse = document.querySelector("#api-live-response");
 let routeGeneration = 0;
 let apiLiveNextCursor = null;
+const MAX_IDENTITY_CANDIDATES = 32;
+const MAX_IDENTITY_EVIDENCE = 128;
+const MAX_IDENTITY_EVIDENCE_PER_LAYER = 16;
 
 function stableObjectPath(record) {
   const id = record.id ?? `${record.module.toLowerCase()}--${record.symbol.toLowerCase()}`;
@@ -55,6 +64,322 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function appendTextElement(parent, tagName, text, className = "") {
+  const element = document.createElement(tagName);
+  if (className) element.className = className;
+  element.textContent = String(text);
+  parent.append(element);
+  return element;
+}
+
+function appendDefinition(list, term, value, { code = false } = {}) {
+  if (value === null || value === undefined || value === "") return;
+  const item = document.createElement("div");
+  appendTextElement(item, "dt", term);
+  const definition = appendTextElement(item, "dd", value);
+  if (code) definition.classList.add("identity-code");
+  list.append(item);
+}
+
+function safeHttpUrl(value) {
+  try {
+    const url = new URL(String(value));
+    return url.protocol === "https:" ? url.href : null;
+  } catch {
+    return null;
+  }
+}
+
+const identityOutcomeLabels = {
+  exact_model: "Exact model",
+  product_family: "Product family",
+  vendor_identifier: "Vendor MIB identifier",
+  platform: "Platform",
+  vendor_only: "Vendor only",
+  conflicting_evidence: "Conflicting evidence",
+  conflict: "Conflicting evidence",
+  ambiguous: "Conflicting evidence",
+  unknown: "Unknown"
+};
+
+function normalizeIdentityOutcome(assessment) {
+  const raw = String(assessment.identity_status ?? assessment.outcome ?? assessment.status ?? "unknown")
+    .trim()
+    .toLowerCase()
+    .replaceAll("-", "_");
+  if (identityOutcomeLabels[raw]) return raw;
+  if (raw === "resolved") {
+    if (assessment.model) return "exact_model";
+    if (assessment.product_family) return "product_family";
+    if (assessment.mib_identifier) return "vendor_identifier";
+    if (assessment.platform) return "platform";
+    return "vendor_only";
+  }
+  if (raw === "enterprise_only") return "vendor_only";
+  return "unknown";
+}
+
+function identityEvidenceCategory(entry) {
+  const discriminator = [
+    entry?.category,
+    entry?.layer,
+    entry?.kind,
+    entry?.type,
+    entry?.evidence_type,
+    entry?.source_type,
+    entry?.signal,
+    entry?.source,
+    entry?.source_id,
+    entry?.provenance?.source
+  ].filter(Boolean).join(" ").toLowerCase();
+  if (/fixture|observation|project/.test(discriminator)) return "project";
+  if (/registry|iana|enterprise|\bpen\b/.test(discriminator)) return "registry";
+  if (/device|reported|entphysical/.test(discriminator)) return "device";
+  if (entry?.source_id || entry?.publication_mode || typeof entry?.raw_download === "boolean" || /vendor|mib|metadata/.test(discriminator)) return "vendor";
+  if (typeof entry?.signal === "string" || /device|reported|entphysical|signal/.test(discriminator)) return "device";
+  return "vendor";
+}
+
+function collectIdentityEvidence(assessment) {
+  const evidence = Array.isArray(assessment.evidence) ? assessment.evidence.filter((item) => item && typeof item === "object") : [];
+  const candidates = Array.isArray(assessment.candidates) ? assessment.candidates : [];
+  for (const candidate of candidates) {
+    if (Array.isArray(candidate?.evidence)) {
+      for (const item of candidate.evidence) {
+        if (item && typeof item === "object") evidence.push(item);
+      }
+    }
+  }
+  for (const item of Array.isArray(assessment.project_observations) ? assessment.project_observations : []) {
+    if (item && typeof item === "object") evidence.push({ ...item, category: "project-observation" });
+  }
+  const hasRegistryEvidence = evidence.some((entry) => identityEvidenceCategory(entry) === "registry");
+  if (!hasRegistryEvidence && assessment.enterprise && typeof assessment.enterprise === "object") {
+    evidence.push({ ...assessment.enterprise, category: "registry" });
+  } else if (!hasRegistryEvidence && assessment.enterprise_number !== null && assessment.enterprise_number !== undefined) {
+    evidence.push({
+      category: "registry",
+      label: "IANA enterprise registry",
+      enterprise_number: assessment.enterprise_number,
+      organization_name: assessment.organization_name,
+      organization_key_status: assessment.organization_key_status
+    });
+  }
+  return evidence.slice(0, MAX_IDENTITY_EVIDENCE);
+}
+
+function appendEvidenceItem(list, entry) {
+  const item = document.createElement("li");
+  const signalLabels = {
+    sys_object_id: "sysObjectID signal",
+    ent_physical_vendor_type: "entPhysicalVendorType signal",
+    ent_physical_model_name: "entPhysicalModelName signal",
+    sys_descr: "sysDescr classification signal"
+  };
+  const typeLabels = {
+    "iana-pen-registry": "IANA enterprise registry",
+    "project-fixture-corroboration": "Project fixture observation",
+    "device-reported-model": "Device-reported model"
+  };
+  const sourceLabels = { "iana-pen": "IANA PEN registry" };
+  const title = entry.label ?? entry.source ?? sourceLabels[entry.source_id] ?? entry.source_id ?? entry.provenance?.source ?? signalLabels[entry.signal] ?? typeLabels[entry.type] ?? "Evidence record";
+  appendTextElement(item, "strong", title);
+  const mibEvidence = entry.publication_mode === "metadata-only" || /mib/i.test(`${entry.type ?? ""} ${entry.source_id ?? ""}`);
+  const facts = [
+    entry.claim_strength && `claim: ${entry.claim_strength}`,
+    entry.identity_status && `scope: ${entry.identity_status}`,
+    entry.model && `model: ${entry.model}`,
+    entry.product_family && `family: ${entry.product_family}`,
+    entry.mib_identifier && `MIB identifier: ${entry.mib_identifier}`,
+    entry.platform && `platform: ${entry.platform}`,
+    entry.oid && `OID: ${entry.oid}`,
+    entry.enterprise_number !== null && entry.enterprise_number !== undefined && `PEN ${entry.enterprise_number}`,
+    entry.organization_name && `organization: ${entry.organization_name}`,
+    entry.organization_key_status && `organization key: ${entry.organization_key_status}`,
+    entry.registry_status && `registry: ${entry.registry_status}`,
+    entry.evidence_state && `evidence: ${entry.evidence_state}`,
+    Number.isSafeInteger(entry.candidate_count) && `observed candidates: ${entry.candidate_count}`,
+    entry.corroborates_reported_model === true && "corroborates reported model",
+    entry.match_type && `match: ${entry.match_type}`,
+    entry.publication_mode && `publication: ${entry.publication_mode}`,
+    mibEvidence && entry.raw_download === false && "raw MIB: unavailable",
+    mibEvidence && entry.raw_download === true && "raw MIB: available",
+    entry.source_revision && `revision: ${entry.source_revision}`,
+    entry.artifact_sha256 && `SHA-256: ${entry.artifact_sha256}`
+  ].filter(Boolean);
+  appendTextElement(item, "span", facts.length ? facts.join(" · ") : "Returned without an additional public claim.");
+  const sourceUrl = safeHttpUrl(entry.source_url ?? entry.provenance?.source_url);
+  if (sourceUrl) {
+    const link = appendTextElement(item, "a", "Source");
+    link.href = sourceUrl;
+    link.rel = "noopener noreferrer";
+  }
+  list.append(item);
+}
+
+function appendIdentityCandidate(list, candidate, index, kind = "candidate") {
+  const item = document.createElement("li");
+  item.className = "identity-candidate";
+  const title = candidate.model ?? candidate.product_family ?? candidate.mib_identifier ?? candidate.platform ?? candidate.organization_name ?? candidate.vendor ?? `${kind === "conflict" ? "Conflicting claim" : "Candidate"} ${index + 1}`;
+  appendTextElement(item, "strong", title);
+  const classification = candidate.identity_status ?? candidate.classification ?? candidate.claim_strength;
+  if (classification) appendTextElement(item, "span", identityOutcomeLabels[classification] ?? String(classification).replaceAll("_", " "), "identity-candidate-kind");
+  const facts = [
+    candidate.enterprise_number !== null && candidate.enterprise_number !== undefined ? `PEN ${candidate.enterprise_number}` : null,
+    candidate.organization_key ? `organization key ${candidate.organization_key}` : null,
+    candidate.product_family && candidate.product_family !== title ? candidate.product_family : null,
+    candidate.mib_identifier && candidate.mib_identifier !== title ? `MIB identifier ${candidate.mib_identifier}` : null,
+    candidate.platform && candidate.platform !== title ? candidate.platform : null,
+    candidate.firmware_scope === "not_established" ? "firmware scope not established" : null,
+    Array.isArray(candidate.enterprise_numbers) ? `PENs ${candidate.enterprise_numbers.join(", ")}` : null,
+    Array.isArray(candidate.models) ? `models ${candidate.models.join(", ")}` : null,
+    candidate.match_type ? `match ${candidate.match_type}` : null,
+    candidate.claim_scope ? `scope ${candidate.claim_scope}` : null,
+    candidate.source_assignment_confidence ? `source assignment ${candidate.source_assignment_confidence}` : null,
+    candidate.confidence ? `confidence ${candidate.confidence}` : null
+  ].filter(Boolean);
+  if (facts.length) appendTextElement(item, "small", facts.join(" · "));
+  list.append(item);
+}
+
+function safeIdentitySummary(body, assessment, outcome) {
+  return {
+    data_release: body.data_release ?? null,
+    identity_release: body.identity_release ?? assessment.identity_release ?? null,
+    identity_release_sha256: assessment.identity_release_sha256 ?? body.identity_release_sha256 ?? null,
+    identity_view: assessment.identity_view ?? body.identity_view ?? null,
+    publication_control_revision: assessment.publication_control?.control_revision ?? body.publication_control?.control_revision ?? null,
+    identity_status: outcome,
+    enterprise_number: assessment.enterprise_number ?? assessment.enterprise?.number ?? null,
+    organization_name: assessment.organization_name ?? assessment.enterprise?.organization ?? null,
+    organization_key: assessment.organization_key ?? null,
+    organization_key_status: assessment.organization_key_status ?? (assessment.organization_key ? "reviewed" : "unreviewed"),
+    model: assessment.model ?? null,
+    product_family: assessment.product_family ?? null,
+    mib_identifier: assessment.mib_identifier ?? null,
+    platform: assessment.platform ?? null,
+    firmware_scope: assessment.firmware_scope ?? null,
+    confidence: assessment.confidence ?? null
+  };
+}
+
+function renderIdentityAssessment(body) {
+  const assessment = body?.assessment ?? body?.result ?? body ?? {};
+  const outcome = normalizeIdentityOutcome(assessment);
+  const safeSummary = safeIdentitySummary(body ?? {}, assessment, outcome);
+  deviceIdentityResult.replaceChildren();
+  deviceIdentityResult.className = `identity-result identity-result-${outcome}`;
+
+  const header = document.createElement("header");
+  const headingGroup = document.createElement("div");
+  appendTextElement(headingGroup, "p", "Assessment outcome", "eyebrow");
+  appendTextElement(headingGroup, "h4", identityOutcomeLabels[outcome]);
+  header.append(headingGroup);
+  const copyButton = appendTextElement(header, "button", "Copy result", "secondary identity-copy");
+  copyButton.type = "button";
+  copyButton.addEventListener("click", async () => {
+    if (!navigator.clipboard?.writeText) {
+      copyButton.textContent = "Copy unavailable";
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(safeSummary, null, 2));
+      copyButton.textContent = "Copied";
+    } catch {
+      copyButton.textContent = "Copy denied";
+    }
+  });
+  deviceIdentityResult.append(header);
+
+  const facts = document.createElement("dl");
+  facts.className = "identity-result-facts";
+  appendDefinition(facts, "Model", assessment.model ?? (outcome === "exact_model" ? "Exact model not returned" : null));
+  appendDefinition(facts, "Product family", assessment.product_family);
+  appendDefinition(facts, "Vendor MIB identifier", assessment.mib_identifier, { code: true });
+  appendDefinition(facts, "Platform", assessment.platform);
+  appendDefinition(
+    facts,
+    "Firmware scope",
+    assessment.firmware_scope === "not_established"
+      ? "Not established"
+      : "Not applicable — no singular identity result"
+  );
+  appendDefinition(facts, "PEN", assessment.enterprise_number ?? assessment.enterprise?.number, { code: true });
+  appendDefinition(facts, "Organization", assessment.organization_name ?? assessment.enterprise?.organization);
+  appendDefinition(facts, "Organization key", assessment.organization_key ?? "Not reviewed / unavailable", { code: Boolean(assessment.organization_key) });
+  appendDefinition(facts, "Organization-key status", assessment.organization_key_status ?? (assessment.organization_key ? "reviewed" : "unreviewed"));
+  appendDefinition(facts, "Confidence", assessment.confidence);
+  appendDefinition(facts, "Identity release", body?.identity_release ?? assessment.identity_release, { code: true });
+  appendDefinition(facts, "Identity release SHA-256", assessment.identity_release_sha256 ?? body?.identity_release_sha256, { code: true });
+  appendDefinition(facts, "Identity view", assessment.identity_view ?? body?.identity_view, { code: true });
+  appendDefinition(facts, "Control revision", assessment.publication_control?.control_revision ?? body?.publication_control?.control_revision, { code: true });
+  deviceIdentityResult.append(facts);
+
+  const boundary = document.createElement("p");
+  boundary.className = "identity-boundary";
+  boundary.textContent = outcome === "conflicting_evidence" || outcome === "conflict" || outcome === "ambiguous"
+    ? "Signals disagree. No singular device identity is asserted."
+    : outcome === "vendor_only"
+      ? "The enterprise is known, but this response does not prove a product family or model."
+      : outcome === "vendor_identifier"
+        ? "The exact vendor MIB symbol is known, but it may denote a device, chassis, module, line card, or component. No whole-device model or family is asserted."
+      : outcome === "unknown"
+        ? "No supported identity claim was found. Nothing is inferred from a numeric prefix alone."
+        : "Exact means the cited source supports that scope. Observed means a project fixture corroborates one device observation; it is not a universal mapping.";
+  deviceIdentityResult.append(boundary);
+
+  const candidates = Array.isArray(assessment.candidates)
+    ? assessment.candidates.filter((item) => item && typeof item === "object").slice(0, MAX_IDENTITY_CANDIDATES)
+    : [];
+  const conflicts = Array.isArray(assessment.conflicts)
+    ? assessment.conflicts.filter((item) => item && typeof item === "object").slice(0, MAX_IDENTITY_CANDIDATES)
+    : [];
+  if (candidates.length || conflicts.length) {
+    const candidateSection = document.createElement("section");
+    appendTextElement(candidateSection, "h5", conflicts.length ? "Candidate and conflict claims" : "Candidate claims");
+    const list = document.createElement("ol");
+    list.className = "identity-candidates";
+    candidates.forEach((candidate, index) => appendIdentityCandidate(list, candidate, index));
+    conflicts.forEach((candidate, index) => appendIdentityCandidate(list, candidate, index, "conflict"));
+    candidateSection.append(list);
+    deviceIdentityResult.append(candidateSection);
+  }
+
+  const evidenceSection = document.createElement("section");
+  appendTextElement(evidenceSection, "h5", "Evidence and provenance");
+  appendTextElement(evidenceSection, "p", "Registry assignment, vendor-MIB factual metadata, device-reported signals, and project observations remain separate.", "identity-evidence-note");
+  const evidenceGrid = document.createElement("div");
+  evidenceGrid.className = "identity-evidence-grid";
+  const grouped = { registry: [], vendor: [], device: [], project: [] };
+  for (const entry of collectIdentityEvidence(assessment)) grouped[identityEvidenceCategory(entry)].push(entry);
+  for (const [category, title] of [
+    ["registry", "Registry"],
+    ["vendor", "Vendor-MIB factual metadata"],
+    ["device", "Device-reported signal"],
+    ["project", "Project fixture observation"]
+  ]) {
+    const card = document.createElement("article");
+    appendTextElement(card, "h6", title);
+    const list = document.createElement("ul");
+    if (grouped[category].length) grouped[category].slice(0, MAX_IDENTITY_EVIDENCE_PER_LAYER).forEach((entry) => appendEvidenceItem(list, entry));
+    else appendTextElement(list, "li", `No ${title.toLowerCase()} evidence returned.`);
+    card.append(list);
+    evidenceGrid.append(card);
+  }
+  evidenceSection.append(evidenceGrid);
+  deviceIdentityResult.append(evidenceSection);
+}
+
+function renderIdentityFailure(message) {
+  deviceIdentityResult.replaceChildren();
+  deviceIdentityResult.className = "identity-result identity-result-error";
+  const alert = document.createElement("div");
+  alert.setAttribute("role", "alert");
+  appendTextElement(alert, "strong", "Assessment unavailable");
+  appendTextElement(alert, "p", message);
+  deviceIdentityResult.append(alert);
 }
 
 function renderPath(record) {
@@ -220,6 +545,100 @@ sysObjectIdForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const oid = document.querySelector("#sysobjectid").value.trim();
   navigate(`/sys-object-ids/${encodeURIComponent(oid)}`);
+});
+
+const identityExamples = {
+  "c9300-24t": {
+    sys_object_id: "1.3.6.1.4.1.9.1.2435",
+    ent_physical_vendor_type: "",
+    ent_physical_model_name: "",
+    sys_descr: ""
+  },
+  "c9300-observed": {
+    sys_object_id: "1.3.6.1.4.1.9.1.2494",
+    ent_physical_vendor_type: "",
+    ent_physical_model_name: "C9300-48P",
+    sys_descr: ""
+  },
+  "cisco-unknown": {
+    sys_object_id: "1.3.6.1.4.1.9.999999",
+    ent_physical_vendor_type: "",
+    ent_physical_model_name: "",
+    sys_descr: ""
+  }
+};
+
+function setIdentitySignals(signals) {
+  deviceIdentitySysObjectId.value = signals.sys_object_id;
+  deviceIdentityVendorType.value = signals.ent_physical_vendor_type;
+  deviceIdentityModelName.value = signals.ent_physical_model_name;
+  deviceIdentitySysDescr.value = signals.sys_descr;
+  const optional = deviceIdentityForm.querySelector(".identity-signals");
+  optional.open = Boolean(signals.ent_physical_vendor_type || signals.ent_physical_model_name || signals.sys_descr);
+  deviceIdentitySysObjectId.focus();
+}
+
+document.querySelectorAll("[data-identity-example]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const signals = identityExamples[button.dataset.identityExample];
+    if (signals) setIdentitySignals(signals);
+  });
+});
+
+document.querySelector("#device-identity-clear").addEventListener("click", () => {
+  setIdentitySignals({ sys_object_id: "", ent_physical_vendor_type: "", ent_physical_model_name: "", sys_descr: "" });
+  deviceIdentityResult.className = "identity-result identity-result-empty";
+  deviceIdentityResult.replaceChildren();
+  const lead = appendTextElement(deviceIdentityResult, "p", "");
+  appendTextElement(lead, "strong", "No assessment yet.");
+  appendTextElement(deviceIdentityResult, "p", "Results distinguish exact model, product family, platform, vendor-only, conflicting evidence, and unknown outcomes.");
+});
+
+deviceIdentityForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const signals = {
+    sys_object_id: deviceIdentitySysObjectId.value.trim(),
+    ent_physical_vendor_type: deviceIdentityVendorType.value.trim(),
+    ent_physical_model_name: deviceIdentityModelName.value.trim(),
+    sys_descr: deviceIdentitySysDescr.value.trim()
+  };
+  for (const key of Object.keys(signals)) {
+    if (!signals[key]) delete signals[key];
+  }
+  if (!Object.keys(signals).length) {
+    renderIdentityFailure("Enter at least one supported identity signal.");
+    deviceIdentityResult.focus();
+    return;
+  }
+
+  const submit = deviceIdentityForm.querySelector('button[type="submit"]');
+  submit.disabled = true;
+  submit.textContent = "Assessing…";
+  deviceIdentityResult.setAttribute("aria-busy", "true");
+  deviceIdentityResult.replaceChildren();
+  appendTextElement(deviceIdentityResult, "p", "Assessing bounded identity signals…", "lookup-loading");
+  try {
+    const response = await fetch("/v1/device-identities:assess", {
+      method: "POST",
+      headers: { accept: "application/json", "content-type": "application/json" },
+      body: JSON.stringify({ signals })
+    });
+    let body;
+    try {
+      body = await response.json();
+    } catch {
+      throw new Error(`The service returned non-JSON data (HTTP ${response.status}).`);
+    }
+    if (!response.ok) throw new Error(body.detail ?? `Assessment failed with HTTP ${response.status}`);
+    renderIdentityAssessment(body);
+  } catch (error) {
+    renderIdentityFailure(error instanceof Error ? error.message : "The identity assessment failed.");
+  } finally {
+    submit.disabled = false;
+    submit.textContent = "Assess identity";
+    deviceIdentityResult.setAttribute("aria-busy", "false");
+    deviceIdentityResult.focus();
+  }
 });
 
 dependencyForm.addEventListener("submit", async (event) => {
@@ -574,20 +993,45 @@ async function loadSysObjectIdRoute(oid, generation) {
     const body = await fetchApi(`/v1/sys-object-ids/${encodeURIComponent(oid)}`);
     if (generation !== routeGeneration) return;
     const result = body.result;
-    const canonicalSysObjectIdPath = `/sys-object-ids/${encodeURIComponent(result.normalized_oid)}`;
+    const normalizedOid = result.normalized_oid ?? oid;
+    const canonicalSysObjectIdPath = `/sys-object-ids/${encodeURIComponent(normalizedOid)}`;
     if (window.location.pathname !== canonicalSysObjectIdPath) {
       window.history.replaceState({}, "", canonicalSysObjectIdPath);
       setCanonical(canonicalSysObjectIdPath);
     }
-    const exact = result.match ? `
-      <dl class="route-facts"><div><dt>Product family</dt><dd>${escapeHtml(result.match.product_family)}</dd></div><div><dt>Platform</dt><dd>${escapeHtml(result.match.platform ?? "not specified")}</dd></div><div><dt>Model</dt><dd>${escapeHtml(result.match.model ?? "not asserted")}</dd></div><div><dt>Claim strength</dt><dd>${escapeHtml(result.match.claim_strength)}</dd></div><div><dt>Confidence</dt><dd>${escapeHtml(result.match.confidence)}</dd></div><div><dt>Evidence</dt><dd><a href="${escapeHtml(result.match.provenance.source_url)}">${escapeHtml(result.match.provenance.source)}</a></dd></div><div><dt>Source revision</dt><dd><code>${escapeHtml(result.match.provenance.source_revision)}</code></dd></div></dl>`
-      : result.enterprise ? `<div class="route-card"><h2>Enterprise boundary</h2><p>${escapeHtml(result.enterprise.organization)} · PEN ${result.enterprise.number.toLocaleString()}</p></div>`
-        : "";
+    const outcome = normalizeIdentityOutcome(result);
+    const isConflict = outcome === "conflicting_evidence" || outcome === "conflict" || outcome === "ambiguous";
+    const candidate = result.match ?? (!isConflict && Array.isArray(result.candidates) ? result.candidates[0] : null);
+    const provenance = candidate?.provenance ?? {};
+    const sourceUrl = safeHttpUrl(provenance.source_url);
+    const organizationName = result.organization_name ?? result.enterprise?.organization;
+    const enterpriseNumber = result.enterprise_number ?? result.enterprise?.number;
+    const organizationKey = result.organization_key;
+    const facts = candidate || enterpriseNumber !== null && enterpriseNumber !== undefined ? `
+      <dl class="route-facts">
+        ${candidate?.product_family ? `<div><dt>Product family</dt><dd>${escapeHtml(candidate.product_family)}</dd></div>` : ""}
+        ${candidate?.mib_identifier ? `<div><dt>Vendor MIB identifier</dt><dd><code>${escapeHtml(candidate.mib_identifier)}</code></dd></div>` : ""}
+        ${candidate?.platform ? `<div><dt>Platform</dt><dd>${escapeHtml(candidate.platform)}</dd></div>` : ""}
+        <div><dt>Model</dt><dd>${escapeHtml(candidate?.model ?? "not asserted")}</dd></div>
+        ${candidate?.claim_strength ? `<div><dt>Claim strength</dt><dd>${escapeHtml(candidate.claim_strength)}</dd></div>` : ""}
+        ${candidate?.confidence ?? result.confidence ? `<div><dt>Confidence</dt><dd>${escapeHtml(candidate?.confidence ?? result.confidence)}</dd></div>` : ""}
+        ${enterpriseNumber !== null && enterpriseNumber !== undefined ? `<div><dt>PEN</dt><dd><code>${escapeHtml(enterpriseNumber)}</code></dd></div>` : ""}
+        ${organizationName ? `<div><dt>Organization</dt><dd>${escapeHtml(organizationName)}</dd></div>` : ""}
+        <div><dt>Organization key</dt><dd>${escapeHtml(organizationKey ?? "Not reviewed / unavailable")}</dd></div>
+        ${result.organization_key_status ? `<div><dt>Organization-key status</dt><dd>${escapeHtml(result.organization_key_status)}</dd></div>` : ""}
+        ${provenance.source ? `<div><dt>Evidence</dt><dd>${sourceUrl ? `<a href="${escapeHtml(sourceUrl)}">${escapeHtml(provenance.source)}</a>` : escapeHtml(provenance.source)}</dd></div>` : ""}
+        ${provenance.source_revision ? `<div><dt>Source revision</dt><dd><code>${escapeHtml(provenance.source_revision)}</code></dd></div>` : ""}
+        ${body.identity_release ? `<div><dt>Identity release</dt><dd><code>${escapeHtml(body.identity_release)}</code></dd></div>` : ""}
+        ${result.identity_release_sha256 ? `<div><dt>Identity release SHA-256</dt><dd><code>${escapeHtml(result.identity_release_sha256)}</code></dd></div>` : ""}
+        ${result.identity_view ? `<div><dt>Identity view</dt><dd><code>${escapeHtml(result.identity_view)}</code></dd></div>` : ""}
+        ${result.publication_control?.control_revision ? `<div><dt>Control revision</dt><dd>${escapeHtml(result.publication_control.control_revision)}</dd></div>` : ""}
+      </dl>` : "";
     routeContent.innerHTML = `
-      <div class="route-heading"><p class="eyebrow">sysObjectID</p><h1>${escapeHtml(result.normalized_oid)}</h1><p>Status: <strong>${escapeHtml(result.status)}</strong></p></div>
-      ${exact}
+      <div class="route-heading"><p class="eyebrow">sysObjectID</p><h1>${escapeHtml(normalizedOid)}</h1><p>Outcome: <strong>${escapeHtml(identityOutcomeLabels[outcome] ?? result.status ?? "Unknown")}</strong></p></div>
+      ${facts}
       ${result.rights ? `<div class="route-card"><h2>Publication restriction</h2><p>${escapeHtml(result.rights.detail)}</p></div>` : ""}
-      ${result.caveat ? `<div class="route-card"><h2>Evidence boundary</h2><p>${escapeHtml(result.caveat)}</p></div>` : ""}`;
+      ${result.caveat ? `<div class="route-card"><h2>Evidence boundary</h2><p>${escapeHtml(result.caveat)}</p></div>` : ""}
+      <div class="route-card"><h2>Need corroboration?</h2><p>Use the <a href="/#device-identity">device identity workbench</a> to add bounded ENTITY-MIB or platform signals. Do not upload a raw SNMP walk.</p></div>`;
   } catch (error) {
     if (generation !== routeGeneration) return;
     routeFailure("sysObjectID", oid, error);
@@ -603,7 +1047,7 @@ async function loadReleaseRoute(releaseId, generation) {
     const stats = body.statistics;
     routeContent.innerHTML = `
       <div class="route-heading"><p class="eyebrow">Active data release</p><h1>${escapeHtml(body.data_release)}</h1><p>${escapeHtml(body.status)} · production data</p></div>
-      <dl class="route-facts"><div><dt>Published modules</dt><dd>${stats.modules.total.toLocaleString()}</dd></div><div><dt>Catalog OID nodes</dt><dd>${stats.oid_nodes.catalog_oid_nodes.toLocaleString()}</dd></div><div><dt>Searchable records</dt><dd>${stats.oid_nodes.searchable_records.toLocaleString()}</dd></div><div><dt>Textual conventions</dt><dd>${stats.definitions.textual_conventions.active_module_definitions.toLocaleString()}</dd></div><div><dt>Catalog notifications</dt><dd>${stats.definitions.notifications.catalog_oid_nodes.toLocaleString()}</dd></div><div><dt>Enterprise records</dt><dd>${stats.identity.enterprise_records.toLocaleString()}</dd></div><div><dt>sysObjectID mappings</dt><dd>${stats.identity.sys_object_id_mappings.toLocaleString()}</dd></div><div><dt>Published sources</dt><dd>${stats.sources.total.toLocaleString()}</dd></div></dl>
+      <dl class="route-facts"><div><dt>Published modules</dt><dd>${stats.modules.total.toLocaleString()}</dd></div><div><dt>Catalog OID nodes</dt><dd>${stats.oid_nodes.catalog_oid_nodes.toLocaleString()}</dd></div><div><dt>Searchable records</dt><dd>${stats.oid_nodes.searchable_records.toLocaleString()}</dd></div><div><dt>Textual conventions</dt><dd>${stats.definitions.textual_conventions.active_module_definitions.toLocaleString()}</dd></div><div><dt>Catalog notifications</dt><dd>${stats.definitions.notifications.catalog_oid_nodes.toLocaleString()}</dd></div><div><dt>Enterprise records</dt><dd>${stats.identity.enterprise_records.toLocaleString()}</dd></div><div><dt>sysObjectID mappings</dt><dd>${stats.identity.sys_object_id_mappings.toLocaleString()}</dd></div>${Number.isSafeInteger(body.identity_statistics?.exact_models) ? `<div><dt>Reviewed exact models</dt><dd>${body.identity_statistics.exact_models.toLocaleString()}</dd></div>` : ""}${Number.isSafeInteger(body.identity_statistics?.vendor_identifiers) ? `<div><dt>Generic vendor identifiers</dt><dd>${body.identity_statistics.vendor_identifiers.toLocaleString()}</dd></div>` : ""}<div><dt>Published sources</dt><dd>${stats.sources.total.toLocaleString()}</dd></div></dl>
       <div class="route-card"><h2>Count boundary</h2><p>These counts cover only the active public release. Staged and quarantined content is excluded.</p><p><a href="/v1/data-release">Machine-readable release response</a></p></div>`;
   } catch (error) {
     if (generation !== routeGeneration) return;

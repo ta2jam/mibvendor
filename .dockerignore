@@ -11,6 +11,8 @@
 !data/mib-objects.json
 !data/source-catalog.json
 !data/publication-controls.json
+!data/device-identities/
+!data/device-identities/**
 !data/mibs/
 !data/mibs/redistributable/
 !data/mibs/redistributable/**

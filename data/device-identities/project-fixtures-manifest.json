@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "dataset_id": "project-authored-device-identity-fixtures",
+  "policy": {
+    "input_scope": "project-authored-test-evidence-only",
+    "output_scope": "normalized-metadata-only",
+    "publication_mode": "metadata-only",
+    "exact_oid_only": true,
+    "raw_walks_retained": false,
+    "source_fixture_bytes_retained": false,
+    "personally_identifying_fields_retained": false,
+    "claim_scope": "observation-only",
+    "confidence_interpretation": "confidence-in-observation-not-generalized-resolution",
+    "sys_object_id_alone_proves_exact_model": false,
+    "conflicts": "preserve-candidate-arrays",
+    "firmware_interpretation": "not-a-firmware-range"
+  },
+  "sources": [
+    {
+      "id": "librenms-project-tests",
+      "repository": "librenms/librenms",
+      "revision": "dfba713a2ffd39c2b6619cccdec016e04a06a027",
+      "input_root": "tests/data",
+      "input_extension": ".json",
+      "expected_input_files": 1383,
+      "parser": "librenms-project-json-v1",
+      "license_classifier": {
+        "expected_spdx": "GPL-3.0-or-later",
+        "files": [
+          {
+            "path": "LICENSE.txt",
+            "git_blob_oid": "a621ae1be05c9a1a05da2a19fe5028256f55e110",
+            "sha256": "67c255477940ba46460c0e6774401897e99ef9e1f82fb08d6a9b7680f39dd038",
+            "required_markers": [
+              "LibreNMS is covered by the GPLv3",
+              "GNU GENERAL PUBLIC LICENSE",
+              "Version 3, 29 June 2007"
+            ]
+          },
+          {
+            "path": "README.md",
+            "git_blob_oid": "c798b821a3201918712add1e41523ad73f992e49",
+            "sha256": "83c5e62a686a95f178a00c2bfbd25a7cdc4a0b2880ebfda250fb72e70e0d2ae3",
+            "required_markers": [
+              "This program is free software: you can redistribute it and/or modify",
+              "either version 3 of the License, or",
+              "(at your option) any later version."
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "snmp-info-project-tests",
+      "repository": "netdisco/snmp-info",
+      "revision": "613d360b629d58d1a7de90e07c14b62e3a40748f",
+      "input_root": "xt/lib/Test/SNMP",
+      "input_extension": ".pm",
+      "expected_input_files": 136,
+      "parser": "snmp-info-literal-test-v1",
+      "license_classifier": {
+        "expected_spdx": "BSD-3-Clause",
+        "files": [
+          {
+            "path": "LICENSE",
+            "git_blob_oid": "09c1433f7a5b00374352f53bfbee3c338a65f42a",
+            "sha256": "2052b8696fbcee7d026c45be0d007cd164a261ad08843e73164913364dc408ce",
+            "required_markers": [
+              "Redistribution and use in source and binary forms, with or without",
+              "Neither the name of the University of California, Santa Cruz nor the",
+              "THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "organization_mapping_snapshot": {
+    "repository": "ta2jam/macvendor",
+    "revision": "5c8f80158dc2642eb44cd0567a1b800caa245e26",
+    "path": "config/organization-identity-mappings.json",
+    "git_blob_oid": "55dfc786fa27a8831d71a038d5adb005df155f70",
+    "sha256": "78f39ee42e046d9acb0af509aaf959e88f79be81ac024d0ba9588350a09fc755",
+    "reviewed_pen_links": [
+      { "enterprise_number": 9, "organization_key": "Q173395" },
+      { "enterprise_number": 63, "organization_key": "Q312" },
+      { "enterprise_number": 236, "organization_key": "Q20718" },
+      { "enterprise_number": 311, "organization_key": "Q2283" },
+      { "enterprise_number": 343, "organization_key": "Q248" },
+      { "enterprise_number": 2011, "organization_key": "Q160120" },
+      { "enterprise_number": 11129, "organization_key": "Q95" }
+    ]
+  },
+  "enterprise_registry_snapshot": {
+    "path": "data/iana-private-enterprise-numbers.json",
+    "sha256": "d1691f2f74385bf918870517d11102a1c5dcf43af953e16833fe5c8b1ddb7f90",
+    "record_count": 66266,
+    "upstream_content_sha256": "aca0fe8748ed2d6b9c8f159cd3cc672387e47d6df2bdd21d5a139341fad7eda8"
+  },
+  "expected_measurements": {
+    "input_files": 1519,
+    "files_with_observations": 1023,
+    "observations": 1023,
+    "exact_oids": 713,
+    "identity_candidates": 917,
+    "conflicting_exact_oids": 72,
+    "corroborated_observations": 37,
+    "identities_with_reviewed_organization_key": 87,
+    "rejected_input_records": 429,
+    "by_source": {
+      "librenms-project-tests": {
+        "input_files": 1383,
+        "files_with_observations": 980,
+        "observations": 980,
+        "rejected_input_records": 369
+      },
+      "snmp-info-project-tests": {
+        "input_files": 136,
+        "files_with_observations": 43,
+        "observations": 43,
+        "rejected_input_records": 60
+      }
+    }
+  }
+}

@@ -16,7 +16,7 @@
         <a href="/#search">OID search</a>
         <a href="/#catalog">MIB catalog</a>
         <a href="/#decoder">Walk decoder</a>
-        <a href="/#intelligence">Identity lookup</a>
+        <a href="/#device-identity">Device identity</a>
         <a href="/#safe-use">Safe use</a>
         <a href="/#developers">API</a>
       </nav>
@@ -129,6 +129,62 @@
           </div>
           <p>Registry ownership, agent identity, and hardware model are different claims. mibvendor keeps them separate and shows the evidence boundary.</p>
         </div>
+
+        <article id="device-identity" class="identity-workbench" aria-labelledby="device-identity-title">
+          <div class="identity-workbench-intro">
+            <div>
+              <p class="eyebrow">Evidence-aware assessment</p>
+              <h3 id="device-identity-title">Assess a device identity from bounded signals</h3>
+            </div>
+            <p>Send individual identifiers, not an SNMP walk. A registry assignment proves PEN ownership only. Only a reviewed normalization can support an exact model; other vendor-MIB assignments stop at product family/category or a generic vendor identifier. A project observation can corroborate a claim but cannot turn one observed device into a universal mapping.</p>
+            <p>The identity release classifies 6,199 exact vendor OID assignments as 36 reviewed device models, 1,491 family/category assignments, and 4,672 generic vendor identifiers. The 713 observation OIDs remain a separate corroboration layer.</p>
+          </div>
+
+          <form id="device-identity-form" class="identity-form" action="/v1/device-identities:assess" method="post">
+            <div class="identity-primary-field">
+              <label for="identity-sys-object-id">sysObjectID <span>recommended</span></label>
+              <input id="identity-sys-object-id" name="sys_object_id" value="1.3.6.1.4.1.9.1.2435" maxlength="512" inputmode="decimal" autocomplete="off" aria-describedby="identity-input-help">
+              <small id="identity-input-help">Numeric OID only. Example: <code>1.3.6.1.4.1.9.1.2435</code></small>
+            </div>
+
+            <details class="identity-signals">
+              <summary>Optional corroborating signals</summary>
+              <div class="identity-optional-grid">
+                <div>
+                  <label for="identity-vendor-type">entPhysicalVendorType</label>
+                  <input id="identity-vendor-type" name="ent_physical_vendor_type" maxlength="512" inputmode="decimal" autocomplete="off" placeholder="1.3.6.1.4.1.…">
+                </div>
+                <div>
+                  <label for="identity-model-name">entPhysicalModelName</label>
+                  <input id="identity-model-name" name="ent_physical_model_name" maxlength="256" autocomplete="off" placeholder="C9300-48P">
+                </div>
+                <div class="identity-sysdescr-field">
+                  <label for="identity-sys-descr">sysDescr</label>
+                  <textarea id="identity-sys-descr" name="sys_descr" rows="3" maxlength="2048" spellcheck="false" placeholder="Optional bounded platform signal"></textarea>
+                </div>
+              </div>
+            </details>
+
+            <p class="identity-privacy"><strong>No SNMP walk upload.</strong> The assessment sends only the fields above. <code>sysDescr</code> is processed for this request and is not stored or echoed in the result. Remove hostnames, serial numbers, addresses, and customer identifiers before submitting.</p>
+
+            <div class="identity-actions">
+              <button type="submit">Assess identity</button>
+              <button id="device-identity-clear" type="button" class="secondary">Clear</button>
+            </div>
+
+            <div class="identity-examples" aria-label="Device identity examples">
+              <span>Try:</span>
+              <button type="button" data-identity-example="c9300-24t" aria-controls="device-identity-result">C9300-24T exact OID</button>
+              <button type="button" data-identity-example="c9300-observed" aria-controls="device-identity-result">C9300-48P + model signal</button>
+              <button type="button" data-identity-example="cisco-unknown" aria-controls="device-identity-result">Unknown Cisco OID</button>
+            </div>
+          </form>
+
+          <section id="device-identity-result" class="identity-result identity-result-empty" aria-live="polite" aria-atomic="true" tabindex="-1">
+            <p><strong>No assessment yet.</strong></p>
+            <p>Results distinguish exact model, product family, generic vendor identifier, platform, vendor-only, conflicting evidence, and unknown outcomes.</p>
+          </section>
+        </article>
 
         <div class="intelligence-grid">
           <form id="enterprise-form" class="lookup-card" action="/enterprises/9">
@@ -278,6 +334,7 @@
               <li><span class="method get">GET</span><code>/v1/sources</code><small>Publication mode and rights scopes</small></li>
               <li><span class="method get">GET</span><code>/v1/enterprises/{number}</code><small>IANA PEN lookup</small></li>
               <li><span class="method get">GET</span><code>/v1/sys-object-ids/{oid}</code><small>Evidence-bounded identity</small></li>
+              <li><span class="method post">POST</span><code>/v1/device-identities:assess</code><small>Bounded multi-signal identity assessment</small></li>
               <li><span class="method get">GET</span><code>/v1/modules/{module}/dependencies</code><small>Dependency graph states</small></li>
               <li><span class="method post">POST</span><code>/v1/resolve:batch</code><small>Order-preserving OID resolution</small></li>
               <li><span class="method get">GET</span><code>/v1/data-release</code><small>Active immutable release</small></li>
@@ -288,6 +345,8 @@
               <li>HTTPS JSON under a versioned <code>/v1</code> namespace.</li>
               <li>Free access is fair-use bounded, not unlimited use or an availability SLA.</li>
               <li>Every response identifies its immutable <code>data_release</code>.</li>
+              <li>Identity responses expose the immutable <code>identity_release</code>, its SHA-256, and the active <code>identity_view</code>.</li>
+              <li>The identity view includes a separately hashed control revision and source kill-switch state.</li>
               <li>Batch order and duplicate inputs are preserved.</li>
               <li>Invalid OIDs and valid-but-not-found OIDs remain distinct.</li>
               <li>PEN ownership never silently becomes a device-model claim.</li>
@@ -298,7 +357,10 @@
               <span><strong>1,000</strong> OIDs / batch</span>
               <span><strong>64 KiB</strong> request body</span>
               <span><strong>200</strong> search characters</span>
-              <span><strong>120</strong> requests / minute</span>
+              <span><strong>120</strong> fair-use units / minute</span>
+              <span><strong>16 KiB</strong> identity request</span>
+              <span><strong>32 + 32</strong> candidates / conflicts</span>
+              <span><strong>4 units</strong> identity assessment</span>
             </div>
             <p class="preview-note">Fair-use limits may change to contain abuse. Read <code>RateLimit-*</code> and <code>Retry-After</code>, honor <code>429</code>, and follow each response's <code>Cache-Control</code> and <code>ETag</code>. Batch POST results are <code>no-store</code>; active raw routes revalidate withdrawal controls. Module lists use cursors; the service provides no availability SLA.</p>
           </div>
@@ -321,6 +383,15 @@
 # Read next_cursor from that response and pass it unchanged:
 curl --fail-with-body --compressed \
   'https://mibvendor.io/v1/modules?q=IANA&amp;limit=1&amp;cursor=1'</code></pre>
+
+            <div class="code-heading response-heading">
+              <span>curl · bounded device identity assessment</span>
+              <button type="button" class="copy-code" data-copy-target="api-identity-example">Copy identity request</button>
+            </div>
+            <pre class="api-code"><code id="api-identity-example">curl --fail-with-body --compressed \
+  -X POST 'https://mibvendor.io/v1/device-identities:assess' \
+  -H 'content-type: application/json' \
+  --data '{"signals":{"sys_object_id":"1.3.6.1.4.1.9.1.2494","ent_physical_model_name":"C9300-48P"}}'</code></pre>
 
             <div class="code-heading response-heading">
               <span>JavaScript · release-pinned batch</span>
@@ -388,7 +459,7 @@ with urlopen(request, timeout=10) as response:
         </div>
 
         <div class="developer-footer">
-          <p><strong>Safe input:</strong> send bounded numeric OIDs only. Do not send raw walks, credentials, hostnames, serial numbers, or customer identifiers.</p>
+          <p><strong>Safe input:</strong> send only the documented, bounded OID and identity fields. Do not send raw walks, credentials, hostnames, serial numbers, addresses, or customer identifiers. Identity <code>sysDescr</code> is processed per request and is not stored or echoed.</p>
           <div class="developer-links">
             <a href="/openapi.json">OpenAPI 3.1 specification</a>
             <a href="/healthz">Service health</a>

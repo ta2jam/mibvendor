@@ -25,10 +25,13 @@ It provides:
   table/index context;
 - IANA Private Enterprise Number lookup without retaining contact names or
   email addresses;
-- evidence-bounded `sysObjectID` lookup with explicit exact,
-  `enterprise_only`, `not_found`, and `unavailable_due_to_rights` states;
+- evidence-bounded `sysObjectID` lookup with direct PEN, nullable reviewed
+  organization key, and explicit `exact_model`, `product_family`,
+  `vendor_identifier`, `platform`, `vendor_only`, and conflict states;
+- bounded multi-signal device assessment without accepting a raw SNMP walk;
 - explicit identity claim strength, including platform-level matches that do
-  not assert a hardware model;
+  not assert a hardware model, plus `firmware_scope: "not_established"` so no
+  result implies firmware coverage;
 - direct, transitive, missing, and cyclic module-dependency states;
 - a rights-cleared MIB catalog with source, revision, license, SHA-256, and
   raw-download availability;
@@ -44,19 +47,33 @@ separates 12 redistributable sources from 20 directory-only sources. The PEN
 registry remains complete for the bundled IANA snapshot. Unsupported vendors
 are not converted into guessed products or models.
 
+The separate `device-identity-2026-07-20.1` release adds 6,199 exact vendor-MIB
+OID assignments across ten vendor families. Only 36 narrow, reviewed Catalyst
+9300 normalizations assert an exact device model. Another 1,491 assignments
+stop at a product family or category, while 4,672 expose only the vendor's MIB
+identifier because the symbol may denote a device, chassis, module, line card,
+or component. A separate corroboration layer retains 1,023 sanitized project
+observations over 713 OIDs, including 72 conflicting OIDs; observations never
+become universal model mappings. The runtime also retains 19 existing
+Net-SNMP/SigScale platform mappings, for 6,218 exact lookup keys in total.
+
 ## Use it safely
 
 - Use only `https://mibvendor.io` and `https://mibvendor.io/v1`.
 - Never submit an SNMP community string, SNMPv3 credential, device password,
   API secret, hostname, serial number, raw walk, or customer identifier to the
   API.
-- Walk text is decoded in the browser tab. Only the separate identity lookup
-  forms call the API, using the bounded numeric identifiers visible in those
-  fields.
+- Walk text is decoded in the browser tab. The device-identity form sends only
+  its named, bounded fields; it never uploads a walk. Remove hostnames, serial
+  numbers, addresses, and customer identifiers before submitting optional
+  `sysDescr` text.
 - Treat a PEN result as a registry assignment, not proof of manufacturer,
   device ownership, authenticity, product family, or model.
 - A MIB definition does not prove that a device or firmware implements the
   object. Verify the numeric target against an authorized device.
+- Device identity results do not establish firmware compatibility or support.
+  Treat `firmware_scope: "not_established"` as a required verification step,
+  not as an unknown-version wildcard.
 
 ## Permanently free public API
 
@@ -66,9 +83,11 @@ currently requires no API key. If optional keys are introduced, they will be
 free abuse-control credentials only—not a paid feature.
 
 Free access is fair-use bounded, not unlimited use or an availability SLA. The
-current service limits each client to 120 requests per minute and bounds batch,
-body, query, and page sizes. Every successful response identifies its immutable
-`data_release`.
+current service allocates each client 120 fair-use units per minute and bounds
+batch, body, query, and page sizes. A normal request costs one unit; device
+identity assessment costs four. Every successful response identifies its
+immutable `data_release`; identity operations also expose the immutable
+`identity_release`, its SHA-256, and the active publication-control view.
 
 Operational links: [service status](https://mibvendor.io/status),
 [health probe](https://mibvendor.io/healthz), and
@@ -85,6 +104,7 @@ The status endpoint is a live-process self-check, not uptime history or an SLA.
 | `GET` | `/v1/sources` | Reviewed publication modes and rights scopes |
 | `GET` | `/v1/enterprises/{number}` | IANA PEN assignment |
 | `GET` | `/v1/sys-object-ids/{oid}` | Exact identity or PEN boundary |
+| `POST` | `/v1/device-identities:assess` | Bounded multi-signal device assessment |
 | `GET` | `/v1/modules/{module}/dependencies` | Dependency graph states |
 | `POST` | `/v1/resolve:batch` | Order-preserving OID resolution |
 | `GET` | `/v1/data-release` | Active release and corpus counts |
@@ -101,6 +121,24 @@ Batch order and duplicate inputs are preserved. Per-item states distinguish
 `resolved`, `not_found`, `invalid`, `ambiguous`, and
 `unavailable_due_to_rights`. Request failures use RFC 9457
 `application/problem+json`.
+
+Example identity assessment:
+
+```sh
+curl --fail-with-body https://mibvendor.io/v1/device-identities:assess \
+  --header 'content-type: application/json' \
+  --data '{"signals":{"sys_object_id":"1.3.6.1.4.1.9.1.2494","ent_physical_model_name":"C9300-48P"}}'
+```
+
+The result is `exact_model` because the device-reported model is compatible
+with the exact Catalyst 9300 family assignment; the sanitized project fixture
+is shown only as corroboration. By contrast, PEN 9 or generic Cisco IOS XE text
+cannot resolve to a Catalyst 9300 model, and contradictory SKU signals return
+`conflicting_evidence`. A generic exact MIB assignment returns
+`vendor_identifier`, not a model or family. POST bodies are limited to 16 KiB,
+candidates and conflicts to 32, responses are `no-store`, and each assessment
+costs four of the 120 fair-use units available per minute. See the concise
+[device-identity contract](docs/DEVICE-IDENTITY.md).
 
 A real `200` response from `GET /v1/enterprises/8072` is:
 
@@ -165,16 +203,24 @@ fail-closed publication modes:
   extracted;
 - `quarantine`: no source content reaches a public response.
 
-There are currently no vendor sources approved for `metadata-only`. One pinned
-Apache-2.0 SigScale source supports a single platform-level identity mapping;
-the 19 reviewed vendor families and legacy IETF class remain directory-only and
-their content intake remains quarantined. Public download or a factual-looking
-OID is not treated as permission.
+Ten vendor-MIB families now publish factual `metadata-only` OID assignments
+from a pinned, license-signaled LibreNMS snapshot. Artifact restrictions still
+override the repository signal: no raw vendor MIB bytes or descriptions are
+retained or served. Direct vendor source records and the legacy IETF class
+remain directory-only or quarantined unless their own publication basis allows
+more. Public download or a factual-looking OID is not treated as permission.
 
 The IANA PEN snapshot retains only number and organization fields and records
-its source date and SHA-256. Eighteen Net-SNMP platform identities and one
-SigScale OCS platform identity are pinned to exact upstream revisions; none is
-presented as an exact hardware model. Every raw module is manifest-bound to
+its source date and SHA-256. Seven reviewed PEN links expose a stable macvendor
+`organization_key`; every other key is `null`, never name-inferred. Eighteen
+Net-SNMP platform identities and one SigScale OCS platform identity are pinned
+to exact upstream revisions; none is presented as an exact hardware model.
+The immutable identity manifest has its own SHA-256. A separately hashed,
+revisioned publication-control document selects the active release and can
+disable one source without rewriting historical evidence. Identity responses
+expose both hashes and an `identity_view` derived from them, so a kill-switch
+change is observable even when `identity_release` is unchanged.
+Every raw module is manifest-bound to
 its original-source SHA-256, served-artifact SHA-256, license, dependencies,
 revision, and immutable data release. A two-event hash-chained publication log
 records the baseline and current release promotion; source and module kill

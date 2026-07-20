@@ -36,7 +36,7 @@ Deploying a working directory without publishing the corresponding commit/tag
 is not production completion. Pushing code without deploying and verifying the
 VPS is also not production completion.
 
-## Current Phase 0 release candidate
+## Current deployed Phase 0 release
 
 `v0.3.0-alpha.2` defines the corpus-expansion release contract. Its immutable
 `license-signaled-2026-07-20.2` data release contains 702 redistributable
@@ -68,6 +68,31 @@ independently verifies the public origin every 15 minutes, and a hardened VPS
 timer checks the container, loopback bind, release identity, public/local
 health, Caddy, disk threshold, and representative API results every five
 minutes.
+
+## v0.4 device-identity candidate
+
+`v0.4.0-alpha.1` is not a production release until every completion rule above
+passes. Its candidate outcome is an evidence-bounded identity flow spanning the
+web workbench, exact lookup, multi-signal assessment, OpenAPI contract, and
+production probes.
+
+The immutable `device-identity-2026-07-20.1` candidate contains 6,199 exact
+vendor-MIB OID assignments across ten vendor families: 36 narrow reviewed
+device-model normalizations, 1,491 product-family/category assignments, and
+4,672 generic vendor identifiers that assert neither a whole-device model nor
+a family. It keeps 713 project-observation OIDs as a separate corroboration
+layer and 19 existing platform mappings as a separate claim class. The release
+manifest SHA-256 binds its source revisions, datasets, licenses, built-in
+claims, and runtime-index digest.
+
+A separately hashed publication-control document selects the active identity
+release and carries a positive control revision plus sorted source kill
+switches. API responses expose the release digest, control digest/revision, and
+derived `identity_view`; a control change is therefore observable without
+mutating the immutable release. The fair-use bucket is 120 units per client per
+minute and device assessment consumes four units. No v0.4 production,
+performance, CI, tag, or browser result is claimed in this document until that
+evidence exists.
 
 The GitHub production monitor resolves the expected commit from the immutable
 `v${VERSION}` release tag. It does not assume that every `main` commit has been

@@ -3,6 +3,60 @@
 All notable changes are documented here. The project uses Semantic Versioning
 while it is pre-1.0; research releases may remain unstable.
 
+## [0.4.0-alpha.1] - 2026-07-20
+
+### Added
+
+- Added immutable `device-identity-2026-07-20.1` data with 6,199 exact
+  vendor-MIB OID assignments across ten vendor families: 36 narrow reviewed
+  device-model normalizations, 1,491 product-family/category assignments, and
+  4,672 generic vendor MIB identifiers that assert neither model nor family.
+- Added 1,023 sanitized LibreNMS and SNMP::Info fixture observations over 713
+  exact OIDs as a separate corroboration layer; 72 conflicting observation OIDs
+  remain explicit and no raw walk or private device field is retained.
+- Added direct PEN and nullable reviewed `organization_key` fields. Seven exact
+  MAC–PEN organization links are pinned to the public macvendor snapshot; no
+  key is synthesized from a name or PEN.
+- Added `POST /v1/device-identities:assess` for bounded correlation of
+  `sysObjectID`, `entPhysicalVendorType`, `entPhysicalModelName`, and narrow
+  `sysDescr` platform signatures, with deterministic conflict handling and
+  `no-store` responses.
+- Added a responsive device-identity workbench, evidence-layer presentation,
+  Catalyst 9300 positive/negative/conflict examples, and full OpenAPI schemas.
+- Added a release-manifest digest and a separately hashed, revisioned
+  publication-control view with per-source kill switches; responses expose the
+  effective `identity_view` so control changes do not masquerade as immutable
+  release changes.
+
+### Changed
+
+- Replaced the former Cisco-wide rights denial with metadata-only factual OID
+  assignments. Artifact-specific restrictions still block raw MIB text and
+  descriptions.
+- Separated application version, MIB `data_release`, and `identity_release` in
+  status, version, API, image labels, monitoring, and production verification.
+- Preserved legacy `sysObjectID` response fields while distinguishing
+  `exact_model`, `product_family`, `vendor_identifier`, `platform`, `vendor_only`,
+  `conflicting_evidence`, and `unknown` outcomes.
+- Added explicit `firmware_scope: "not_established"` to singular identity
+  results and candidates; unknown or conflicting results use `null` rather than
+  implying firmware-wide support.
+
+### Security
+
+- Rejects raw walks, arrays, extra fields, unsupported media, oversized bodies,
+  and out-of-bound identity signals. Raw `sysDescr` is neither returned nor
+  stored, candidate/conflict output is capped at 32, and an assessment consumes
+  four fair-use units.
+- Rejects compact, colon-, hyphen-, and dot-form MAC-like values from sanitized
+  model observations. Manifest-controlled fixture paths cannot escape their
+  pinned roots.
+- Binds retained LibreNMS and SNMP::Info license evidence into the runtime index,
+  immutable release digest, and startup validation. Source kill switches also
+  recompute effective conflicts and cannot resurrect reviewed model claims.
+- Exposes ETag, fair-use, retry, and raw-archive integrity headers to permitted
+  cross-origin API clients.
+
 ## [0.3.0-alpha.2] - 2026-07-20
 
 ### Added
@@ -285,6 +339,7 @@ while it is pre-1.0; research releases may remain unstable.
   evidence cannot be marked complete.
 - Repository checks and CI without production MIB data.
 
+[0.4.0-alpha.1]: https://github.com/ta2jam/mibvendor/releases/tag/v0.4.0-alpha.1
 [0.3.0-alpha.2]: https://github.com/ta2jam/mibvendor/releases/tag/v0.3.0-alpha.2
 [0.3.0-alpha.1]: https://github.com/ta2jam/mibvendor/releases/tag/v0.3.0-alpha.1
 [0.2.0-alpha.1]: https://github.com/ta2jam/mibvendor/releases/tag/v0.2.0-alpha.1

@@ -55,6 +55,7 @@ async function runIsolated(t, disabled = {}) {
   }
   for (const relativePath of [
     "src/intelligence.mjs",
+    "src/device-identity.mjs",
     "src/publication-controls.mjs",
     "prototype/core.mjs",
     "prototype/data.mjs",
@@ -66,6 +67,7 @@ async function runIsolated(t, disabled = {}) {
     await symlink(path.join(root, "data", filename), path.join(directory, "data", filename));
   }
   await symlink(path.join(root, "data", "mibs"), path.join(directory, "data", "mibs"));
+  await symlink(path.join(root, "data", "device-identities"), path.join(directory, "data", "device-identities"));
   await writeFile(
     path.join(directory, "data", "publication-controls.json"),
     `${JSON.stringify(controlsWithDisabled(disabled), null, 2)}\n`,
@@ -121,8 +123,8 @@ test("no kill switch preserves current object, raw, dependency, and identity out
   assert.equal(result.bfdMissing.includes("IF-MIB"), false);
   assert.equal(result.netSnmpIdentity, "resolved");
   assert.equal(result.sigScaleIdentity, "resolved");
-  assert.equal(result.sysObjectIdCount, 19);
-  assert.equal(result.statisticsSysObjectIdCount, 19);
+  assert.equal(result.sysObjectIdCount, 6218);
+  assert.equal(result.statisticsSysObjectIdCount, 6218);
   assert.equal(result.supplementalRecords, 0);
 });
 
@@ -133,8 +135,8 @@ test("source kill switches cover legacy objects, raw bytes, dependencies, and st
   assert.equal(result.sigScaleDependencies, null);
   assert.equal(result.netSnmpIdentity, "enterprise_only");
   assert.equal(result.sigScaleIdentity, "enterprise_only");
-  assert.equal(result.sysObjectIdCount, 0);
-  assert.equal(result.statisticsSysObjectIdCount, 0);
+  assert.equal(result.sysObjectIdCount, 6199);
+  assert.equal(result.statisticsSysObjectIdCount, 6199);
 });
 
 test("module kill switches cover legacy objects, dependency presence, and identity owner modules", async (t) => {
@@ -144,8 +146,8 @@ test("module kill switches cover legacy objects, dependency presence, and identi
   assert.equal(result.sigScaleDependencies, null);
   assert.equal(result.netSnmpIdentity, "enterprise_only");
   assert.equal(result.sigScaleIdentity, "enterprise_only");
-  assert.equal(result.sysObjectIdCount, 0);
-  assert.equal(result.statisticsSysObjectIdCount, 0);
+  assert.equal(result.sysObjectIdCount, 6199);
+  assert.equal(result.statisticsSysObjectIdCount, 6199);
 });
 
 test("disabling a secondary identity evidence module invalidates only that mapping", async (t) => {
@@ -157,6 +159,6 @@ test("disabling a secondary identity evidence module invalidates only that mappi
   assert.equal(result.sigScaleRaw, true);
   assert.equal(result.sigScaleDependencies.status, "partial");
   assert.ok(result.sigScaleDependencies.missing.includes("SIGSCALE-SMI"));
-  assert.equal(result.sysObjectIdCount, 18);
-  assert.equal(result.statisticsSysObjectIdCount, 18);
+  assert.equal(result.sysObjectIdCount, 6217);
+  assert.equal(result.statisticsSysObjectIdCount, 6217);
 });

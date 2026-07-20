@@ -5,6 +5,7 @@ ORIGIN=${ORIGIN:-https://mibvendor.io}
 EXPECTED_VERSION=${EXPECTED_VERSION:-}
 EXPECTED_COMMIT=${EXPECTED_COMMIT:-}
 EXPECTED_DATA_RELEASE=${EXPECTED_DATA_RELEASE:-}
+EXPECTED_IDENTITY_RELEASE=${EXPECTED_IDENTITY_RELEASE:-}
 CURL=${CURL:-curl}
 
 fail() {
@@ -48,11 +49,12 @@ health=$(request "$ORIGIN/healthz")
 api_headers="$tmp_dir/api.headers"
 data_release_json=$(request --dump-header "$api_headers" "$ORIGIN/v1/data-release")
 grep -Eiq '^access-control-allow-origin:[[:space:]]*\*' "$api_headers" || fail "API CORS header is missing"
-grep -Eiq '^ratelimit-limit:[[:space:]]*120' "$api_headers" || fail "API rate-limit header is missing"
+grep -Eiq '^ratelimit-limit:[[:space:]]*120' "$api_headers" || fail "API 120-unit rate-limit header is missing"
 
 version_json=$(request "$ORIGIN/version")
 VERSION_JSON=$version_json EXPECTED_VERSION=$EXPECTED_VERSION \
 EXPECTED_COMMIT=$EXPECTED_COMMIT EXPECTED_DATA_RELEASE=$EXPECTED_DATA_RELEASE \
+EXPECTED_IDENTITY_RELEASE=$EXPECTED_IDENTITY_RELEASE \
 python3 - <<'PY'
 import json
 import os
@@ -69,6 +71,7 @@ for key, env_name in (
     ("version", "EXPECTED_VERSION"),
     ("commit", "EXPECTED_COMMIT"),
     ("data_release", "EXPECTED_DATA_RELEASE"),
+    ("identity_release", "EXPECTED_IDENTITY_RELEASE"),
 ):
     expected = os.environ.get(env_name, "")
     if expected and document.get(key) != expected:
@@ -76,9 +79,11 @@ for key, env_name in (
 print(f"release={document.get('version')} commit={document.get('commit')} data={document.get('data_release')}")
 PY
 
-DATA_RELEASE_JSON=$data_release_json EXPECTED_DATA_RELEASE=$EXPECTED_DATA_RELEASE python3 - <<'PY'
+DATA_RELEASE_JSON=$data_release_json EXPECTED_DATA_RELEASE=$EXPECTED_DATA_RELEASE \
+EXPECTED_IDENTITY_RELEASE=$EXPECTED_IDENTITY_RELEASE python3 - <<'PY'
 import json
 import os
+import re
 
 document = json.loads(os.environ["DATA_RELEASE_JSON"])
 if document.get("status") != "public-alpha":
@@ -96,8 +101,60 @@ if statistics.get("definitions", {}).get("notifications", {}).get("catalog_oid_n
     raise SystemExit("notification inventory mismatch")
 if statistics.get("sources", {}).get("total") != 32:
     raise SystemExit("source inventory mismatch")
-if statistics.get("identity", {}).get("sys_object_id_mappings") != 19:
-    raise SystemExit("sysObjectID inventory mismatch")
+identity = document.get("identity_statistics", {})
+publication = document.get("identity_publication", {})
+identity_release = document.get("identity_release")
+release_sha = publication.get("identity_release_sha256")
+control_sha = publication.get("control_sha256")
+control_revision = publication.get("control_revision")
+disabled_sources = publication.get("disabled_sources")
+if publication.get("identity_release") != identity_release:
+    raise SystemExit("identity publication release mismatch")
+if not isinstance(release_sha, str) or re.fullmatch(r"[0-9a-f]{64}", release_sha) is None:
+    raise SystemExit("identity release digest is invalid")
+if not isinstance(control_sha, str) or re.fullmatch(r"[0-9a-f]{64}", control_sha) is None:
+    raise SystemExit("identity publication-control digest is invalid")
+if not isinstance(control_revision, int) or isinstance(control_revision, bool) or control_revision < 1:
+    raise SystemExit("identity publication-control revision is invalid")
+if not isinstance(disabled_sources, list) or disabled_sources != sorted(set(disabled_sources)):
+    raise SystemExit("disabled identity sources are not a sorted unique list")
+expected_view = f"{identity_release}.{release_sha[:12]}.c{control_revision}.{control_sha[:12]}"
+if publication.get("identity_view") != expected_view:
+    raise SystemExit("identity publication view is not digest/revision bound")
+
+count_fields = (
+    "sys_object_id_mappings", "claims", "exact_models", "product_families",
+    "vendor_identifiers", "platforms", "vendor_families",
+    "project_observation_oids", "conflicting_observation_oids",
+    "reviewed_organization_keys", "disabled_sources",
+)
+if any(not isinstance(identity.get(field), int) or isinstance(identity.get(field), bool) or identity[field] < 0 for field in count_fields):
+    raise SystemExit("identity statistics contain an invalid count")
+if identity.get("identity_release") != identity_release or identity.get("identity_release_sha256") != release_sha:
+    raise SystemExit("identity statistics release identity mismatch")
+if identity.get("identity_view") != expected_view or identity.get("publication_control_revision") != control_revision:
+    raise SystemExit("identity statistics publication view mismatch")
+if identity.get("publication_control_sha256") != control_sha:
+    raise SystemExit("identity statistics publication-control digest mismatch")
+if identity["claims"] != sum(identity[field] for field in ("exact_models", "product_families", "vendor_identifiers", "platforms")):
+    raise SystemExit("identity claim-strength counts do not sum to the claim total")
+if identity["sys_object_id_mappings"] > identity["claims"]:
+    raise SystemExit("identity mapping count exceeds claim count")
+if identity["disabled_sources"] != len(disabled_sources):
+    raise SystemExit("disabled-source count does not match publication controls")
+identity_sources = document.get("identity_sources")
+if not isinstance(identity_sources, list) or not identity_sources:
+    raise SystemExit("identity source inventory is missing")
+source_ids = [source.get("source_id") for source in identity_sources]
+if any(not isinstance(source_id, str) or not source_id for source_id in source_ids) or len(source_ids) != len(set(source_ids)):
+    raise SystemExit("identity source ids are invalid or duplicated")
+if any(not isinstance(source.get("enabled"), bool) for source in identity_sources):
+    raise SystemExit("identity source enabled state is invalid")
+effective_disabled = sorted(source.get("source_id") for source in identity_sources if source.get("enabled") is False)
+if effective_disabled != disabled_sources:
+    raise SystemExit("effective identity source state does not match publication controls")
+if statistics.get("identity", {}).get("sys_object_id_mappings") != identity["sys_object_id_mappings"]:
+    raise SystemExit("public and identity mapping statistics disagree")
 if document.get("production_data") is not True:
     raise SystemExit("active rights-cleared data is not marked production")
 if document.get("enterprise_count", 0) < 60000:
@@ -105,13 +162,44 @@ if document.get("enterprise_count", 0) < 60000:
 expected = os.environ.get("EXPECTED_DATA_RELEASE", "")
 if expected and document.get("data_release") != expected:
     raise SystemExit("API data release mismatch")
+expected_identity = os.environ.get("EXPECTED_IDENTITY_RELEASE", "")
+if expected_identity and document.get("identity_release") != expected_identity:
+    raise SystemExit("API identity release mismatch")
 PY
+
+identity_release_for_request=$(DATA_RELEASE_JSON=$data_release_json \
+    EXPECTED_IDENTITY_RELEASE=$EXPECTED_IDENTITY_RELEASE python3 - <<'PY'
+import json
+import os
+
+document = json.loads(os.environ["DATA_RELEASE_JSON"])
+release = os.environ.get("EXPECTED_IDENTITY_RELEASE") or document.get("identity_release")
+if not isinstance(release, str):
+    raise SystemExit("identity release is unavailable for the assessment probe")
+print(release)
+PY
+)
+identity_payload=$(printf '{"identity_release":"%s","signals":{"sys_object_id":"1.3.6.1.4.1.9.1.2494","ent_physical_model_name":"C9300-48P"}}' "$identity_release_for_request")
+identity_conflict_payload=$(printf '{"identity_release":"%s","signals":{"sys_object_id":"1.3.6.1.4.1.9.1.2435","ent_physical_model_name":"C9300-24P"}}' "$identity_release_for_request")
 
 enterprise_json=$(request "$ORIGIN/v1/enterprises/8072")
 sys_exact_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.8072.3.2.10")
 sys_sigscale_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.50386.1.1")
 sys_boundary_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.2.999999")
-sys_restricted_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.9.999999")
+sys_c930024t_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.9.1.2435")
+sys_c930024p_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.9.1.2436")
+sys_c9300_family_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.9.1.2494")
+sys_cisco_identifier_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.9.1.6")
+sys_cisco_unknown_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.9.999999")
+identity_headers="$tmp_dir/identity.headers"
+identity_json=$(request --dump-header "$identity_headers" --request POST --header 'content-type: application/json' \
+    --data "$identity_payload" \
+    "$ORIGIN/v1/device-identities:assess")
+grep -Eiq '^cache-control:[[:space:]]*no-store' "$identity_headers" || fail "identity assessment is cacheable"
+grep -Eiq '^etag:' "$identity_headers" && fail "identity assessment exposes an ETag"
+identity_conflict_json=$(request --request POST --header 'content-type: application/json' \
+    --data "$identity_conflict_payload" \
+    "$ORIGIN/v1/device-identities:assess")
 object_json=$(request "$ORIGIN/v1/objects/if-mib--ifoperstatus")
 dependencies_json=$(request "$ORIGIN/v1/modules/IF-MIB/dependencies")
 module_json=$(request "$ORIGIN/v1/modules/BFD-STD-MIB")
@@ -165,33 +253,100 @@ batch_json=$(request --request POST --header 'content-type: application/json' \
 openapi_json=$(request "$ORIGIN/openapi.json")
 
 ENTERPRISE_JSON=$enterprise_json SYS_EXACT_JSON=$sys_exact_json SYS_SIGSCALE_JSON=$sys_sigscale_json \
-SYS_BOUNDARY_JSON=$sys_boundary_json SYS_RESTRICTED_JSON=$sys_restricted_json OBJECT_JSON=$object_json \
+SYS_BOUNDARY_JSON=$sys_boundary_json SYS_C930024T_JSON=$sys_c930024t_json SYS_C930024P_JSON=$sys_c930024p_json \
+SYS_C9300_FAMILY_JSON=$sys_c9300_family_json SYS_CISCO_IDENTIFIER_JSON=$sys_cisco_identifier_json \
+SYS_CISCO_UNKNOWN_JSON=$sys_cisco_unknown_json DATA_RELEASE_JSON=$data_release_json \
+IDENTITY_JSON=$identity_json IDENTITY_CONFLICT_JSON=$identity_conflict_json OBJECT_JSON=$object_json \
 DEPENDENCIES_JSON=$dependencies_json MODULE_JSON=$module_json SOURCE_JSON=$source_json \
 BATCH_JSON=$batch_json OPENAPI_JSON=$openapi_json \
 python3 - <<'PY'
 import json
 import os
 
+release_document = json.loads(os.environ["DATA_RELEASE_JSON"])
+publication = release_document["identity_publication"]
+disabled_sources = set(publication["disabled_sources"])
+
+def identity_result(name):
+    document = json.loads(os.environ[name])
+    assert document["identity_release"] == publication["identity_release"]
+    assert document["identity_publication"] == publication
+    result = document["result"]
+    assert result["identity_release"] == publication["identity_release"]
+    assert result["identity_release_sha256"] == publication["identity_release_sha256"]
+    assert result["identity_view"] == publication["identity_view"]
+    assert result["publication_control"] == publication
+    return result
+
 enterprise = json.loads(os.environ["ENTERPRISE_JSON"])["enterprise"]
 assert enterprise["number"] == 8072 and enterprise["organization"] == "net-snmp"
 assert "email" not in enterprise and "contact" not in enterprise
 
-exact = json.loads(os.environ["SYS_EXACT_JSON"])["result"]
-assert exact["status"] == "resolved" and exact["match"]["platform"] == "Linux"
-assert exact["match"]["model"] is None
+exact = identity_result("SYS_EXACT_JSON")
+if "net-snmp" not in disabled_sources:
+    assert exact["status"] == "resolved" and exact["match"]["platform"] == "Linux"
+    assert exact["match"]["model"] is None
+else:
+    assert exact["status"] == "enterprise_only" and exact["match"] is None
 
-sigscale = json.loads(os.environ["SYS_SIGSCALE_JSON"])["result"]
-assert sigscale["status"] == "resolved"
-assert sigscale["match"]["product_family"] == "SigScale OCS"
-assert sigscale["match"]["claim_strength"] == "platform"
-assert sigscale["match"]["model"] is None
+sigscale = identity_result("SYS_SIGSCALE_JSON")
+if "sigscale-mibs" not in disabled_sources:
+    assert sigscale["status"] == "resolved"
+    assert sigscale["match"]["product_family"] == "SigScale OCS"
+    assert sigscale["match"]["claim_strength"] == "platform"
+    assert sigscale["match"]["model"] is None
+else:
+    assert sigscale["status"] == "enterprise_only" and sigscale["match"] is None
 
-boundary = json.loads(os.environ["SYS_BOUNDARY_JSON"])["result"]
+boundary = identity_result("SYS_BOUNDARY_JSON")
 assert boundary["status"] == "enterprise_only" and boundary["match"] is None
 
-restricted = json.loads(os.environ["SYS_RESTRICTED_JSON"])["result"]
-assert restricted["status"] == "unavailable_due_to_rights"
-assert restricted["rights"]["api_output"] == "denied" and restricted["match"] is None
+c930024t = identity_result("SYS_C930024T_JSON")
+c930024p = identity_result("SYS_C930024P_JSON")
+c9300_family = identity_result("SYS_C9300_FAMILY_JSON")
+cisco_identifier = identity_result("SYS_CISCO_IDENTIFIER_JSON")
+cisco_unknown = identity_result("SYS_CISCO_UNKNOWN_JSON")
+assert cisco_unknown["status"] == "enterprise_only" and cisco_unknown["identity_status"] == "vendor_only"
+assert cisco_unknown["enterprise_number"] == 9 and cisco_unknown["organization_key"] == "Q173395"
+
+identity_document = json.loads(os.environ["IDENTITY_JSON"])
+conflict_document = json.loads(os.environ["IDENTITY_CONFLICT_JSON"])
+for document in (identity_document, conflict_document):
+    assert document["identity_release"] == publication["identity_release"]
+    assert document["identity_publication"] == publication
+    assessment_result = document["assessment"]
+    assert assessment_result["identity_release"] == publication["identity_release"]
+    assert assessment_result["identity_release_sha256"] == publication["identity_release_sha256"]
+    assert assessment_result["identity_view"] == publication["identity_view"]
+    assert assessment_result["publication_control"] == publication
+
+if "cisco-products" not in disabled_sources:
+    assert c930024t["status"] == "resolved" and c930024t["identity_status"] == "exact_model"
+    assert c930024t["enterprise_number"] == 9 and c930024t["organization_key"] == "Q173395"
+    assert c930024t["match"]["model"] == "C9300-24T" and c930024t["match"]["product_family"] == "Catalyst 9300"
+    assert c930024p["match"]["model"] == "C9300-24P" and c930024p["match"]["model"] != c930024t["match"]["model"]
+    assert c9300_family["identity_status"] == "product_family" and c9300_family["match"]["model"] is None
+    assert c9300_family["match"]["product_family"] == "Catalyst 9300"
+    assert cisco_identifier["identity_status"] == "vendor_identifier"
+    assert cisco_identifier["match"]["mib_identifier"] == "cisco3000"
+    assert cisco_identifier["match"]["model"] is None and cisco_identifier["match"]["product_family"] is None
+
+    assessment = identity_document["assessment"]
+    assert assessment["identity_status"] == "exact_model" and assessment["model"] == "C9300-48P"
+    assert assessment["enterprise_number"] == 9 and assessment["organization_key"] == "Q173395"
+    has_c9300_corroboration = any(item.get("type") == "project-fixture-corroboration" and item.get("corroborates_reported_model") is True for item in assessment["evidence"])
+    assert has_c9300_corroboration is ("librenms-project-tests" not in disabled_sources)
+
+    conflict = conflict_document["assessment"]
+    assert conflict["status"] == "ambiguous" and conflict["identity_status"] == "conflicting_evidence"
+    assert conflict["model"] is None and conflict["organization_key"] is None
+else:
+    for result in (c930024t, c930024p, c9300_family, cisco_identifier):
+        assert result["status"] == "enterprise_only" and result["match"] is None
+    for assessment in (identity_document["assessment"], conflict_document["assessment"]):
+        assert assessment["status"] == "vendor_only" and assessment["identity_status"] == "vendor_only"
+        assert assessment["enterprise_number"] == 9
+        assert assessment["model"] is None and assessment["product_family"] is None
 
 obj = json.loads(os.environ["OBJECT_JSON"])["object"]
 assert obj["syntax"]["enums"]["1"] == "up"
@@ -220,6 +375,7 @@ assert batch[0]["instance_suffix"] == [7] and batch[1]["status"] == "invalid"
 
 specification = json.loads(os.environ["OPENAPI_JSON"])
 assert specification["x-mibvendor-status"] == "public-alpha"
+assert "/v1/device-identities:assess" in specification["paths"]
 PY
 
 http_redirect=$(status_and_location "http://mibvendor.io/healthz")

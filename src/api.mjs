@@ -4,11 +4,16 @@ import {
   DATA_RELEASE,
   DIRECTORY_ONLY_SOURCE_COUNT,
   ENTERPRISE_COUNT,
+  IDENTITY_PUBLICATION_STATE,
+  IDENTITY_RELEASE,
+  IDENTITY_SOURCES,
+  IDENTITY_STATISTICS,
   IANA_PEN_SOURCE,
   MIB_MODULE_COUNT,
   PUBLIC_CORPUS_STATISTICS,
   REDISTRIBUTABLE_MODULE_COUNT,
   SYS_OBJECT_ID_COUNT,
+  assessDeviceIdentity,
   findObject,
   findModule,
   findSource,
@@ -26,10 +31,14 @@ import {
 } from "./intelligence.mjs";
 import { createTar } from "./tar.mjs";
 
-export { DATA_RELEASE } from "./intelligence.mjs";
+export { DATA_RELEASE, IDENTITY_PUBLICATION_STATE, IDENTITY_RELEASE, IDENTITY_SOURCES, IDENTITY_STATISTICS } from "./intelligence.mjs";
 export const MAX_BATCH_SIZE = 1_000;
 export const MAX_BODY_BYTES = 64 * 1024;
+export const MAX_IDENTITY_BODY_BYTES = 16 * 1024;
 export const MAX_OID_LENGTH = 512;
+export const MAX_IDENTITY_MODEL_LENGTH = 256;
+export const MAX_IDENTITY_SYS_DESCR_LENGTH = 2_048;
+export const MAX_IDENTITY_RESULTS = 32;
 export const MAX_OBJECT_ID_LENGTH = 512;
 export const MAX_QUERY_LENGTH = 200;
 export const RATE_LIMIT = 120;
@@ -38,6 +47,13 @@ export const MAX_MODULE_PAGE_SIZE = 100;
 export const MAX_NAVIGATION_CHILDREN = 100;
 export const MAX_NAVIGATION_DEPTH = 4;
 export const MAX_NAVIGATION_SUBTREE_NODES = 250;
+const CORS_EXPOSE_HEADERS = "Content-Disposition, ETag, Link, RateLimit-Limit, RateLimit-Remaining, RateLimit-Reset, Retry-After, X-Content-SHA256, X-MIB-SHA256";
+const normalizedRateLimitClients = new WeakMap();
+
+export function setNormalizedRateLimitClient(request, client) {
+  if (typeof client !== "string" || client.length === 0 || client.length > 128) throw new TypeError("Normalized rate-limit client must be a bounded string");
+  normalizedRateLimitClients.set(request, client);
+}
 
 function strongEtag(payload) {
   return `"sha256-${createHash("sha256").update(payload).digest("base64url")}"`;
@@ -60,6 +76,7 @@ function writeJson(request, response, status, body, headers = {}) {
     "content-type": status >= 400 ? "application/problem+json" : "application/json",
     "cache-control": cacheable ? "public, max-age=300, must-revalidate" : "no-store",
     "access-control-allow-origin": "*",
+    "access-control-expose-headers": CORS_EXPOSE_HEADERS,
     "x-content-type-options": "nosniff",
     ...headers
   };
@@ -77,16 +94,16 @@ function writeJson(request, response, status, body, headers = {}) {
   response.end(payload);
 }
 
-function problem(request, response, status, type, title, detail) {
-  writeJson(request, response, status, { type, title, status, detail }, { "cache-control": "no-store" });
+function problem(request, response, status, type, title, detail, headers = {}) {
+  writeJson(request, response, status, { type, title, status, detail }, { "cache-control": "no-store", ...headers });
 }
 
-async function readJson(request) {
+async function readJson(request, maxBytes = MAX_BODY_BYTES) {
   const chunks = [];
   let size = 0;
   for await (const chunk of request) {
     size += chunk.length;
-    if (size > MAX_BODY_BYTES) throw new RangeError("Request body is too large");
+    if (size > maxBytes) throw new RangeError("Request body is too large");
     chunks.push(chunk);
   }
   return JSON.parse(Buffer.concat(chunks).toString("utf8"));
@@ -95,7 +112,7 @@ async function readJson(request) {
 function createRateLimiter() {
   const windows = new Map();
   let requestCount = 0;
-  return (request, response) => {
+  return (request, response, weight = 1) => {
     requestCount += 1;
     if (requestCount % 1_000 === 0) {
       const now = Date.now();
@@ -103,14 +120,14 @@ function createRateLimiter() {
         if (value.resetAt <= now) windows.delete(key);
       }
     }
-    const key = request.headers["x-real-ip"] ?? request.socket.remoteAddress ?? "unknown";
+    const key = normalizedRateLimitClients.get(request) ?? `peer:${request.socket.remoteAddress ?? "unknown"}`;
     const now = Date.now();
     let window = windows.get(key);
     if (!window || window.resetAt <= now) {
       window = { count: 0, resetAt: now + RATE_WINDOW_SECONDS * 1_000 };
       windows.set(key, window);
     }
-    window.count += 1;
+    window.count += weight;
     const remaining = Math.max(0, RATE_LIMIT - window.count);
     const headers = {
       "ratelimit-limit": String(RATE_LIMIT),
@@ -120,9 +137,72 @@ function createRateLimiter() {
     for (const [name, value] of Object.entries(headers)) response.setHeader(name, value);
     if (window.count <= RATE_LIMIT) return true;
     response.setHeader("retry-after", String(Math.ceil((window.resetAt - now) / 1_000)));
-    problem(request, response, 429, "https://mibvendor.io/problems/rate-limit-exceeded", "Rate limit exceeded", `Public alpha limit is ${RATE_LIMIT} requests per ${RATE_WINDOW_SECONDS} seconds per client`);
+    problem(request, response, 429, "https://mibvendor.io/problems/rate-limit-exceeded", "Rate limit exceeded", `Public alpha limit is ${RATE_LIMIT} fair-use units per ${RATE_WINDOW_SECONDS} seconds per client`);
     return false;
   };
+}
+
+function isJsonContentType(request) {
+  const header = request.headers["content-type"];
+  if (Array.isArray(header)) return false;
+  return typeof header === "string" && header.split(";", 1)[0].trim().toLowerCase() === "application/json";
+}
+
+function isRecord(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function hasOnlyKeys(value, allowed) {
+  return Object.keys(value).every((key) => allowed.has(key));
+}
+
+function isOidSignal(value) {
+  if (typeof value !== "string" || value.length === 0 || value.length > MAX_OID_LENGTH || !/^\.?\d+(?:\.\d+)+$/.test(value)) return false;
+  return value.replace(/^\./, "").split(".").every((arc) => BigInt(arc) <= 0xffffffffn);
+}
+
+function validateIdentityRequest(body) {
+  if (!isRecord(body) || !hasOnlyKeys(body, new Set(["data_release", "identity_release", "signals"]))) {
+    return "Body must be an object containing only data_release, identity_release, and signals";
+  }
+  if (!isRecord(body.signals) || !hasOnlyKeys(body.signals, new Set([
+    "sys_object_id",
+    "ent_physical_vendor_type",
+    "ent_physical_model_name",
+    "sys_descr"
+  ]))) {
+    return "signals must be an object containing only supported identity signals";
+  }
+  const entries = Object.entries(body.signals);
+  if (entries.length === 0) return "At least one identity signal is required";
+  for (const [name, value] of entries) {
+    if (name === "sys_object_id" || name === "ent_physical_vendor_type") {
+      if (!isOidSignal(value)) return `${name} must be a dot-separated numeric OID of at most ${MAX_OID_LENGTH} characters`;
+      continue;
+    }
+    const maximum = name === "sys_descr" ? MAX_IDENTITY_SYS_DESCR_LENGTH : MAX_IDENTITY_MODEL_LENGTH;
+    if (typeof value !== "string" || value.trim().length === 0 || value.length > maximum) {
+      return `${name} must be a non-empty string of at most ${maximum} characters`;
+    }
+  }
+  return null;
+}
+
+function stripRawSignalFields(value) {
+  if (Array.isArray(value)) return value.map(stripRawSignalFields);
+  if (!isRecord(value)) return value;
+  return Object.fromEntries(Object.entries(value)
+    .filter(([key]) => !["signals", "sys_descr", "sysDescr"].includes(key))
+    .map(([key, item]) => [key, stripRawSignalFields(item)]));
+}
+
+function boundedIdentityAssessment(assessment) {
+  if (!isRecord(assessment)) return assessment;
+  const publicAssessment = stripRawSignalFields(assessment);
+  for (const field of ["candidates", "conflicts"]) {
+    if (Array.isArray(publicAssessment[field])) publicAssessment[field] = publicAssessment[field].slice(0, MAX_IDENTITY_RESULTS);
+  }
+  return publicAssessment;
 }
 
 export function createApiHandler() {
@@ -133,17 +213,23 @@ export function createApiHandler() {
         "access-control-allow-origin": "*",
         "access-control-allow-methods": "GET, POST, OPTIONS",
         "access-control-allow-headers": "content-type",
+        "access-control-expose-headers": CORS_EXPOSE_HEADERS,
         "access-control-max-age": "86400"
       });
       response.end();
       return true;
     }
     if (!url.pathname.startsWith("/v1/")) return false;
-    if (!allowRequest(request, response)) return true;
+    const requestWeight = request.method === "POST" && url.pathname === "/v1/device-identities:assess" ? 4 : 1;
+    if (!allowRequest(request, response, requestWeight)) return true;
 
     if (request.method === "GET" && url.pathname === "/v1/data-release") {
       writeJson(request, response, 200, {
         data_release: DATA_RELEASE,
+        identity_release: IDENTITY_RELEASE,
+        identity_publication: IDENTITY_PUBLICATION_STATE,
+        identity_statistics: IDENTITY_STATISTICS,
+        identity_sources: IDENTITY_SOURCES,
         status: "public-alpha",
         production_data: true,
         statistics: PUBLIC_CORPUS_STATISTICS,
@@ -154,7 +240,50 @@ export function createApiHandler() {
         redistributable_module_count: REDISTRIBUTABLE_MODULE_COUNT,
         directory_only_source_count: DIRECTORY_ONLY_SOURCE_COUNT,
         enterprise_registry: IANA_PEN_SOURCE
-      });
+      }, { "cache-control": "no-cache" });
+      return true;
+    }
+
+    if (url.pathname === "/v1/device-identities:assess" && request.method !== "POST") {
+      problem(request, response, 405, "https://mibvendor.io/problems/method-not-allowed", "Method not allowed", "Use POST with an application/json request body", { allow: "POST, OPTIONS" });
+      return true;
+    }
+
+    if (request.method === "POST" && url.pathname === "/v1/device-identities:assess") {
+      if (!isJsonContentType(request)) {
+        problem(request, response, 415, "https://mibvendor.io/problems/unsupported-media-type", "Unsupported media type", "Content-Type must be application/json");
+        return true;
+      }
+      let body;
+      try {
+        body = await readJson(request, MAX_IDENTITY_BODY_BYTES);
+      } catch (error) {
+        if (error instanceof RangeError) {
+          problem(request, response, 413, "https://mibvendor.io/problems/body-too-large", "Body too large", `Request body exceeds ${MAX_IDENTITY_BODY_BYTES} bytes`);
+        } else {
+          problem(request, response, 400, "https://mibvendor.io/problems/invalid-json", "Invalid JSON", "Request body must be valid JSON");
+        }
+        return true;
+      }
+      const validationError = validateIdentityRequest(body);
+      if (validationError) {
+        problem(request, response, 422, "https://mibvendor.io/problems/invalid-identity-assessment", "Invalid identity assessment", validationError);
+        return true;
+      }
+      if (body.data_release !== undefined && body.data_release !== DATA_RELEASE) {
+        problem(request, response, 409, "https://mibvendor.io/problems/data-release-unavailable", "Data release unavailable", "This public alpha exposes only its active immutable MIB data release");
+        return true;
+      }
+      if (body.identity_release !== undefined && body.identity_release !== IDENTITY_RELEASE) {
+        problem(request, response, 409, "https://mibvendor.io/problems/identity-release-unavailable", "Identity release unavailable", "This public alpha exposes only its active immutable identity release");
+        return true;
+      }
+      try {
+        const assessment = boundedIdentityAssessment(assessDeviceIdentity(body.signals));
+        writeJson(request, response, 200, { data_release: DATA_RELEASE, identity_release: IDENTITY_RELEASE, identity_publication: IDENTITY_PUBLICATION_STATE, assessment });
+      } catch {
+        problem(request, response, 500, "https://mibvendor.io/problems/internal-error", "Internal error", "The identity assessment could not be completed");
+      }
       return true;
     }
 
@@ -290,6 +419,7 @@ export function createApiHandler() {
         "content-disposition": `attachment; filename="${module.id}-${DATA_RELEASE}.tar"`,
         "cache-control": "no-cache",
         "access-control-allow-origin": "*",
+        "access-control-expose-headers": CORS_EXPOSE_HEADERS,
         "x-content-type-options": "nosniff",
         "x-content-sha256": archiveSha256,
         "x-mib-sha256": module.artifact_sha256,
@@ -359,7 +489,7 @@ export function createApiHandler() {
         problem(request, response, 422, "https://mibvendor.io/problems/invalid-oid", "Invalid OID", "Use a dot-separated numeric OID");
         return true;
       }
-      writeJson(request, response, 200, { data_release: DATA_RELEASE, result });
+      writeJson(request, response, 200, { data_release: DATA_RELEASE, identity_release: IDENTITY_RELEASE, identity_publication: IDENTITY_PUBLICATION_STATE, result }, { "cache-control": "no-cache" });
       return true;
     }
 

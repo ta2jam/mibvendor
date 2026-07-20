@@ -44,6 +44,7 @@ for (const required of [
   "docs/decisions/0007-fail-closed-mib-publication.md",
   "docs/decisions/0008-license-signal-publication-policy.md",
   "docs/decisions/0009-permanently-free-api.md",
+  "docs/DEVICE-IDENTITY.md",
   "contracts/source-snapshot.schema.json",
   "contracts/canonical-module.schema.json",
   "contracts/data-release.schema.json",
@@ -81,6 +82,16 @@ for (const required of [
   "data/source-discovery-registry.json",
   "data/source-discovery.json",
   "data/publication-controls.json",
+  "data/device-identities/vendor-mib-sources.json",
+  "data/device-identities/vendor-mib.json",
+  "data/device-identities/project-fixtures-manifest.json",
+  "data/device-identities/project-fixtures.json",
+  "data/device-identities/release.json",
+  "data/device-identities/runtime-index.json",
+  "data/device-identities/publication-controls.json",
+  "data/device-identities/licenses/SNMP-INFO-LICENSE",
+  "data/device-identities/licenses/librenms/LICENSE.txt",
+  "data/device-identities/licenses/librenms/README.md",
   "data/license-derived-intake.json",
   "data/compiled-mib-intake.json",
   "data/compiled-mib-objects-staging.json",
@@ -108,6 +119,11 @@ for (const required of [
   "scripts/update-compiled-mib-fidelity.mjs",
   "scripts/validate-compiled-mib-fidelity.mjs",
   "scripts/validate-legacy-rfc-review.mjs",
+  "scripts/update-device-identities.mjs",
+  "scripts/update-device-identity-runtime-index.mjs",
+  "scripts/validate-device-identities.mjs",
+  "scripts/update-project-identity-fixtures.mjs",
+  "scripts/validate-project-identity-fixtures.mjs",
   "scripts/update-iana-pen.mjs",
   "src/publication-controls.mjs",
   "THIRD_PARTY_NOTICES.md"
@@ -165,6 +181,7 @@ for (const requiredMonitorBoundary of [
   "./scripts/resolve-production-commit.sh",
   "git checkout --quiet --detach \"$EXPECTED_COMMIT\"",
   "data/mib-catalog.json",
+  "data/device-identities/release.json",
   "./scripts/verify-production.sh"
 ]) {
   if (!productionMonitor.includes(requiredMonitorBoundary)) {
@@ -241,7 +258,8 @@ for (const requiredHealthBoundary of [
   "127.0.0.1:3001",
   "com.docker.compose.project=mibvendor",
   "MIBVENDOR_DISK_LIMIT_PERCENT",
-  "EXPECTED_DATA_RELEASE"
+  "EXPECTED_DATA_RELEASE",
+  "EXPECTED_IDENTITY_RELEASE"
 ]) {
   if (!hostHealth.includes(requiredHealthBoundary)) failures.push(`Host health check is missing boundary: ${requiredHealthBoundary}`);
 }
@@ -286,6 +304,7 @@ for (const requiredProxyBoundary of [
 for (const requiredRuntimeBoundary of [
   "127.0.0.1:3001:8080",
   "DATA_RELEASE: ${DATA_RELEASE:?DATA_RELEASE is required}",
+  "IDENTITY_RELEASE: ${IDENTITY_RELEASE:?IDENTITY_RELEASE is required}",
   "read_only: true",
   "no-new-privileges:true",
   "pids: 64",

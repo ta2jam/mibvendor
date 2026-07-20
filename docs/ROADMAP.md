@@ -31,8 +31,14 @@ batch resolution. The active `license-signaled-2026-07-20.2` slice exposes 702
 manifest-bound raw modules, 76,606 searchable catalog OID nodes, 4,138 textual
 conventions, 1,273 notifications, file/source checksums, four publication
 modes, and fail-closed source decisions across 32 source records. This is
-validation infrastructure, not evidence that Phases 1–4, broad model identity,
-or the Phase 0 external-demand gates are complete.
+joined by the separate `device-identity-2026-07-20.1` release: 6,199 exact
+vendor-MIB OID assignments across ten families, split into 36 reviewed exact
+device models, 1,491 product-family/category assignments, and 4,672 generic
+vendor identifiers. Nineteen platform mappings and 713 observation-only OIDs
+used as corroboration remain separate. The identity release digest and
+revisioned publication-control view expose source kill-switch changes. This is
+validation infrastructure, not evidence that Phases 1–4 or the Phase 0
+external-demand gates are complete.
 
 ## Phase 1 — public foundation
 

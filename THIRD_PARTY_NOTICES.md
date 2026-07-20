@@ -44,6 +44,40 @@ treated as Net-SNMP-authored modules and are excluded from this source class.
 These mappings identify an agent platform declared by an exact OID. They do not
 identify a hardware model, prove device ownership, or authenticate the device.
 
+## Device-identity metadata and project observations
+
+The `device-identity-2026-07-20.1` snapshot contains normalized factual OID
+assignments from the LibreNMS repository at commit
+`dfba713a2ffd39c2b6619cccdec016e04a06a027`. LibreNMS identifies the repository
+as GPL-3.0-or-later; the pinned `LICENSE.txt` and `README.md` checksums are
+recorded in `data/device-identities/vendor-mib-sources.json`. The complete GPL
+version 3 text and the accompanying upstream repository notice are retained at
+[`data/device-identities/licenses/librenms/LICENSE.txt`](data/device-identities/licenses/librenms/LICENSE.txt)
+and
+[`data/device-identities/licenses/librenms/README.md`](data/device-identities/licenses/librenms/README.md).
+
+Vendor-artifact restrictions take precedence over that repository signal. This
+identity layer therefore publishes only numeric assignments, source symbols,
+36 reviewed device-model normalizations, conservative family/category
+classification, generic vendor identifiers, source URLs, revisions, and
+checksums. A generic identifier may refer to a chassis, module, line card, or
+component; it is not a model claim. This layer contains no raw vendor MIB bytes
+or descriptions and grants no right to obtain or redistribute those source
+artifacts.
+
+Sanitized project-observation metadata also derives from LibreNMS test fixtures
+at the same pinned commit and SNMP::Info test fixtures at commit
+`613d360b629d58d1a7de90e07c14b62e3a40748f`. The exact SNMP::Info BSD-3-Clause
+license and disclaimer are retained in
+[`data/device-identities/licenses/SNMP-INFO-LICENSE`](data/device-identities/licenses/SNMP-INFO-LICENSE).
+
+The normalized project layer excludes raw fixtures, walks, serial numbers,
+hostnames, contact/location fields, addresses, credentials, and raw
+`sysDescr`. Its model values are observations usable only for corroboration,
+not universal product claims. Exact pinned license evidence and input checksums
+are recorded in
+`data/device-identities/project-fixtures-manifest.json`.
+
 ## Repository-license-derived MIB collections
 
 The following collections are published under mibvendor's repository-license

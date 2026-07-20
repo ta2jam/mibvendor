@@ -131,9 +131,16 @@ Acceptance criteria:
 - copied vendor descriptions are not smuggled through an open-source project
   license.
 
+Current evidence: the immutable candidate normalizes 1,023 sanitized LibreNMS
+and SNMP::Info observations over 713 exact OIDs, retains 72 conflicting OIDs,
+and preserves source revision/license provenance without raw fixtures or vendor
+descriptions. Exact, signature, and registry methods remain distinct. This item
+stays open because no reviewed prefix-mapping adapter or broader project-adapter
+set yet satisfies the full inventory contract.
+
 ### DATA-05 — Evidence-backed model identity engine
 
-Status: `in-progress`
+Status: `complete`
 
 Correlate exact `sysObjectID`, chassis `ENTITY-MIB` fields, vendor model OIDs,
 `sysDescr` signatures, enterprise assignment, and capability evidence. The
@@ -148,6 +155,15 @@ Acceptance criteria:
 - every model claim exposes method, claim strength, confidence, evidence, and
   firmware limitation;
 - device-provided values can be evaluated locally without storing a raw walk.
+
+Verification: deterministic engine/API tests cover positive, negative,
+neighbor-SKU, family, generic vendor-identifier, platform, cross-vendor, and
+conflicting Catalyst 9300 cases. Only 36 reviewed normalizations assert an
+exact model; 1,491 mappings stop at family/category and 4,672 generic vendor
+identifiers assert neither model nor family. Every public candidate retains
+match type, claim scope, confidence, source evidence, and the explicit absence
+of firmware/authenticity proof. The pure engine accepts only bounded individual
+signals and does not require or retain a raw walk.
 
 ### DATA-06 — Community identity contribution workflow
 
@@ -321,13 +337,25 @@ Accept `sysObjectID`, `sysDescr`, `entPhysicalModelName`,
 `entPhysicalVendorType`, and local numeric walk fragments. Present exact model,
 reason, evidence, alternatives, conflicts, firmware scope, and confidence.
 
+Current evidence: the responsive workbench submits only four bounded fields,
+renders model/family/vendor-identifier/platform/vendor/conflict/unknown states,
+separates evidence layers, exposes confidence and source links, and passed local
+desktop/mobile browser flows. It remains open because walk-fragment handoff and
+an explicit firmware-scope field are not implemented.
+
 ### UI-07 — Identity conflict and uncertainty presentation
 
-Status: `planned`
+Status: `in-progress`
 
 Show competing mappings side by side with source revision, date, match method,
 and evidence. Never silently convert a prefix, signature, or PEN into an exact
 model.
+
+Current evidence: competing candidates and material conflict types render
+without selecting a singular model; PEN-only, signature, family, and generic
+vendor-identifier outcomes remain weaker than exact model. It remains open
+until each competing row carries its own source revision/date and the complete
+browser interaction matrix is recorded against production.
 
 ### UI-08 — Operational object detail
 
@@ -407,11 +435,16 @@ tag, CI, VPS deployment, and live release identity are reconciled.
 
 ### v0.4.0-alpha.1 — Device identity
 
-Status: `planned`
+Status: `in-progress`
 
-One result: evidence-backed model identity works end to end. Target at least
-1,000 exact mappings across at least ten vendor families, including positive,
-negative, and conflict-tested Catalyst 9300 identification.
+One result: evidence-backed model identity works end to end without converting
+generic MIB symbols into device-model claims. The candidate contains 6,199
+exact vendor OID assignments across ten vendor families, including 36 reviewed
+exact device-model normalizations, 1,491 family/category assignments, 4,672
+generic vendor identifiers, and positive, negative, and conflict-tested
+Catalyst 9300 identification. It remains in progress until the immutable tag,
+CI, VPS deployment, public API/UI smoke, production monitor, and release
+identity are reconciled.
 
 ### v0.5.0-alpha.1 — Browse at scale
 
@@ -538,10 +571,10 @@ with no billing code.
 - Completed DATA-13 with the no-paid-tier ADR and public contract, bounded
   requests, cursor pagination, strong ETags and conditional responses,
   immutable release identifiers, and fair-use language. API documentation has
-  copyable curl, JavaScript, and Python examples, but UI-15 remains
-  `in-progress` until real success-response and cursor-pagination examples, a
-  dedicated service-status link, and full documented interaction checks are
-  complete.
+  copyable curl, JavaScript, and Python examples, a real same-origin success
+  response, cursor continuation, and service health/status links. UI-15 remains
+  `in-progress` until the expanded identity contract and complete interaction
+  matrix are verified against the deployed v0.4 release.
 - Completed UI-01 with safe deep routes for search, object, module, enterprise,
   `sysObjectID`, and release views plus canonical URLs and browser history.
   UI-04 and UI-05 remain `in-progress`: the routable module/object views and
@@ -554,3 +587,21 @@ with no billing code.
   deployment, public release-identity checks, and an isolated 640 MiB cgroup
   preflight. Device/model identity scale and Phase 0 external-demand evidence
   remain open; no corpus count closes either gate.
+
+### 2026-07-20 — v0.4 device-identity candidate
+
+- Completed DATA-05 with an immutable, source-bound identity release, 36 narrow
+  reviewed model normalizations, deterministic Catalyst 9300 positive/negative/
+  conflict gates, direct PEN and reviewed organization keys, and bounded
+  multi-signal assessment.
+- Classified all 6,199 vendor OID assignments without count inflation: 1,491
+  stop at product family/category and 4,672 remain generic vendor identifiers.
+  The 713 observation OIDs are a separate corroboration layer; they never
+  become universal mappings.
+- Added a release-manifest SHA-256 and a separate publication-control revision,
+  digest, source kill switch, and derived `identity_view`. Tests prove a
+  disabled source removes its claims instead of creating a replacement.
+- Added the responsive workbench and API contract with `vendor_identifier` as a
+  first-class weaker state, four-unit assessment cost, bounded inputs/results,
+  `no-store` responses, and raw-signal non-echo rules. Local desktop/mobile
+  browser flows passed; production evidence is deliberately not claimed yet.

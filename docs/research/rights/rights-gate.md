@@ -100,14 +100,20 @@ Yalnız `v5.9.5.2` etiketinin `319bbd0bb36547992c0e1302fef278c6f49d0c80` commit'
 ## Tier uygulaması
 
 - **A:** Tam kamu içeriği. Beş kapsam da `approved`: `metadata_index`, `rendered_text`, `api_output`, `raw_download`, `bulk_export`.
-- **B:** Yalnız kamu metadata'sı. `metadata_index` açıkça `approved` olmalı; diğer kapsamlar kamuya verilmez. Şu an kaynak yok.
+- **B:** Yalnız kamu metadata'sı. `metadata_index` ve kullanılan API alanları
+  açıkça `approved` olmalı; diğer kapsamlar kamuya verilmez. ADR 0008 uyarınca
+  sabitlenmiş tanınmış repository lisans sinyali yayın izni sayılabilir, fakat
+  artifact'a özgü kısıt ham dosya, açıklama ve rendered text'i kapatır.
 - **Q:** Kamu çıktısı olmayan araştırma/QA adayı. Q, indirme veya otomasyon izni değildir; kaynak ToS ve erişim koşulları ayrıca uygulanır.
 - **P:** Kullanıcının kendi yetkili kaynağından getirdiği MIB/walk verisinin yerel işlenmesi. Varsayılan tasarım: tarayıcı/CLI içinde parse, sunucuya ham dosya gönderme yok, saklama yok, kamu korpusuna merge yok.
 
 API/UI yayın modları tier'ların daha açık çalışma zamanı karşılığıdır:
 
 - `redistributable`: A; ham dosya dahil yalnız onaylı scope'lar.
-- `metadata-only`: B; yalnız ayrı ayrı onaylanmış alanlar. Şu an vendor kaynağı yok.
+- `metadata-only`: B; yalnız ayrı ayrı onaylanmış alanlar. Aktif kimlik
+  release'i, sabitlenmiş LibreNMS lisans sinyali üzerinden on vendor-MIB ailesi
+  için yalnız sayısal OID, sembol/model kimliği, kaynak URL'si, revision ve
+  checksum alanlarını yayınlar; ham MIB ve açıklama yayınlamaz.
 - `directory-only`: kaynak adı, resmi URL ve rights state; içerikten çıkarılmış alan yok.
 - `quarantine`: ingest edilen veya aday içeriğin hiçbir kamu çıktısı yok.
 
@@ -118,7 +124,9 @@ API/UI yayın modları tier'ların daha açık çalışma zamanı karşılığı
 3. Bazı kaynaklar cihaz, müşteri hesabı veya destek entitlement'ı gerektiriyor. Mibvendor bu erişimi otomatikleştirmemeli, kimlik bilgisi toplamamalı ve portal crawl etmemeli.
 4. Vendor paketleri standart MIB'leri de içerebilir. Paketin indirilebilir olması içindeki IETF/IANA içeriğin provenance'ını değiştirmez; her dosya gerçek upstream kaynağa ayrıştırılmalıdır.
 5. Kaynak ToS ve dosya başlıkları değişebilir. Her release `checked_at`, indirilen URL, SHA-256, notice özeti ve rights kararını immutable olarak saklamalı; hak süresi/koşulu değişen kaynak otomatik aktive edilmemelidir.
-6. “OID bir olgudur” gerekçesi Tier B için yeterli değildir. Metadata yeniden dağıtımı ayrıca onaylanmadan public index'e girmez.
+6. “OID bir olgudur” gerekçesi tek başına Tier B için yeterli değildir.
+   Metadata, yalnız ADR 0008'in sabitlenmiş lisans sinyali ve artifact önceliği
+   kurallarını geçtiğinde public index'e girer.
 
 ## İzin taleplerinin sırası
 

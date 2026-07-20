@@ -9,7 +9,10 @@ services:
         APP_VERSION: ${APP_VERSION:?APP_VERSION is required}
         VCS_REF: ${VCS_REF:?VCS_REF is required}
         DATA_RELEASE: ${DATA_RELEASE:?DATA_RELEASE is required}
+        IDENTITY_RELEASE: ${IDENTITY_RELEASE:?IDENTITY_RELEASE is required}
     restart: unless-stopped
+    environment:
+      TRUST_PROXY_HEADERS: "1"
     init: true
     user: "101:101"
     ports:

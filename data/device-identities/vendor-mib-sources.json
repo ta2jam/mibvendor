@@ -1,0 +1,355 @@
+{
+  "schema_version": 1,
+  "snapshot_id": "librenms-vendor-mib-identity-dfba713a-2026-07-20",
+  "snapshot_date": "2026-07-20",
+  "policy": {
+    "layer": "vendor-mib-factual-metadata",
+    "publication_mode": "metadata-only",
+    "raw_distribution": "denied",
+    "descriptions_included": false,
+    "scope": "Only OBJECT IDENTIFIER assignments reachable from a manually reviewed, source-explicit sysObjectID root are eligible.",
+    "exact_key_boundary": "An exact OID key is not automatically an exact-model claim. Internal nodes and generic, family, stack, platform, or unknown symbols remain product-family claims.",
+    "exact_model_auto_rule": "No generic source symbol is promoted automatically. Exact-device-model claims require an explicit reviewed normalization or exact-model allowlist entry; other leaf assignments remain object identifiers.",
+    "exact_model_symbol_allowlist": [],
+    "product_family_symbol_allowlist": [
+      "ciscoAGSplus"
+    ],
+    "normalization_rule_ids": [
+      "reviewed-source-symbol-model-v1",
+      "cisco-catalyst-9300-sku-v1"
+    ],
+    "family_symbol_markers": [
+      "appliance",
+      "chassis",
+      "device",
+      "family",
+      "generic",
+      "group",
+      "module",
+      "other",
+      "platform",
+      "product",
+      "reserved",
+      "root",
+      "router",
+      "series",
+      "server",
+      "stack",
+      "switch",
+      "unknown",
+      "unspecified"
+    ]
+  },
+  "source_repository": {
+    "id": "librenms",
+    "repository_url": "https://github.com/librenms/librenms",
+    "commit": "dfba713a2ffd39c2b6619cccdec016e04a06a027",
+    "local_path": ".local/identity-sources/librenms",
+    "license_signal": {
+      "spdx": "GPL-3.0-or-later",
+      "basis": "pinned-repository-license-and-readme-declaration",
+      "files": [
+        {
+          "path": "LICENSE.txt",
+          "git_blob_oid": "a621ae1be05c9a1a05da2a19fe5028256f55e110",
+          "sha256": "67c255477940ba46460c0e6774401897e99ef9e1f82fb08d6a9b7680f39dd038",
+          "url": "https://github.com/librenms/librenms/blob/dfba713a2ffd39c2b6619cccdec016e04a06a027/LICENSE.txt"
+        },
+        {
+          "path": "README.md",
+          "git_blob_oid": "c798b821a3201918712add1e41523ad73f992e49",
+          "sha256": "83c5e62a686a95f178a00c2bfbd25a7cdc4a0b2880ebfda250fb72e70e0d2ae3",
+          "url": "https://github.com/librenms/librenms/blob/dfba713a2ffd39c2b6619cccdec016e04a06a027/README.md"
+        }
+      ]
+    }
+  },
+  "enterprise_registry": {
+    "path": "data/iana-private-enterprise-numbers.json",
+    "document_sha256": "d1691f2f74385bf918870517d11102a1c5dcf43af953e16833fe5c8b1ddb7f90",
+    "document_canonical_sha256": "2a3cae3e94343cb7ae17a33bc32e545c455a44c05dd802662ec6eff9c1f3f5e1",
+    "source_url": "https://www.iana.org/assignments/enterprise-numbers/enterprise-numbers",
+    "source_sha256": "aca0fe8748ed2d6b9c8f159cd3cc672387e47d6df2bdd21d5a139341fad7eda8"
+  },
+  "organization_link_snapshot": {
+    "repository_url": "https://github.com/ta2jam/macvendor",
+    "commit": "5c8f80158dc2642eb44cd0567a1b800caa245e26",
+    "path": "config/organization-identity-mappings.json",
+    "git_blob_oid": "55dfc786fa27a8831d71a038d5adb005df155f70",
+    "sha256": "78f39ee42e046d9acb0af509aaf959e88f79be81ac024d0ba9588350a09fc755",
+    "links": [
+      {
+        "pen": 9,
+        "organization_key": "Q173395"
+      }
+    ],
+    "unlinked_policy": "null; never synthesize an organization key from a PEN"
+  },
+  "adapters": [
+    {
+      "id": "cisco-products",
+      "vendor": "Cisco Systems",
+      "enterprise_number": 9,
+      "root_symbol": "ciscoProducts",
+      "root_oid": "1.3.6.1.4.1.9.1",
+      "definition_artifact": {
+        "path": "mibs/cisco/CISCO-PRODUCTS-MIB",
+        "git_blob_oid": "bf83401d3ee8fa81deb743a9877644c58a97eb1e",
+        "sha256": "620d20c5371d93e7aed67015cf5a2caead8dcf8ee745b2b0b7319884d114826e",
+        "sys_object_id_evidence_line": 39,
+        "artifact_rights": "restrictive-notice",
+        "notice_line": 7
+      },
+      "root_artifact": {
+        "path": "mibs/cisco/CISCO-SMI",
+        "git_blob_oid": "3c5de6528692a3565984b2ed41503a9068250026",
+        "sha256": "3ea80f8160af50ba77e7309b7f95b4b6edb3ddc57dbe67eb0ee18ae1b56fd332",
+        "root_declaration_line": 77
+      },
+      "official_source": {
+        "status": "official-source-reference-not-byte-verified-by-build",
+        "repository_url": "https://github.com/cisco/cisco-mibs",
+        "commit": "a6d437d881221957d46b66078d0444d3a3ceba2a",
+        "path": "v2/CISCO-PRODUCTS-MIB.my",
+        "url": "https://github.com/cisco/cisco-mibs/blob/a6d437d881221957d46b66078d0444d3a3ceba2a/v2/CISCO-PRODUCTS-MIB.my",
+        "sha256": "afd244ce2d62218c445456e539ff6a26f43f7ae89d4bef2dedcf405f3ec3f5e6",
+        "note": "The official pinned artifact is a different revision from the LibreNMS mirror. This build records the reference and checksum but does not use it as measured corroboration."
+      }
+    },
+    {
+      "id": "3com-products",
+      "vendor": "3Com",
+      "enterprise_number": 43,
+      "root_symbol": "products",
+      "root_oid": "1.3.6.1.4.1.43.1",
+      "definition_artifact": {
+        "path": "mibs/3com/A3Com-products-MIB",
+        "git_blob_oid": "1388ad10c432ee41ebde8441b5c1ce8351b6d9e4",
+        "sha256": "f8abf49b875386f8572e71b4fde9bda3e2525625e64f0a62f101ca0a79e075d1",
+        "sys_object_id_evidence_line": 8,
+        "artifact_rights": "copyright-no-redistribution-grant",
+        "notice_line": 2
+      },
+      "root_artifact": {
+        "path": "mibs/3com/A3Com-products-MIB",
+        "git_blob_oid": "1388ad10c432ee41ebde8441b5c1ce8351b6d9e4",
+        "sha256": "f8abf49b875386f8572e71b4fde9bda3e2525625e64f0a62f101ca0a79e075d1",
+        "root_declaration_line": 760
+      },
+      "official_source": {
+        "status": "not-reviewed",
+        "url": null,
+        "reason": "No immutable official artifact was verified for this snapshot."
+      }
+    },
+    {
+      "id": "brocade-foundry-products",
+      "vendor": "Brocade / Foundry",
+      "enterprise_number": 1991,
+      "root_symbol": "registration",
+      "root_oid": "1.3.6.1.4.1.1991.1.3",
+      "definition_artifact": {
+        "path": "mibs/brocade/FOUNDRY-SN-ROOT-MIB",
+        "git_blob_oid": "03b2ca04e1e61385736fd80762865069e741d184",
+        "sha256": "5d22b62861d3ee8220f1e13791f87689c9e454a6bbe5ad7fb1ba3ba9a1831c14",
+        "sys_object_id_evidence_line": 83,
+        "artifact_rights": "restrictive-notice",
+        "notice_line": 23
+      },
+      "root_artifact": {
+        "path": "mibs/brocade/FOUNDRY-SN-ROOT-MIB",
+        "git_blob_oid": "03b2ca04e1e61385736fd80762865069e741d184",
+        "sha256": "5d22b62861d3ee8220f1e13791f87689c9e454a6bbe5ad7fb1ba3ba9a1831c14",
+        "root_declaration_line": 83
+      },
+      "official_source": {
+        "status": "not-reviewed",
+        "url": null,
+        "reason": "No immutable official artifact was verified for this snapshot."
+      }
+    },
+    {
+      "id": "patton-smartnode-products",
+      "vendor": "Patton Electronics",
+      "enterprise_number": 1768,
+      "root_symbol": "products",
+      "root_oid": "1.3.6.1.4.1.1768.100.4",
+      "definition_artifact": {
+        "path": "mibs/patton/SMARTNODE-MIB",
+        "git_blob_oid": "47a957f1229c8a7bf6be8e66911cae7088e6a770",
+        "sha256": "68c0d9c02f92e6bb798179c468459a42d8d744988a7d4dbb6f9496b89f45f2ff",
+        "sys_object_id_evidence_line": 340,
+        "artifact_rights": "restrictive-notice",
+        "notice_line": 5
+      },
+      "root_artifact": {
+        "path": "mibs/patton/SMARTNODE-MIB",
+        "git_blob_oid": "47a957f1229c8a7bf6be8e66911cae7088e6a770",
+        "sha256": "68c0d9c02f92e6bb798179c468459a42d8d744988a7d4dbb6f9496b89f45f2ff",
+        "root_declaration_line": 69
+      },
+      "official_source": {
+        "status": "not-reviewed",
+        "url": null,
+        "reason": "No immutable official artifact was verified for this snapshot."
+      }
+    },
+    {
+      "id": "dasan-products",
+      "vendor": "DASAN",
+      "enterprise_number": 6296,
+      "root_symbol": "dasanProducts",
+      "root_oid": "1.3.6.1.4.1.6296.1",
+      "definition_artifact": {
+        "path": "mibs/dasan/DASAN-PRODUCTS-MIB",
+        "git_blob_oid": "73f9582d2238bd7dc8beca6298eb985cd41dbed5",
+        "sha256": "25a52addfa4bafb56f3efa61f5b1b4f32dead1b4018e2f43bab3363802e3fa20",
+        "sys_object_id_evidence_line": 132,
+        "artifact_rights": "restrictive-notice",
+        "notice_line": 8
+      },
+      "root_artifact": {
+        "path": "mibs/dasan/DASAN-SMI",
+        "git_blob_oid": "8a94454c00b626344c743660b89c41022064676e",
+        "sha256": "93033cb3e73d970385eecb201acd8b7f569713e81a23e3b02f465828f6fdab68",
+        "root_declaration_line": 41
+      },
+      "official_source": {
+        "status": "not-reviewed",
+        "url": null,
+        "reason": "No immutable official artifact was verified for this snapshot."
+      }
+    },
+    {
+      "id": "ciena-wwp-products",
+      "vendor": "Ciena / World Wide Packets",
+      "enterprise_number": 6141,
+      "root_symbol": "wwpProducts",
+      "root_oid": "1.3.6.1.4.1.6141.1",
+      "definition_artifact": {
+        "path": "mibs/ciena/WWP-PRODUCTS-MIB",
+        "git_blob_oid": "b21d555453f1f1564bbf1f237ce303a12b084b53",
+        "sha256": "3f8feba3bab05f916c48743e12ab4954a6a5a9541688e42d415d4116366da1a1",
+        "sys_object_id_evidence_line": 255,
+        "artifact_rights": "no-redistribution-grant-found",
+        "notice_line": null
+      },
+      "root_artifact": {
+        "path": "mibs/ciena/WWP-SMI",
+        "git_blob_oid": "80bf0580567596be219c63e04ababab0656ceabd",
+        "sha256": "25b2c5954ed0d00239ebcf8dd6a94e9ba45f1a90c29ea1a3693d2cec14ffe37d",
+        "root_declaration_line": 38
+      },
+      "official_source": {
+        "status": "not-reviewed",
+        "url": null,
+        "reason": "No immutable official artifact was verified for this snapshot."
+      }
+    },
+    {
+      "id": "silverpeak-products",
+      "vendor": "Silver Peak Systems",
+      "enterprise_number": 23867,
+      "root_symbol": "silverpeakProductsMIB",
+      "root_oid": "1.3.6.1.4.1.23867.1.2",
+      "definition_artifact": {
+        "path": "mibs/silverpeak/SILVERPEAK-PRODUCTS-MIB",
+        "git_blob_oid": "0ac1ed145c013803888346270cdb55490332ffdd",
+        "sha256": "5c7626126d0d278a5f494d612620a7df3c7c2590c89170d074b9d7fd4108b9ed",
+        "sys_object_id_evidence_line": 29,
+        "artifact_rights": "restrictive-notice",
+        "notice_line": 5
+      },
+      "root_artifact": {
+        "path": "mibs/silverpeak/SILVERPEAK-PRODUCTS-MIB",
+        "git_blob_oid": "0ac1ed145c013803888346270cdb55490332ffdd",
+        "sha256": "5c7626126d0d278a5f494d612620a7df3c7c2590c89170d074b9d7fd4108b9ed",
+        "root_declaration_line": 20
+      },
+      "official_source": {
+        "status": "not-reviewed",
+        "url": null,
+        "reason": "No immutable official artifact was verified for this snapshot."
+      }
+    },
+    {
+      "id": "netscreen-products",
+      "vendor": "NetScreen / Juniper Networks",
+      "enterprise_number": 3224,
+      "root_symbol": "netscreenProducts",
+      "root_oid": "1.3.6.1.4.1.3224.1",
+      "definition_artifact": {
+        "path": "mibs/screenos/NETSCREEN-PRODUCTS-MIB",
+        "git_blob_oid": "66ecd3320ddc498d1c226a612fbab6f1f636212f",
+        "sha256": "c2f2254d55c8a5461cc9111d9606db8a57d13c20bb2c02dd1d97b037b8440521",
+        "sys_object_id_evidence_line": 30,
+        "artifact_rights": "restrictive-notice",
+        "notice_line": 1
+      },
+      "root_artifact": {
+        "path": "mibs/screenos/NETSCREEN-SMI",
+        "git_blob_oid": "7b17d9aec9dfaa5f68b299017880c1ef4bb21c72",
+        "sha256": "205aebb43651da19c0a2bd809b986f42b0770f7e61b19b00b4767063218ca7a8",
+        "root_declaration_line": 51
+      },
+      "official_source": {
+        "status": "not-reviewed",
+        "url": null,
+        "reason": "No immutable official artifact was verified for this snapshot."
+      }
+    },
+    {
+      "id": "colubris-products",
+      "vendor": "Colubris Networks",
+      "enterprise_number": 8744,
+      "root_symbol": "colubrisProducts",
+      "root_oid": "1.3.6.1.4.1.8744.1",
+      "definition_artifact": {
+        "path": "mibs/hpmsm/COLUBRIS-PRODUCTS-MIB",
+        "git_blob_oid": "cb254c7e57f60385fd85dd50a378d5e6b248f987",
+        "sha256": "d9b6769849cc45d117a5465b5b6827eac99c12ec5ba76f8e2e1c823482a77100",
+        "sys_object_id_evidence_line": 39,
+        "artifact_rights": "restrictive-notice",
+        "notice_line": 4
+      },
+      "root_artifact": {
+        "path": "mibs/hpmsm/COLUBRIS-SMI",
+        "git_blob_oid": "e23c8af9d372b5e77570acaa2d333f0afac09415",
+        "sha256": "745ff9903e0c257cc288241f94a1b0f6a79ce308c30b37e977bcabae9687bc87",
+        "root_declaration_line": 37
+      },
+      "official_source": {
+        "status": "not-reviewed",
+        "url": null,
+        "reason": "No immutable official artifact was verified for this snapshot."
+      }
+    },
+    {
+      "id": "vmware-products",
+      "vendor": "VMware",
+      "enterprise_number": 6876,
+      "root_symbol": "vmwProductSpecific",
+      "root_oid": "1.3.6.1.4.1.6876.4",
+      "force_claim_strength": "product_family",
+      "definition_artifact": {
+        "path": "mibs/vmware/VMWARE-PRODUCTS-MIB",
+        "git_blob_oid": "b19af36f250070999ab49fb695a48867825881da",
+        "sha256": "dc9b8523346d74d4640ed2ac3d9f5220d43cbeee9ce1087188e28c0fe3af99d5",
+        "sys_object_id_evidence_line": 26,
+        "artifact_rights": "restrictive-notice",
+        "notice_line": 2
+      },
+      "root_artifact": {
+        "path": "mibs/vmware/VMWARE-ROOT-MIB",
+        "git_blob_oid": "344297ee25c42c8559e1415f8c16fc2b58fe567d",
+        "sha256": "d174380126778f84f3c2f5d0145e02f05c4ea7b7de33cd9ad4f1063374daa48f",
+        "root_declaration_line": 84
+      },
+      "official_source": {
+        "status": "not-reviewed",
+        "url": null,
+        "reason": "No immutable official artifact was verified for this snapshot."
+      }
+    }
+  ]
+}
