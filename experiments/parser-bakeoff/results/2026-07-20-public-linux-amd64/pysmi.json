@@ -1,0 +1,4198 @@
+{
+  "candidate": "pysmi",
+  "cases": [
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "augments": true,
+        "imports": true,
+        "revision": true,
+        "table-index": true
+      },
+      "id": "compatibility-edge-df7ab2edb944",
+      "module": "IPFIX-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "4d28a73bdda8b93af276b5c46e278a2995b205c0c1c25c79fe471d1216b72794",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 43320,
+            "returncode": 0,
+            "system_cpu_seconds": 0.046978,
+            "timed_out": false,
+            "user_cpu_seconds": 0.665698,
+            "wall_seconds": 0.713126
+          },
+          "normalized_sha256": "4d28a73bdda8b93af276b5c46e278a2995b205c0c1c25c79fe471d1216b72794",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 43648,
+            "returncode": 0,
+            "system_cpu_seconds": 0.042968,
+            "timed_out": false,
+            "user_cpu_seconds": 0.648513,
+            "wall_seconds": 0.691939
+          },
+          "normalized_sha256": "4d28a73bdda8b93af276b5c46e278a2995b205c0c1c25c79fe471d1216b72794",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "compatibility-edge-7ee1e98fc255",
+      "module": "UCD-SNMP-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "3c7506516671c9ade7f4b25aecad812740cc445f23b5405af3ed331fa2867fec",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 43648,
+            "returncode": 0,
+            "system_cpu_seconds": 0.027017,
+            "timed_out": false,
+            "user_cpu_seconds": 0.552342,
+            "wall_seconds": 0.579778
+          },
+          "normalized_sha256": "3c7506516671c9ade7f4b25aecad812740cc445f23b5405af3ed331fa2867fec",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 43668,
+            "returncode": 0,
+            "system_cpu_seconds": 0.03297,
+            "timed_out": false,
+            "user_cpu_seconds": 0.548506,
+            "wall_seconds": 0.581916
+          },
+          "normalized_sha256": "3c7506516671c9ade7f4b25aecad812740cc445f23b5405af3ed331fa2867fec",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 1202,
+      "diagnostic_sha256": "9987c4135891dc854624ed4c6ed178adf409c8326cdd42054085f2655501446c",
+      "feature_checks": {
+        "imports": false,
+        "table-index": false
+      },
+      "id": "compatibility-edge-635c2c26ca7c",
+      "module": "NET-SNMP-PASS-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 43668,
+            "returncode": 79,
+            "system_cpu_seconds": 0.034006,
+            "timed_out": false,
+            "user_cpu_seconds": 0.488084,
+            "wall_seconds": 0.522526
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "success": false
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 43668,
+            "returncode": 79,
+            "system_cpu_seconds": 0.032927,
+            "timed_out": false,
+            "user_cpu_seconds": 0.48593,
+            "wall_seconds": 0.519292
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "success": false
+        }
+      ],
+      "success": false,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "compatibility-edge-3e8db9f7bb22",
+      "module": "VM-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "bd69fc4f8e7d3086edddbd4333ecc56bf9de70f645c1d385062636ef1f8daa79",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 43668,
+            "returncode": 0,
+            "system_cpu_seconds": 0.040997,
+            "timed_out": false,
+            "user_cpu_seconds": 0.61995,
+            "wall_seconds": 0.661457
+          },
+          "normalized_sha256": "bd69fc4f8e7d3086edddbd4333ecc56bf9de70f645c1d385062636ef1f8daa79",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 43668,
+            "returncode": 0,
+            "system_cpu_seconds": 0.043968,
+            "timed_out": false,
+            "user_cpu_seconds": 0.617547,
+            "wall_seconds": 0.661994
+          },
+          "normalized_sha256": "bd69fc4f8e7d3086edddbd4333ecc56bf9de70f645c1d385062636ef1f8daa79",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "compatibility-edge-028439714ce4",
+      "module": "NET-SNMP-AGENT-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "06f5769cd6fb79db18635711af1ca341e15631aaa165168d720e87ba50827d28",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 43668,
+            "returncode": 0,
+            "system_cpu_seconds": 0.023994,
+            "timed_out": false,
+            "user_cpu_seconds": 0.544875,
+            "wall_seconds": 0.56932
+          },
+          "normalized_sha256": "06f5769cd6fb79db18635711af1ca341e15631aaa165168d720e87ba50827d28",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 43668,
+            "returncode": 0,
+            "system_cpu_seconds": 0.03798,
+            "timed_out": false,
+            "user_cpu_seconds": 0.530712,
+            "wall_seconds": 0.56926
+          },
+          "normalized_sha256": "06f5769cd6fb79db18635711af1ca341e15631aaa165168d720e87ba50827d28",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "augments": true,
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "compatibility-edge-d337410228d2",
+      "module": "FORTINET-FORTIGATE-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "8e1723a524423926319d6019c4a4c61c7ddd27023dfeefa00661a1c325ac540c",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 45592,
+            "returncode": 0,
+            "system_cpu_seconds": 0.04699,
+            "timed_out": false,
+            "user_cpu_seconds": 0.821837,
+            "wall_seconds": 0.869379
+          },
+          "normalized_sha256": "8e1723a524423926319d6019c4a4c61c7ddd27023dfeefa00661a1c325ac540c",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 45592,
+            "returncode": 0,
+            "system_cpu_seconds": 0.051958,
+            "timed_out": false,
+            "user_cpu_seconds": 0.812344,
+            "wall_seconds": 0.864766
+          },
+          "normalized_sha256": "8e1723a524423926319d6019c4a4c61c7ddd27023dfeefa00661a1c325ac540c",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "table-index": true,
+        "textual-convention": false
+      },
+      "id": "compatibility-edge-16c9212599d4",
+      "module": "CISCO-UNIFIED-COMPUTING-AAA-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "a48866a1a92a317cc717f54a64c22a461adb53653d9324c370f0cc3b15f782bf",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90772,
+            "returncode": 0,
+            "system_cpu_seconds": 0.065988,
+            "timed_out": false,
+            "user_cpu_seconds": 2.268558,
+            "wall_seconds": 2.335318
+          },
+          "normalized_sha256": "a48866a1a92a317cc717f54a64c22a461adb53653d9324c370f0cc3b15f782bf",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.060985,
+            "timed_out": false,
+            "user_cpu_seconds": 2.292462,
+            "wall_seconds": 2.354138
+          },
+          "normalized_sha256": "a48866a1a92a317cc717f54a64c22a461adb53653d9324c370f0cc3b15f782bf",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "table-index": true,
+        "textual-convention": false
+      },
+      "id": "compatibility-edge-aca45a054843",
+      "module": "CISCO-UNIFIED-COMPUTING-EPQOS-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "e25ffd51f8d4cddfdb9875f2cd0cde43f683f0c9e4d439f3ae87e346dc2fb354",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.052002,
+            "timed_out": false,
+            "user_cpu_seconds": 2.157088,
+            "wall_seconds": 2.209649
+          },
+          "normalized_sha256": "e25ffd51f8d4cddfdb9875f2cd0cde43f683f0c9e4d439f3ae87e346dc2fb354",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.059981,
+            "timed_out": false,
+            "user_cpu_seconds": 2.166295,
+            "wall_seconds": 2.226946
+          },
+          "normalized_sha256": "e25ffd51f8d4cddfdb9875f2cd0cde43f683f0c9e4d439f3ae87e346dc2fb354",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "table-index": true,
+        "textual-convention": false
+      },
+      "id": "compatibility-edge-b42f482a7edb",
+      "module": "CISCO-UNIFIED-COMPUTING-FSM-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "fc65e1667c959975808ea6ba0082cb6581f8905bb48e329c096aaf72bbd2227f",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.053973,
+            "timed_out": false,
+            "user_cpu_seconds": 2.138942,
+            "wall_seconds": 2.19359
+          },
+          "normalized_sha256": "fc65e1667c959975808ea6ba0082cb6581f8905bb48e329c096aaf72bbd2227f",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.065982,
+            "timed_out": false,
+            "user_cpu_seconds": 2.121425,
+            "wall_seconds": 2.188054
+          },
+          "normalized_sha256": "fc65e1667c959975808ea6ba0082cb6581f8905bb48e329c096aaf72bbd2227f",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "table-index": true,
+        "textual-convention": false
+      },
+      "id": "compatibility-edge-992a9d929e5f",
+      "module": "CISCO-UNIFIED-COMPUTING-PROC-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "c6082c5709663a9979c514b81e97411f3694f18475324d45249d5f1fd38819a0",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.060995,
+            "timed_out": false,
+            "user_cpu_seconds": 2.175805,
+            "wall_seconds": 2.237467
+          },
+          "normalized_sha256": "c6082c5709663a9979c514b81e97411f3694f18475324d45249d5f1fd38819a0",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.073962,
+            "timed_out": false,
+            "user_cpu_seconds": 2.142912,
+            "wall_seconds": 2.217518
+          },
+          "normalized_sha256": "c6082c5709663a9979c514b81e97411f3694f18475324d45249d5f1fd38819a0",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "table-index": true
+      },
+      "id": "compatibility-edge-a031ad485ebe",
+      "module": "CTRON-SFPS-CALL-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "0fac15fe5d8744c3acee20426519a9cccf6efed17294a3d77c71d735fba6de49",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.036033,
+            "timed_out": false,
+            "user_cpu_seconds": 0.597539,
+            "wall_seconds": 0.634088
+          },
+          "normalized_sha256": "0fac15fe5d8744c3acee20426519a9cccf6efed17294a3d77c71d735fba6de49",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.04302,
+            "timed_out": false,
+            "user_cpu_seconds": 0.584282,
+            "wall_seconds": 0.627737
+          },
+          "normalized_sha256": "0fac15fe5d8744c3acee20426519a9cccf6efed17294a3d77c71d735fba6de49",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "table-index": true
+      },
+      "id": "compatibility-edge-360ac32e9935",
+      "module": "CTRON-SFPS-TOPOLOGY-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "2e35de7a33c450fbd275941f38ca9e0a54101bf7a72e779c49ccf4c2d7821c27",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.039025,
+            "timed_out": false,
+            "user_cpu_seconds": 0.648407,
+            "wall_seconds": 0.68791
+          },
+          "normalized_sha256": "2e35de7a33c450fbd275941f38ca9e0a54101bf7a72e779c49ccf4c2d7821c27",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.035971,
+            "timed_out": false,
+            "user_cpu_seconds": 0.659466,
+            "wall_seconds": 0.695971
+          },
+          "normalized_sha256": "2e35de7a33c450fbd275941f38ca9e0a54101bf7a72e779c49ccf4c2d7821c27",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "table-index": true,
+        "trap-type-v1": true
+      },
+      "id": "compatibility-edge-e06656e657ee",
+      "module": "IPX",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "84f5da68af35496526cc0fdf8d6515db376b0351a93d961f008b6077238eea90",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.039936,
+            "timed_out": false,
+            "user_cpu_seconds": 0.58506,
+            "wall_seconds": 0.625441
+          },
+          "normalized_sha256": "84f5da68af35496526cc0fdf8d6515db376b0351a93d961f008b6077238eea90",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.03599,
+            "timed_out": false,
+            "user_cpu_seconds": 0.589837,
+            "wall_seconds": 0.626294
+          },
+          "normalized_sha256": "84f5da68af35496526cc0fdf8d6515db376b0351a93d961f008b6077238eea90",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "table-index": true,
+        "trap-type-v1": true
+      },
+      "id": "compatibility-edge-903d8376163b",
+      "module": "CT-ELS10-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "73344a01247ad6120bcf872c8ee5b46f202c9bf83f65fd4ef68da301a0c180f4",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.036009,
+            "timed_out": false,
+            "user_cpu_seconds": 0.7442,
+            "wall_seconds": 0.780687
+          },
+          "normalized_sha256": "73344a01247ad6120bcf872c8ee5b46f202c9bf83f65fd4ef68da301a0c180f4",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.047963,
+            "timed_out": false,
+            "user_cpu_seconds": 0.738427,
+            "wall_seconds": 0.786899
+          },
+          "normalized_sha256": "73344a01247ad6120bcf872c8ee5b46f202c9bf83f65fd4ef68da301a0c180f4",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "table-index": true
+      },
+      "id": "compatibility-edge-0b66fabbea5a",
+      "module": "ELH100-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "135913589764b96994d5c58a6ab9dfb538a77e7efbeded4035eac646e23e8727",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.033975,
+            "timed_out": false,
+            "user_cpu_seconds": 0.581573,
+            "wall_seconds": 0.615955
+          },
+          "normalized_sha256": "135913589764b96994d5c58a6ab9dfb538a77e7efbeded4035eac646e23e8727",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.026978,
+            "timed_out": false,
+            "user_cpu_seconds": 0.58651,
+            "wall_seconds": 0.614079
+          },
+          "normalized_sha256": "135913589764b96994d5c58a6ab9dfb538a77e7efbeded4035eac646e23e8727",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "table-index": true
+      },
+      "id": "compatibility-edge-1f71ec4221e2",
+      "module": "CTELS100-NG-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "c8c6f9cb9c23e043b4c5465318c6d5f9ebe510f25be78e5abb868037fc4a6122",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.049979,
+            "timed_out": false,
+            "user_cpu_seconds": 0.551772,
+            "wall_seconds": 0.602239
+          },
+          "normalized_sha256": "c8c6f9cb9c23e043b4c5465318c6d5f9ebe510f25be78e5abb868037fc4a6122",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.033005,
+            "timed_out": false,
+            "user_cpu_seconds": 0.569094,
+            "wall_seconds": 0.602571
+          },
+          "normalized_sha256": "c8c6f9cb9c23e043b4c5465318c6d5f9ebe510f25be78e5abb868037fc4a6122",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "table-index": true
+      },
+      "id": "compatibility-edge-10f6442caf2a",
+      "module": "RIPSAP",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "43e0af1ce385643d0edc7f5df35f74bdba5765671b143b8be9a69476d78db957",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.037983,
+            "timed_out": false,
+            "user_cpu_seconds": 0.564734,
+            "wall_seconds": 0.60315
+          },
+          "normalized_sha256": "43e0af1ce385643d0edc7f5df35f74bdba5765671b143b8be9a69476d78db957",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.036993,
+            "timed_out": false,
+            "user_cpu_seconds": 0.558905,
+            "wall_seconds": 0.59637
+          },
+          "normalized_sha256": "43e0af1ce385643d0edc7f5df35f74bdba5765671b143b8be9a69476d78db957",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "trap-type-v1": false
+      },
+      "id": "compatibility-edge-5d332cc234ef",
+      "module": "ZEBRA-QL-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "f3250b04f5bc40f29473ae2044afeb698636c0543aa320127ca56555c9d344c7",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.039989,
+            "timed_out": false,
+            "user_cpu_seconds": 0.608825,
+            "wall_seconds": 0.649252
+          },
+          "normalized_sha256": "f3250b04f5bc40f29473ae2044afeb698636c0543aa320127ca56555c9d344c7",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.023997,
+            "timed_out": false,
+            "user_cpu_seconds": 0.623923,
+            "wall_seconds": 0.648428
+          },
+          "normalized_sha256": "f3250b04f5bc40f29473ae2044afeb698636c0543aa320127ca56555c9d344c7",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "table-index": true
+      },
+      "id": "compatibility-edge-4b37df8de9a4",
+      "module": "RFC1381-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "3f3ff88048c0d637a7a0704d9f84444681c4555347eefc76e75512b5483d81a3",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.035961,
+            "timed_out": false,
+            "user_cpu_seconds": 0.57138,
+            "wall_seconds": 0.607786
+          },
+          "normalized_sha256": "3f3ff88048c0d637a7a0704d9f84444681c4555347eefc76e75512b5483d81a3",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.032989,
+            "timed_out": false,
+            "user_cpu_seconds": 0.571808,
+            "wall_seconds": 0.605292
+          },
+          "normalized_sha256": "3f3ff88048c0d637a7a0704d9f84444681c4555347eefc76e75512b5483d81a3",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "table-index": true
+      },
+      "id": "compatibility-edge-493e3cf6fa1a",
+      "module": "CTRON-SFPS-ESYS-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "6199040bed963cb1b8bbdae5a1c4455c79f300623c28899d29cf2a0b09587d48",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.032975,
+            "timed_out": false,
+            "user_cpu_seconds": 0.61554,
+            "wall_seconds": 0.648966
+          },
+          "normalized_sha256": "6199040bed963cb1b8bbdae5a1c4455c79f300623c28899d29cf2a0b09587d48",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.039,
+            "timed_out": false,
+            "user_cpu_seconds": 0.607994,
+            "wall_seconds": 0.647441
+          },
+          "normalized_sha256": "6199040bed963cb1b8bbdae5a1c4455c79f300623c28899d29cf2a0b09587d48",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "standards-origin-5305bb53ebe2",
+      "module": "ENTITY-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "cebfe0762072f1de7720c0fc22ca40ba07313d50199ad55f88b46d42c1dc03f2",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.042923,
+            "timed_out": false,
+            "user_cpu_seconds": 0.544023,
+            "wall_seconds": 0.587466
+          },
+          "normalized_sha256": "cebfe0762072f1de7720c0fc22ca40ba07313d50199ad55f88b46d42c1dc03f2",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.032964,
+            "timed_out": false,
+            "user_cpu_seconds": 0.551397,
+            "wall_seconds": 0.584818
+          },
+          "normalized_sha256": "cebfe0762072f1de7720c0fc22ca40ba07313d50199ad55f88b46d42c1dc03f2",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "standards-origin-67931d9566f5",
+      "module": "PTPBASE-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "d2664aefb10b29b1e8023978a98edff8364dc552012f3e676c22dd28d8af1409",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.029998,
+            "timed_out": false,
+            "user_cpu_seconds": 0.637968,
+            "wall_seconds": 0.668407
+          },
+          "normalized_sha256": "d2664aefb10b29b1e8023978a98edff8364dc552012f3e676c22dd28d8af1409",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.041943,
+            "timed_out": false,
+            "user_cpu_seconds": 0.627153,
+            "wall_seconds": 0.66972
+          },
+          "normalized_sha256": "d2664aefb10b29b1e8023978a98edff8364dc552012f3e676c22dd28d8af1409",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true
+      },
+      "id": "standards-origin-c6a90922d1ab",
+      "module": "VPLS-LDP-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "bb9170e8fa9ecf707401996946ab9b8c55fdbcc3f5bb60a5942d7cfad0086948",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.051994,
+            "timed_out": false,
+            "user_cpu_seconds": 0.69292,
+            "wall_seconds": 0.745338
+          },
+          "normalized_sha256": "bb9170e8fa9ecf707401996946ab9b8c55fdbcc3f5bb60a5942d7cfad0086948",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.059992,
+            "timed_out": false,
+            "user_cpu_seconds": 0.688897,
+            "wall_seconds": 0.74934
+          },
+          "normalized_sha256": "bb9170e8fa9ecf707401996946ab9b8c55fdbcc3f5bb60a5942d7cfad0086948",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": false
+      },
+      "id": "standards-origin-b484c6887ce4",
+      "module": "NET-SNMP-VACM-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "77169e13e03fcf9d50958f73a290aabe8eb0b170bdb160a204450fe4b522a0fd",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.036019,
+            "timed_out": false,
+            "user_cpu_seconds": 0.545293,
+            "wall_seconds": 0.581784
+          },
+          "normalized_sha256": "77169e13e03fcf9d50958f73a290aabe8eb0b170bdb160a204450fe4b522a0fd",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.033001,
+            "timed_out": false,
+            "user_cpu_seconds": 0.546012,
+            "wall_seconds": 0.579447
+          },
+          "normalized_sha256": "77169e13e03fcf9d50958f73a290aabe8eb0b170bdb160a204450fe4b522a0fd",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true
+      },
+      "id": "standards-origin-ebb99136429f",
+      "module": "NET-SNMP-EXAMPLES-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "360923c029471edf175dd63760c54a2c1883bb5f9c5dde0422d69cff6ca49bf5",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.027981,
+            "timed_out": false,
+            "user_cpu_seconds": 0.545634,
+            "wall_seconds": 0.574061
+          },
+          "normalized_sha256": "360923c029471edf175dd63760c54a2c1883bb5f9c5dde0422d69cff6ca49bf5",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.041033,
+            "timed_out": false,
+            "user_cpu_seconds": 0.532434,
+            "wall_seconds": 0.573969
+          },
+          "normalized_sha256": "360923c029471edf175dd63760c54a2c1883bb5f9c5dde0422d69cff6ca49bf5",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "standards-origin-080ee9e01438",
+      "module": "G9982-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "e9dd35e2542a4afc48d6c930623cdd40e7a741ba13eb4a13dafaae7ac433ca92",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.036965,
+            "timed_out": false,
+            "user_cpu_seconds": 0.62041,
+            "wall_seconds": 0.65785
+          },
+          "normalized_sha256": "e9dd35e2542a4afc48d6c930623cdd40e7a741ba13eb4a13dafaae7ac433ca92",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.041933,
+            "timed_out": false,
+            "user_cpu_seconds": 0.612016,
+            "wall_seconds": 0.654385
+          },
+          "normalized_sha256": "e9dd35e2542a4afc48d6c930623cdd40e7a741ba13eb4a13dafaae7ac433ca92",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "augments": true,
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "standards-origin-0f939a92d810",
+      "module": "MPLS-LPS-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "dd1e4d9532896e568c46dab610941821cb522b86b89dc02216ed04331ba0064e",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.03596,
+            "timed_out": false,
+            "user_cpu_seconds": 0.747179,
+            "wall_seconds": 0.78361
+          },
+          "normalized_sha256": "dd1e4d9532896e568c46dab610941821cb522b86b89dc02216ed04331ba0064e",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.041999,
+            "timed_out": false,
+            "user_cpu_seconds": 0.742975,
+            "wall_seconds": 0.785417
+          },
+          "normalized_sha256": "dd1e4d9532896e568c46dab610941821cb522b86b89dc02216ed04331ba0064e",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true
+      },
+      "id": "standards-origin-d8d4cf1274f3",
+      "module": "BATTERY-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "4dd49d51c05a914a163e7e53c4f3da075efe315c8560264ba8df47dc2732b384",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.031994,
+            "timed_out": false,
+            "user_cpu_seconds": 0.569894,
+            "wall_seconds": 0.60229
+          },
+          "normalized_sha256": "4dd49d51c05a914a163e7e53c4f3da075efe315c8560264ba8df47dc2732b384",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.048011,
+            "timed_out": false,
+            "user_cpu_seconds": 0.553125,
+            "wall_seconds": 0.601621
+          },
+          "normalized_sha256": "4dd49d51c05a914a163e7e53c4f3da075efe315c8560264ba8df47dc2732b384",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": false,
+        "revision": true
+      },
+      "id": "standards-origin-5d85781828d2",
+      "module": "NET-SNMP-SYSTEM-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "e751d3ef953d63c888fa6d8a34ef19c135d0b5ab0db57475619c3835559cfdfd",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.029991,
+            "timed_out": false,
+            "user_cpu_seconds": 0.528841,
+            "wall_seconds": 0.559421
+          },
+          "normalized_sha256": "e751d3ef953d63c888fa6d8a34ef19c135d0b5ab0db57475619c3835559cfdfd",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.031965,
+            "timed_out": false,
+            "user_cpu_seconds": 0.519435,
+            "wall_seconds": 0.551866
+          },
+          "normalized_sha256": "e751d3ef953d63c888fa6d8a34ef19c135d0b5ab0db57475619c3835559cfdfd",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true
+      },
+      "id": "standards-origin-fdc2329b9d31",
+      "module": "IANA-LANGUAGE-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "57110aa51ce3aefff778d630506e752c1895cdaf19322ac08bb18320a81882b2",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.038963,
+            "timed_out": false,
+            "user_cpu_seconds": 0.502521,
+            "wall_seconds": 0.541919
+          },
+          "normalized_sha256": "57110aa51ce3aefff778d630506e752c1895cdaf19322ac08bb18320a81882b2",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.043019,
+            "timed_out": false,
+            "user_cpu_seconds": 0.502228,
+            "wall_seconds": 0.545709
+          },
+          "normalized_sha256": "57110aa51ce3aefff778d630506e752c1895cdaf19322ac08bb18320a81882b2",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "table-index": true
+      },
+      "id": "standards-origin-d2dcd810905c",
+      "module": "IPV6-UDP-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "c1fb6762543cdc570daf74e552c5171122acc3685dce992a3ca93f7615f24528",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.034975,
+            "timed_out": false,
+            "user_cpu_seconds": 0.518619,
+            "wall_seconds": 0.554028
+          },
+          "normalized_sha256": "c1fb6762543cdc570daf74e552c5171122acc3685dce992a3ca93f7615f24528",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.040969,
+            "timed_out": false,
+            "user_cpu_seconds": 0.509622,
+            "wall_seconds": 0.551013
+          },
+          "normalized_sha256": "c1fb6762543cdc570daf74e552c5171122acc3685dce992a3ca93f7615f24528",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "augments": true,
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "standards-origin-8ba1e2691d75",
+      "module": "RPKI-ROUTER-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "c26707b757ff94cd4a7ea5ed6e15d51817364f1e13ca039b1c8badb9403a1898",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.030015,
+            "timed_out": false,
+            "user_cpu_seconds": 0.567282,
+            "wall_seconds": 0.597785
+          },
+          "normalized_sha256": "c26707b757ff94cd4a7ea5ed6e15d51817364f1e13ca039b1c8badb9403a1898",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.029955,
+            "timed_out": false,
+            "user_cpu_seconds": 0.570144,
+            "wall_seconds": 0.600545
+          },
+          "normalized_sha256": "c26707b757ff94cd4a7ea5ed6e15d51817364f1e13ca039b1c8badb9403a1898",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "standards-origin-056d547a26ba",
+      "module": "NTPv4-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "8dbc7e752d5c5d629e4a04ad2d3ef11fdef55e077f19d9f72b7f1e2a921c5cd1",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.029998,
+            "timed_out": false,
+            "user_cpu_seconds": 0.571955,
+            "wall_seconds": 0.602386
+          },
+          "normalized_sha256": "8dbc7e752d5c5d629e4a04ad2d3ef11fdef55e077f19d9f72b7f1e2a921c5cd1",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.034954,
+            "timed_out": false,
+            "user_cpu_seconds": 0.572245,
+            "wall_seconds": 0.607796
+          },
+          "normalized_sha256": "8dbc7e752d5c5d629e4a04ad2d3ef11fdef55e077f19d9f72b7f1e2a921c5cd1",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "standards-origin-64056ad295a0",
+      "module": "SMF-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "72a957074c394975c3bcfd3e2b9a29ad988d652ebe396f2f97f67017c13fe61a",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.045998,
+            "timed_out": false,
+            "user_cpu_seconds": 0.624983,
+            "wall_seconds": 0.67128
+          },
+          "normalized_sha256": "72a957074c394975c3bcfd3e2b9a29ad988d652ebe396f2f97f67017c13fe61a",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.044023,
+            "timed_out": false,
+            "user_cpu_seconds": 0.626315,
+            "wall_seconds": 0.670723
+          },
+          "normalized_sha256": "72a957074c394975c3bcfd3e2b9a29ad988d652ebe396f2f97f67017c13fe61a",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true
+      },
+      "id": "standards-origin-b0460053145e",
+      "module": "NET-SNMP-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "a189e5bc5a950c9da9a863b8363b3a12cb65c9ee861b9f3b9a67d8adbe7bc4db",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.034957,
+            "timed_out": false,
+            "user_cpu_seconds": 0.508381,
+            "wall_seconds": 0.543717
+          },
+          "normalized_sha256": "a189e5bc5a950c9da9a863b8363b3a12cb65c9ee861b9f3b9a67d8adbe7bc4db",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.032999,
+            "timed_out": false,
+            "user_cpu_seconds": 0.510981,
+            "wall_seconds": 0.544513
+          },
+          "normalized_sha256": "a189e5bc5a950c9da9a863b8363b3a12cb65c9ee861b9f3b9a67d8adbe7bc4db",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "textual-convention": true
+      },
+      "id": "standards-origin-769f38d0ae0b",
+      "module": "MPLS-TC-EXT-STD-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "347a23a9a82e7e2b90ff03dbbfbed152a1d0d6af9a0b40822864b5624108cd9b",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.03497,
+            "timed_out": false,
+            "user_cpu_seconds": 0.518556,
+            "wall_seconds": 0.553929
+          },
+          "normalized_sha256": "347a23a9a82e7e2b90ff03dbbfbed152a1d0d6af9a0b40822864b5624108cd9b",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.036947,
+            "timed_out": false,
+            "user_cpu_seconds": 0.517262,
+            "wall_seconds": 0.554606
+          },
+          "normalized_sha256": "347a23a9a82e7e2b90ff03dbbfbed152a1d0d6af9a0b40822864b5624108cd9b",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "textual-convention": true
+      },
+      "id": "standards-origin-199cb8484daf",
+      "module": "IANA-ADDRESS-FAMILY-NUMBERS-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "908015939b0631ba64ed041db5c522c499fef627e956834fa0243cf548eca082",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.030982,
+            "timed_out": false,
+            "user_cpu_seconds": 0.511706,
+            "wall_seconds": 0.543195
+          },
+          "normalized_sha256": "908015939b0631ba64ed041db5c522c499fef627e956834fa0243cf548eca082",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.036982,
+            "timed_out": false,
+            "user_cpu_seconds": 0.505755,
+            "wall_seconds": 0.543362
+          },
+          "normalized_sha256": "908015939b0631ba64ed041db5c522c499fef627e956834fa0243cf548eca082",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true
+      },
+      "id": "standards-origin-1813035ef71f",
+      "module": "IPFIX-SELECTOR-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "5ae1e56dd84c5b37df9a7c97c96b8b39fedfdba9a2253fd45acfa6e5e99f6335",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.03201,
+            "timed_out": false,
+            "user_cpu_seconds": 0.515151,
+            "wall_seconds": 0.547607
+          },
+          "normalized_sha256": "5ae1e56dd84c5b37df9a7c97c96b8b39fedfdba9a2253fd45acfa6e5e99f6335",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.029975,
+            "timed_out": false,
+            "user_cpu_seconds": 0.512572,
+            "wall_seconds": 0.542983
+          },
+          "normalized_sha256": "5ae1e56dd84c5b37df9a7c97c96b8b39fedfdba9a2253fd45acfa6e5e99f6335",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "textual-convention": true
+      },
+      "id": "standards-origin-4575d0b2a4fa",
+      "module": "IPV6-TC",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "4a24335a1e6fa7018120c8813278c9b2cc9eb6e4780ae936303b1845961ead7a",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.032994,
+            "timed_out": false,
+            "user_cpu_seconds": 0.502908,
+            "wall_seconds": 0.536498
+          },
+          "normalized_sha256": "4a24335a1e6fa7018120c8813278c9b2cc9eb6e4780ae936303b1845961ead7a",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.031039,
+            "timed_out": false,
+            "user_cpu_seconds": 0.506641,
+            "wall_seconds": 0.538278
+          },
+          "normalized_sha256": "4a24335a1e6fa7018120c8813278c9b2cc9eb6e4780ae936303b1845961ead7a",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "table-index": true
+      },
+      "id": "standards-origin-d93e1dffc9be",
+      "module": "PSAMP-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "d248168899fb753c762350193ea826adb1571b568096db8aec61e4d9852bae0e",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.042954,
+            "timed_out": false,
+            "user_cpu_seconds": 0.620338,
+            "wall_seconds": 0.663878
+          },
+          "normalized_sha256": "d248168899fb753c762350193ea826adb1571b568096db8aec61e4d9852bae0e",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.037967,
+            "timed_out": false,
+            "user_cpu_seconds": 0.623458,
+            "wall_seconds": 0.661909
+          },
+          "normalized_sha256": "d248168899fb753c762350193ea826adb1571b568096db8aec61e4d9852bae0e",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "augments": true,
+        "imports": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "textual-convention-8594bb4b8571",
+      "module": "PNNI-MOB-EXT-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "e7307c2a46e3385d8316f612aebf919e92efaed86d601cbe35b8f0fe7559b654",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.034983,
+            "timed_out": false,
+            "user_cpu_seconds": 0.724647,
+            "wall_seconds": 0.76009
+          },
+          "normalized_sha256": "e7307c2a46e3385d8316f612aebf919e92efaed86d601cbe35b8f0fe7559b654",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.047017,
+            "timed_out": false,
+            "user_cpu_seconds": 0.712263,
+            "wall_seconds": 0.75976
+          },
+          "normalized_sha256": "e7307c2a46e3385d8316f612aebf919e92efaed86d601cbe35b8f0fe7559b654",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "textual-convention-0b4d3ac7afc0",
+      "module": "BEGEMOT-SNMPD-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "5b84c5812adb5f5bdfb9486759e87afb6004c32990a723fcdba0a8cc5bf963c2",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.030985,
+            "timed_out": false,
+            "user_cpu_seconds": 0.52474,
+            "wall_seconds": 0.556168
+          },
+          "normalized_sha256": "5b84c5812adb5f5bdfb9486759e87afb6004c32990a723fcdba0a8cc5bf963c2",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.039989,
+            "timed_out": false,
+            "user_cpu_seconds": 0.521861,
+            "wall_seconds": 0.562346
+          },
+          "normalized_sha256": "5b84c5812adb5f5bdfb9486759e87afb6004c32990a723fcdba0a8cc5bf963c2",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "augments": true,
+        "imports": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "textual-convention-d3ee23d2fd46",
+      "module": "PNNI-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "365ac447fc44310bbe88230a198c03cfc43f83d3e884003f8de5a4fb5bd96129",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.030008,
+            "timed_out": false,
+            "user_cpu_seconds": 0.709189,
+            "wall_seconds": 0.739693
+          },
+          "normalized_sha256": "365ac447fc44310bbe88230a198c03cfc43f83d3e884003f8de5a4fb5bd96129",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.045016,
+            "timed_out": false,
+            "user_cpu_seconds": 0.694234,
+            "wall_seconds": 0.739741
+          },
+          "normalized_sha256": "365ac447fc44310bbe88230a198c03cfc43f83d3e884003f8de5a4fb5bd96129",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "textual-convention": true
+      },
+      "id": "textual-convention-d949188251c9",
+      "module": "SIGSCALE-TC",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "4cee434343ead5fa8c071b0a5b542bc561a8e9aa055b192a490629ffb834baec",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.036956,
+            "timed_out": false,
+            "user_cpu_seconds": 0.503403,
+            "wall_seconds": 0.540833
+          },
+          "normalized_sha256": "4cee434343ead5fa8c071b0a5b542bc561a8e9aa055b192a490629ffb834baec",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.035942,
+            "timed_out": false,
+            "user_cpu_seconds": 0.503188,
+            "wall_seconds": 0.53957
+          },
+          "normalized_sha256": "4cee434343ead5fa8c071b0a5b542bc561a8e9aa055b192a490629ffb834baec",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "textual-convention-837f150118c8",
+      "module": "ENTERASYS-RADIUS-AUTH-CLIENT-ENCRYPT-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "6222234f673166e8e310c59115084e71c20eb0145ae7fec91ec825129daba0e7",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.039948,
+            "timed_out": false,
+            "user_cpu_seconds": 0.518323,
+            "wall_seconds": 0.5587
+          },
+          "normalized_sha256": "6222234f673166e8e310c59115084e71c20eb0145ae7fec91ec825129daba0e7",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.024993,
+            "timed_out": false,
+            "user_cpu_seconds": 0.53086,
+            "wall_seconds": 0.556374
+          },
+          "normalized_sha256": "6222234f673166e8e310c59115084e71c20eb0145ae7fec91ec825129daba0e7",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "textual-convention-3dd12f0497d3",
+      "module": "ENTERASYS-SYSLOG-CLIENT-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "f0346b36dce72bbdb5e78ea27d783d0d1c2e6e9889263d4debd028ef2ed03945",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.039018,
+            "timed_out": false,
+            "user_cpu_seconds": 0.546245,
+            "wall_seconds": 0.585752
+          },
+          "normalized_sha256": "f0346b36dce72bbdb5e78ea27d783d0d1c2e6e9889263d4debd028ef2ed03945",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.032937,
+            "timed_out": false,
+            "user_cpu_seconds": 0.543974,
+            "wall_seconds": 0.577383
+          },
+          "normalized_sha256": "f0346b36dce72bbdb5e78ea27d783d0d1c2e6e9889263d4debd028ef2ed03945",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "textual-convention": true
+      },
+      "id": "textual-convention-aaefc12f4370",
+      "module": "URI-TC-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "ff886cc19eb1ad4e88bc600310bee5d6dc89fd0b9355d9f7d7d308992b2ea4ea",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.036005,
+            "timed_out": false,
+            "user_cpu_seconds": 0.513071,
+            "wall_seconds": 0.549527
+          },
+          "normalized_sha256": "ff886cc19eb1ad4e88bc600310bee5d6dc89fd0b9355d9f7d7d308992b2ea4ea",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.034032,
+            "timed_out": false,
+            "user_cpu_seconds": 0.511473,
+            "wall_seconds": 0.546119
+          },
+          "normalized_sha256": "ff886cc19eb1ad4e88bc600310bee5d6dc89fd0b9355d9f7d7d308992b2ea4ea",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "augments": true,
+        "imports": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "textual-convention-9d399c1faea4",
+      "module": "ENTERASYS-IEEE8021-Q-BRIDGE-MIB-EXT-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "f48a108daa48a36c02f85ceb5dda8f021dd8cbd6fff89d62c167aa4cfbe99b81",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.047004,
+            "timed_out": false,
+            "user_cpu_seconds": 0.697059,
+            "wall_seconds": 0.744657
+          },
+          "normalized_sha256": "f48a108daa48a36c02f85ceb5dda8f021dd8cbd6fff89d62c167aa4cfbe99b81",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.049941,
+            "timed_out": false,
+            "user_cpu_seconds": 0.693184,
+            "wall_seconds": 0.743549
+          },
+          "normalized_sha256": "f48a108daa48a36c02f85ceb5dda8f021dd8cbd6fff89d62c167aa4cfbe99b81",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 1341,
+      "diagnostic_sha256": "2bf7093a1306508cd9289d3faa0abf4ab62ee977073f01c1c171101ac4b081fe",
+      "feature_checks": {
+        "imports": false,
+        "table-index": false,
+        "textual-convention": false
+      },
+      "id": "textual-convention-8c02adb19e13",
+      "module": "CISCO-UNIFIED-COMPUTING-EQUIPMENT-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 79,
+            "system_cpu_seconds": 0.033008,
+            "timed_out": false,
+            "user_cpu_seconds": 1.210298,
+            "wall_seconds": 1.243926
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "success": false
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 79,
+            "system_cpu_seconds": 0.042985,
+            "timed_out": false,
+            "user_cpu_seconds": 1.197579,
+            "wall_seconds": 1.241152
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "success": false
+        }
+      ],
+      "success": false,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "table-index": true,
+        "textual-convention": false
+      },
+      "id": "textual-convention-83cd9645f520",
+      "module": "CISCO-UNIFIED-COMPUTING-DUPE-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "bfe83c7b679ace26ccbd46d4f87baec634ccd8d188b3bec8929fe4174e86483b",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.063992,
+            "timed_out": false,
+            "user_cpu_seconds": 2.135735,
+            "wall_seconds": 2.200553
+          },
+          "normalized_sha256": "bfe83c7b679ace26ccbd46d4f87baec634ccd8d188b3bec8929fe4174e86483b",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.068965,
+            "timed_out": false,
+            "user_cpu_seconds": 2.15191,
+            "wall_seconds": 2.221524
+          },
+          "normalized_sha256": "bfe83c7b679ace26ccbd46d4f87baec634ccd8d188b3bec8929fe4174e86483b",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "augments": true,
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "textual-convention-936aedb4d6a3",
+      "module": "ATM-TRACE-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "d44ad41ed4dee2c78e5c5358163b4f3d4f587220abed19a766d9d5cfe14e779b",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.044005,
+            "timed_out": false,
+            "user_cpu_seconds": 0.74508,
+            "wall_seconds": 0.789599
+          },
+          "normalized_sha256": "d44ad41ed4dee2c78e5c5358163b4f3d4f587220abed19a766d9d5cfe14e779b",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.044011,
+            "timed_out": false,
+            "user_cpu_seconds": 0.745194,
+            "wall_seconds": 0.78994
+          },
+          "normalized_sha256": "d44ad41ed4dee2c78e5c5358163b4f3d4f587220abed19a766d9d5cfe14e779b",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "augments": true,
+        "imports": true,
+        "notification-type": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "textual-convention-a6652109c452",
+      "module": "ISDN-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "680102bb8f321aa9cdd6dba66ec4e56472f4623913d11f0a31cf554134db6789",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.041021,
+            "timed_out": false,
+            "user_cpu_seconds": 0.654323,
+            "wall_seconds": 0.695802
+          },
+          "normalized_sha256": "680102bb8f321aa9cdd6dba66ec4e56472f4623913d11f0a31cf554134db6789",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.039967,
+            "timed_out": false,
+            "user_cpu_seconds": 0.656471,
+            "wall_seconds": 0.696911
+          },
+          "normalized_sha256": "680102bb8f321aa9cdd6dba66ec4e56472f4623913d11f0a31cf554134db6789",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "textual-convention-93b8b832b908",
+      "module": "ENTERASYS-ACTIVATION-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "fcba5fe3a74365e7a153a5e66754efe05ac10fadf1c9afe5a022cac87a329ddd",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.039987,
+            "timed_out": false,
+            "user_cpu_seconds": 0.523822,
+            "wall_seconds": 0.564244
+          },
+          "normalized_sha256": "fcba5fe3a74365e7a153a5e66754efe05ac10fadf1c9afe5a022cac87a329ddd",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.030967,
+            "timed_out": false,
+            "user_cpu_seconds": 0.535436,
+            "wall_seconds": 0.566854
+          },
+          "normalized_sha256": "fcba5fe3a74365e7a153a5e66754efe05ac10fadf1c9afe5a022cac87a329ddd",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "textual-convention": true
+      },
+      "id": "textual-convention-2d0845668a8b",
+      "module": "OTP-TC",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "14d3cf0ff2cfc915bfc7993fd9cfca2392d884fbed5d12e95ceaada1167f5098",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.034007,
+            "timed_out": false,
+            "user_cpu_seconds": 0.516109,
+            "wall_seconds": 0.550593
+          },
+          "normalized_sha256": "14d3cf0ff2cfc915bfc7993fd9cfca2392d884fbed5d12e95ceaada1167f5098",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.034966,
+            "timed_out": false,
+            "user_cpu_seconds": 0.513498,
+            "wall_seconds": 0.549016
+          },
+          "normalized_sha256": "14d3cf0ff2cfc915bfc7993fd9cfca2392d884fbed5d12e95ceaada1167f5098",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "textual-convention": false
+      },
+      "id": "textual-convention-920d05128d11",
+      "module": "ENTERASYS-RIPv2-EXT-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "ccfa463d0dcbfb737922af573f69dda3855f6aa1377dc4a88dc85ae794eebe96",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.042914,
+            "timed_out": false,
+            "user_cpu_seconds": 0.511966,
+            "wall_seconds": 0.555381
+          },
+          "normalized_sha256": "ccfa463d0dcbfb737922af573f69dda3855f6aa1377dc4a88dc85ae794eebe96",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.034949,
+            "timed_out": false,
+            "user_cpu_seconds": 0.519247,
+            "wall_seconds": 0.55469
+          },
+          "normalized_sha256": "ccfa463d0dcbfb737922af573f69dda3855f6aa1377dc4a88dc85ae794eebe96",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "augments": true,
+        "imports": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "textual-convention-3b5c5d7e3481",
+      "module": "IEEE8021-TPMR-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "5bbe1f83c4bdccc28e4523c9ac646368b54058de504280a1be5d14320bc27f13",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.045019,
+            "timed_out": false,
+            "user_cpu_seconds": 0.653276,
+            "wall_seconds": 0.698825
+          },
+          "normalized_sha256": "5bbe1f83c4bdccc28e4523c9ac646368b54058de504280a1be5d14320bc27f13",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.045961,
+            "timed_out": false,
+            "user_cpu_seconds": 0.65844,
+            "wall_seconds": 0.70506
+          },
+          "normalized_sha256": "5bbe1f83c4bdccc28e4523c9ac646368b54058de504280a1be5d14320bc27f13",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "textual-convention": true
+      },
+      "id": "textual-convention-c676192edc49",
+      "module": "IANAifType-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "8b40de240ab9db86481173056fc10e41fe2912fc386f5fe065a517d659d9ffa4",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.026964,
+            "timed_out": false,
+            "user_cpu_seconds": 0.535299,
+            "wall_seconds": 0.562919
+          },
+          "normalized_sha256": "8b40de240ab9db86481173056fc10e41fe2912fc386f5fe065a517d659d9ffa4",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.040976,
+            "timed_out": false,
+            "user_cpu_seconds": 0.515695,
+            "wall_seconds": 0.557076
+          },
+          "normalized_sha256": "8b40de240ab9db86481173056fc10e41fe2912fc386f5fe065a517d659d9ffa4",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "textual-convention-b3e0a1134281",
+      "module": "IPOA-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "e3e62c50c4dc82af3b8c5472c4ccb1f5f3de03f98f5ecc5f564f23faa5b5016d",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.041943,
+            "timed_out": false,
+            "user_cpu_seconds": 0.708033,
+            "wall_seconds": 0.750523
+          },
+          "normalized_sha256": "e3e62c50c4dc82af3b8c5472c4ccb1f5f3de03f98f5ecc5f564f23faa5b5016d",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.043985,
+            "timed_out": false,
+            "user_cpu_seconds": 0.704763,
+            "wall_seconds": 0.749199
+          },
+          "normalized_sha256": "e3e62c50c4dc82af3b8c5472c4ccb1f5f3de03f98f5ecc5f564f23faa5b5016d",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 1112,
+      "diagnostic_sha256": "a0093170e1d890e366e9414dac907b885579f8a755eb66d93ee8c95ed586e119",
+      "feature_checks": {
+        "imports": false,
+        "textual-convention": false
+      },
+      "id": "textual-convention-c1379575e6a0",
+      "module": "SNMPv2-TC",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.031002,
+            "timed_out": false,
+            "user_cpu_seconds": 0.499025,
+            "wall_seconds": 0.53051
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "success": false
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.031968,
+            "timed_out": false,
+            "user_cpu_seconds": 0.498507,
+            "wall_seconds": 0.530903
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "success": false
+        }
+      ],
+      "success": false,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "textual-convention-285caba72782",
+      "module": "PW-CEP-STD-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "dc1b5227cf25fdc30aa3a9a89c0769a4dc00f217667718845ffaaad30dcc2298",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.041995,
+            "timed_out": false,
+            "user_cpu_seconds": 0.71592,
+            "wall_seconds": 0.758408
+          },
+          "normalized_sha256": "dc1b5227cf25fdc30aa3a9a89c0769a4dc00f217667718845ffaaad30dcc2298",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.040016,
+            "timed_out": false,
+            "user_cpu_seconds": 0.715276,
+            "wall_seconds": 0.755797
+          },
+          "normalized_sha256": "dc1b5227cf25fdc30aa3a9a89c0769a4dc00f217667718845ffaaad30dcc2298",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true
+      },
+      "id": "table-structure-e15f2a546805",
+      "module": "BGP-MPLS-LAYER3-VPN-MULTICAST-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "5821b8c8499bd285c8acc20e4227f1bee310cb4ca2fd5119ceeee2c1ba1c087e",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.059942,
+            "timed_out": false,
+            "user_cpu_seconds": 0.732288,
+            "wall_seconds": 0.792732
+          },
+          "normalized_sha256": "5821b8c8499bd285c8acc20e4227f1bee310cb4ca2fd5119ceeee2c1ba1c087e",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.050974,
+            "timed_out": false,
+            "user_cpu_seconds": 0.743625,
+            "wall_seconds": 0.795079
+          },
+          "normalized_sha256": "5821b8c8499bd285c8acc20e4227f1bee310cb4ca2fd5119ceeee2c1ba1c087e",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "table-index": true
+      },
+      "id": "table-structure-48061823725f",
+      "module": "SONET-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "6e313baa03fa6348f351de6ddc7c3433bf6f56187ad5228b8203ae1147935230",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.037009,
+            "timed_out": false,
+            "user_cpu_seconds": 0.625149,
+            "wall_seconds": 0.662696
+          },
+          "normalized_sha256": "6e313baa03fa6348f351de6ddc7c3433bf6f56187ad5228b8203ae1147935230",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.032966,
+            "timed_out": false,
+            "user_cpu_seconds": 0.629358,
+            "wall_seconds": 0.662882
+          },
+          "normalized_sha256": "6e313baa03fa6348f351de6ddc7c3433bf6f56187ad5228b8203ae1147935230",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "table-structure-21ae5bb52d44",
+      "module": "DISMAN-EVENT-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "c2bd5d47380d435c39c04d6a02985c7df198c285f98bf16a5c55301c79408082",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.043969,
+            "timed_out": false,
+            "user_cpu_seconds": 0.579593,
+            "wall_seconds": 0.624106
+          },
+          "normalized_sha256": "c2bd5d47380d435c39c04d6a02985c7df198c285f98bf16a5c55301c79408082",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.029021,
+            "timed_out": false,
+            "user_cpu_seconds": 0.595421,
+            "wall_seconds": 0.624932
+          },
+          "normalized_sha256": "c2bd5d47380d435c39c04d6a02985c7df198c285f98bf16a5c55301c79408082",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "table-index": true
+      },
+      "id": "table-structure-f4195b89d644",
+      "module": "CTRON-SFPS-FLOOD-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "a527b34845f37ed63b78728eb38f26ae58b7a60477cbba042d910e704ec5ec60",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.03298,
+            "timed_out": false,
+            "user_cpu_seconds": 0.588653,
+            "wall_seconds": 0.622105
+          },
+          "normalized_sha256": "a527b34845f37ed63b78728eb38f26ae58b7a60477cbba042d910e704ec5ec60",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.034003,
+            "timed_out": false,
+            "user_cpu_seconds": 0.591053,
+            "wall_seconds": 0.625702
+          },
+          "normalized_sha256": "a527b34845f37ed63b78728eb38f26ae58b7a60477cbba042d910e704ec5ec60",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": false
+      },
+      "id": "table-structure-f9a01bc460ac",
+      "module": "OPENSS7-SNARE-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "953ed8a352aee63badfb890caafbbaee3f84b5ca28f162162876356571ca2e63",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.030959,
+            "timed_out": false,
+            "user_cpu_seconds": 0.632153,
+            "wall_seconds": 0.663756
+          },
+          "normalized_sha256": "953ed8a352aee63badfb890caafbbaee3f84b5ca28f162162876356571ca2e63",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.039982,
+            "timed_out": false,
+            "user_cpu_seconds": 0.628726,
+            "wall_seconds": 0.66921
+          },
+          "normalized_sha256": "953ed8a352aee63badfb890caafbbaee3f84b5ca28f162162876356571ca2e63",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 1214,
+      "diagnostic_sha256": "e3d35629b9d986348399c3796b96ef55c458d6346a07556b0892a75ceb6258f8",
+      "feature_checks": {
+        "imports": false,
+        "table-index": false,
+        "textual-convention": false
+      },
+      "id": "table-structure-f29315666a5d",
+      "module": "CISCO-UNIFIED-COMPUTING-GMETA-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 79,
+            "system_cpu_seconds": 0.027985,
+            "timed_out": false,
+            "user_cpu_seconds": 0.499726,
+            "wall_seconds": 0.528231
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "success": false
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 79,
+            "system_cpu_seconds": 0.027974,
+            "timed_out": false,
+            "user_cpu_seconds": 0.504535,
+            "wall_seconds": 0.53295
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "success": false
+        }
+      ],
+      "success": false,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "table-index": true
+      },
+      "id": "table-structure-4610684020ed",
+      "module": "TCPIPX-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "e4d895c7308956595866f25c69ca2f7078b80fcddfe4a6ab48c86267f2d2e43a",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.03296,
+            "timed_out": false,
+            "user_cpu_seconds": 0.524357,
+            "wall_seconds": 0.557801
+          },
+          "normalized_sha256": "e4d895c7308956595866f25c69ca2f7078b80fcddfe4a6ab48c86267f2d2e43a",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.032016,
+            "timed_out": false,
+            "user_cpu_seconds": 0.521259,
+            "wall_seconds": 0.553703
+          },
+          "normalized_sha256": "e4d895c7308956595866f25c69ca2f7078b80fcddfe4a6ab48c86267f2d2e43a",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "table-structure-5629f40d2f45",
+      "module": "OPENSS7-CONS-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "322d0858a74d42322c78e1c150148fa6987465aa54037548b8b60b24ad61918c",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.036996,
+            "timed_out": false,
+            "user_cpu_seconds": 0.619933,
+            "wall_seconds": 0.657309
+          },
+          "normalized_sha256": "322d0858a74d42322c78e1c150148fa6987465aa54037548b8b60b24ad61918c",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.021989,
+            "timed_out": false,
+            "user_cpu_seconds": 0.641684,
+            "wall_seconds": 0.664168
+          },
+          "normalized_sha256": "322d0858a74d42322c78e1c150148fa6987465aa54037548b8b60b24ad61918c",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "augments": true,
+        "imports": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "table-structure-1b573fef246f",
+      "module": "IFCP-MGMT-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "9c749f593a5149c946d6fde01f26209959d237a881995da32fa94626a0520bfa",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.055999,
+            "timed_out": false,
+            "user_cpu_seconds": 1.027976,
+            "wall_seconds": 1.084412
+          },
+          "normalized_sha256": "9c749f593a5149c946d6fde01f26209959d237a881995da32fa94626a0520bfa",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.060995,
+            "timed_out": false,
+            "user_cpu_seconds": 1.026917,
+            "wall_seconds": 1.088404
+          },
+          "normalized_sha256": "9c749f593a5149c946d6fde01f26209959d237a881995da32fa94626a0520bfa",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 1147,
+      "diagnostic_sha256": "6a315ac759fa1d030fc605798030695ae3497938ca45b2a88b0e5b7ca1c72063",
+      "feature_checks": {
+        "imports": false,
+        "revision": false,
+        "table-index": false,
+        "textual-convention": false
+      },
+      "id": "table-structure-fcbb9ee86b94",
+      "module": "SQUID-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 79,
+            "system_cpu_seconds": 0.028952,
+            "timed_out": false,
+            "user_cpu_seconds": 0.520142,
+            "wall_seconds": 0.549527
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "success": false
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 79,
+            "system_cpu_seconds": 0.023978,
+            "timed_out": false,
+            "user_cpu_seconds": 0.520531,
+            "wall_seconds": 0.544946
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "success": false
+        }
+      ],
+      "success": false,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "augments": true,
+        "imports": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "table-structure-a52c6480eaca",
+      "module": "OPENSS7-ISIS-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "1fce98d42ceef387d96658ba5507ca7a5a9aa44bf4dffd8cc8f52b613c1b4b01",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.046993,
+            "timed_out": false,
+            "user_cpu_seconds": 0.799881,
+            "wall_seconds": 0.847462
+          },
+          "normalized_sha256": "1fce98d42ceef387d96658ba5507ca7a5a9aa44bf4dffd8cc8f52b613c1b4b01",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.050037,
+            "timed_out": false,
+            "user_cpu_seconds": 0.802594,
+            "wall_seconds": 0.853123
+          },
+          "normalized_sha256": "1fce98d42ceef387d96658ba5507ca7a5a9aa44bf4dffd8cc8f52b613c1b4b01",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "table-structure-58a1a25342ff",
+      "module": "RAPID-CITY",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "b18ef28ee588865ea559bd6fb8ef62c6485867752f2df1f68b494e2c86395aa4",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.050982,
+            "timed_out": false,
+            "user_cpu_seconds": 0.730743,
+            "wall_seconds": 0.782257
+          },
+          "normalized_sha256": "b18ef28ee588865ea559bd6fb8ef62c6485867752f2df1f68b494e2c86395aa4",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.03097,
+            "timed_out": false,
+            "user_cpu_seconds": 0.746271,
+            "wall_seconds": 0.777616
+          },
+          "normalized_sha256": "b18ef28ee588865ea559bd6fb8ef62c6485867752f2df1f68b494e2c86395aa4",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": true,
+        "table-index": true
+      },
+      "id": "table-structure-eb96b820919c",
+      "module": "DOT12-RPTR-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "dce1ad29dca04ccaac082cfb3a64d6662e6c238e4d339f921a7ce4f7a34c762c",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.041017,
+            "timed_out": false,
+            "user_cpu_seconds": 0.527217,
+            "wall_seconds": 0.568778
+          },
+          "normalized_sha256": "dce1ad29dca04ccaac082cfb3a64d6662e6c238e4d339f921a7ce4f7a34c762c",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.035086,
+            "timed_out": false,
+            "user_cpu_seconds": 0.530305,
+            "wall_seconds": 0.566995
+          },
+          "normalized_sha256": "dce1ad29dca04ccaac082cfb3a64d6662e6c238e4d339f921a7ce4f7a34c762c",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "augments": true,
+        "imports": true,
+        "revision": true,
+        "table-index": true
+      },
+      "id": "table-structure-22a967940831",
+      "module": "IEEE8021-MSTP-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "29f6643ed16d4606259eead6541d2fdddd23ea1225b6e4b635f8d01a7367cbb2",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.045987,
+            "timed_out": false,
+            "user_cpu_seconds": 0.651815,
+            "wall_seconds": 0.698336
+          },
+          "normalized_sha256": "29f6643ed16d4606259eead6541d2fdddd23ea1225b6e4b635f8d01a7367cbb2",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.045977,
+            "timed_out": false,
+            "user_cpu_seconds": 0.658659,
+            "wall_seconds": 0.705114
+          },
+          "normalized_sha256": "29f6643ed16d4606259eead6541d2fdddd23ea1225b6e4b635f8d01a7367cbb2",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "table-structure-7e51f33bc5f0",
+      "module": "CIRCUIT-IF-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "9b9784aa9626962b3a737ec35ddde157f59b5812c8f42693df73381b7fc3968d",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.040964,
+            "timed_out": false,
+            "user_cpu_seconds": 0.591481,
+            "wall_seconds": 0.632885
+          },
+          "normalized_sha256": "9b9784aa9626962b3a737ec35ddde157f59b5812c8f42693df73381b7fc3968d",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.041976,
+            "timed_out": false,
+            "user_cpu_seconds": 0.584666,
+            "wall_seconds": 0.626977
+          },
+          "normalized_sha256": "9b9784aa9626962b3a737ec35ddde157f59b5812c8f42693df73381b7fc3968d",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "table-index": true
+      },
+      "id": "table-structure-dd5b6519110d",
+      "module": "QLASP-Statistics-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "cdc0f015e04d9dc1ffbad70077a35fab2eceb4a601861c50456122e4e44042af",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.039982,
+            "timed_out": false,
+            "user_cpu_seconds": 0.558756,
+            "wall_seconds": 0.59913
+          },
+          "normalized_sha256": "cdc0f015e04d9dc1ffbad70077a35fab2eceb4a601861c50456122e4e44042af",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.03698,
+            "timed_out": false,
+            "user_cpu_seconds": 0.560695,
+            "wall_seconds": 0.598132
+          },
+          "normalized_sha256": "cdc0f015e04d9dc1ffbad70077a35fab2eceb4a601861c50456122e4e44042af",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "table-index": true
+      },
+      "id": "table-structure-513be8f92938",
+      "module": "TCP-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "eee922eed6f27ebfb4641d5b085dd0c2826b0b08a44340089848d33fe2718c2d",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.041942,
+            "timed_out": false,
+            "user_cpu_seconds": 0.528274,
+            "wall_seconds": 0.571045
+          },
+          "normalized_sha256": "eee922eed6f27ebfb4641d5b085dd0c2826b0b08a44340089848d33fe2718c2d",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.032017,
+            "timed_out": false,
+            "user_cpu_seconds": 0.53628,
+            "wall_seconds": 0.568754
+          },
+          "normalized_sha256": "eee922eed6f27ebfb4641d5b085dd0c2826b0b08a44340089848d33fe2718c2d",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "augments": true,
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "table-structure-3eca597c07b7",
+      "module": "APS-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "8f55494bc020d56c2d35432cdcc6dbebf7e997f8bcee878f596661231a835bca",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.036008,
+            "timed_out": false,
+            "user_cpu_seconds": 0.619135,
+            "wall_seconds": 0.655634
+          },
+          "normalized_sha256": "8f55494bc020d56c2d35432cdcc6dbebf7e997f8bcee878f596661231a835bca",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.030965,
+            "timed_out": false,
+            "user_cpu_seconds": 0.621306,
+            "wall_seconds": 0.652809
+          },
+          "normalized_sha256": "8f55494bc020d56c2d35432cdcc6dbebf7e997f8bcee878f596661231a835bca",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "table-structure-d30ca5ad3426",
+      "module": "ATM-APS-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "ab7682944112af772f7bda74ab368773b3d5710de8232868a033a3009ab56356",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.03697,
+            "timed_out": false,
+            "user_cpu_seconds": 0.621494,
+            "wall_seconds": 0.65898
+          },
+          "normalized_sha256": "ab7682944112af772f7bda74ab368773b3d5710de8232868a033a3009ab56356",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.041028,
+            "timed_out": false,
+            "user_cpu_seconds": 0.613416,
+            "wall_seconds": 0.654932
+          },
+          "normalized_sha256": "ab7682944112af772f7bda74ab368773b3d5710de8232868a033a3009ab56356",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 1152,
+      "diagnostic_sha256": "3e87ab3ed503ef74963aad6b2756bb0d2ecfd042f4b06000bfad0a9c90cf0414",
+      "feature_checks": {
+        "augments": false,
+        "imports": false,
+        "notification-type": false,
+        "revision": false,
+        "table-index": false
+      },
+      "id": "table-structure-83680f0cfc6d",
+      "module": "TRILL-OAM-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 79,
+            "system_cpu_seconds": 0.03001,
+            "timed_out": false,
+            "user_cpu_seconds": 0.559176,
+            "wall_seconds": 0.58965
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "success": false
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 79,
+            "system_cpu_seconds": 0.037047,
+            "timed_out": false,
+            "user_cpu_seconds": 0.556719,
+            "wall_seconds": 0.594268
+          },
+          "normalized_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+          "success": false
+        }
+      ],
+      "success": false,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "repository-license-signal-0b6055cd9754",
+      "module": "RMON-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "dcd4ed141b55d4f71d0883f2abf711d91ccf76bdb05a7f3524cc0f2f4293e336",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.029948,
+            "timed_out": false,
+            "user_cpu_seconds": 0.584984,
+            "wall_seconds": 0.61539
+          },
+          "normalized_sha256": "dcd4ed141b55d4f71d0883f2abf711d91ccf76bdb05a7f3524cc0f2f4293e336",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.036954,
+            "timed_out": false,
+            "user_cpu_seconds": 0.574274,
+            "wall_seconds": 0.611696
+          },
+          "normalized_sha256": "dcd4ed141b55d4f71d0883f2abf711d91ccf76bdb05a7f3524cc0f2f4293e336",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": false,
+        "revision": true
+      },
+      "id": "repository-license-signal-220e2a7ef640",
+      "module": "OPENSS7-M2UA-SL-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "67177c4e83a6399b5d27603aeb8299a9c41f02e685992fb05b11294ec04367f6",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.046972,
+            "timed_out": false,
+            "user_cpu_seconds": 0.934446,
+            "wall_seconds": 0.982327
+          },
+          "normalized_sha256": "67177c4e83a6399b5d27603aeb8299a9c41f02e685992fb05b11294ec04367f6",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.048976,
+            "timed_out": false,
+            "user_cpu_seconds": 0.93455,
+            "wall_seconds": 0.983963
+          },
+          "normalized_sha256": "67177c4e83a6399b5d27603aeb8299a9c41f02e685992fb05b11294ec04367f6",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "repository-license-signal-fcb133b6709e",
+      "module": "HC-ALARM-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "04bce108b2257410584975b72669d5e95ecd9442a994c8f919f3b7e7637fb182",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.029004,
+            "timed_out": false,
+            "user_cpu_seconds": 0.605072,
+            "wall_seconds": 0.634537
+          },
+          "normalized_sha256": "04bce108b2257410584975b72669d5e95ecd9442a994c8f919f3b7e7637fb182",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.031975,
+            "timed_out": false,
+            "user_cpu_seconds": 0.60253,
+            "wall_seconds": 0.634974
+          },
+          "normalized_sha256": "04bce108b2257410584975b72669d5e95ecd9442a994c8f919f3b7e7637fb182",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "table-index": true
+      },
+      "id": "repository-license-signal-cc3ae91d315e",
+      "module": "EtherLike-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "66ba50eb6660063b1023edecc4163728a5df359e42dcfd02e969314459290bce",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.046997,
+            "timed_out": false,
+            "user_cpu_seconds": 0.59697,
+            "wall_seconds": 0.644404
+          },
+          "normalized_sha256": "66ba50eb6660063b1023edecc4163728a5df359e42dcfd02e969314459290bce",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.035977,
+            "timed_out": false,
+            "user_cpu_seconds": 0.607601,
+            "wall_seconds": 0.644027
+          },
+          "normalized_sha256": "66ba50eb6660063b1023edecc4163728a5df359e42dcfd02e969314459290bce",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "repository-license-signal-84cafec9b40c",
+      "module": "OPENSS7-LLC2-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "7c019fe88afaf8f05338e3302f649211bf27ca63579de679b752b8ee0d257909",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.031982,
+            "timed_out": false,
+            "user_cpu_seconds": 0.735601,
+            "wall_seconds": 0.767891
+          },
+          "normalized_sha256": "7c019fe88afaf8f05338e3302f649211bf27ca63579de679b752b8ee0d257909",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.036995,
+            "timed_out": false,
+            "user_cpu_seconds": 0.727892,
+            "wall_seconds": 0.765369
+          },
+          "normalized_sha256": "7c019fe88afaf8f05338e3302f649211bf27ca63579de679b752b8ee0d257909",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "repository-license-signal-ec0b8b094439",
+      "module": "IMA-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "b81f02850d5cae019961652bb0bf24b8b1190f55f961de2c9967349fb9ff57e6",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.042024,
+            "timed_out": false,
+            "user_cpu_seconds": 0.633363,
+            "wall_seconds": 0.67601
+          },
+          "normalized_sha256": "b81f02850d5cae019961652bb0bf24b8b1190f55f961de2c9967349fb9ff57e6",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.047008,
+            "timed_out": false,
+            "user_cpu_seconds": 0.630109,
+            "wall_seconds": 0.677564
+          },
+          "normalized_sha256": "b81f02850d5cae019961652bb0bf24b8b1190f55f961de2c9967349fb9ff57e6",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "repository-license-signal-f7d83c08dfd6",
+      "module": "AGGREGATE-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "841ef3ddb891fc194ac0375cbb1dcf565980b80ef16a12df03d2aeab41ded73b",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.041956,
+            "timed_out": false,
+            "user_cpu_seconds": 0.593376,
+            "wall_seconds": 0.635802
+          },
+          "normalized_sha256": "841ef3ddb891fc194ac0375cbb1dcf565980b80ef16a12df03d2aeab41ded73b",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.029992,
+            "timed_out": false,
+            "user_cpu_seconds": 0.609833,
+            "wall_seconds": 0.640477
+          },
+          "normalized_sha256": "841ef3ddb891fc194ac0375cbb1dcf565980b80ef16a12df03d2aeab41ded73b",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "augments": true,
+        "imports": true,
+        "table-index": true
+      },
+      "id": "repository-license-signal-656f13eb592b",
+      "module": "SNMP-COMMUNITY-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "c5481e2bc831766ccd7e1b3204c1af2c26df65fcd897780b0d600bc3e82f1b55",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.033972,
+            "timed_out": false,
+            "user_cpu_seconds": 0.547556,
+            "wall_seconds": 0.581941
+          },
+          "normalized_sha256": "c5481e2bc831766ccd7e1b3204c1af2c26df65fcd897780b0d600bc3e82f1b55",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.045986,
+            "timed_out": false,
+            "user_cpu_seconds": 0.532839,
+            "wall_seconds": 0.579367
+          },
+          "normalized_sha256": "c5481e2bc831766ccd7e1b3204c1af2c26df65fcd897780b0d600bc3e82f1b55",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "repository-license-signal-5ae3dc11a34e",
+      "module": "OPENSS7-SL-MUX-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "f1985829e54b9bae50e858f496843ff5a08f7697ba61f5891f35edcaf954f560",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.038036,
+            "timed_out": false,
+            "user_cpu_seconds": 0.628592,
+            "wall_seconds": 0.667177
+          },
+          "normalized_sha256": "f1985829e54b9bae50e858f496843ff5a08f7697ba61f5891f35edcaf954f560",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.038957,
+            "timed_out": false,
+            "user_cpu_seconds": 0.627296,
+            "wall_seconds": 0.666796
+          },
+          "normalized_sha256": "f1985829e54b9bae50e858f496843ff5a08f7697ba61f5891f35edcaf954f560",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "table-index": true
+      },
+      "id": "repository-license-signal-7bd486741e70",
+      "module": "DS0BUNDLE-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "776f78b8ee37ef7cb0e26cd490401cfffb9eadf31ab139d565ae6e9eed8b19d7",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.040981,
+            "timed_out": false,
+            "user_cpu_seconds": 0.582735,
+            "wall_seconds": 0.62413
+          },
+          "normalized_sha256": "776f78b8ee37ef7cb0e26cd490401cfffb9eadf31ab139d565ae6e9eed8b19d7",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.039977,
+            "timed_out": false,
+            "user_cpu_seconds": 0.586664,
+            "wall_seconds": 0.627143
+          },
+          "normalized_sha256": "776f78b8ee37ef7cb0e26cd490401cfffb9eadf31ab139d565ae6e9eed8b19d7",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "table-index": true
+      },
+      "id": "repository-license-signal-a71e5a822d30",
+      "module": "OPENSS7-SL-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "3922519042f2811922657db940aa3b515707ce4c75bb8dc7afac4c4c2cdbeb08",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.038983,
+            "timed_out": false,
+            "user_cpu_seconds": 1.000572,
+            "wall_seconds": 1.040009
+          },
+          "normalized_sha256": "3922519042f2811922657db940aa3b515707ce4c75bb8dc7afac4c4c2cdbeb08",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.050969,
+            "timed_out": false,
+            "user_cpu_seconds": 0.983402,
+            "wall_seconds": 1.034831
+          },
+          "normalized_sha256": "3922519042f2811922657db940aa3b515707ce4c75bb8dc7afac4c4c2cdbeb08",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "textual-convention": true
+      },
+      "id": "repository-license-signal-fd52403b80c2",
+      "module": "IANA-PWE3-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "b981a44957af1b10110941d69d4d5b2c50dd3b6434d014a6b39e57f3f00a1d9a",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.035007,
+            "timed_out": false,
+            "user_cpu_seconds": 0.509095,
+            "wall_seconds": 0.544574
+          },
+          "normalized_sha256": "b981a44957af1b10110941d69d4d5b2c50dd3b6434d014a6b39e57f3f00a1d9a",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.032029,
+            "timed_out": false,
+            "user_cpu_seconds": 0.51046,
+            "wall_seconds": 0.542766
+          },
+          "normalized_sha256": "b981a44957af1b10110941d69d4d5b2c50dd3b6434d014a6b39e57f3f00a1d9a",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true
+      },
+      "id": "repository-license-signal-957971969e30",
+      "module": "ATM-FORUM-TC-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "45528d189c1a2a537ef728687d3adeaa037c5b1e575a6463139546735e3ab26b",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.036977,
+            "timed_out": false,
+            "user_cpu_seconds": 0.509692,
+            "wall_seconds": 0.547153
+          },
+          "normalized_sha256": "45528d189c1a2a537ef728687d3adeaa037c5b1e575a6463139546735e3ab26b",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.030963,
+            "timed_out": false,
+            "user_cpu_seconds": 0.511386,
+            "wall_seconds": 0.54278
+          },
+          "normalized_sha256": "45528d189c1a2a537ef728687d3adeaa037c5b1e575a6463139546735e3ab26b",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "textual-convention": true
+      },
+      "id": "repository-license-signal-a8ab77e52898",
+      "module": "HC-PerfHist-TC-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "3b85455639f430ea7eb48ee81aa9f7561c074772008ed417181093409a69f687",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.026996,
+            "timed_out": false,
+            "user_cpu_seconds": 0.511914,
+            "wall_seconds": 0.539372
+          },
+          "normalized_sha256": "3b85455639f430ea7eb48ee81aa9f7561c074772008ed417181093409a69f687",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.03098,
+            "timed_out": false,
+            "user_cpu_seconds": 0.508675,
+            "wall_seconds": 0.540065
+          },
+          "normalized_sha256": "3b85455639f430ea7eb48ee81aa9f7561c074772008ed417181093409a69f687",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "table-index": true
+      },
+      "id": "repository-license-signal-faf42deadab7",
+      "module": "QLASP-Config-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "86b6bbb87746401836b68f88df0c7b04ad4de103dd3428ea15106300de9aba90",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.031994,
+            "timed_out": false,
+            "user_cpu_seconds": 0.565893,
+            "wall_seconds": 0.598352
+          },
+          "normalized_sha256": "86b6bbb87746401836b68f88df0c7b04ad4de103dd3428ea15106300de9aba90",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.033994,
+            "timed_out": false,
+            "user_cpu_seconds": 0.55791,
+            "wall_seconds": 0.592322
+          },
+          "normalized_sha256": "86b6bbb87746401836b68f88df0c7b04ad4de103dd3428ea15106300de9aba90",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "trap-type-v1": true
+      },
+      "id": "repository-license-signal-3d1061158120",
+      "module": "QLGC-QLASPTrap-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "ee79124a1c58b06231220b167d2fecae2b3cc9f5878787d67be20f6311c6fd7c",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.038973,
+            "timed_out": false,
+            "user_cpu_seconds": 0.555615,
+            "wall_seconds": 0.595001
+          },
+          "normalized_sha256": "ee79124a1c58b06231220b167d2fecae2b3cc9f5878787d67be20f6311c6fd7c",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.046031,
+            "timed_out": false,
+            "user_cpu_seconds": 0.549361,
+            "wall_seconds": 0.5959
+          },
+          "normalized_sha256": "ee79124a1c58b06231220b167d2fecae2b3cc9f5878787d67be20f6311c6fd7c",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "repository-license-signal-bbd49e441759",
+      "module": "FORTINET-CORE-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "0d1eab42f6c3c9861efbd97b098289f5a5c14abf66eecf3e925a682506391cd2",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.040004,
+            "timed_out": false,
+            "user_cpu_seconds": 0.595061,
+            "wall_seconds": 0.635548
+          },
+          "normalized_sha256": "0d1eab42f6c3c9861efbd97b098289f5a5c14abf66eecf3e925a682506391cd2",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.049963,
+            "timed_out": false,
+            "user_cpu_seconds": 0.587565,
+            "wall_seconds": 0.637948
+          },
+          "normalized_sha256": "0d1eab42f6c3c9861efbd97b098289f5a5c14abf66eecf3e925a682506391cd2",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "notification-type": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "repository-license-signal-de8d7f2c506b",
+      "module": "OPENSS7-UMC-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "ecccc07920f826c1481848e8cd14906c14176b75187261fb1409ba01776154f4",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.038986,
+            "timed_out": false,
+            "user_cpu_seconds": 0.631774,
+            "wall_seconds": 0.671047
+          },
+          "normalized_sha256": "ecccc07920f826c1481848e8cd14906c14176b75187261fb1409ba01776154f4",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.036959,
+            "timed_out": false,
+            "user_cpu_seconds": 0.636297,
+            "wall_seconds": 0.673774
+          },
+          "normalized_sha256": "ecccc07920f826c1481848e8cd14906c14176b75187261fb1409ba01776154f4",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "table-index": true,
+        "textual-convention": true
+      },
+      "id": "repository-license-signal-0a184c6d32b0",
+      "module": "OPENSS7-PROBE-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "1af5105fd02cef484ad0ae60139a7e09dd9d3497d050a4dde6d46efa8fe79532",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.048988,
+            "timed_out": false,
+            "user_cpu_seconds": 0.863793,
+            "wall_seconds": 0.91328
+          },
+          "normalized_sha256": "1af5105fd02cef484ad0ae60139a7e09dd9d3497d050a4dde6d46efa8fe79532",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.042004,
+            "timed_out": false,
+            "user_cpu_seconds": 0.872091,
+            "wall_seconds": 0.914603
+          },
+          "normalized_sha256": "1af5105fd02cef484ad0ae60139a7e09dd9d3497d050a4dde6d46efa8fe79532",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "diagnostic_bytes": 0,
+      "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "feature_checks": {
+        "imports": true,
+        "revision": true,
+        "textual-convention": true
+      },
+      "id": "repository-license-signal-149ca2670a9d",
+      "module": "ATM-TC-MIB",
+      "normalized_output_deterministic": true,
+      "normalized_sha256": "4875756cbca4085c78f32092fe401aa3e388ded699d9a30292cd7377ce205c26",
+      "runs": [
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.029988,
+            "timed_out": false,
+            "user_cpu_seconds": 0.51778,
+            "wall_seconds": 0.54818
+          },
+          "normalized_sha256": "4875756cbca4085c78f32092fe401aa3e388ded699d9a30292cd7377ce205c26",
+          "success": true
+        },
+        {
+          "measurement": {
+            "peak_child_rss_kib_so_far": 90780,
+            "returncode": 0,
+            "system_cpu_seconds": 0.033967,
+            "timed_out": false,
+            "user_cpu_seconds": 0.5145,
+            "wall_seconds": 0.548901
+          },
+          "normalized_sha256": "4875756cbca4085c78f32092fe401aa3e388ded699d9a30292cd7377ce205c26",
+          "success": true
+        }
+      ],
+      "success": true,
+      "timed_out": false
+    }
+  ],
+  "corpus": {
+    "cases": 100,
+    "catalog_data_release": "license-signaled-2026-07-20.2",
+    "catalog_sha256": "f85842c12be24a0adfc1b8571782c5550f3f2ef82118ab657e2fb00f64c5414c",
+    "expectation": "observe",
+    "id": "public-positive-breadth-v1",
+    "manifest_sha256": "bc322c040dfce6a2ba1ae692898460baab40114ef1b04670b09517c2a2e440f1",
+    "sha256": "e299b9fd2c05200a5ca01740bf7e99e90628bafeb97a1a73fd97f385a011a2cd"
+  },
+  "execution_mode": "container",
+  "host": {
+    "machine": "x86_64",
+    "platform": "Linux-6.17.0-1020-azure-x86_64-with-glibc2.36",
+    "python": "3.12.11"
+  },
+  "schema_version": 1,
+  "source_commit": "94e60809f3a01a8ba482ffc7319c8dc8a358fd30",
+  "started_at": "2026-07-20T05:25:36.062971+00:00",
+  "summary": {
+    "cases": 100,
+    "container_image_bytes": 158897691,
+    "feature_checks_passed": 330,
+    "feature_checks_total": 360,
+    "installed_footprint_bytes": 47273822,
+    "normalized_deterministic_cases": 100,
+    "parse_success": 94,
+    "peak_child_rss_kib": 90780,
+    "timeout_cases": 0,
+    "total_measured_wall_seconds": 146.407044,
+    "total_system_cpu_seconds": 7.833061,
+    "total_user_cpu_seconds": 138.474027
+  },
+  "version": "2.0.0"
+}

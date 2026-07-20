@@ -24,8 +24,8 @@ complete. Order is dependency-driven.
   synthetic expectations with no timeout and deterministic normalized output.
   The native Linux arm64 run reproduced the same normalized evidence. This is
   multi-architecture reproducibility evidence, not vendor-compatibility evidence.
-- Parser corpus construction no longer needs owner action: 100 unique tracked
-  redistributable files pass the deterministic public eligibility gate. The
-  three-parser native amd64/arm64 workflow and final decision are repository
-  work; they are not owner blockers. The public corpus is positive breadth;
-  malformed and revision-shape behavior remains in the separate CC0 suite.
+- The parser work no longer needs owner action: 100 unique tracked
+  redistributable files and the separate CC0 edge suite produced identical
+  native amd64/arm64 evidence. PySMI 2.0.0 passed the fail-closed selection;
+  public files remain positive breadth rather than proprietary malformed-input
+  evidence.

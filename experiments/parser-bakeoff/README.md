@@ -14,9 +14,20 @@ read-only, and all output was written by the invoking host UID/GID. Both
 architectures produced identical normalized case evidence. The earlier macOS
 arm64 source-build result remains available as a separate baseline.
 
-Those committed results cover the nine synthetic edge cases. The 100-file
-public corpus eligibility gate passes, but its native Linux amd64/arm64 parser
-results are not yet committed. Canonical selection therefore remains open.
+The committed evidence covers both the nine synthetic edge cases and the
+100-file public corpus. GitHub Actions run
+[`29719084848`](https://github.com/ta2jam/mibvendor/actions/runs/29719084848)
+passed both native architectures and parity validation. PySMI 2.0.0 is the
+canonical adapter because it is the only candidate that meets every committed
+public and CC0 threshold.
+
+Public corpus, identical on Linux amd64 and arm64:
+
+| Candidate | Parsed | Feature probes | Deterministic | Timeouts | Decision |
+|---|---:|---:|---:|---:|---|
+| PySMI 2.0.0 | 94/100 | 330/360 | 100/100 | 0 | selected |
+| libsmi 0.5.0 | 78/100 | 293/360 | 100/100 | 0 | below 90% thresholds |
+| Net-SNMP 5.9.4.pre2 | 48/100 | 47/360 | 100/100 | 0 | below public and CC0 field thresholds |
 
 Linux amd64:
 
@@ -42,9 +53,9 @@ The Net-SNMP archive is the official 5.9.4 tarball with the locked hash in
 `sources.lock.json`, but its compiled binary reports `5.9.4.pre2`. The result
 keeps that observed version instead of rewriting it to 5.9.4.
 
-The provisional recommendation is PySMI for canonical normalization and
-libsmi only for offline lint/QA. Net-SNMP remains a compatibility oracle, not a
-product runtime dependency. The evidence and remaining gate are in
+PySMI is selected for canonical normalization. libsmi remains optional offline
+lint/QA, and Net-SNMP remains a compatibility oracle rather than a product
+runtime dependency. The evidence, thresholds, and limitations are in
 [`DECISION.md`](DECISION.md).
 
 ## Corpus and rights
@@ -126,6 +137,16 @@ The committed evidence can be checked without parser binaries or downloads:
 ./scripts/validate_results.py results/2026-07-14-linux-arm64
 ./scripts/validate_multiarch_results.py \
   results/2026-07-13-linux-amd64 results/2026-07-14-linux-arm64
+python3 scripts/validate_public_multiarch_results.py \
+  --expected-source-commit 94e60809f3a01a8ba482ffc7319c8dc8a358fd30 \
+  results/2026-07-20-public-linux-amd64 \
+  results/2026-07-20-public-linux-arm64
+python3 scripts/select_public_parser.py \
+  --expected-source-commit 94e60809f3a01a8ba482ffc7319c8dc8a358fd30 \
+  results/2026-07-20-public-linux-amd64 \
+  results/2026-07-20-public-linux-arm64 \
+  results/2026-07-13-linux-amd64 \
+  results/2026-07-14-linux-arm64
 ```
 
 The tracked public corpus can be regenerated and validated without parser
@@ -168,7 +189,7 @@ manifest, catalog, and data-release hashes; empty applicable feature maps or
 missing resource measurements also fail. It intentionally does not run in the
 five-minute normal CI path.
 
-The committed Linux evidence is in
+The committed CC0 Linux evidence is in
 [`results/2026-07-13-linux-amd64/`](results/2026-07-13-linux-amd64/) and
 [`results/2026-07-14-linux-arm64/`](results/2026-07-14-linux-arm64/). It verifies
 container build correctness, exact parser versions, image sizes, runtime
@@ -177,6 +198,13 @@ cross-architecture normalized parity. The arm64 run is tied to its public
 [GitHub Actions execution](https://github.com/ta2jam/mibvendor/actions/runs/29294289938).
 The earlier unavailable-daemon record is retained as audit history, not as the
 current status.
+
+The public result sets are in
+[`results/2026-07-20-public-linux-amd64/`](results/2026-07-20-public-linux-amd64/)
+and
+[`results/2026-07-20-public-linux-arm64/`](results/2026-07-20-public-linux-arm64/).
+The threshold decision and exact evidence hashes are in
+[`results/2026-07-20-public-validation/parser-selection.json`](results/2026-07-20-public-validation/parser-selection.json).
 
 ## Measurement semantics
 
@@ -188,8 +216,10 @@ current status.
   capability that might exist in its C API.
 - PySMI raw JSON embeds host and generation time, so raw hashes vary. Removing
   `meta` yields deterministic normalized output in all nine cases.
-- Wall/CPU totals include process startup. The tiny corpus exaggerates Python
-  startup cost and is not a throughput benchmark.
+- Wall/CPU totals include process startup because the selected adapter contract
+  isolates one bounded artifact in one parser process. A shared warm process is
+  not measured: it would introduce cross-file state and would not have equivalent
+  semantics across the three CLIs.
 - Installed footprint and container image size are recorded separately.
 
 Harness work is approximately `O(P * C * R * parse(input))`. The public run has
@@ -215,7 +245,11 @@ are the main energy constants.
 - `scripts/run_public_bakeoff.py`: public-corpus runner and bounded result writer.
 - `scripts/run_public_containers.sh`: read-only/no-network public container run.
 - `scripts/validate_public_multiarch_results.py`: complete native result and parity gate.
+- `scripts/select_public_parser.py`: deterministic thresholds and fail-closed selection.
 - `containers/`: one pinned Dockerfile per candidate.
 - `results/2026-07-13-macos-arm64/`: committed real local run.
 - `results/2026-07-13-linux-amd64/`: committed pinned-container run.
 - `results/2026-07-14-linux-arm64/`: committed native arm64 container run and provenance.
+- `results/2026-07-20-public-linux-amd64/`: committed public amd64 evidence.
+- `results/2026-07-20-public-linux-arm64/`: committed public arm64 evidence.
+- `results/2026-07-20-public-validation/`: parity and canonical selection evidence.

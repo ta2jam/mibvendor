@@ -1,6 +1,6 @@
 # Parser adapter contract
 
-Status: provisional; canonical parser gate open
+Status: accepted; PySMI 2.0.0 is the canonical parser adapter
 
 Parser adapters translate bounded source artifacts into the project-owned
 canonical module. Application code must not depend on PySMI, libsmi, Net-SNMP,
@@ -22,9 +22,10 @@ Required boundaries:
   absolute paths, credentials, or customer data;
 - parser upgrades are measured against the rights-approved corpus before use.
 
-The current parser recommendation remains provisional. Replacing it must not
-change the canonical or API contract unless evidence requires a versioned
-migration.
+The canonical selection is bound to the native Linux amd64/arm64 public and
+CC0 evidence recorded on 2026-07-20. Replacing or upgrading it must rerun those
+gates and must not change the canonical or API contract unless evidence
+requires a versioned migration.
 
 ## Staging static-parser evidence
 
@@ -44,6 +45,6 @@ machine-local MIB directories. Its resolver now:
   without evaluating Python.
 
 Unresolved imports, case-sensitive source typos, duplicate definitions, empty
-module shells, and cross-format differences remain explicit gate failures. The
-staging result is evidence for adapter selection; it is not active catalog data
-or proof that the canonical parser gate has passed.
+module shells, and cross-format differences remain explicit staging failures.
+The narrow static reader remains intake evidence; it does not replace the
+selected PySMI adapter or silently supply output when PySMI fails.

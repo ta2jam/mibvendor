@@ -1,82 +1,79 @@
 # Parser decision record
 
-Status: **provisional; Phase 0 parser gate not passed**.
+Status: **passed; PySMI 2.0.0 selected as the canonical parser adapter**.
 
-## Recommendation
+Decision date: 2026-07-20
 
-Use PySMI 2.0.0 as the provisional canonical parser behind a project-owned
-normalization schema. Use libsmi 0.5.0 only in offline import QA/lint. Do not add
-Net-SNMP to the application runtime; retain it only as a compatibility oracle
-for behaviors that must match common SNMP tooling.
+## Decision
 
-This is not a final selection. The 9-case synthetic run cannot establish vendor
-compatibility. Pinned containers pass on native Linux amd64 and arm64 with
-identical normalized case evidence. A deterministic rights-approved 100-file
-positive-breadth corpus now passes its eligibility gate; three-parser native
-Linux amd64/arm64 results and their parity decision are still missing.
+Use PySMI 2.0.0 behind the project-owned normalization schema. Keep libsmi
+0.5.0 as an optional offline lint/QA tool. Keep Net-SNMP as a compatibility
+oracle; do not add either secondary tool to the application runtime.
+
+The selection is release-bound, not permanent. A PySMI upgrade or material
+corpus change must rerun the same native multi-architecture and CC0 gates.
+Application and API contracts depend on the canonical schema, never PySMI's raw
+JSON shape.
 
 ## Evidence
 
-PySMI and libsmi both:
+GitHub Actions run
+[`29719084848`](https://github.com/ta2jam/mibvendor/actions/runs/29719084848)
+executed commit `94e60809f3a01a8ba482ffc7319c8dc8a358fd30` in pinned,
+network-disabled containers on native Linux amd64 and arm64. Both architectures
+produced identical normalized case evidence with zero timeouts and 100/100
+deterministic public cases for every candidate.
 
-- parsed all 6 syntactically valid fixtures;
-- rejected all 3 malformed or unresolved fixtures without a timeout;
-- preserved all 10 requested revision/import/TC/enum/INDEX/AUGMENTS/notification checks;
-- produced deterministic project-normalized output in all 9 cases;
-- preserved two module-qualified `mvSharedName` descriptors with different OIDs.
+| Candidate | Public parse | Feature probes | CC0 fields | CC0 expectations | Selection |
+|---|---:|---:|---:|---:|---|
+| PySMI 2.0.0 | 94/100 | 330/360 (91.67%) | 10/10 | 9/9 | passed |
+| libsmi 0.5.0 | 78/100 | 293/360 (81.39%) | 10/10 | 9/9 | failed public thresholds |
+| Net-SNMP 5.9.4.pre2 | 48/100 | 47/360 (13.06%) | 5/10 | 9/9 | failed public and field thresholds |
 
-PySMI is the provisional canonical choice because it emits structured JSON with
-all requested fields and maps directly into a project-owned intermediate schema.
-Its current locked release installed without native compilation. Its raw artifact
-is not reproducible because it embeds host and generation time; the harness must
-strip `meta`, after which all normalized hashes were stable.
+PySMI also preserved the two module-qualified collision descriptors, parsed all
+six valid CC0 fixtures, rejected the missing-import, truncated, and malformed
+fixtures, and retained all ten requested revision/import/TC/enum/INDEX/AUGMENTS/
+notification fields. Its raw output embeds host/time metadata; the project
+normalizer removes that non-contractual `meta` content before hashing.
 
-libsmi is substantially faster and smaller in this tiny local run, and its
-file/line/severity diagnostics are better suited to QA. It also caught semantic
-SMI warnings that the PySMI compile path did not expose. That measured diagnostic
-benefit justifies a second tool only in the offline import pipeline. It is not the
-canonical choice because building 0.5.0 on the current Clang required an explicit
-`-Wno-error=implicit-function-declaration` compatibility flag. Carrying an old C
-build into the main normalization path creates avoidable maintenance risk.
+The process-isolated 100-file run executes every artifact twice. PySMI measured
+90,780 KiB peak child RSS on amd64 and 89,232 KiB on arm64. Per-artifact wall
+time was 0.627 s median / 1.244 s p95 on amd64 and 0.562 s median / 1.068 s p95
+on arm64. These figures include parser process startup and are operational
+capacity evidence, not a claim that PySMI is faster than the other candidates.
 
-Net-SNMP parsed/rejected all cases and preserved collisions, but its tested CLI
-artifact exposed only 5 of 10 requested field checks. Revisions and imports were
-not present in that extraction path. The locked official 5.9.4 source archive
-also compiled to a binary reporting `5.9.4.pre2`. Neither fact makes Net-SNMP a
-bad SNMP tool; they make this CLI path a weak canonical ingest contract.
+The exact inputs, per-file results, measurements, hashes, threshold failures,
+and selection are machine-checked in:
 
-The measured timing and RSS do not decide the selection. Nine small files mostly
-measure process startup, and RSS is a per-candidate child high-water mark. The
-100-file multi-architecture container run must supply the broader success,
-feature, throughput, CPU, and memory evidence.
+- `results/2026-07-20-public-linux-amd64/`;
+- `results/2026-07-20-public-linux-arm64/`;
+- `results/2026-07-20-public-validation/parser-selection.json`.
 
-## Exit criteria for the parser gate
+## Why no warm shared-process benchmark
 
-The parser gate may move from provisional only when all items below are met:
+The parser-adapter contract accepts one bounded immutable artifact and returns
+one success/failure envelope. A shared warm parser process would change that
+contract, permit cross-file state and failure contamination, and measure
+different semantics across three unrelated CLIs. It is therefore excluded,
+not silently omitted. The committed measurements cover the selected
+process-isolated ingestion model. Harness work is `O(P * C * R * parse(input))`
+for `P=3`, `C=100`, and `R=2`; parser startup is a deliberate constant cost.
 
-1. Keep the deterministic public gate at exactly 100 unique tracked files,
-   hashes, and modules, at least eight sources, no more than 30 files from one
-   source, and all recorded feature-coverage floors. Preserve source URL,
-   revision, SPDX basis, and SHA-256 for every case.
-2. Keep malformed, truncated, missing-import, collision, and revision-shape
-   behavior in the separate CC0 edge suite. Do not relabel valid public files as
-   known-broken or historical revision pairs merely to satisfy a category count.
-3. Run all candidates from the locked containers with runtime network disabled;
-   reproduce at least on Linux arm64 and one clean Linux amd64 runner.
-4. Require no crashes/timeouts, 100% deterministic normalized output and native
-   cross-architecture parity. A canonical candidate must parse at least 90% of
-   the positive corpus, pass at least 90% of applicable feature probes, and keep
-   10/10 requested fields plus module-qualified collisions in the edge suite.
-   Every public failure remains recorded; aggregate scores cannot erase a
-   missing revision, INDEX, AUGMENTS, or notification class.
-5. Measure warm batch throughput, CPU, peak RSS, installed/image size, and
-   malformed-input behavior. Do not compare the current process-startup totals
-   as parser throughput.
-6. Freeze and document the project-owned intermediate schema. Re-running the
-   same release must produce the same normalized hashes independent of host,
-   paths, timestamps, and input traversal order.
-7. Reconsider the recommendation if PySMI fails the thresholds or if libsmi's
-   measured compatibility advantage outweighs its native-build maintenance cost.
+## Limitations
 
-Until these conditions pass, implementation may use the PySMI adapter only for
-prototype work. It must not be treated as an irreversible production contract.
+- The public corpus is positive breadth. It does not claim coverage of unknown-
+  rights proprietary malformed files.
+- Aggregate success does not erase failures. PySMI's public per-feature rates
+  are recorded, including 50/62 textual-convention and 3/4 SMIv1 trap probes.
+- Six public modules did not parse through the tested PySMI CLI path. They stay
+  explicit in the result set; no alternate parser output is silently substituted.
+- libsmi remains useful for diagnostics, but its native build maintenance cost
+  and sub-threshold public coverage exclude it from the canonical path.
+- Net-SNMP's result describes the tested CLI extraction path, not the full C API.
+
+## Re-evaluation triggers
+
+Rerun the decision when the canonical parser version changes, the normalized
+schema changes, the public corpus selection policy changes, or production
+failures show a missing grammar class. Selection fails closed unless exactly one
+candidate meets all committed thresholds on both native architectures.

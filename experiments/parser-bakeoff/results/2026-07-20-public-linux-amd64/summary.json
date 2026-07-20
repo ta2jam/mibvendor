@@ -1,0 +1,64 @@
+{
+  "candidates": [
+    {
+      "candidate": "pysmi",
+      "cases": 100,
+      "container_image_bytes": 158897691,
+      "feature_checks_passed": 330,
+      "feature_checks_total": 360,
+      "installed_footprint_bytes": 47273822,
+      "normalized_deterministic_cases": 100,
+      "parse_success": 94,
+      "peak_child_rss_kib": 90780,
+      "timeout_cases": 0,
+      "total_measured_wall_seconds": 146.407044,
+      "total_system_cpu_seconds": 7.833061,
+      "total_user_cpu_seconds": 138.474027,
+      "version": "2.0.0"
+    },
+    {
+      "candidate": "libsmi",
+      "cases": 100,
+      "container_image_bytes": 146124376,
+      "feature_checks_passed": 293,
+      "feature_checks_total": 360,
+      "installed_footprint_bytes": 21830905,
+      "normalized_deterministic_cases": 100,
+      "parse_success": 78,
+      "peak_child_rss_kib": 53956,
+      "timeout_cases": 0,
+      "total_measured_wall_seconds": 18.866667,
+      "total_system_cpu_seconds": 0.327965,
+      "total_user_cpu_seconds": 18.479687,
+      "version": "0.5.0"
+    },
+    {
+      "candidate": "net-snmp",
+      "cases": 100,
+      "container_image_bytes": 152962139,
+      "feature_checks_passed": 47,
+      "feature_checks_total": 360,
+      "installed_footprint_bytes": 12645126,
+      "normalized_deterministic_cases": 100,
+      "parse_success": 48,
+      "peak_child_rss_kib": 53728,
+      "timeout_cases": 0,
+      "total_measured_wall_seconds": 2.5223,
+      "total_system_cpu_seconds": 1.218526,
+      "total_user_cpu_seconds": 1.26842,
+      "version": "5.9.4.pre2"
+    }
+  ],
+  "canonical_parser_gate": {
+    "reasons": [
+      "no three-candidate results are committed for this corpus",
+      "Linux amd64 and arm64 parity is not evidenced for this corpus",
+      "positive public files do not replace malformed and revision-pair evidence"
+    ],
+    "status": "open"
+  },
+  "corpus_id": "public-positive-breadth-v1",
+  "generated_at": "2026-07-20T05:30:30.644343+00:00",
+  "public_bakeoff_evidence_gate": "awaiting-linux-amd64-and-arm64-validation",
+  "schema_version": 1
+}

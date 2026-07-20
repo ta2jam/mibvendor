@@ -1,0 +1,18 @@
+{
+  "architectures": [
+    "linux-amd64",
+    "linux-arm64"
+  ],
+  "candidates": 3,
+  "canonical_parser_gate": "open",
+  "cases": 100,
+  "catalog_sha256": "f85842c12be24a0adfc1b8571782c5550f3f2ef82118ab657e2fb00f64c5414c",
+  "manifest_sha256": "bc322c040dfce6a2ba1ae692898460baab40114ef1b04670b09517c2a2e440f1",
+  "public_bakeoff_evidence_gate": "passed",
+  "remaining_evidence": [
+    "malformed vendor behavior",
+    "true revision-pair comparisons",
+    "candidate-specific fidelity thresholds and selection decision"
+  ],
+  "source_commit": "94e60809f3a01a8ba482ffc7319c8dc8a358fd30"
+}

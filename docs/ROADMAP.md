@@ -19,9 +19,9 @@ and a task status diverge.
 - run a reproducible PySMI/libsmi/Net-SNMP bake-off and select one canonical
   parser on measured results.
 
-The parser's 100-file public positive-breadth eligibility gate is complete.
-Native amd64/arm64 execution and the selection decision remain open; they do
-not require owner-supplied files or authority.
+The parser gate is complete. PySMI 2.0.0 is selected from the 100-file public
+positive-breadth corpus and the CC0 edge suite after identical native Linux
+amd64/arm64 evidence. This does not close the participant-demand gates.
 
 Phase 1 cannot start merely because documents exist. See
 [the binding gate](PHASE-0.md).
@@ -57,9 +57,8 @@ not a declaration that Phase 1 formally started.
 - Complete: source governance, canonical intermediate schemas, immutable
   release model, adapter contract, 20 UX golden tasks, reproducible CI, and
   fail-closed publication controls.
-- Open: the provisional contracts may still change before Phase 0 closes;
-  community-contribution governance and the canonical parser decision remain
-  unfinished.
+- Open: the provisional contracts may still change before Phase 0 closes, and
+  community-contribution governance remains unfinished.
 
 ## Phase 2 — data engine and internal resolver
 

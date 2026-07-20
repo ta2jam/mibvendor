@@ -693,8 +693,11 @@ with no billing code.
   missing-import, collision, and revision-shape cases. No valid file is
   relabelled as a known parser failure.
 - Added pinned, read-only, network-disabled public runners and a native Linux
-  amd64/arm64 result-parity gate. The canonical parser decision remains open
-  until that manually dispatched evidence run completes.
+  amd64/arm64 result-parity gate.
+- GitHub Actions run `29719084848` completed both native architectures and
+  parity validation. PySMI 2.0.0 alone met the 94/100 public parse, 330/360
+  feature, 9/9 CC0 expectation, and 10/10 CC0 field gates; the canonical parser
+  decision is complete and machine-verifiable.
 
 ### 2026-07-20 — DATA-07 executable source and pointer lifecycle
 

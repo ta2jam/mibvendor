@@ -1,0 +1,574 @@
+{
+  "candidates": {
+    "libsmi": {
+      "cc0_edge": {
+        "linux-amd64": {
+          "collision_module_qualified_preserved": true,
+          "expectations_met": 9,
+          "expectations_total": 9,
+          "field_fidelity_passed": 10,
+          "field_fidelity_total": 10,
+          "invalid_rejected": 3,
+          "invalid_total": 3,
+          "normalized_deterministic_cases": 9,
+          "timeout_cases": 0,
+          "valid_parse_success": 6,
+          "valid_parse_total": 6
+        },
+        "linux-arm64": {
+          "collision_module_qualified_preserved": true,
+          "expectations_met": 9,
+          "expectations_total": 9,
+          "field_fidelity_passed": 10,
+          "field_fidelity_total": 10,
+          "invalid_rejected": 3,
+          "invalid_total": 3,
+          "normalized_deterministic_cases": 9,
+          "timeout_cases": 0,
+          "valid_parse_success": 6,
+          "valid_parse_total": 6
+        }
+      },
+      "failed_thresholds": [
+        "linux-amd64:public-feature-rate",
+        "linux-amd64:public-parse-rate",
+        "linux-arm64:public-feature-rate",
+        "linux-arm64:public-parse-rate"
+      ],
+      "process_isolated_measurements": {
+        "linux-amd64": {
+          "artifact_run_samples": 200,
+          "artifact_runs_per_measured_wall_second": 10.600707,
+          "cases": 100,
+          "container_image_bytes": 146124376,
+          "installed_footprint_bytes": 21830905,
+          "peak_child_rss_kib": 53956,
+          "process_model": "one-bounded-artifact-per-adapter-envelope",
+          "repetitions": 2,
+          "total_system_cpu_seconds": 0.327965,
+          "total_user_cpu_seconds": 18.479687,
+          "wall_seconds": {
+            "maximum": 1.721909,
+            "median": 0.00687,
+            "p95": 1.142371,
+            "sum": 18.866667
+          }
+        },
+        "linux-arm64": {
+          "artifact_run_samples": 200,
+          "artifact_runs_per_measured_wall_second": 11.394447,
+          "cases": 100,
+          "container_image_bytes": 171870288,
+          "installed_footprint_bytes": 21797529,
+          "peak_child_rss_kib": 43080,
+          "process_model": "one-bounded-artifact-per-adapter-envelope",
+          "repetitions": 2,
+          "total_system_cpu_seconds": 0.484538,
+          "total_user_cpu_seconds": 17.002197,
+          "wall_seconds": {
+            "maximum": 1.940821,
+            "median": 0.006478,
+            "p95": 0.990202,
+            "sum": 17.55241
+          }
+        }
+      },
+      "public": {
+        "linux-amd64": {
+          "cases": 100,
+          "feature_checks_passed": 293,
+          "feature_checks_total": 360,
+          "feature_rate": 0.813889,
+          "features": {
+            "augments": {
+              "passed": 14,
+              "rate": 0.875,
+              "total": 16
+            },
+            "imports": {
+              "passed": 78,
+              "rate": 0.78,
+              "total": 100
+            },
+            "notification-type": {
+              "passed": 26,
+              "rate": 0.866667,
+              "total": 30
+            },
+            "revision": {
+              "passed": 65,
+              "rate": 0.955882,
+              "total": 68
+            },
+            "table-index": {
+              "passed": 60,
+              "rate": 0.75,
+              "total": 80
+            },
+            "textual-convention": {
+              "passed": 49,
+              "rate": 0.790323,
+              "total": 62
+            },
+            "trap-type-v1": {
+              "passed": 1,
+              "rate": 0.25,
+              "total": 4
+            }
+          },
+          "normalized_deterministic_cases": 100,
+          "parse_rate": 0.78,
+          "parse_success": 78,
+          "timeout_cases": 0
+        },
+        "linux-arm64": {
+          "cases": 100,
+          "feature_checks_passed": 293,
+          "feature_checks_total": 360,
+          "feature_rate": 0.813889,
+          "features": {
+            "augments": {
+              "passed": 14,
+              "rate": 0.875,
+              "total": 16
+            },
+            "imports": {
+              "passed": 78,
+              "rate": 0.78,
+              "total": 100
+            },
+            "notification-type": {
+              "passed": 26,
+              "rate": 0.866667,
+              "total": 30
+            },
+            "revision": {
+              "passed": 65,
+              "rate": 0.955882,
+              "total": 68
+            },
+            "table-index": {
+              "passed": 60,
+              "rate": 0.75,
+              "total": 80
+            },
+            "textual-convention": {
+              "passed": 49,
+              "rate": 0.790323,
+              "total": 62
+            },
+            "trap-type-v1": {
+              "passed": 1,
+              "rate": 0.25,
+              "total": 4
+            }
+          },
+          "normalized_deterministic_cases": 100,
+          "parse_rate": 0.78,
+          "parse_success": 78,
+          "timeout_cases": 0
+        }
+      },
+      "qualified": false,
+      "version": "0.5.0"
+    },
+    "net-snmp": {
+      "cc0_edge": {
+        "linux-amd64": {
+          "collision_module_qualified_preserved": true,
+          "expectations_met": 9,
+          "expectations_total": 9,
+          "field_fidelity_passed": 5,
+          "field_fidelity_total": 10,
+          "invalid_rejected": 3,
+          "invalid_total": 3,
+          "normalized_deterministic_cases": 9,
+          "timeout_cases": 0,
+          "valid_parse_success": 6,
+          "valid_parse_total": 6
+        },
+        "linux-arm64": {
+          "collision_module_qualified_preserved": true,
+          "expectations_met": 9,
+          "expectations_total": 9,
+          "field_fidelity_passed": 5,
+          "field_fidelity_total": 10,
+          "invalid_rejected": 3,
+          "invalid_total": 3,
+          "normalized_deterministic_cases": 9,
+          "timeout_cases": 0,
+          "valid_parse_success": 6,
+          "valid_parse_total": 6
+        }
+      },
+      "failed_thresholds": [
+        "linux-amd64:edge-field-fidelity",
+        "linux-amd64:missing-feature-class",
+        "linux-amd64:public-feature-rate",
+        "linux-amd64:public-parse-rate",
+        "linux-arm64:edge-field-fidelity",
+        "linux-arm64:missing-feature-class",
+        "linux-arm64:public-feature-rate",
+        "linux-arm64:public-parse-rate"
+      ],
+      "process_isolated_measurements": {
+        "linux-amd64": {
+          "artifact_run_samples": 200,
+          "artifact_runs_per_measured_wall_second": 79.292709,
+          "cases": 100,
+          "container_image_bytes": 152962139,
+          "installed_footprint_bytes": 12645126,
+          "peak_child_rss_kib": 53728,
+          "process_model": "one-bounded-artifact-per-adapter-envelope",
+          "repetitions": 2,
+          "total_system_cpu_seconds": 1.218526,
+          "total_user_cpu_seconds": 1.26842,
+          "wall_seconds": {
+            "maximum": 0.043914,
+            "median": 0.011085,
+            "p95": 0.025227,
+            "sum": 2.5223
+          }
+        },
+        "linux-arm64": {
+          "artifact_run_samples": 200,
+          "artifact_runs_per_measured_wall_second": 80.32593,
+          "cases": 100,
+          "container_image_bytes": 179688499,
+          "installed_footprint_bytes": 13592198,
+          "peak_child_rss_kib": 42988,
+          "process_model": "one-bounded-artifact-per-adapter-envelope",
+          "repetitions": 2,
+          "total_system_cpu_seconds": 1.346265,
+          "total_user_cpu_seconds": 1.11413,
+          "wall_seconds": {
+            "maximum": 0.046603,
+            "median": 0.010872,
+            "p95": 0.024692,
+            "sum": 2.489856
+          }
+        }
+      },
+      "public": {
+        "linux-amd64": {
+          "cases": 100,
+          "feature_checks_passed": 47,
+          "feature_checks_total": 360,
+          "feature_rate": 0.130556,
+          "features": {
+            "augments": {
+              "passed": 2,
+              "rate": 0.125,
+              "total": 16
+            },
+            "imports": {
+              "passed": 0,
+              "rate": 0.0,
+              "total": 100
+            },
+            "notification-type": {
+              "passed": 6,
+              "rate": 0.2,
+              "total": 30
+            },
+            "revision": {
+              "passed": 0,
+              "rate": 0.0,
+              "total": 68
+            },
+            "table-index": {
+              "passed": 39,
+              "rate": 0.4875,
+              "total": 80
+            },
+            "textual-convention": {
+              "passed": 0,
+              "rate": 0.0,
+              "total": 62
+            },
+            "trap-type-v1": {
+              "passed": 0,
+              "rate": 0.0,
+              "total": 4
+            }
+          },
+          "normalized_deterministic_cases": 100,
+          "parse_rate": 0.48,
+          "parse_success": 48,
+          "timeout_cases": 0
+        },
+        "linux-arm64": {
+          "cases": 100,
+          "feature_checks_passed": 47,
+          "feature_checks_total": 360,
+          "feature_rate": 0.130556,
+          "features": {
+            "augments": {
+              "passed": 2,
+              "rate": 0.125,
+              "total": 16
+            },
+            "imports": {
+              "passed": 0,
+              "rate": 0.0,
+              "total": 100
+            },
+            "notification-type": {
+              "passed": 6,
+              "rate": 0.2,
+              "total": 30
+            },
+            "revision": {
+              "passed": 0,
+              "rate": 0.0,
+              "total": 68
+            },
+            "table-index": {
+              "passed": 39,
+              "rate": 0.4875,
+              "total": 80
+            },
+            "textual-convention": {
+              "passed": 0,
+              "rate": 0.0,
+              "total": 62
+            },
+            "trap-type-v1": {
+              "passed": 0,
+              "rate": 0.0,
+              "total": 4
+            }
+          },
+          "normalized_deterministic_cases": 100,
+          "parse_rate": 0.48,
+          "parse_success": 48,
+          "timeout_cases": 0
+        }
+      },
+      "qualified": false,
+      "version": "5.9.4.pre2"
+    },
+    "pysmi": {
+      "cc0_edge": {
+        "linux-amd64": {
+          "collision_module_qualified_preserved": true,
+          "expectations_met": 9,
+          "expectations_total": 9,
+          "field_fidelity_passed": 10,
+          "field_fidelity_total": 10,
+          "invalid_rejected": 3,
+          "invalid_total": 3,
+          "normalized_deterministic_cases": 9,
+          "timeout_cases": 0,
+          "valid_parse_success": 6,
+          "valid_parse_total": 6
+        },
+        "linux-arm64": {
+          "collision_module_qualified_preserved": true,
+          "expectations_met": 9,
+          "expectations_total": 9,
+          "field_fidelity_passed": 10,
+          "field_fidelity_total": 10,
+          "invalid_rejected": 3,
+          "invalid_total": 3,
+          "normalized_deterministic_cases": 9,
+          "timeout_cases": 0,
+          "valid_parse_success": 6,
+          "valid_parse_total": 6
+        }
+      },
+      "failed_thresholds": [],
+      "process_isolated_measurements": {
+        "linux-amd64": {
+          "artifact_run_samples": 200,
+          "artifact_runs_per_measured_wall_second": 1.366054,
+          "cases": 100,
+          "container_image_bytes": 158897691,
+          "installed_footprint_bytes": 47273822,
+          "peak_child_rss_kib": 90780,
+          "process_model": "one-bounded-artifact-per-adapter-envelope",
+          "repetitions": 2,
+          "total_system_cpu_seconds": 7.833061,
+          "total_user_cpu_seconds": 138.474027,
+          "wall_seconds": {
+            "maximum": 2.354138,
+            "median": 0.62706,
+            "p95": 1.243926,
+            "sum": 146.407044
+          }
+        },
+        "linux-arm64": {
+          "artifact_run_samples": 200,
+          "artifact_runs_per_measured_wall_second": 1.54518,
+          "cases": 100,
+          "container_image_bytes": 185390415,
+          "installed_footprint_bytes": 50882172,
+          "peak_child_rss_kib": 89232,
+          "process_model": "one-bounded-artifact-per-adapter-envelope",
+          "repetitions": 2,
+          "total_system_cpu_seconds": 8.66398,
+          "total_user_cpu_seconds": 120.670682,
+          "wall_seconds": {
+            "maximum": 1.976438,
+            "median": 0.561854,
+            "p95": 1.06806,
+            "sum": 129.434799
+          }
+        }
+      },
+      "public": {
+        "linux-amd64": {
+          "cases": 100,
+          "feature_checks_passed": 330,
+          "feature_checks_total": 360,
+          "feature_rate": 0.916667,
+          "features": {
+            "augments": {
+              "passed": 15,
+              "rate": 0.9375,
+              "total": 16
+            },
+            "imports": {
+              "passed": 94,
+              "rate": 0.94,
+              "total": 100
+            },
+            "notification-type": {
+              "passed": 27,
+              "rate": 0.9,
+              "total": 30
+            },
+            "revision": {
+              "passed": 66,
+              "rate": 0.970588,
+              "total": 68
+            },
+            "table-index": {
+              "passed": 75,
+              "rate": 0.9375,
+              "total": 80
+            },
+            "textual-convention": {
+              "passed": 50,
+              "rate": 0.806452,
+              "total": 62
+            },
+            "trap-type-v1": {
+              "passed": 3,
+              "rate": 0.75,
+              "total": 4
+            }
+          },
+          "normalized_deterministic_cases": 100,
+          "parse_rate": 0.94,
+          "parse_success": 94,
+          "timeout_cases": 0
+        },
+        "linux-arm64": {
+          "cases": 100,
+          "feature_checks_passed": 330,
+          "feature_checks_total": 360,
+          "feature_rate": 0.916667,
+          "features": {
+            "augments": {
+              "passed": 15,
+              "rate": 0.9375,
+              "total": 16
+            },
+            "imports": {
+              "passed": 94,
+              "rate": 0.94,
+              "total": 100
+            },
+            "notification-type": {
+              "passed": 27,
+              "rate": 0.9,
+              "total": 30
+            },
+            "revision": {
+              "passed": 66,
+              "rate": 0.970588,
+              "total": 68
+            },
+            "table-index": {
+              "passed": 75,
+              "rate": 0.9375,
+              "total": 80
+            },
+            "textual-convention": {
+              "passed": 50,
+              "rate": 0.806452,
+              "total": 62
+            },
+            "trap-type-v1": {
+              "passed": 3,
+              "rate": 0.75,
+              "total": 4
+            }
+          },
+          "normalized_deterministic_cases": 100,
+          "parse_rate": 0.94,
+          "parse_success": 94,
+          "timeout_cases": 0
+        }
+      },
+      "qualified": true,
+      "version": "2.0.0"
+    }
+  },
+  "canonical_parser": "pysmi",
+  "canonical_parser_version": "2.0.0",
+  "corpus": {
+    "cases": 100,
+    "catalog_data_release": "license-signaled-2026-07-20.2",
+    "catalog_sha256": "f85842c12be24a0adfc1b8571782c5550f3f2ef82118ab657e2fb00f64c5414c",
+    "expectation": "observe",
+    "id": "public-positive-breadth-v1",
+    "manifest_sha256": "bc322c040dfce6a2ba1ae692898460baab40114ef1b04670b09517c2a2e440f1",
+    "sha256": "e299b9fd2c05200a5ca01740bf7e99e90628bafeb97a1a73fd97f385a011a2cd"
+  },
+  "evidence_sha256": {
+    "edge_linux_amd64/libsmi.json": "df777af0d52d2fd674df0c3f686907f2c23dcb73a36b71ef13f92cee84e916e4",
+    "edge_linux_amd64/net-snmp.json": "d8b63678fea4c8e560dd7ea65ae856e375191ab7d668e14adee4fb7e649d1878",
+    "edge_linux_amd64/pysmi.json": "2fdf4f8ff4669df8a76fd8e0e55d4d95ead3f0356f89bfe2229c2e7cb61a8037",
+    "edge_linux_amd64/summary.json": "6603e3b4a4107046e33eac67ef73f805770996ea48034a97de1f4d53994bf667",
+    "edge_linux_arm64/libsmi.json": "9136bdceea727626d30d6857ca746d89983d424306390cb0b9c3e9ce9f9e0fb5",
+    "edge_linux_arm64/net-snmp.json": "850273b4a96454ea5fcb54835953606f7ea0e9aeab7cee9e9f1aac54da8346a4",
+    "edge_linux_arm64/pysmi.json": "9a6cfaf1a30136525dfea0c23cf6038b58fc953ef61b23da2c3770f822a5971e",
+    "edge_linux_arm64/summary.json": "f7a1c0fd80d32b15f61b3cbfb54a95297da85f8595ea72231cce89b54c1d87c6",
+    "public_linux_amd64/libsmi.json": "f5634bdaa1543f69a284e31803fd15b8a4d56f6692ab6c91a57b1b53decf5237",
+    "public_linux_amd64/net-snmp.json": "147f8cb022df70342fe1a0378f223d2bf5c1746aa402540e9cfdbd0a54cadf3a",
+    "public_linux_amd64/pysmi.json": "e3511a14abd23e2adf053ac7c88015dd8f02891fe3a390e6f49148b075eba1de",
+    "public_linux_amd64/summary.json": "61279a71722411c50b41930cf238ac75c2046ce2e5884000404be7e65e45d88a",
+    "public_linux_arm64/libsmi.json": "e2f5fd33b87f2a8b5d19601cec1450a3e6714105dd2c3b7f92235d27bf6062b0",
+    "public_linux_arm64/net-snmp.json": "0c6c2431235d6892d98d610022fdf9ae4679a783bc7c7242f6b3dce122c2f64d",
+    "public_linux_arm64/pysmi.json": "75922c6c8211c226099c038af5eca387103affd7b3769ab58a2f6c5f7cacac7f",
+    "public_linux_arm64/summary.json": "54ee63db19f45653ba65d53a8088ef46b3767936c60ae9d7c1c9713ad0d1455e"
+  },
+  "execution_contract": {
+    "network": "disabled",
+    "process_isolation": "one parser CLI process per artifact and repetition",
+    "repetitions": 2,
+    "unit": "one bounded immutable artifact to one parser-adapter envelope",
+    "warm_shared_process_benchmark": "not-applicable-to-selected-contract"
+  },
+  "limitations": [
+    "The public corpus measures positive breadth, not real proprietary malformed inputs.",
+    "The adapter contract intentionally measures process-isolated artifacts, not a shared warm parser process.",
+    "A passing aggregate feature threshold does not erase the recorded per-feature and per-file failures."
+  ],
+  "schema_version": 1,
+  "selection_rule": "exactly-one-candidate-meets-all-thresholds",
+  "source_commit": "94e60809f3a01a8ba482ffc7319c8dc8a358fd30",
+  "status": "passed",
+  "thresholds": {
+    "cc0_expectations": 9,
+    "cc0_field_fidelity": 10,
+    "cc0_module_qualified_collision_required": true,
+    "public_each_feature_class_minimum_passes": 1,
+    "public_feature_rate_minimum": 0.9,
+    "public_normalized_determinism": 1.0,
+    "public_parse_rate_minimum": 0.9,
+    "public_timeout_cases": 0
+  }
+}

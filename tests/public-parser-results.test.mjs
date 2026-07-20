@@ -137,7 +137,8 @@ test("complete Linux amd64 and arm64 evidence passes without closing parser sele
   assert.equal(result.status, 0, result.stderr);
   const summary = JSON.parse(result.stdout);
   assert.equal(summary.public_bakeoff_evidence_gate, "passed");
-  assert.equal(summary.canonical_parser_gate, "open");
+  assert.equal(summary.canonical_parser_gate, "not-evaluated");
+  assert.equal(summary.selection_input, "eligible");
   assert.equal(summary.cases, 100);
   assert.equal(summary.candidates, 3);
 });

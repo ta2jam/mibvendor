@@ -299,11 +299,11 @@ def main() -> int:
                 "source_commit": next(iter(source_commits)),
                 "manifest_sha256": expected_corpus["manifest_sha256"],
                 "catalog_sha256": expected_corpus["catalog_sha256"],
-                "canonical_parser_gate": "open",
-                "remaining_evidence": [
-                    "malformed vendor behavior",
-                    "true revision-pair comparisons",
-                    "candidate-specific fidelity thresholds and selection decision",
+                "canonical_parser_gate": "not-evaluated",
+                "selection_input": "eligible",
+                "limitations": [
+                    "positive public breadth is separate from the CC0 malformed and revision-shape suite",
+                    "candidate-specific thresholds and the selection decision are evaluated separately",
                 ],
             },
             indent=2,

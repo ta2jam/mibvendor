@@ -1,6 +1,6 @@
 # ADR 0004: Keep the parser recommendation provisional
 
-Status: Provisional; Phase 0 parser gate open
+Status: Superseded by ADR 0011
 Date: 2026-07-14
 
 ## Decision
