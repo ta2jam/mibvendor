@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mibvendor.io/schemas/device-identity-contribution-review.schema.json",
+  "title": "mibvendor device identity contribution review",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "review_id",
+    "occurred_at",
+    "contribution_event_id",
+    "contribution_event_sha256",
+    "mapping_id",
+    "decision",
+    "reviewed_fields",
+    "approved_publication_scope",
+    "reason",
+    "reviewer_attestation",
+    "publication_state",
+    "promotion_required"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "review_id": { "type": "string", "pattern": "^review-[0-9]{8}T[0-9]{6}Z-[0-9a-f]{12}$" },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "contribution_event_id": { "type": "string", "pattern": "^contrib-[0-9]{8}T[0-9]{6}Z-[0-9a-f]{12}$" },
+    "contribution_event_sha256": {
+      "$ref": "#/$defs/sha256",
+      "description": "SHA-256 of the RFC 8785 canonicalized contribution event value"
+    },
+    "mapping_id": { "type": "string", "pattern": "^mapping-[a-z0-9][a-z0-9-]{2,63}$" },
+    "decision": {
+      "type": "string",
+      "enum": ["approved-evidence", "rejected", "needs-changes", "withdrawal-acknowledged"]
+    },
+    "reviewed_fields": {
+      "type": "array",
+      "maxItems": 9,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "claim_strength",
+          "enterprise_number",
+          "firmware_scope",
+          "match_method",
+          "mib_identifier",
+          "model",
+          "platform",
+          "product_family",
+          "sys_object_id"
+        ]
+      }
+    },
+    "approved_publication_scope": {
+      "type": ["string", "null"],
+      "enum": ["metadata-only", "definition-only", null]
+    },
+    "reason": {
+      "type": "string",
+      "enum": [
+        "evidence-approved-for-scope",
+        "insufficient-evidence",
+        "rights-scope-unclear",
+        "sensitive-data-risk",
+        "withdrawal-confirmed"
+      ]
+    },
+    "reviewer_attestation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "evidence_reviewed", "rights_scope_reviewed", "sensitive_data_reviewed"],
+      "properties": {
+        "role": { "const": "repository-maintainer" },
+        "evidence_reviewed": { "const": true },
+        "rights_scope_reviewed": { "const": true },
+        "sensitive_data_reviewed": { "const": true }
+      }
+    },
+    "publication_state": { "const": "quarantine" },
+    "promotion_required": { "const": true }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "decision": { "const": "approved-evidence" } },
+        "required": ["decision"]
+      },
+      "then": {
+        "properties": {
+          "reviewed_fields": { "minItems": 1 },
+          "approved_publication_scope": { "type": "string", "enum": ["metadata-only", "definition-only"] },
+          "reason": { "const": "evidence-approved-for-scope" }
+        }
+      },
+      "else": {
+        "properties": {
+          "reviewed_fields": { "maxItems": 0 },
+          "approved_publication_scope": { "type": "null" }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "decision": { "enum": ["rejected", "needs-changes"] } },
+        "required": ["decision"]
+      },
+      "then": {
+        "properties": {
+          "reason": { "enum": ["insufficient-evidence", "rights-scope-unclear", "sensitive-data-risk"] }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "decision": { "const": "withdrawal-acknowledged" } },
+        "required": ["decision"]
+      },
+      "then": { "properties": { "reason": { "const": "withdrawal-confirmed" } } }
+    }
+  ],
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

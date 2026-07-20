@@ -180,3 +180,10 @@ must replace the immutable identity release or disable a source; it must not
 silently rewrite an existing release. Report a questionable mapping with the
 numeric OID, claimed field, source URL, and non-sensitive counter-evidence. Do
 not attach a raw walk or customer data.
+
+Public identity contributions use the separate
+[contribution quarantine](DEVICE-IDENTITY-CONTRIBUTIONS.md). A contribution or
+maintainer evidence approval does not alter the website, API, active identity
+view, or immutable release. Promotion remains a distinct release operation.
+The ledgers currently contain no events or reviews and establish no community
+adoption.

@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "event_id": "contrib-20260720T080000Z-000000000001",
+  "event_type": "propose",
+  "occurred_at": "2026-07-20T08:00:00Z",
+  "mapping_id": "mapping-example-switch-48",
+  "supersedes_event_id": null,
+  "authority": {
+    "relationship": "independent-researcher",
+    "attests_right_to_submit": true,
+    "attests_no_sensitive_data": true,
+    "attests_public_contribution": true
+  },
+  "claim": {
+    "sys_object_id": "1.3.6.1.4.1.424242.7.1",
+    "enterprise_number": 424242,
+    "match_method": "exact",
+    "claim_strength": "exact_model",
+    "model": "ExampleSwitch 48",
+    "product_family": null,
+    "mib_identifier": null,
+    "platform": null,
+    "firmware_scope": {
+      "status": "observed_only",
+      "observed_versions": [
+        "1.2.3"
+      ]
+    }
+  },
+  "field_provenance": {
+    "claim_strength": [
+      {
+        "source_url": "https://example.invalid/revisions/example-docs-2026-07-01/identity-strength",
+        "source_revision": "example-docs-2026-07-01",
+        "artifact_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+        "source_date": "2026-07-01",
+        "evidence_type": "vendor-documentation",
+        "publication_scope": "factual-metadata-only"
+      }
+    ],
+    "enterprise_number": [
+      {
+        "source_url": "https://example.invalid/revisions/example-registry-2026-07-01/424242",
+        "source_revision": "example-registry-2026-07-01",
+        "artifact_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "source_date": "2026-07-01",
+        "evidence_type": "official-registry",
+        "publication_scope": "registry"
+      }
+    ],
+    "firmware_scope": [
+      {
+        "source_url": "https://example.invalid/revisions/example-observation-2026-07-02/firmware",
+        "source_revision": "example-observation-2026-07-02",
+        "artifact_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+        "source_date": "2026-07-02",
+        "evidence_type": "authorized-observation",
+        "publication_scope": "observation-only"
+      }
+    ],
+    "match_method": [
+      {
+        "source_url": "https://example.invalid/revisions/example-docs-2026-07-01/exact-oid",
+        "source_revision": "example-docs-2026-07-01",
+        "artifact_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+        "source_date": "2026-07-01",
+        "evidence_type": "vendor-documentation",
+        "publication_scope": "factual-metadata-only"
+      }
+    ],
+    "model": [
+      {
+        "source_url": "https://example.invalid/revisions/example-docs-2026-07-01/example-switch-48",
+        "source_revision": "example-docs-2026-07-01",
+        "artifact_sha256": "5555555555555555555555555555555555555555555555555555555555555555",
+        "source_date": "2026-07-01",
+        "evidence_type": "vendor-documentation",
+        "publication_scope": "factual-metadata-only"
+      }
+    ],
+    "sys_object_id": [
+      {
+        "source_url": "https://example.invalid/revisions/example-docs-2026-07-01/enterprise-oid",
+        "source_revision": "example-docs-2026-07-01",
+        "artifact_sha256": "6666666666666666666666666666666666666666666666666666666666666666",
+        "source_date": "2026-07-01",
+        "evidence_type": "vendor-documentation",
+        "publication_scope": "factual-metadata-only"
+      }
+    ]
+  },
+  "sanitized_observation": {
+    "sys_object_id": "1.3.6.1.4.1.424242.7.1",
+    "ent_physical_vendor_type": null,
+    "ent_physical_model_name": "ExampleSwitch 48",
+    "firmware_version": "1.2.3",
+    "observed_at": "2026-07-02",
+    "sanitization": {
+      "raw_walk_included": false,
+      "sys_descr_included": false,
+      "credentials_included": false,
+      "device_identifiers_included": false,
+      "customer_identifiers_included": false
+    }
+  },
+  "observation_provenance": {
+    "ent_physical_model_name": [
+      {
+        "source_url": "https://example.invalid/revisions/example-observation-2026-07-02/model",
+        "source_revision": "example-observation-2026-07-02",
+        "artifact_sha256": "7777777777777777777777777777777777777777777777777777777777777777",
+        "source_date": "2026-07-02",
+        "evidence_type": "authorized-observation",
+        "publication_scope": "observation-only"
+      }
+    ],
+    "firmware_version": [
+      {
+        "source_url": "https://example.invalid/revisions/example-observation-2026-07-02/firmware",
+        "source_revision": "example-observation-2026-07-02",
+        "artifact_sha256": "8888888888888888888888888888888888888888888888888888888888888888",
+        "source_date": "2026-07-02",
+        "evidence_type": "authorized-observation",
+        "publication_scope": "observation-only"
+      }
+    ],
+    "observed_at": [
+      {
+        "source_url": "https://example.invalid/revisions/example-observation-2026-07-02/date",
+        "source_revision": "example-observation-2026-07-02",
+        "artifact_sha256": "9999999999999999999999999999999999999999999999999999999999999999",
+        "source_date": "2026-07-02",
+        "evidence_type": "authorized-observation",
+        "publication_scope": "observation-only"
+      }
+    ],
+    "sys_object_id": [
+      {
+        "source_url": "https://example.invalid/revisions/example-observation-2026-07-02/sys-object-id",
+        "source_revision": "example-observation-2026-07-02",
+        "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source_date": "2026-07-02",
+        "evidence_type": "authorized-observation",
+        "publication_scope": "observation-only"
+      }
+    ]
+  },
+  "reason": "new-public-evidence"
+}

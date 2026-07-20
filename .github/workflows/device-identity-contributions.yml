@@ -1,0 +1,76 @@
+name: Device Identity Contributions
+
+on:
+  pull_request:
+    paths:
+      - "data/device-identity-contributions/**"
+      - "contracts/device-identity-contribution-*.schema.json"
+      - "scripts/lib/device-identity-contributions.mjs"
+      - "scripts/validate-device-identity-contribution*.mjs"
+      - "scripts/update-device-identity-contribution-report.mjs"
+      - "docs/DEVICE-IDENTITY-CONTRIBUTIONS.md"
+      - ".github/workflows/device-identity-contributions.yml"
+  push:
+    branches: [main]
+    paths:
+      - "data/device-identity-contributions/**"
+      - "contracts/device-identity-contribution-*.schema.json"
+      - "scripts/lib/device-identity-contributions.mjs"
+      - "scripts/validate-device-identity-contribution*.mjs"
+      - "scripts/update-device-identity-contribution-report.mjs"
+      - "docs/DEVICE-IDENTITY-CONTRIBUTIONS.md"
+      - ".github/workflows/device-identity-contributions.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: device-identity-contributions-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+      HEAD_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+      ACTOR: ${{ github.actor }}
+      REPOSITORY_OWNER: ${{ github.repository_owner }}
+      EVENT_NAME: ${{ github.event_name }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci --ignore-scripts
+
+      - name: Keep external contributions inside the quarantine ledger
+        shell: bash
+        run: |
+          if [[ "$EVENT_NAME" != "pull_request" || "${ACTOR,,}" == "${REPOSITORY_OWNER,,}" ]]; then
+            exit 0
+          fi
+          forbidden_paths="$({
+            git diff --name-only "$BASE_SHA" "$HEAD_SHA" -- \
+              | grep -Ev '^data/device-identity-contributions/(events|review-report)\.json$'
+          } || true)"
+          if [[ -n "$forbidden_paths" ]]; then
+            printf 'External contribution PRs may change only events.json and its deterministic review-report.json:\n%s\n' "$forbidden_paths" >&2
+            exit 1
+          fi
+
+      - run: npm run check:identity-contributions
+
+      - name: Enforce append-only contribution review policy
+        run: >-
+          node scripts/validate-device-identity-contribution-diff.mjs
+          --base "$BASE_SHA"
+          --head "$HEAD_SHA"
+          --actor "$ACTOR"
+          --repository-owner "$REPOSITORY_OWNER"

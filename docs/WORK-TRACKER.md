@@ -7,6 +7,15 @@ web UX, and the permanently free API. Work is ordered by dependency and product
 impact. A lower item does not displace an unfinished higher item unless the
 higher item is externally blocked and the lower item can progress safely.
 
+## Resume checkpoint
+
+Saved on 2026-07-20 after DATA-06 implementation and repository verification.
+Resume with DATA-09; do not start DATA-08 without measured demand. The first
+bounded DATA-09 step is to audit the existing 2,160-variant candidate inventory
+and active catalog contracts, then define one immutable variant key and
+query/dependency projection before changing runtime data or UI. DATA-06 has no
+runtime payload, so this checkpoint does not require a production deployment.
+
 ## Product decisions
 
 - The public API remains free. Billing, subscriptions, paid plans, and a paid
@@ -190,7 +199,7 @@ signals and does not require or retain a raw walk.
 
 ### DATA-06 — Community identity contribution workflow
 
-Status: `planned`
+Status: `complete`
 
 Add a schema and GitHub-based review workflow for numeric identity mappings,
 source evidence, sanitized device observations, firmware scope, and contributor
@@ -203,6 +212,21 @@ Acceptance criteria:
 - no contribution becomes public without evidence review;
 - provenance remains attached to every normalized field;
 - corrections and removals are append-only audit events.
+
+Verification: strict event/review schemas, synthetic examples, empty public
+ledgers, and a deterministic report implement a quarantine-only intake. The
+Git transition gate rejects mutation, deletion, reordering, duplicate JSON
+keys, byte-format drift, oversized blobs, unbounded fields, invalid event
+chains, review hash drift, incompatible evidence/review scopes, and non-owner
+review appends. External contribution PRs may change only the event ledger and
+its deterministic report; policy, schema, validator, review, workflow, and
+package changes are rejected by the trusted workflow boundary. Raw walks,
+`sysDescr`, credentials, customer/device identifiers, serial/MAC/IP values,
+and uncontrolled reason text are forbidden. Runtime Docker inputs exclude the
+entire contribution directory, every approval remains quarantined, and release
+promotion is separate. The ledgers contain zero events and zero reviews: this
+completion proves the bounded governance mechanism, not community adoption or
+additional production coverage.
 
 ### DATA-07 — Vendor-ready quarantine and promotion pipeline
 
@@ -780,3 +804,19 @@ with no billing code.
   explicit interrupted-operation recovery, and a constrained host wrapper.
 - Kept the operational boundary explicit: pointer activation is not a Docker
   restart, `release.env` update, or complete production deployment.
+
+### 2026-07-20 — DATA-06 contribution quarantine
+
+- Added closed event/review contracts with per-field evidence, contributor
+  authority attestations, sanitized allowlisted observations, append-only
+  corrections/withdrawals, and maintainer review bindings to canonical event
+  hashes.
+- Added deterministic JSON and report gates, duplicate/conflict visibility,
+  compatible review scopes, code-point sorting, controlled reason codes,
+  sensitive-data denylist signals, a 16 MiB document limit, bounded Git reads,
+  and atomic report replacement.
+- Added a read-only GitHub workflow with an external-actor tamper boundary and
+  owner-only review appends. Contribution data is excluded from production and
+  needs a separate immutable release promotion.
+- Started with zero events and zero reviews. No community adoption, vendor
+  participation, new identity coverage, or production publication is claimed.

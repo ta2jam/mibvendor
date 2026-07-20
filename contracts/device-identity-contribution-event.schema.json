@@ -1,0 +1,554 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mibvendor.io/schemas/device-identity-contribution-event.schema.json",
+  "title": "mibvendor device identity contribution event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "event_type",
+    "occurred_at",
+    "mapping_id",
+    "supersedes_event_id",
+    "authority",
+    "claim",
+    "field_provenance",
+    "sanitized_observation",
+    "observation_provenance",
+    "reason"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "event_id": { "$ref": "#/$defs/eventId" },
+    "event_type": { "type": "string", "enum": ["propose", "correct", "withdraw"] },
+    "occurred_at": { "$ref": "#/$defs/utcSeconds" },
+    "mapping_id": { "$ref": "#/$defs/mappingId" },
+    "supersedes_event_id": {
+      "anyOf": [
+        { "$ref": "#/$defs/eventId" },
+        { "type": "null" }
+      ]
+    },
+    "authority": { "$ref": "#/$defs/authority" },
+    "claim": {
+      "anyOf": [
+        { "$ref": "#/$defs/claim" },
+        { "type": "null" }
+      ]
+    },
+    "field_provenance": { "$ref": "#/$defs/claimProvenance" },
+    "sanitized_observation": {
+      "anyOf": [
+        { "$ref": "#/$defs/sanitizedObservation" },
+        { "type": "null" }
+      ]
+    },
+    "observation_provenance": { "$ref": "#/$defs/observationProvenance" },
+    "reason": {
+      "type": "string",
+      "enum": [
+        "new-public-evidence",
+        "corrected-public-evidence",
+        "accuracy-withdrawal",
+        "rights-boundary-withdrawal",
+        "contributor-withdrawal"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "event_type": { "const": "propose" } },
+        "required": ["event_type"]
+      },
+      "then": {
+        "properties": {
+          "supersedes_event_id": { "type": "null" },
+          "claim": { "$ref": "#/$defs/claim" },
+          "reason": { "const": "new-public-evidence" }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "event_type": { "const": "correct" } },
+        "required": ["event_type"]
+      },
+      "then": {
+        "properties": {
+          "supersedes_event_id": { "$ref": "#/$defs/eventId" },
+          "claim": { "$ref": "#/$defs/claim" },
+          "reason": { "const": "corrected-public-evidence" }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "event_type": { "const": "withdraw" } },
+        "required": ["event_type"]
+      },
+      "then": {
+        "properties": {
+          "supersedes_event_id": { "$ref": "#/$defs/eventId" },
+          "claim": { "type": "null" },
+          "field_provenance": { "$ref": "#/$defs/emptyObject" },
+          "sanitized_observation": { "type": "null" },
+          "observation_provenance": { "$ref": "#/$defs/emptyObject" },
+          "reason": {
+            "enum": ["accuracy-withdrawal", "rights-boundary-withdrawal", "contributor-withdrawal"]
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "claim": { "$ref": "#/$defs/claim" },
+          "field_provenance": {
+            "required": ["claim_strength", "enterprise_number", "firmware_scope", "match_method", "sys_object_id"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "claim": {
+            "type": "object",
+            "properties": { "model": { "type": "string" } },
+            "required": ["model"]
+          }
+        },
+        "required": ["claim"]
+      },
+      "then": { "properties": { "field_provenance": { "required": ["model"] } } },
+      "else": { "properties": { "field_provenance": { "not": { "required": ["model"] } } } }
+    },
+    {
+      "if": {
+        "properties": {
+          "claim": {
+            "type": "object",
+            "properties": { "product_family": { "type": "string" } },
+            "required": ["product_family"]
+          }
+        },
+        "required": ["claim"]
+      },
+      "then": { "properties": { "field_provenance": { "required": ["product_family"] } } },
+      "else": { "properties": { "field_provenance": { "not": { "required": ["product_family"] } } } }
+    },
+    {
+      "if": {
+        "properties": {
+          "claim": {
+            "type": "object",
+            "properties": { "mib_identifier": { "type": "string" } },
+            "required": ["mib_identifier"]
+          }
+        },
+        "required": ["claim"]
+      },
+      "then": { "properties": { "field_provenance": { "required": ["mib_identifier"] } } },
+      "else": { "properties": { "field_provenance": { "not": { "required": ["mib_identifier"] } } } }
+    },
+    {
+      "if": {
+        "properties": {
+          "claim": {
+            "type": "object",
+            "properties": { "platform": { "type": "string" } },
+            "required": ["platform"]
+          }
+        },
+        "required": ["claim"]
+      },
+      "then": { "properties": { "field_provenance": { "required": ["platform"] } } },
+      "else": { "properties": { "field_provenance": { "not": { "required": ["platform"] } } } }
+    },
+    {
+      "if": {
+        "properties": { "sanitized_observation": { "type": "object" } },
+        "required": ["sanitized_observation"]
+      },
+      "then": {
+        "properties": {
+          "observation_provenance": { "required": ["observed_at", "sys_object_id"] }
+        }
+      },
+      "else": {
+        "properties": { "observation_provenance": { "$ref": "#/$defs/emptyObject" } }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "sanitized_observation": {
+            "type": "object",
+            "properties": { "ent_physical_vendor_type": { "type": "string" } },
+            "required": ["ent_physical_vendor_type"]
+          }
+        },
+        "required": ["sanitized_observation"]
+      },
+      "then": { "properties": { "observation_provenance": { "required": ["ent_physical_vendor_type"] } } },
+      "else": { "properties": { "observation_provenance": { "not": { "required": ["ent_physical_vendor_type"] } } } }
+    },
+    {
+      "if": {
+        "properties": {
+          "sanitized_observation": {
+            "type": "object",
+            "properties": { "ent_physical_model_name": { "type": "string" } },
+            "required": ["ent_physical_model_name"]
+          }
+        },
+        "required": ["sanitized_observation"]
+      },
+      "then": { "properties": { "observation_provenance": { "required": ["ent_physical_model_name"] } } },
+      "else": { "properties": { "observation_provenance": { "not": { "required": ["ent_physical_model_name"] } } } }
+    },
+    {
+      "if": {
+        "properties": {
+          "sanitized_observation": {
+            "type": "object",
+            "properties": { "firmware_version": { "type": "string" } },
+            "required": ["firmware_version"]
+          }
+        },
+        "required": ["sanitized_observation"]
+      },
+      "then": { "properties": { "observation_provenance": { "required": ["firmware_version"] } } },
+      "else": { "properties": { "observation_provenance": { "not": { "required": ["firmware_version"] } } } }
+    }
+  ],
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "eventId": { "type": "string", "pattern": "^contrib-[0-9]{8}T[0-9]{6}Z-[0-9a-f]{12}$" },
+    "mappingId": { "type": "string", "pattern": "^mapping-[a-z0-9][a-z0-9-]{2,63}$" },
+    "utcSeconds": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "enterpriseOid": {
+      "type": "string",
+      "maxLength": 1024,
+      "pattern": "^1\\.3\\.6\\.1\\.4\\.1\\.[1-9][0-9]*(?:\\.(?:0|[1-9][0-9]*))+$"
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9 ._+()/:&-]{0,127}$",
+      "not": { "$ref": "#/$defs/commonSensitiveValue" }
+    },
+    "nullableLabel": {
+      "anyOf": [
+        { "$ref": "#/$defs/label" },
+        { "type": "null" }
+      ]
+    },
+    "mibIdentifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,127}$"
+    },
+    "nullableMibIdentifier": {
+      "anyOf": [
+        { "$ref": "#/$defs/mibIdentifier" },
+        { "type": "null" }
+      ]
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["relationship", "attests_right_to_submit", "attests_no_sensitive_data", "attests_public_contribution"],
+      "properties": {
+        "relationship": {
+          "type": "string",
+          "enum": ["source-author", "device-owner", "authorized-operator", "independent-researcher"]
+        },
+        "attests_right_to_submit": { "const": true },
+        "attests_no_sensitive_data": { "const": true },
+        "attests_public_contribution": { "const": true }
+      }
+    },
+    "firmwareScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "observed_versions"],
+      "properties": {
+        "status": { "type": "string", "enum": ["not_established", "observed_only"] },
+        "observed_versions": {
+          "type": "array",
+          "maxItems": 20,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/label" }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "status": { "const": "not_established" } },
+            "required": ["status"]
+          },
+          "then": { "properties": { "observed_versions": { "maxItems": 0 } } }
+        },
+        {
+          "if": {
+            "properties": { "status": { "const": "observed_only" } },
+            "required": ["status"]
+          },
+          "then": { "properties": { "observed_versions": { "minItems": 1 } } }
+        }
+      ]
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sys_object_id",
+        "enterprise_number",
+        "match_method",
+        "claim_strength",
+        "model",
+        "product_family",
+        "mib_identifier",
+        "platform",
+        "firmware_scope"
+      ],
+      "properties": {
+        "sys_object_id": { "$ref": "#/$defs/enterpriseOid" },
+        "enterprise_number": { "type": "integer", "minimum": 1, "maximum": 4294967295 },
+        "match_method": { "type": "string", "enum": ["exact", "prefix"] },
+        "claim_strength": { "type": "string", "enum": ["exact_model", "product_family", "vendor_identifier", "platform"] },
+        "model": { "$ref": "#/$defs/nullableLabel" },
+        "product_family": { "$ref": "#/$defs/nullableLabel" },
+        "mib_identifier": { "$ref": "#/$defs/nullableMibIdentifier" },
+        "platform": { "$ref": "#/$defs/nullableLabel" },
+        "firmware_scope": { "$ref": "#/$defs/firmwareScope" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "match_method": { "const": "prefix" } },
+            "required": ["match_method"]
+          },
+          "then": {
+            "properties": {
+              "claim_strength": { "const": "platform" },
+              "model": { "type": "null" },
+              "product_family": { "type": "null" },
+              "mib_identifier": { "type": "null" },
+              "platform": { "$ref": "#/$defs/label" }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "claim_strength": { "const": "exact_model" } },
+            "required": ["claim_strength"]
+          },
+          "then": {
+            "properties": {
+              "match_method": { "const": "exact" },
+              "model": { "$ref": "#/$defs/label" },
+              "mib_identifier": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "claim_strength": { "const": "product_family" } },
+            "required": ["claim_strength"]
+          },
+          "then": {
+            "properties": {
+              "match_method": { "const": "exact" },
+              "model": { "type": "null" },
+              "product_family": { "$ref": "#/$defs/label" },
+              "mib_identifier": { "type": "null" },
+              "platform": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "claim_strength": { "const": "vendor_identifier" } },
+            "required": ["claim_strength"]
+          },
+          "then": {
+            "properties": {
+              "match_method": { "const": "exact" },
+              "model": { "type": "null" },
+              "product_family": { "type": "null" },
+              "mib_identifier": { "$ref": "#/$defs/mibIdentifier" },
+              "platform": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "claim_strength": { "const": "platform" } },
+            "required": ["claim_strength"]
+          },
+          "then": {
+            "properties": {
+              "model": { "type": "null" },
+              "product_family": { "type": "null" },
+              "mib_identifier": { "type": "null" },
+              "platform": { "$ref": "#/$defs/label" }
+            }
+          }
+        }
+      ]
+    },
+    "sourceUrl": {
+      "type": "string",
+      "format": "uri",
+      "maxLength": 2048,
+      "pattern": "^https://",
+      "not": {
+        "anyOf": [
+          { "pattern": "^https://[^/?#]*@" },
+          { "pattern": "[?#]" }
+        ]
+      }
+    },
+    "sourceEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_url", "source_revision", "artifact_sha256", "source_date", "evidence_type", "publication_scope"],
+      "properties": {
+        "source_url": { "$ref": "#/$defs/sourceUrl" },
+        "source_revision": {
+          "type": "string",
+          "minLength": 7,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:+/-]{6,127}$"
+        },
+        "artifact_sha256": { "$ref": "#/$defs/sha256" },
+        "source_date": { "type": "string", "format": "date" },
+        "evidence_type": {
+          "type": "string",
+          "enum": ["official-registry", "vendor-documentation", "open-source-definition", "project-fixture", "authorized-observation"]
+        },
+        "publication_scope": {
+          "type": "string",
+          "enum": ["registry", "factual-metadata-only", "definition-only", "observation-only"]
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "evidence_type": { "const": "official-registry" } }, "required": ["evidence_type"] },
+          "then": { "properties": { "publication_scope": { "enum": ["registry", "factual-metadata-only"] } } }
+        },
+        {
+          "if": { "properties": { "evidence_type": { "const": "vendor-documentation" } }, "required": ["evidence_type"] },
+          "then": { "properties": { "publication_scope": { "const": "factual-metadata-only" } } }
+        },
+        {
+          "if": { "properties": { "evidence_type": { "const": "open-source-definition" } }, "required": ["evidence_type"] },
+          "then": { "properties": { "publication_scope": { "const": "definition-only" } } }
+        },
+        {
+          "if": { "properties": { "evidence_type": { "enum": ["project-fixture", "authorized-observation"] } }, "required": ["evidence_type"] },
+          "then": { "properties": { "publication_scope": { "const": "observation-only" } } }
+        }
+      ]
+    },
+    "evidenceRows": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/sourceEvidence" }
+    },
+    "claimProvenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sys_object_id": { "$ref": "#/$defs/evidenceRows" },
+        "enterprise_number": { "$ref": "#/$defs/evidenceRows" },
+        "match_method": { "$ref": "#/$defs/evidenceRows" },
+        "claim_strength": { "$ref": "#/$defs/evidenceRows" },
+        "model": { "$ref": "#/$defs/evidenceRows" },
+        "product_family": { "$ref": "#/$defs/evidenceRows" },
+        "mib_identifier": { "$ref": "#/$defs/evidenceRows" },
+        "platform": { "$ref": "#/$defs/evidenceRows" },
+        "firmware_scope": { "$ref": "#/$defs/evidenceRows" }
+      }
+    },
+    "sanitization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "raw_walk_included",
+        "sys_descr_included",
+        "credentials_included",
+        "device_identifiers_included",
+        "customer_identifiers_included"
+      ],
+      "properties": {
+        "raw_walk_included": { "const": false },
+        "sys_descr_included": { "const": false },
+        "credentials_included": { "const": false },
+        "device_identifiers_included": { "const": false },
+        "customer_identifiers_included": { "const": false }
+      }
+    },
+    "sanitizedObservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sys_object_id",
+        "ent_physical_vendor_type",
+        "ent_physical_model_name",
+        "firmware_version",
+        "observed_at",
+        "sanitization"
+      ],
+      "properties": {
+        "sys_object_id": { "$ref": "#/$defs/enterpriseOid" },
+        "ent_physical_vendor_type": {
+          "anyOf": [
+            { "$ref": "#/$defs/enterpriseOid" },
+            { "type": "null" }
+          ]
+        },
+        "ent_physical_model_name": { "$ref": "#/$defs/nullableLabel" },
+        "firmware_version": { "$ref": "#/$defs/nullableLabel" },
+        "observed_at": { "type": "string", "format": "date" },
+        "sanitization": { "$ref": "#/$defs/sanitization" }
+      }
+    },
+    "observationProvenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sys_object_id": { "$ref": "#/$defs/evidenceRows" },
+        "ent_physical_vendor_type": { "$ref": "#/$defs/evidenceRows" },
+        "ent_physical_model_name": { "$ref": "#/$defs/evidenceRows" },
+        "firmware_version": { "$ref": "#/$defs/evidenceRows" },
+        "observed_at": { "$ref": "#/$defs/evidenceRows" }
+      }
+    },
+    "emptyObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "maxProperties": 0
+    },
+    "commonSensitiveValue": {
+      "anyOf": [
+        { "type": "string", "pattern": "@" },
+        { "type": "string", "pattern": "(?:[Hh][Tt][Tt][Pp][Ss]?|[Ff][Tt][Pp])://" },
+        { "type": "string", "pattern": "(?:[0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}" },
+        { "type": "string", "pattern": "[0-9A-Fa-f]{4}(?:\\.[0-9A-Fa-f]{4}){2}" },
+        { "type": "string", "pattern": "(?:[0-9]{1,3}\\.){3}[0-9]{1,3}" },
+        { "type": "string", "pattern": "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[1-5][0-9A-Fa-f]{3}-[89AaBb][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}" }
+      ]
+    }
+  }
+}

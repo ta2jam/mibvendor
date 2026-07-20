@@ -1,0 +1,8 @@
+/data/device-identity-contributions/reviews.json @ta2jam
+/contracts/device-identity-contribution-event.schema.json @ta2jam
+/contracts/device-identity-contribution-review.schema.json @ta2jam
+/scripts/lib/device-identity-contributions.mjs @ta2jam
+/scripts/validate-device-identity-contributions.mjs @ta2jam
+/scripts/validate-device-identity-contribution-diff.mjs @ta2jam
+/.github/workflows/device-identity-contributions.yml @ta2jam
+/.github/CODEOWNERS @ta2jam

@@ -45,12 +45,17 @@ for (const required of [
   "docs/decisions/0008-license-signal-publication-policy.md",
   "docs/decisions/0009-permanently-free-api.md",
   "docs/DEVICE-IDENTITY.md",
+  "docs/DEVICE-IDENTITY-CONTRIBUTIONS.md",
   "docs/operations/device-identity-prefix-benchmark.md",
   "contracts/source-snapshot.schema.json",
   "contracts/canonical-module.schema.json",
   "contracts/data-release.schema.json",
   "contracts/active-release-pointer.schema.json",
   "contracts/parser-adapter.schema.json",
+  "contracts/device-identity-contribution-event.schema.json",
+  "contracts/device-identity-contribution-review.schema.json",
+  "contracts/examples/device-identity-contribution-event.json",
+  "contracts/examples/device-identity-contribution-review.json",
   "scripts/validate-foundation-contracts.mjs",
   "scripts/canonical-json.mjs",
   "Dockerfile",
@@ -61,6 +66,8 @@ for (const required of [
   "deploy/mibvendor-health.timer",
   ".github/workflows/production-monitor.yml",
   ".github/workflows/source-freshness.yml",
+  ".github/workflows/device-identity-contributions.yml",
+  ".github/CODEOWNERS",
   ".github/workflows/parser-arm64.yml",
   "experiments/parser-bakeoff/.dockerignore",
   "experiments/parser-bakeoff/scripts/validate_corpus_intake.py",
@@ -92,6 +99,9 @@ for (const required of [
   "data/device-identities/release.json",
   "data/device-identities/runtime-index.json",
   "data/device-identities/publication-controls.json",
+  "data/device-identity-contributions/events.json",
+  "data/device-identity-contributions/reviews.json",
+  "data/device-identity-contributions/review-report.json",
   "data/device-identities/licenses/SNMP-INFO-LICENSE",
   "data/device-identities/licenses/librenms/LICENSE.txt",
   "data/device-identities/licenses/librenms/README.md",
@@ -130,6 +140,11 @@ for (const required of [
   "scripts/validate-project-identity-fixtures.mjs",
   "scripts/update-project-identity-prefixes.mjs",
   "scripts/validate-project-identity-prefixes.mjs",
+  "scripts/update-device-identity-contribution-report.mjs",
+  "scripts/validate-device-identity-contributions.mjs",
+  "scripts/validate-device-identity-contribution-diff.mjs",
+  "scripts/lib/device-identity-contributions.mjs",
+  "tests/device-identity-contributions.test.mjs",
   "scripts/lib/pinned-license-classifier.mjs",
   "scripts/update-iana-pen.mjs",
   "src/publication-controls.mjs",
@@ -214,6 +229,67 @@ for (const requiredFreshnessBoundary of [
   if (!sourceFreshnessWorkflow.includes(requiredFreshnessBoundary)) {
     failures.push(`Source freshness workflow is missing boundary: ${requiredFreshnessBoundary}`);
   }
+}
+
+const contributionWorkflow = await readFile(
+  path.join(root, ".github", "workflows", "device-identity-contributions.yml"),
+  "utf8",
+);
+for (const requiredContributionBoundary of [
+  "pull_request:",
+  "push:",
+  "branches: [main]",
+  "permissions:\n  contents: read",
+  "fetch-depth: 0",
+  "timeout-minutes: 5",
+  "npm ci --ignore-scripts",
+  "npm run check:identity-contributions",
+  "scripts/validate-device-identity-contribution-diff.mjs",
+  "BASE_SHA:",
+  "HEAD_SHA:",
+  "ACTOR:",
+  "REPOSITORY_OWNER:",
+  "EVENT_NAME:",
+  "Keep external contributions inside the quarantine ledger",
+  "grep -Ev '^data/device-identity-contributions/(events|review-report)\\.json$'"
+]) {
+  if (!contributionWorkflow.includes(requiredContributionBoundary)) {
+    failures.push(`Device identity contribution workflow is missing boundary: ${requiredContributionBoundary}`);
+  }
+}
+for (const forbiddenContributionCapability of [
+  "contents: write",
+  "issues: write",
+  "pull-requests: write",
+  "workflow_run:"
+]) {
+  if (contributionWorkflow.includes(forbiddenContributionCapability)) {
+    failures.push(`Device identity contribution workflow must not grant or trigger: ${forbiddenContributionCapability}`);
+  }
+}
+for (const requiredContributionPath of [
+  '"data/device-identity-contributions/**"',
+  '"contracts/device-identity-contribution-*.schema.json"',
+  '"scripts/lib/device-identity-contributions.mjs"',
+  '"scripts/validate-device-identity-contribution*.mjs"'
+]) {
+  const occurrences = contributionWorkflow.split(requiredContributionPath).length - 1;
+  if (occurrences !== 2) {
+    failures.push(`Device identity contribution workflow path must cover PR and main push exactly once: ${requiredContributionPath}`);
+  }
+}
+
+const codeowners = await readFile(path.join(root, ".github", "CODEOWNERS"), "utf8");
+for (const ownerBoundary of [
+  "/data/device-identity-contributions/reviews.json @ta2jam",
+  "/contracts/device-identity-contribution-event.schema.json @ta2jam",
+  "/contracts/device-identity-contribution-review.schema.json @ta2jam",
+  "/scripts/lib/device-identity-contributions.mjs @ta2jam",
+  "/scripts/validate-device-identity-contribution-diff.mjs @ta2jam",
+  "/.github/workflows/device-identity-contributions.yml @ta2jam",
+  "/.github/CODEOWNERS @ta2jam"
+]) {
+  if (!codeowners.includes(ownerBoundary)) failures.push(`CODEOWNERS is missing protected contribution path: ${ownerBoundary}`);
 }
 
 const arm64ParserWorkflow = await readFile(path.join(root, ".github", "workflows", "parser-arm64.yml"), "utf8");

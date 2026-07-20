@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "publication_boundary": {
+    "contribution_state": "quarantine",
+    "automatic_publication_count": 0,
+    "separate_release_promotion_required": true
+  },
+  "source_digests": {
+    "events_sha256": "94b9298db91ce457b8714689d0b6bf6b1a21dd6af8799641f20826de836aeb39",
+    "reviews_sha256": "27f1423b3d210942d254298844612acc13eb3d55eb1aa8344d6220541c7757aa"
+  },
+  "counts": {
+    "events": 0,
+    "proposals": 0,
+    "corrections": 0,
+    "withdrawals": 0,
+    "reviews": 0,
+    "active_mapping_tips": 0,
+    "pending_review_events": 0,
+    "approved_evidence_events": 0,
+    "duplicate_claim_groups": 0,
+    "conflict_groups": 0
+  },
+  "review_decisions": {
+    "approved-evidence": 0,
+    "needs-changes": 0,
+    "rejected": 0,
+    "withdrawal-acknowledged": 0
+  },
+  "pending_review_event_ids": [],
+  "approved_evidence_event_ids": [],
+  "duplicate_claim_groups": [],
+  "conflict_groups": [],
+  "mapping_tips": [],
+  "report_sha256": "7666e9e258d2ad41b3bebdce10f9f01a2afeeb1f06ce6890f764421869c6f24f"
+}

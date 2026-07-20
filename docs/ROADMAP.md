@@ -66,9 +66,9 @@ not a declaration that Phase 1 formally started.
 
 - Complete: source governance, canonical intermediate schemas, immutable
   release model, adapter contract, 20 UX golden tasks, reproducible CI, and
-  fail-closed publication controls.
-- Open: the provisional contracts may still change before Phase 0 closes, and
-  community-contribution governance remains unfinished.
+  fail-closed publication controls, plus quarantine-only community identity
+  contribution governance.
+- Open: the provisional contracts may still change before Phase 0 closes.
 
 ## Phase 2 — data engine and internal resolver
 

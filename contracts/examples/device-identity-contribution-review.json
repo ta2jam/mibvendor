@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "review_id": "review-20260720T090000Z-000000000001",
+  "occurred_at": "2026-07-20T09:00:00Z",
+  "contribution_event_id": "contrib-20260720T080000Z-000000000001",
+  "contribution_event_sha256": "2d05420e47a7ea54badb7088a84502796f25cff32e522cd1eb94d3437abc3588",
+  "mapping_id": "mapping-example-switch-48",
+  "decision": "approved-evidence",
+  "reviewed_fields": [
+    "claim_strength",
+    "enterprise_number",
+    "firmware_scope",
+    "match_method",
+    "model",
+    "sys_object_id"
+  ],
+  "approved_publication_scope": "metadata-only",
+  "reason": "evidence-approved-for-scope",
+  "reviewer_attestation": {
+    "role": "repository-maintainer",
+    "evidence_reviewed": true,
+    "rights_scope_reviewed": true,
+    "sensitive_data_reviewed": true
+  },
+  "publication_state": "quarantine",
+  "promotion_required": true
+}

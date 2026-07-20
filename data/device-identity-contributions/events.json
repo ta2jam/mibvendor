@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "policy": {
+    "publication_state": "quarantine",
+    "automatic_publication": false,
+    "raw_walks_allowed": false,
+    "sensitive_values_allowed": false,
+    "review_required": true,
+    "promotion_required": true
+  },
+  "events": []
+}

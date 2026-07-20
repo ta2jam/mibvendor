@@ -3,6 +3,25 @@
 All notable changes are documented here. The project uses Semantic Versioning
 while it is pre-1.0; research releases may remain unstable.
 
+## [Unreleased]
+
+### Added
+
+- Added the DATA-06 public contribution quarantine: closed event/review
+  schemas, field-level evidence, append-only correction and withdrawal events,
+  maintainer-only reviews, deterministic conflict reporting, and a read-only
+  GitHub validation workflow.
+- Added deterministic duplicate-key rejection, a 16 MiB document budget,
+  controlled reason codes, sensitive-data signal checks, review/evidence scope
+  compatibility, bounded Git blob reads, and atomic report replacement.
+
+### Security
+
+- Contribution ledgers remain outside the production image and cannot publish
+  identity claims automatically. The introduced ledgers contain zero events
+  and zero reviews; this is governance infrastructure, not community-adoption
+  or production-coverage evidence.
+
 ## [0.4.0-alpha.3] - 2026-07-20
 
 ### Added
