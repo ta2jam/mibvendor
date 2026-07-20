@@ -155,7 +155,7 @@ function assertConformsToOpenApi(value, schemaName) {
 
 test("OpenAPI surface is exact and explicitly public alpha", () => {
   assert.equal(specification.openapi, "3.1.0");
-  assert.equal(packageDocument.version, "0.4.0-alpha.1");
+  assert.equal(packageDocument.version, "0.4.0-alpha.2");
   assert.equal(specification.info.version, packageDocument.version);
   assert.equal(specification.info.title, "mibvendor Permanently Free Public API");
   assert.match(specification.info.description, /Permanently free/);
@@ -258,7 +258,18 @@ test("identity examples and runtime responses reject undocumented properties", a
     })).json();
     assertConformsToOpenApi(assessment, "DeviceIdentityAssessmentResponse");
 
-    for (const oid of ["1.3.6.1.4.1.9.1.2435", "1.3.6.1.4.1.8072.3.2.10"]) {
+    const projectDefinitionAssessment = await (await fetch(`${base}/v1/device-identities:assess`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ signals: { sys_object_id: "1.3.6.1.4.1.9.6.1.83.10.1" } })
+    })).json();
+    assertConformsToOpenApi(projectDefinitionAssessment, "DeviceIdentityAssessmentResponse");
+
+    for (const oid of [
+      "1.3.6.1.4.1.9.1.2435",
+      "1.3.6.1.4.1.9.6.1.83.10.1",
+      "1.3.6.1.4.1.8072.3.2.10"
+    ]) {
       const lookup = await (await fetch(`${base}/v1/sys-object-ids/${oid}`)).json();
       assertConformsToOpenApi(lookup, "SysObjectIdResponse");
     }
@@ -365,6 +376,8 @@ test("OpenAPI bounds and trust fields match the executable probe", () => {
   assert.equal(schemas.DeviceIdentityStatistics.properties.product_families.maximum, IDENTITY_STATISTICS.product_families);
   assert.equal(schemas.DeviceIdentityStatistics.properties.vendor_identifiers.maximum, IDENTITY_STATISTICS.vendor_identifiers);
   assert.equal(schemas.DeviceIdentityStatistics.properties.project_observation_oids.maximum, IDENTITY_STATISTICS.project_observation_oids);
+  assert.equal(schemas.DeviceIdentityStatistics.properties.project_definition_oids.maximum, IDENTITY_STATISTICS.project_definition_oids);
+  assert.equal(schemas.DeviceIdentityStatistics.properties.project_identity_oid_coverage.maximum, IDENTITY_STATISTICS.project_identity_oid_coverage);
   assert.equal(schemas.DeviceIdentityStatistics.properties.disabled_sources.maximum, IDENTITY_SOURCES.length);
   assert.equal(schemas.DataRelease.properties.identity_sources.minItems, IDENTITY_SOURCES.length);
   assert.equal(schemas.DataRelease.properties.identity_sources.maxItems, IDENTITY_SOURCES.length);

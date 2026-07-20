@@ -3,6 +3,30 @@
 All notable changes are documented here. The project uses Semantic Versioning
 while it is pre-1.0; research releases may remain unstable.
 
+## [0.4.0-alpha.2] - 2026-07-20
+
+### Added
+
+- Added immutable `device-identity-2026-07-20.2` evidence with 270
+  medium-confidence exact-model definitions from the pinned RackTables static
+  `known_switches` table. The derived dataset is GPL-2.0-only and retains the
+  upstream notice and full license text.
+- Added an independent `racktables-known-switches` publication kill switch,
+  source/review/license checksum gates, closed static parsing, bounded model
+  normalization, and sensitive-value rejection without executing PHP.
+- Added explicit dispositions for all 19 definition-observation overlaps:
+  15 resolve as reviewed equivalent/less-specific evidence and four material
+  disagreements remain ambiguous.
+
+### Changed
+
+- Expanded distinct exact lookup keys from 6,218 to 6,391 and distinct project
+  model-evidence OID coverage from 713 to 964 without counting 33 quarantined
+  source candidates as published definitions.
+- Kept open-source definitions, vendor-MIB metadata, project observations, and
+  device-reported evidence separate in the API and UI. No firmware range or raw
+  RackTables source content is inferred or served.
+
 ## [0.4.0-alpha.1] - 2026-07-20
 
 ### Added
@@ -342,6 +366,7 @@ while it is pre-1.0; research releases may remain unstable.
   evidence cannot be marked complete.
 - Repository checks and CI without production MIB data.
 
+[0.4.0-alpha.2]: https://github.com/ta2jam/mibvendor/releases/tag/v0.4.0-alpha.2
 [0.4.0-alpha.1]: https://github.com/ta2jam/mibvendor/releases/tag/v0.4.0-alpha.1
 [0.3.0-alpha.2]: https://github.com/ta2jam/mibvendor/releases/tag/v0.3.0-alpha.2
 [0.3.0-alpha.1]: https://github.com/ta2jam/mibvendor/releases/tag/v0.3.0-alpha.1

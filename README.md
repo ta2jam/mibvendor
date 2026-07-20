@@ -47,15 +47,19 @@ separates 12 redistributable sources from 20 directory-only sources. The PEN
 registry remains complete for the bundled IANA snapshot. Unsupported vendors
 are not converted into guessed products or models.
 
-The separate `device-identity-2026-07-20.1` release adds 6,199 exact vendor-MIB
-OID assignments across ten vendor families. Only 36 narrow, reviewed Catalyst
-9300 normalizations assert an exact device model. Another 1,491 assignments
-stop at a product family or category, while 4,672 expose only the vendor's MIB
-identifier because the symbol may denote a device, chassis, module, line card,
-or component. A separate corroboration layer retains 1,023 sanitized project
-observations over 713 OIDs, including 72 conflicting OIDs; observations never
-become universal model mappings. The runtime also retains 19 existing
-Net-SNMP/SigScale platform mappings, for 6,218 exact lookup keys in total.
+The separate `device-identity-2026-07-20.2` release publishes 6,391 distinct
+exact lookup keys. Its vendor-MIB layer remains 6,199 assignments: 36 narrow,
+reviewed Catalyst 9300 model normalizations, 1,491 product-family/category
+claims, and 4,672 generic vendor identifiers. A separate, GPL-2.0-only
+RackTables-derived dataset contributes 270 medium-confidence exact-model
+claims from a pinned static definition table; these are project definitions,
+not vendor-MIB assignments or universally resolved models. Of 303 non-root
+source candidates, 33 are quarantined. Nineteen definition-observation
+overlaps have explicit reviewed dispositions and four remain material
+conflicts. The 1,023 sanitized project observations still cover 713 OIDs; the
+union of project observations and published definitions covers 964 distinct
+OIDs. No layer asserts firmware support, and raw source code, descriptions,
+walks, or private device fields are served.
 
 ## Use it safely
 
@@ -108,6 +112,19 @@ The status endpoint is a live-process self-check, not uptime history or an SLA.
 | `GET` | `/v1/modules/{module}/dependencies` | Dependency graph states |
 | `POST` | `/v1/resolve:batch` | Order-preserving OID resolution |
 | `GET` | `/v1/data-release` | Active release and corpus counts |
+
+RackTables-derived definition example:
+
+```sh
+curl --fail-with-body --compressed \
+  https://mibvendor.io/v1/sys-object-ids/1.3.6.1.4.1.9.6.1.83.10.1
+```
+
+The result identifies `SG 300-10` with
+`claim_scope: "open-source-project-device-definition"`, model confidence
+`medium`, source-assignment confidence `high`, and
+`firmware_scope: "not_established"`. Provenance reports `definition-only` and
+`raw_download: false`; it is not presented as vendor-MIB evidence.
 
 Example batch request:
 

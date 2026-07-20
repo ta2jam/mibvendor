@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "identity_release": "device-identity-2026-07-20.1",
-  "release_sha256": "98c71804b97e4c03fd8a64e272b3c3fbcd106ab894a4a4d35c5954a19aa3359f",
+  "identity_release": "device-identity-2026-07-20.2",
+  "release_sha256": "5c15557ebf975f75cba9fdde64f50c6189ae29aac54f7ae160be4c7342023fd0",
   "datasets": {
     "builtin_claims": {
       "net-snmp": {
@@ -18,7 +18,9 @@
     "license_evidence": {
       "librenms_license_sha256": "67c255477940ba46460c0e6774401897e99ef9e1f82fb08d6a9b7680f39dd038",
       "librenms_readme_sha256": "83c5e62a686a95f178a00c2bfbd25a7cdc4a0b2880ebfda250fb72e70e0d2ae3",
-      "snmp_info_license_sha256": "2052b8696fbcee7d026c45be0d007cd164a261ad08843e73164913364dc408ce"
+      "snmp_info_license_sha256": "2052b8696fbcee7d026c45be0d007cd164a261ad08843e73164913364dc408ce",
+      "racktables_copying_sha256": "380d0eb15d2fcb04f55ea2f8ac5e1769264ca92e531b72094e24eb5569207b75",
+      "racktables_license_sha256": "ab15fd526bd8dd18a9e77ebc139656bf4d33e97fc7238cd11bf60e2b9b8666c6"
     },
     "vendor_mib": {
       "snapshot_id": "librenms-vendor-mib-identity-dfba713a-2026-07-20",
@@ -36,12 +38,43 @@
       "manifest_file_sha256": "3e2e0ae316565fbf821063096c87e63b1d92038cb3d12ca5b371960c4ef9eb6a",
       "observation_count": 1023
     },
+    "project_definitions": {
+      "dataset_id": "racktables-exact-device-definitions-e5fff9f8-2026-07-20",
+      "dataset_license": {
+        "spdx": "GPL-2.0-only",
+        "scope": "RackTables-derived definition content in data/device-identities/project-definitions.json, data/device-identities/runtime-index.json, and API responses",
+        "upstream_notice": "data/device-identities/licenses/racktables/COPYING",
+        "full_text": "data/device-identities/licenses/racktables/LICENSE"
+      },
+      "dataset_sha256": "4655a32926b4d50aa534904011ab07f401344d1591907fed1f1b799711725559",
+      "file_sha256": "daf2873addb989d41edd4e13ab060a1b162d0c3df6c076c73830e7bc7a38202e",
+      "manifest_sha256": "0ae20eba9d2c61977ed1d11b082b85ba6e79371f595f1a8b69ab7461877e62f3",
+      "manifest_file_sha256": "01d0fa229b7106e943066e449b2a290ff2fad8cb05811f7bda51969deadbefcd",
+      "definition_count": 270,
+      "exact_oid_candidate_count": 303,
+      "quarantined_entry_count": 33
+    },
+    "integration_measurements": {
+      "source_exact_oid_candidates": 303,
+      "source_candidate_fixture_overlap_oids": 22,
+      "source_candidate_vendor_overlap_oids": 108,
+      "source_candidate_new_vs_fixture_oids": 281,
+      "source_candidate_new_vs_vendor_fixture_union_oids": 180,
+      "model_definition_oids": 270,
+      "model_definition_fixture_overlap_oids": 19,
+      "model_definition_vendor_overlap_oids": 97,
+      "model_definition_new_vs_fixture_oids": 251,
+      "model_definition_new_vs_vendor_fixture_union_oids": 160,
+      "project_model_oid_coverage": 964,
+      "project_exact_oid_candidate_inventory": 994
+    },
     "runtime_index": {
       "schema_version": 1,
-      "runtime_index_sha256": "cb224e4a8815b00ae82675fad4863fdce8cf2561526a464a9d8dfbc1532b4074",
-      "file_sha256": "ed87e68ac623e155834e257ca605abe611c81bc749203085b040aee2383a097e",
+      "runtime_index_sha256": "d543c3492211029285c0f127d56d1fdd6814dc2c6c4015e45a0e3adb96abc5b6",
+      "file_sha256": "4df7f3b5f4ef864932c06a95631f8385902620d149a8fe572e006e61931c5bd6",
       "vendor_claim_count": 6199,
-      "project_fixture_oid_count": 713
+      "project_fixture_oid_count": 713,
+      "project_definition_count": 270
     }
   },
   "source_ids": [
@@ -55,6 +88,7 @@
     "net-snmp",
     "netscreen-products",
     "patton-smartnode-products",
+    "racktables-known-switches",
     "sigscale-mibs",
     "silverpeak-products",
     "snmp-info-project-tests",

@@ -7,7 +7,7 @@ owns, operates, or currently serves a response from a device.
 
 ## Public evidence layers
 
-The `device-identity-2026-07-20.1` release keeps three materially different
+The `device-identity-2026-07-20.2` release keeps four materially different
 layers separate:
 
 1. **Registry** — the contact-free IANA PEN snapshot supplies the enterprise
@@ -17,20 +17,29 @@ layers separate:
    pinned artifacts. Artifact-specific restrictions override repository license
    signals: raw MIB text and descriptions are not retained or served from this
    layer.
-3. **Project observations** — sanitized LibreNMS and SNMP::Info test fixtures
+3. **Open-source project device definitions** — 270 bounded model labels are
+   normalized from the pinned RackTables static `known_switches` table. They
+   are medium-confidence project definitions, not vendor-MIB assignments.
+   The derived dataset is GPL-2.0-only; upstream `COPYING` and `LICENSE` are
+   retained. Raw PHP, source descriptions, port summaries, and a raw-data API
+   are not published.
+4. **Project observations** — sanitized LibreNMS and SNMP::Info test fixtures
    show that a project observed a model with an exact `sysObjectID`. These
    records can corroborate an assessment; they never turn that observation into
    a universal model mapping.
 
-The immutable release contains 6,199 vendor-MIB exact OID assignments across
-ten enterprise families. Only 36 narrow, reviewed Catalyst 9300 normalizations
-assert an exact device model. Another 1,491 assignments stop at a product
-family or category. The remaining 4,672 expose a generic vendor MIB identifier
-and assert neither a whole-device model nor a product family; the identifier
-may describe a device, chassis, module, line card, or component. A separate
-project layer contains 1,023 sanitized observations over 713 exact OIDs,
-including 72 OIDs with conflicting observations. Those observations are not
-added to any primary mapping category.
+The immutable release publishes 6,391 distinct exact lookup keys. The 6,199
+vendor-MIB assignments still contain only 36 reviewed model normalizations,
+1,491 family/category claims, and 4,672 generic vendor identifiers. RackTables
+adds 270 separate exact-model claims at medium confidence. That figure is a
+claim count, not a count of reviewed or unconditionally resolved lookups:
+four of 19 reviewed definition-observation overlaps remain material conflicts
+and return no singular model. The source parser found 303 non-root exact OID
+candidates; 33 are quarantined and do not enter runtime lookup. The project
+observation layer remains 1,023 observations over 713 OIDs, including 72 OIDs
+with conflicting observations. Published definitions plus observations cover
+964 distinct OIDs. Candidate inventory and quarantine counts are never labeled
+as public resolution coverage.
 
 Only seven PEN links currently have a reviewed `organization_key` from the
 pinned public macvendor organization snapshot. Every other key is `null`; the
@@ -72,6 +81,13 @@ The Catalyst 9300 reference cases deliberately distinguish:
 - a `.2435` OID combined with `C9300-24P` as conflicting evidence;
 - generic “Cisco IOS XE” text as platform/vendor evidence only.
 
+The RackTables reference case
+`1.3.6.1.4.1.9.6.1.83.10.1` resolves to `SG 300-10` with
+`claim_scope: "open-source-project-device-definition"`, model confidence
+`medium`, exact source-assignment confidence `high`, and
+`firmware_scope: "not_established"`. Its provenance remains visibly separate
+from vendor-MIB metadata and project observations.
+
 ## API and privacy boundary
 
 Use `GET /v1/sys-object-ids/{oid}` for one exact numeric lookup. Use
@@ -79,7 +95,7 @@ Use `GET /v1/sys-object-ids/{oid}` for one exact numeric lookup. Use
 
 ```json
 {
-  "identity_release": "device-identity-2026-07-20.1",
+  "identity_release": "device-identity-2026-07-20.2",
   "signals": {
     "sys_object_id": "1.3.6.1.4.1.9.1.2494",
     "ent_physical_model_name": "C9300-48P"
@@ -93,10 +109,12 @@ fields, customer identifiers, or arbitrary device output. `sys_descr` is
 bounded to 2,048 characters, used only for narrow platform signatures, and is
 not returned in the response. POST responses are `no-store`.
 
-Candidates and conflicts are capped at 32. Exact lookup is O(1) after an
-O(records + observations) startup index build; assessment work is bounded by
-the small fixed signal set and candidate cap. These bounds contain latency,
-memory, and abuse cost without creating a paid quota.
+Candidates and conflicts are capped at 32. Exact lookup is expected O(1) after
+an O(V + D + F) startup build for vendor claims V, project definitions D, and
+fixture OIDs F. Index memory is O(V + D + F); source data and retained license
+bytes dominate build-time disk, while runtime maps dominate identity memory.
+Assessment work is bounded by the fixed signal set and candidate cap. These
+bounds contain latency, memory, and abuse cost without creating a paid quota.
 
 The service allocates 120 fair-use units per client per minute. Ordinary
 requests cost one unit and this assessment costs four. Clients must honor

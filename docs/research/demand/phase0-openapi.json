@@ -3,7 +3,7 @@
   "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
   "info": {
     "title": "mibvendor Permanently Free Public API",
-    "version": "0.4.0-alpha.1",
+    "version": "0.4.0-alpha.2",
     "description": "Permanently free, source-aware OID and bounded device-identity intelligence plus a fail-closed MIB source catalog. Direct PEN and reviewed organization-key fields avoid name-only correlation; unavailable keys stay null. The assessment endpoint accepts only four bounded identity signals, never a raw SNMP walk. There is no paid tier, billing, subscription, or paid quota upgrade. Free access is fair-use bounded, not unlimited use or an availability SLA. Raw files are served only for modules approved by file-specific or recognized pinned repository-license evidence; unapproved vendor sources remain directory-only."
   },
   "x-mibvendor-status": "public-alpha",
@@ -97,14 +97,14 @@
                     "summary": "Exact C9300-24T assignment with direct PEN and reviewed organization key",
                     "value": {
                       "data_release": "license-signaled-2026-07-20.2",
-                      "identity_release": "device-identity-2026-07-20.1",
+                      "identity_release": "device-identity-2026-07-20.2",
                       "identity_publication": {
-                        "identity_release": "device-identity-2026-07-20.1",
-                        "identity_release_sha256": "98c71804b97e4c03fd8a64e272b3c3fbcd106ab894a4a4d35c5954a19aa3359f",
+                        "identity_release": "device-identity-2026-07-20.2",
+                        "identity_release_sha256": "5c15557ebf975f75cba9fdde64f50c6189ae29aac54f7ae160be4c7342023fd0",
                         "control_revision": 1,
-                        "control_sha256": "458d353cb2458ecd50ff47e5a821ec759d2dbcbe807f306ed5affb76bed9768a",
+                        "control_sha256": "8b4582a83eb3ad90ac8f9f2c8f9f35dd2fa02ef5d358306877146174d90093f4",
                         "disabled_sources": [],
-                        "identity_view": "device-identity-2026-07-20.1.98c71804b97e.c1.458d353cb245"
+                        "identity_view": "device-identity-2026-07-20.2.5c15557ebf97.c1.8b4582a83eb3"
                       },
                       "assessment": {
                         "status": "resolved",
@@ -159,16 +159,16 @@
                           { "signal": "ent_physical_model_name", "match_type": "corroborated-model" }
                         ],
                         "signals_used": ["sys_object_id", "ent_physical_model_name"],
-                        "identity_release": "device-identity-2026-07-20.1",
-                        "identity_view": "device-identity-2026-07-20.1.98c71804b97e.c1.458d353cb245",
-                        "identity_release_sha256": "98c71804b97e4c03fd8a64e272b3c3fbcd106ab894a4a4d35c5954a19aa3359f",
+                        "identity_release": "device-identity-2026-07-20.2",
+                        "identity_view": "device-identity-2026-07-20.2.5c15557ebf97.c1.8b4582a83eb3",
+                        "identity_release_sha256": "5c15557ebf975f75cba9fdde64f50c6189ae29aac54f7ae160be4c7342023fd0",
                         "publication_control": {
-                          "identity_release": "device-identity-2026-07-20.1",
-                          "identity_release_sha256": "98c71804b97e4c03fd8a64e272b3c3fbcd106ab894a4a4d35c5954a19aa3359f",
+                          "identity_release": "device-identity-2026-07-20.2",
+                          "identity_release_sha256": "5c15557ebf975f75cba9fdde64f50c6189ae29aac54f7ae160be4c7342023fd0",
                           "control_revision": 1,
-                          "control_sha256": "458d353cb2458ecd50ff47e5a821ec759d2dbcbe807f306ed5affb76bed9768a",
+                          "control_sha256": "8b4582a83eb3ad90ac8f9f2c8f9f35dd2fa02ef5d358306877146174d90093f4",
                           "disabled_sources": [],
-                          "identity_view": "device-identity-2026-07-20.1.98c71804b97e.c1.458d353cb245"
+                          "identity_view": "device-identity-2026-07-20.2.5c15557ebf97.c1.8b4582a83eb3"
                         }
                       }
                     }
@@ -514,7 +514,7 @@
     },
     "schemas": {
       "DataReleaseId": { "type": "string", "const": "license-signaled-2026-07-20.2" },
-      "IdentityReleaseId": { "type": "string", "const": "device-identity-2026-07-20.1" },
+      "IdentityReleaseId": { "type": "string", "const": "device-identity-2026-07-20.2" },
       "FirmwareScope": {
         "type": "string",
         "const": "not_established",
@@ -529,8 +529,8 @@
           "identity_release_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
           "control_revision": { "type": "integer", "minimum": 1 },
           "control_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
-          "disabled_sources": { "type": "array", "maxItems": 14, "uniqueItems": true, "items": { "type": "string" } },
-          "identity_view": { "type": "string", "pattern": "^device-identity-2026-07-20\\.1\\.[0-9a-f]{12}\\.c[1-9][0-9]*\\.[0-9a-f]{12}$" }
+          "disabled_sources": { "type": "array", "maxItems": 15, "uniqueItems": true, "items": { "type": "string" } },
+          "identity_view": { "type": "string", "pattern": "^device-identity-2026-07-20\\.2\\.[0-9a-f]{12}\\.c[1-9][0-9]*\\.[0-9a-f]{12}$" }
         }
       },
       "IdentitySource": {
@@ -541,14 +541,14 @@
           "source_id": { "type": "string" },
           "enabled": { "type": "boolean" },
           "source_status": { "type": "string", "enum": ["active", "disabled-by-publication-control"] },
-          "source_type": { "type": "string", "enum": ["vendor-mib", "project-fixture", "builtin"] },
-          "evidence_layer": { "type": "string", "enum": ["vendor-mib-factual-metadata", "project-fixture-observation", "rights-cleared-builtin"] },
+          "source_type": { "type": "string", "enum": ["vendor-mib", "open-source-project-definition", "project-fixture", "builtin"] },
+          "evidence_layer": { "type": "string", "enum": ["vendor-mib-factual-metadata", "open-source-project-device-definitions", "project-fixture-observation", "rights-cleared-builtin"] },
           "enterprise_number": { "type": ["integer", "null"], "minimum": 0, "maximum": 4294967295 },
           "organization_key": { "type": ["string", "null"] },
           "repository_revision": { "type": ["string", "null"] },
           "repository_license_signal": { "type": ["string", "null"], "description": "Repository-level license signal; this does not override rights found in the source artifact." },
           "artifact_rights": { "type": ["string", "null"], "description": "Rights classification of the referenced artifact itself." },
-          "publication_mode": { "type": "string", "enum": ["metadata-only", "observation-only", "release-governed"] },
+          "publication_mode": { "type": "string", "enum": ["metadata-only", "definition-only", "observation-only", "release-governed"] },
           "raw_distribution": { "type": "string", "enum": ["denied", "not-provided"] },
           "source_url": { "type": "string", "format": "uri" },
           "official_source_status": { "type": ["string", "null"] },
@@ -598,7 +598,7 @@
       "DeviceIdentityStatistics": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["identity_release", "identity_release_sha256", "identity_view", "publication_control_revision", "publication_control_sha256", "runtime_index_sha256", "sys_object_id_mappings", "claims", "exact_models", "product_families", "vendor_identifiers", "platforms", "vendor_families", "project_observation_oids", "conflicting_observation_oids", "reviewed_organization_keys", "disabled_sources"],
+        "required": ["identity_release", "identity_release_sha256", "identity_view", "publication_control_revision", "publication_control_sha256", "runtime_index_sha256", "sys_object_id_mappings", "claims", "exact_models", "product_families", "vendor_identifiers", "platforms", "vendor_families", "project_observation_oids", "project_definition_oids", "project_identity_oid_coverage", "conflicting_observation_oids", "reviewed_organization_keys", "disabled_sources"],
         "properties": {
           "identity_release": { "$ref": "#/components/schemas/IdentityReleaseId" },
           "identity_release_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
@@ -606,17 +606,19 @@
           "publication_control_revision": { "type": "integer", "minimum": 1 },
           "publication_control_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
           "runtime_index_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
-          "sys_object_id_mappings": { "type": "integer", "minimum": 0, "maximum": 6218, "description": "Unique exact sysObjectID keys enabled in the effective publication view." },
-          "claims": { "type": "integer", "minimum": 0, "maximum": 6218 },
-          "exact_models": { "type": "integer", "minimum": 0, "maximum": 36 },
+          "sys_object_id_mappings": { "type": "integer", "minimum": 0, "maximum": 6391, "description": "Unique exact sysObjectID keys enabled in the effective publication view." },
+          "claims": { "type": "integer", "minimum": 0, "maximum": 6488 },
+          "exact_models": { "type": "integer", "minimum": 0, "maximum": 306, "description": "Exact-model claims, not a count of reviewed or unconditionally resolved models: 36 reviewed vendor-MIB normalizations plus up to 270 medium-confidence open-source project definitions in the active view." },
           "product_families": { "type": "integer", "minimum": 0, "maximum": 1491 },
           "vendor_identifiers": { "type": "integer", "minimum": 0, "maximum": 4672, "description": "Exact vendor-MIB identifier assignments whose symbols may denote devices, chassis, modules, line cards, or components; these are not whole-device model claims." },
           "platforms": { "type": "integer", "minimum": 0, "maximum": 19 },
-          "vendor_families": { "type": "integer", "minimum": 0, "maximum": 12 },
+          "vendor_families": { "type": "integer", "minimum": 0, "maximum": 31 },
           "project_observation_oids": { "type": "integer", "minimum": 0, "maximum": 713, "description": "Project-fixture observations are corroboration only, not universal model assignments." },
+          "project_definition_oids": { "type": "integer", "minimum": 0, "maximum": 270, "description": "Medium-confidence exact-model claims normalized from the pinned RackTables static mapping after structural, privacy, and source-conflict quarantine. Reviewed material disagreements with project observations still return ambiguous results." },
+          "project_identity_oid_coverage": { "type": "integer", "minimum": 0, "maximum": 964, "description": "Unique union of active project observations and publishable open-source project definitions." },
           "conflicting_observation_oids": { "type": "integer", "minimum": 0, "maximum": 72 },
           "reviewed_organization_keys": { "type": "integer", "const": 7 },
-          "disabled_sources": { "type": "integer", "minimum": 0, "maximum": 14 }
+          "disabled_sources": { "type": "integer", "minimum": 0, "maximum": 15 }
         }
       },
       "DeviceIdentitySignals": {
@@ -649,7 +651,7 @@
           "type": { "type": "string" },
           "source_id": { "type": ["string", "null"] },
           "source_url": { "type": ["string", "null"], "format": "uri" },
-          "publication_mode": { "type": ["string", "null"], "enum": ["metadata-only", "redistributable", "registry", null] },
+          "publication_mode": { "type": ["string", "null"], "enum": ["definition-only", "metadata-only", "redistributable", "registry", null] },
           "raw_download": { "const": false },
           "signal": { "type": "string", "enum": ["sys_object_id", "ent_physical_vendor_type", "ent_physical_model_name", "sys_descr"] }
         }
@@ -669,8 +671,8 @@
           "mib_identifier": { "type": ["string", "null"], "description": "Vendor MIB symbol when the source supplies one; this is not automatically a whole-device model." },
           "platform": { "type": ["string", "null"] },
           "confidence": { "type": "string", "enum": ["high", "medium", "registry"] },
-          "source_assignment_confidence": { "type": "string", "enum": ["high", "medium", "registry", "signature", "device-reported-reviewed-model"] },
-          "claim_scope": { "type": "string", "enum": ["device-model", "vendor-mib-object-identifier", "product-family", "agent-platform", "pen-registry-assignee", "device-reported-model"] },
+          "source_assignment_confidence": { "type": "string", "enum": ["high", "medium", "project-definition", "registry", "signature", "device-reported-reviewed-model"] },
+          "claim_scope": { "type": "string", "enum": ["device-model", "open-source-project-device-definition", "vendor-mib-object-identifier", "product-family", "agent-platform", "pen-registry-assignee", "device-reported-model"] },
           "match_type": { "type": "string", "enum": ["exact", "prefix", "signature", "registry"] },
           "evidence": { "type": "array", "maxItems": 32, "items": { "$ref": "#/components/schemas/IdentityEvidence" } }
         }
@@ -751,7 +753,7 @@
           "identity_release": { "$ref": "#/components/schemas/IdentityReleaseId" },
           "identity_publication": { "$ref": "#/components/schemas/IdentityPublication" },
           "identity_statistics": { "$ref": "#/components/schemas/DeviceIdentityStatistics" },
-          "identity_sources": { "type": "array", "minItems": 14, "maxItems": 14, "items": { "$ref": "#/components/schemas/IdentitySource" } },
+          "identity_sources": { "type": "array", "minItems": 15, "maxItems": 15, "items": { "$ref": "#/components/schemas/IdentitySource" } },
           "status": { "const": "public-alpha" },
           "production_data": { "const": true },
           "statistics": { "$ref": "#/components/schemas/CorpusStatistics" },
@@ -836,15 +838,17 @@
       "IdentityStatistics": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["enterprise_records", "sys_object_id_mappings", "identity_release", "exact_models", "product_families", "platforms", "project_observation_oids"],
+        "required": ["enterprise_records", "sys_object_id_mappings", "identity_release", "exact_models", "product_families", "platforms", "project_observation_oids", "project_definition_oids", "project_identity_oid_coverage"],
         "properties": {
           "enterprise_records": { "type": "integer", "const": 66266, "description": "IANA PEN registry records; these are registry assignments, not device identities." },
-          "sys_object_id_mappings": { "type": "integer", "minimum": 0, "maximum": 6218, "description": "Published exact sysObjectID mappings in the effective publication view. Exact OID match remains separate from claim strength." },
+          "sys_object_id_mappings": { "type": "integer", "minimum": 0, "maximum": 6391, "description": "Published exact sysObjectID mappings in the effective publication view. Exact OID match remains separate from claim strength." },
           "identity_release": { "$ref": "#/components/schemas/IdentityReleaseId" },
-          "exact_models": { "type": "integer", "minimum": 0, "maximum": 36 },
+          "exact_models": { "type": "integer", "minimum": 0, "maximum": 306, "description": "Exact-model claim count; not a reviewed-model or guaranteed-resolution count." },
           "product_families": { "type": "integer", "minimum": 0, "maximum": 1491 },
           "platforms": { "type": "integer", "minimum": 0, "maximum": 19 },
-          "project_observation_oids": { "type": "integer", "minimum": 0, "maximum": 713 }
+          "project_observation_oids": { "type": "integer", "minimum": 0, "maximum": 713 },
+          "project_definition_oids": { "type": "integer", "minimum": 0, "maximum": 270, "description": "Published medium-confidence RackTables-derived definition claims." },
+          "project_identity_oid_coverage": { "type": "integer", "minimum": 0, "maximum": 964 }
         }
       },
       "SourceStatistics": {
@@ -1115,11 +1119,11 @@
           "license_basis": { "type": "string", "description": "Legacy rights-cleared built-in evidence basis." },
           "rights": { "type": "string", "description": "Rights statement for a rights-cleared built-in source." },
           "repository_license_signal": { "type": "string", "description": "License detected for the containing repository; it is not the rights classification of the referenced MIB artifact." },
-          "artifact_rights": { "type": "string", "enum": ["restrictive-notice", "copyright-no-redistribution-grant", "no-redistribution-grant-found"] },
-          "publication_basis": { "const": "independently-authored factual metadata; artifact rights deny raw redistribution" },
-          "publication_mode": { "type": "string", "enum": ["redistributable", "metadata-only"] },
+          "artifact_rights": { "type": "string", "enum": ["restrictive-notice", "copyright-no-redistribution-grant", "no-redistribution-grant-found", "GPL-2.0-only source; mibvendor-normalized definition"] },
+          "publication_basis": { "type": "string", "enum": ["independently-authored factual metadata; artifact rights deny raw redistribution", "RackTables static exact key with mibvendor-authored bounded model-label normalization"] },
+          "publication_mode": { "type": "string", "enum": ["redistributable", "metadata-only", "definition-only"] },
           "raw_download": { "const": false },
-          "raw_distribution": { "const": "denied" },
+          "raw_distribution": { "type": "string", "enum": ["denied", "not-provided"] },
           "official_source_url": { "type": ["string", "null"], "format": "uri" },
           "official_source_status": { "type": ["string", "null"] },
           "official_source_byte_verified": { "type": "boolean" },

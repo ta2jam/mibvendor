@@ -48,7 +48,7 @@ test("sysObjectID lookup never upgrades an enterprise-only match to a product gu
 });
 
 test("SigScale OCS is an exact platform claim with artifact-level provenance, never a model guess", () => {
-  assert.equal(SYS_OBJECT_ID_COUNT, 6218);
+  assert.equal(SYS_OBJECT_ID_COUNT, 6391);
 
   const exact = lookupSysObjectId("1.3.6.1.4.1.50386.1.1");
   assert.equal(exact.status, "resolved");

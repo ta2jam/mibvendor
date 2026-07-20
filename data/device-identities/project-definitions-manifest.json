@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "dataset_id": "racktables-exact-device-definitions-e5fff9f8-2026-07-20",
+  "snapshot_date": "2026-07-20",
+  "layer": "open-source-project-device-definitions",
+  "policy": {
+    "input_scope": "racktables-static-known-switches-only",
+    "parser": "closed-php-static-literals-v1",
+    "exact_oid_only": true,
+    "model_normalization": "leading-label-before-colon-or-comma-v1",
+    "source_text_retained": false,
+    "source_code_retained": false,
+    "raw_api_available": false,
+    "conflicts": "preserve-material-disagreement",
+    "firmware_interpretation": "not-established"
+  },
+  "derived_dataset_license": {
+    "spdx": "GPL-2.0-only",
+    "scope": "RackTables-derived definition content in data/device-identities/project-definitions.json, data/device-identities/runtime-index.json, and API responses",
+    "upstream_notice": "data/device-identities/licenses/racktables/COPYING",
+    "full_text": "data/device-identities/licenses/racktables/LICENSE"
+  },
+  "fixture_overlap_dispositions": [
+    { "sys_object_id": "1.3.6.1.4.1.9.1.359", "disposition": "equivalent-label" },
+    { "sys_object_id": "1.3.6.1.4.1.9.1.368", "disposition": "equivalent-label" },
+    { "sys_object_id": "1.3.6.1.4.1.9.1.615", "disposition": "material-disagreement" },
+    { "sys_object_id": "1.3.6.1.4.1.9.1.634", "disposition": "material-disagreement" },
+    { "sys_object_id": "1.3.6.1.4.1.9.1.659", "disposition": "equivalent-label" },
+    { "sys_object_id": "1.3.6.1.4.1.9.1.1226", "disposition": "equivalent-label" },
+    { "sys_object_id": "1.3.6.1.4.1.11.2.3.7.11.84", "disposition": "equivalent-label" },
+    { "sys_object_id": "1.3.6.1.4.1.11.2.3.7.11.131", "disposition": "equivalent-label" },
+    { "sys_object_id": "1.3.6.1.4.1.11.2.3.7.11.151", "disposition": "material-disagreement" },
+    { "sys_object_id": "1.3.6.1.4.1.674.10895.3011", "disposition": "equivalent-label" },
+    { "sys_object_id": "1.3.6.1.4.1.674.10895.3020", "disposition": "equivalent-label" },
+    { "sys_object_id": "1.3.6.1.4.1.674.10895.3021", "disposition": "equivalent-label" },
+    { "sys_object_id": "1.3.6.1.4.1.674.10895.3028", "disposition": "equivalent-label" },
+    { "sys_object_id": "1.3.6.1.4.1.674.10895.3030", "disposition": "observation-less-specific" },
+    { "sys_object_id": "1.3.6.1.4.1.674.10895.3031", "disposition": "observation-less-specific" },
+    { "sys_object_id": "1.3.6.1.4.1.1916.2.139", "disposition": "equivalent-label" },
+    { "sys_object_id": "1.3.6.1.4.1.2011.2.23.95", "disposition": "observation-less-specific" },
+    { "sys_object_id": "1.3.6.1.4.1.2636.1.1.1.2.41", "disposition": "material-disagreement" },
+    { "sys_object_id": "1.3.6.1.4.1.30065.1.3011.7048.427.3648", "disposition": "equivalent-label" }
+  ],
+  "quarantine_overrides": [
+    {
+      "source_key": "9.1.1208",
+      "reason": "cross-layer-model-conflict",
+      "evidence": "The RackTables exact label materially disagrees with the pinned vendor-MIB family assignment and conflicting project observations."
+    },
+    {
+      "source_key": "9.1.1257",
+      "reason": "vendor-symbol-model-conflict",
+      "evidence": "The RackTables label says WS-C2960G-24TS-S while its dictionary entry and the pinned vendor-MIB symbol identify WS-C2960S-24TS-S."
+    },
+    {
+      "source_key": "11.2.3.7.11.145",
+      "reason": "internal-dictionary-conflict",
+      "evidence": "The RackTables static label identifies an HP Aruba switch while its dictionary key resolves to Fedora 26."
+    },
+    {
+      "source_key": "11.2.3.7.11.146",
+      "reason": "internal-dictionary-conflict",
+      "evidence": "The RackTables static label identifies an HP Aruba switch while its dictionary key resolves to Ubuntu 17.04."
+    },
+    {
+      "source_key": "11.2.3.7.11.150",
+      "reason": "internal-dictionary-conflict",
+      "evidence": "The RackTables static label identifies HP 1810-8G v2 while its dictionary key resolves to Arista 7160."
+    },
+    {
+      "source_key": "10977.11825.11833.97.25451.12800.100.4.4",
+      "reason": "registry-vendor-conflict",
+      "evidence": "The pinned IANA PEN snapshot assigns 10977 to Grid-Ireland while the RackTables label identifies FS750T2, a materially different vendor context."
+    },
+    {
+      "source_key": "25506.11.1.46",
+      "reason": "internal-dictionary-conflict",
+      "evidence": "The RackTables static label identifies HP A5800AF while its dictionary key resolves to Arista 7516R."
+    },
+    {
+      "source_key": "25506.11.1.100",
+      "reason": "internal-dictionary-conflict",
+      "evidence": "The RackTables static label identifies HPE FlexFabric 5900AF while its dictionary key resolves to Arista 7160."
+    },
+    {
+      "source_key": "25506.11.1.101",
+      "reason": "internal-dictionary-conflict",
+      "evidence": "The RackTables static label identifies HPE 5500 while its dictionary key resolves to Arista 7020."
+    },
+    {
+      "source_key": "25506.11.1.181",
+      "reason": "internal-dictionary-conflict",
+      "evidence": "The RackTables static label identifies HP 1950 while its dictionary key resolves to NetBSD 7.1."
+    }
+  ],
+  "source_repository": {
+    "id": "racktables",
+    "repository_url": "https://github.com/RackTables/racktables",
+    "commit": "e5fff9f8aab339798ed47e8c6d7d977ed97a82bd",
+    "commit_date": "2026-06-26T19:06:12Z",
+    "commit_tree": "a011b614037e24614b9af4c97d2dad8b504e1dd0",
+    "commit_signature_verified": false,
+    "local_path": ".local/identity-sources/racktables",
+    "source_artifact": {
+      "path": "wwwroot/inc/snmp.php",
+      "git_blob_oid": "36af514aae26ed22750d06fb18c8b80a41bfccdb",
+      "sha256": "9d54ec87a9678fccc9fc1c49e36888362bc2bdeb8130f2b8498cba694f5ae8fa",
+      "bytes": 154595,
+      "section_start_line": 2452,
+      "section_end_line": 4625
+    },
+    "review_artifacts": [
+      {
+        "path": "wwwroot/inc/dictionary.php",
+        "git_blob_oid": "84a5d46418cf7537976ca3e29342763caa9ded39",
+        "sha256": "0e8054b79de03531139f6bb65ea54f7fcd487244fb25d84f7f32edebc80a8dd3",
+        "bytes": 422477
+      }
+    ],
+    "license_signal": {
+      "spdx": "GPL-2.0-only",
+      "basis": "pinned-repository-copying-notice-and-license-text",
+      "files": [
+        {
+          "path": "COPYING",
+          "retained_path": "data/device-identities/licenses/racktables/COPYING",
+          "git_blob_oid": "e26d059ee5c56141a451d1ed6eccd8f85daf60ee",
+          "sha256": "380d0eb15d2fcb04f55ea2f8ac5e1769264ca92e531b72094e24eb5569207b75",
+          "bytes": 5722,
+          "url": "https://github.com/RackTables/racktables/blob/e5fff9f8aab339798ed47e8c6d7d977ed97a82bd/COPYING"
+        },
+        {
+          "path": "LICENSE",
+          "retained_path": "data/device-identities/licenses/racktables/LICENSE",
+          "git_blob_oid": "d511905c1647a1e311e8b20d5930a37a9c2531cd",
+          "sha256": "ab15fd526bd8dd18a9e77ebc139656bf4d33e97fc7238cd11bf60e2b9b8666c6",
+          "bytes": 17987,
+          "url": "https://github.com/RackTables/racktables/blob/e5fff9f8aab339798ed47e8c6d7d977ed97a82bd/LICENSE"
+        }
+      ]
+    }
+  },
+  "enterprise_registry": {
+    "path": "data/iana-private-enterprise-numbers.json",
+    "document_canonical_sha256": "2a3cae3e94343cb7ae17a33bc32e545c455a44c05dd802662ec6eff9c1f3f5e1"
+  },
+  "expected_counts": {
+    "source_literal_entries": 304,
+    "unique_source_keys": 304,
+    "exact_oid_candidates": 303,
+    "exact_model_definitions": 270,
+    "quarantined_entries": 33,
+    "rejected_enterprise_roots": 1,
+    "enterprise_families": 24
+  }
+}

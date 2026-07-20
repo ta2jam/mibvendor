@@ -84,6 +84,24 @@ test("production verifier pins identity requests and validates the effective pub
   assert.match(contents, /vendor_identifier/);
 });
 
+test("production verifier exercises RackTables resolution and conflict behavior", async () => {
+  const contents = await readFile(verifier, "utf8");
+
+  assert.match(contents, /\/v1\/sys-object-ids\/1\.3\.6\.1\.4\.1\.9\.6\.1\.83\.10\.1/);
+  assert.match(contents, /\/v1\/sys-object-ids\/1\.3\.6\.1\.4\.1\.9\.1\.615/);
+  assert.match(contents, /racktables_match\["model"\] == "SG 300-10"/);
+  assert.match(contents, /racktables_match\["claim_scope"\] == "open-source-project-device-definition"/);
+  assert.match(contents, /racktables_match\["confidence"\] == "medium"/);
+  assert.match(contents, /racktables_match\["source_assignment_confidence"\] == "high"/);
+  assert.match(contents, /racktables_match\["firmware_scope"\] == "not_established"/);
+  assert.match(contents, /provenance\["source_id"\] == "racktables-known-switches"/);
+  assert.match(contents, /provenance\["publication_mode"\] == "definition-only" and provenance\["raw_download"\] is False/);
+  assert.match(contents, /"source_text" not in json\.dumps\(racktables_sg300\)/);
+  assert.match(contents, /racktables_conflict\["status"\] == "ambiguous"/);
+  assert.match(contents, /racktables_conflict\["match"\] is None/);
+  assert.match(contents, /if "racktables-known-switches" not in disabled_sources/);
+});
+
 test("production monitor fails closed when the release tag is absent", async (context) => {
   const fixture = await repositoryFixture();
   context.after(() => rm(fixture.directory, { recursive: true, force: true }));

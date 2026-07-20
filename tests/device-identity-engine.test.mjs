@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import {
@@ -15,28 +16,35 @@ import {
   validateIdentityReleaseManifest
 } from "../src/device-identity.mjs";
 
+const projectDefinitionManifest = JSON.parse(await readFile(
+  new URL("../data/device-identities/project-definitions-manifest.json", import.meta.url),
+  "utf8"
+));
+
 test("identity release is immutable, source-bound, and exposes deterministic counts", () => {
-  assert.equal(IDENTITY_RELEASE, "device-identity-2026-07-20.1");
+  assert.equal(IDENTITY_RELEASE, "device-identity-2026-07-20.2");
   assert.deepEqual(validateIdentityReleaseManifest(), []);
-  assert.equal(IDENTITY_STATISTICS.sys_object_id_mappings, 6218);
-  assert.equal(IDENTITY_STATISTICS.claims, 6218);
-  assert.equal(IDENTITY_STATISTICS.exact_models, 36);
+  assert.equal(IDENTITY_STATISTICS.sys_object_id_mappings, 6391);
+  assert.equal(IDENTITY_STATISTICS.claims, 6488);
+  assert.equal(IDENTITY_STATISTICS.exact_models, 306);
   assert.equal(IDENTITY_STATISTICS.product_families, 1491);
   assert.equal(IDENTITY_STATISTICS.vendor_identifiers, 4672);
   assert.equal(IDENTITY_STATISTICS.exact_models + IDENTITY_STATISTICS.product_families
     + IDENTITY_STATISTICS.vendor_identifiers + IDENTITY_STATISTICS.platforms, IDENTITY_STATISTICS.claims);
   assert.equal(IDENTITY_STATISTICS.platforms, 19);
-  assert.equal(IDENTITY_STATISTICS.vendor_families, 12);
+  assert.equal(IDENTITY_STATISTICS.vendor_families, 31);
   assert.equal(IDENTITY_STATISTICS.project_observation_oids, 713);
+  assert.equal(IDENTITY_STATISTICS.project_definition_oids, 270);
+  assert.equal(IDENTITY_STATISTICS.project_identity_oid_coverage, 964);
   assert.equal(IDENTITY_STATISTICS.conflicting_observation_oids, 72);
   assert.equal(IDENTITY_STATISTICS.reviewed_organization_keys, 7);
   assert.equal(IDENTITY_STATISTICS.disabled_sources, 0);
   assert.equal(Object.hasOwn(IDENTITY_STATISTICS, "effective_sources"), false);
-  assert.equal(IDENTITY_SOURCES.length, 14);
+  assert.equal(IDENTITY_SOURCES.length, 15);
   assert.equal(IDENTITY_SOURCES.every((source) => source.enabled), true);
   assert.match(IDENTITY_STATISTICS.identity_release_sha256, /^[0-9a-f]{64}$/);
   assert.match(IDENTITY_STATISTICS.runtime_index_sha256, /^[0-9a-f]{64}$/);
-  assert.match(IDENTITY_STATISTICS.identity_view, /^device-identity-2026-07-20\.1\./);
+  assert.match(IDENTITY_STATISTICS.identity_view, /^device-identity-2026-07-20\.2\./);
   assert.equal(IDENTITY_STATISTICS.publication_control_revision, 1);
   const malformed = {
     schema_version: 1,
@@ -58,6 +66,76 @@ test("identity release is immutable, source-bound, and exposes deterministic cou
     disabled_sources: ["unknown"]
   });
   assert.ok(controlFailures.some((failure) => failure.includes("unknown disabled source")));
+});
+
+test("RackTables exact definitions resolve, corroborate, quarantine conflicts, and obey their kill switch", () => {
+  const positive = lookupSysObjectId("1.3.6.1.4.1.9.6.1.83.10.1");
+  assert.equal(positive.status, "resolved");
+  assert.equal(positive.identity_status, "exact_model");
+  assert.equal(positive.match.model, "SG 300-10");
+  assert.equal(positive.match.organization, positive.organization_name);
+  assert.equal(positive.match.organization, "ciscoSystems");
+  assert.equal(positive.match.confidence, "medium");
+  assert.equal(positive.match.source_assignment_confidence, "high");
+  assert.equal(positive.match.claim_scope, "open-source-project-device-definition");
+  assert.equal(positive.match.firmware_scope, "not_established");
+  assert.equal(positive.match.provenance.source_id, "racktables-known-switches");
+  assert.equal(positive.match.provenance.repository_license_signal, "GPL-2.0-only");
+  assert.equal(positive.match.provenance.artifact_rights, "GPL-2.0-only source; mibvendor-normalized definition");
+  assert.equal(positive.match.provenance.publication_mode, "definition-only");
+  assert.equal(positive.match.provenance.raw_download, false);
+  assert.equal(JSON.stringify(positive).includes("8 RJ-45"), false);
+
+  const corroborated = lookupSysObjectId("1.3.6.1.4.1.9.1.659");
+  assert.equal(corroborated.match.model, "WS-C4948-10GE");
+  assert.equal(corroborated.assessment.corroboration[0].evidence_state, "single_observation");
+  assert.equal(corroborated.assessment.conflicts.length, 0);
+
+  const preservedConflict = lookupSysObjectId("1.3.6.1.4.1.9.1.1208");
+  assert.equal(preservedConflict.match.model, null);
+  assert.equal(preservedConflict.identity_status, "product_family");
+  assert.equal(preservedConflict.assessment.corroboration[0].evidence_state, "conflicting_observations");
+  assert.equal(preservedConflict.assessment.corroboration[0].candidates.length, 3);
+  assert.equal(preservedConflict.assessment.candidates.some((candidate) => candidate.evidence.some((item) => item.source_id === "racktables-known-switches")), false);
+
+  for (const oid of [
+    "1.3.6.1.4.1.9.1.1257",
+    "1.3.6.1.4.1.11.2.3.7.11.145",
+    "1.3.6.1.4.1.25506.11.1.181",
+    "1.3.6.1.4.1.10977.11825.11833.97.25451.12800.100.4.4"
+  ]) {
+    const result = lookupSysObjectId(oid);
+    assert.equal(result.assessment.candidates.some((candidate) => candidate.evidence.some((item) => item.source_id === "racktables-known-switches")), false, oid);
+  }
+
+  const disabled = createDeviceIdentityEngine({ lookupEnterprise, disabledSources: ["racktables-known-switches"] });
+  const removed = disabled.lookup("1.3.6.1.4.1.9.6.1.83.10.1");
+  assert.equal(removed.status, "enterprise_only");
+  assert.equal(removed.match, null);
+  assert.equal(disabled.statistics.project_definition_oids, 0);
+  assert.equal(disabled.statistics.project_identity_oid_coverage, 713);
+  assert.equal(disabled.statistics.sys_object_id_mappings, 6199);
+  assert.equal(disabled.sources.find((source) => source.source_id === "racktables-known-switches").enabled, false);
+});
+
+test("all reviewed definition-fixture overlaps follow their explicit materiality disposition", () => {
+  assert.equal(projectDefinitionManifest.fixture_overlap_dispositions.length, 19);
+  for (const disposition of projectDefinitionManifest.fixture_overlap_dispositions) {
+    const result = lookupSysObjectId(disposition.sys_object_id);
+    if (disposition.disposition === "material-disagreement") {
+      assert.equal(result.status, "ambiguous", disposition.sys_object_id);
+      assert.equal(result.identity_status, "conflicting_evidence", disposition.sys_object_id);
+      assert.equal(result.match, null, disposition.sys_object_id);
+      assert.ok(result.assessment.conflicts.some((conflict) => conflict.type === "model_mismatch"), disposition.sys_object_id);
+      assert.match(result.caveat, /materially conflicts/, disposition.sys_object_id);
+      assert.doesNotMatch(result.caveat, /Only the PEN registry boundary is known/, disposition.sys_object_id);
+    } else {
+      assert.equal(result.status, "resolved", disposition.sys_object_id);
+      assert.equal(result.identity_status, "exact_model", disposition.sys_object_id);
+      assert.equal(result.match.provenance.source_id, "racktables-known-switches", disposition.sys_object_id);
+      assert.equal(result.assessment.conflicts.length, 0, disposition.sys_object_id);
+    }
+  }
 });
 
 test("exact Cisco lookups distinguish models, family claims, and registry-only identities", () => {
@@ -220,7 +298,7 @@ test("identity source kill switch removes primary claims without inventing repla
   assert.equal(lookup.match, null);
   assert.equal(lookup.organization_key, "Q173395");
   assert.equal(disabled.statistics.disabled_sources, 1);
-  assert.equal(disabled.statistics.sys_object_id_mappings, 3357);
+  assert.equal(disabled.statistics.sys_object_id_mappings, 3615);
   assert.notEqual(disabled.statistics.identity_view, IDENTITY_STATISTICS.identity_view);
   assert.equal(disabled.sources.find((source) => source.source_id === "cisco-products").enabled, false);
   for (const sysObjectId of ["1.3.6.1.4.1.9.1.2494", "1.3.6.1.4.1.9.999999"]) {

@@ -31,6 +31,8 @@ index_headers="$tmp_dir/index.headers"
 index_body="$tmp_dir/index.html"
 request --dump-header "$index_headers" --output "$index_body" "$ORIGIN/"
 grep -q '<title>mibvendor' "$index_body" || fail "public HTML marker is missing"
+grep -Eiq '^cache-control:[[:space:]]*public,[[:space:]]*max-age=0,[[:space:]]*must-revalidate,[[:space:]]*no-transform[[:space:]]*$' "$index_headers" \
+    || fail "public HTML is transformable at the edge"
 
 for header in \
     'strict-transport-security:.*max-age=31536000' \
@@ -125,7 +127,8 @@ if publication.get("identity_view") != expected_view:
 count_fields = (
     "sys_object_id_mappings", "claims", "exact_models", "product_families",
     "vendor_identifiers", "platforms", "vendor_families",
-    "project_observation_oids", "conflicting_observation_oids",
+    "project_observation_oids", "project_definition_oids",
+    "project_identity_oid_coverage", "conflicting_observation_oids",
     "reviewed_organization_keys", "disabled_sources",
 )
 if any(not isinstance(identity.get(field), int) or isinstance(identity.get(field), bool) or identity[field] < 0 for field in count_fields):
@@ -140,6 +143,10 @@ if identity["claims"] != sum(identity[field] for field in ("exact_models", "prod
     raise SystemExit("identity claim-strength counts do not sum to the claim total")
 if identity["sys_object_id_mappings"] > identity["claims"]:
     raise SystemExit("identity mapping count exceeds claim count")
+if identity["project_definition_oids"] > identity["exact_models"]:
+    raise SystemExit("project definition count exceeds exact-model claims")
+if not max(identity["project_observation_oids"], identity["project_definition_oids"]) <= identity["project_identity_oid_coverage"] <= identity["project_observation_oids"] + identity["project_definition_oids"]:
+    raise SystemExit("project identity OID coverage violates union bounds")
 if identity["disabled_sources"] != len(disabled_sources):
     raise SystemExit("disabled-source count does not match publication controls")
 identity_sources = document.get("identity_sources")
@@ -191,6 +198,8 @@ sys_c930024p_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.9.1.2436")
 sys_c9300_family_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.9.1.2494")
 sys_cisco_identifier_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.9.1.6")
 sys_cisco_unknown_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.9.999999")
+sys_racktables_sg300_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.9.6.1.83.10.1")
+sys_racktables_conflict_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.9.1.615")
 identity_headers="$tmp_dir/identity.headers"
 identity_json=$(request --dump-header "$identity_headers" --request POST --header 'content-type: application/json' \
     --data "$identity_payload" \
@@ -255,7 +264,8 @@ openapi_json=$(request "$ORIGIN/openapi.json")
 ENTERPRISE_JSON=$enterprise_json SYS_EXACT_JSON=$sys_exact_json SYS_SIGSCALE_JSON=$sys_sigscale_json \
 SYS_BOUNDARY_JSON=$sys_boundary_json SYS_C930024T_JSON=$sys_c930024t_json SYS_C930024P_JSON=$sys_c930024p_json \
 SYS_C9300_FAMILY_JSON=$sys_c9300_family_json SYS_CISCO_IDENTIFIER_JSON=$sys_cisco_identifier_json \
-SYS_CISCO_UNKNOWN_JSON=$sys_cisco_unknown_json DATA_RELEASE_JSON=$data_release_json \
+SYS_CISCO_UNKNOWN_JSON=$sys_cisco_unknown_json SYS_RACKTABLES_SG300_JSON=$sys_racktables_sg300_json \
+SYS_RACKTABLES_CONFLICT_JSON=$sys_racktables_conflict_json DATA_RELEASE_JSON=$data_release_json \
 IDENTITY_JSON=$identity_json IDENTITY_CONFLICT_JSON=$identity_conflict_json OBJECT_JSON=$object_json \
 DEPENDENCIES_JSON=$dependencies_json MODULE_JSON=$module_json SOURCE_JSON=$source_json \
 BATCH_JSON=$batch_json OPENAPI_JSON=$openapi_json \
@@ -306,8 +316,44 @@ c930024p = identity_result("SYS_C930024P_JSON")
 c9300_family = identity_result("SYS_C9300_FAMILY_JSON")
 cisco_identifier = identity_result("SYS_CISCO_IDENTIFIER_JSON")
 cisco_unknown = identity_result("SYS_CISCO_UNKNOWN_JSON")
+racktables_sg300 = identity_result("SYS_RACKTABLES_SG300_JSON")
+racktables_conflict = identity_result("SYS_RACKTABLES_CONFLICT_JSON")
 assert cisco_unknown["status"] == "enterprise_only" and cisco_unknown["identity_status"] == "vendor_only"
 assert cisco_unknown["enterprise_number"] == 9 and cisco_unknown["organization_key"] == "Q173395"
+
+if "racktables-known-switches" not in disabled_sources:
+    assert racktables_sg300["status"] == "resolved" and racktables_sg300["identity_status"] == "exact_model"
+    assert racktables_sg300["enterprise_number"] == 9 and racktables_sg300["organization_key"] == "Q173395"
+    racktables_match = racktables_sg300["match"]
+    assert racktables_match["model"] == "SG 300-10"
+    assert racktables_match["organization"] == "ciscoSystems"
+    assert racktables_match["organization_name"] == "ciscoSystems"
+    assert racktables_match["organization_key"] == "Q173395"
+    assert racktables_match["claim_scope"] == "open-source-project-device-definition"
+    assert racktables_match["confidence"] == "medium"
+    assert racktables_match["source_assignment_confidence"] == "high"
+    assert racktables_match["firmware_scope"] == "not_established"
+    provenance = racktables_match["provenance"]
+    assert provenance["source_id"] == "racktables-known-switches"
+    assert provenance["repository_license_signal"] == "GPL-2.0-only"
+    assert provenance["artifact_rights"] == "GPL-2.0-only source; mibvendor-normalized definition"
+    assert provenance["publication_mode"] == "definition-only" and provenance["raw_download"] is False
+    assert "source_text" not in json.dumps(racktables_sg300)
+
+    assert racktables_conflict["status"] == "ambiguous"
+    assert racktables_conflict["identity_status"] == "conflicting_evidence"
+    assert racktables_conflict["enterprise_number"] == 9 and racktables_conflict["organization_key"] == "Q173395"
+    assert racktables_conflict["match"] is None
+    assert any(item.get("type") == "model_mismatch" for item in racktables_conflict["assessment"]["conflicts"])
+else:
+    assert racktables_sg300["status"] == "enterprise_only" and racktables_sg300["identity_status"] == "vendor_only"
+    assert racktables_sg300["enterprise_number"] == 9 and racktables_sg300["organization_key"] == "Q173395"
+    assert racktables_sg300["match"] is None
+    assert racktables_conflict["status"] == "resolved"
+    assert racktables_conflict["identity_status"] == "vendor_identifier"
+    assert racktables_conflict["enterprise_number"] == 9 and racktables_conflict["organization_key"] == "Q173395"
+    assert racktables_conflict["match"]["model"] is None
+    assert racktables_conflict["match"]["provenance"]["source_id"] != "racktables-known-switches"
 
 identity_document = json.loads(os.environ["IDENTITY_JSON"])
 conflict_document = json.loads(os.environ["IDENTITY_CONFLICT_JSON"])

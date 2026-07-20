@@ -109,3 +109,32 @@ The GitHub production monitor resolves the expected commit from the immutable
 `v${VERSION}` release tag. It does not assume that every `main` commit has been
 deployed; staged corpus and parser work may safely advance `main` while the
 published production release remains pinned to its tag.
+
+## v0.4.0-alpha.2 — RackTables exact definitions candidate
+
+One measurable result: the immutable `device-identity-2026-07-20.2` candidate
+adds a source-bound open-source project-definition layer while preserving the
+vendor-MIB and project-observation boundaries. A static, non-executing parser
+finds 303 non-root exact OID candidates in pinned RackTables commit
+`e5fff9f8aab339798ed47e8c6d7d977ed97a82bd`; 270 bounded model definitions are
+published at medium confidence and 33 are quarantined. The runtime now exposes
+6,391 distinct exact lookup keys and 964 distinct project model-evidence OIDs.
+
+All 19 definition-observation overlaps have explicit reviewed dispositions:
+15 are equivalent labels or less-specific observations, while four material
+disagreements return an ambiguous result with no singular model. The dataset
+is explicitly GPL-2.0-only and retains the pinned upstream `COPYING` and
+`LICENSE`. API output contains normalized definitions and provenance only; it
+does not serve RackTables PHP, source descriptions, port summaries, raw walks,
+private device values, or firmware inference. The RackTables source has an
+independent publication kill switch.
+
+Origin HTML shell responses, including explicit SPA fallback routes, use
+`Cache-Control: public, max-age=0, must-revalidate, no-transform`. The
+`no-transform` directive is the operational boundary against Cloudflare beacon
+injection or other edge HTML mutation under the strict CSP. CSS, JavaScript,
+OpenAPI, and API cache contracts remain independently defined and unchanged.
+
+Production status: not deployed from this candidate branch. Commit, tag, CI,
+VPS deployment, public smoke, and release reconciliation remain integration
+work under the completion rule above.

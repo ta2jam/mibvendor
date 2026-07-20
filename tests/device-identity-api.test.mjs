@@ -269,3 +269,23 @@ test("sysObjectID response preserves legacy fields and adds direct correlation f
     assert.equal(unmappedOrganization.result.organization_key_status, "not_available");
   });
 });
+
+test("RackTables exact definition response satisfies the public match contract without leaking source text", async () => {
+  await withServer(async (base) => {
+    const response = await fetch(`${base}/v1/sys-object-ids/1.3.6.1.4.1.9.6.1.83.10.1`);
+    assert.equal(response.status, 200);
+    const body = await response.json();
+    const { match } = body.result;
+    assert.equal(match.organization, "ciscoSystems");
+    assert.equal(match.organization_name, "ciscoSystems");
+    assert.equal(match.model, "SG 300-10");
+    assert.equal(match.claim_scope, "open-source-project-device-definition");
+    assert.equal(match.confidence, "medium");
+    assert.equal(match.source_assignment_confidence, "high");
+    assert.equal(match.firmware_scope, "not_established");
+    assert.equal(match.provenance.artifact_rights, "GPL-2.0-only source; mibvendor-normalized definition");
+    assert.equal(match.provenance.publication_mode, "definition-only");
+    assert.equal(match.provenance.raw_download, false);
+    assert.equal(JSON.stringify(body).includes("RJ-45"), false);
+  });
+});

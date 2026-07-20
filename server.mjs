@@ -11,6 +11,7 @@ const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(projectRoot, "prototype");
 const openApiPath = path.join(projectRoot, "docs", "research", "demand", "phase0-openapi.json");
 const productionMonitorUrl = "https://github.com/ta2jam/mibvendor/actions/workflows/production-monitor.yml";
+const htmlShellCacheControl = "public, max-age=0, must-revalidate, no-transform";
 const trustProxyHeadersByDefault = process.env.TRUST_PROXY_HEADERS === "1";
 const configuredTrustedProxyAddresses = new Set((process.env.TRUSTED_PROXY_ADDRESSES ?? "")
   .split(",").map((item) => item.trim().toLowerCase()).filter(Boolean));
@@ -65,7 +66,8 @@ function isSpaRoute(pathname) {
 
 function staticCacheControl(requested) {
   const extension = path.extname(requested);
-  if (requested === "index.html" || new Set([".css", ".js", ".mjs"]).has(extension)) return "no-cache";
+  if (requested === "index.html") return htmlShellCacheControl;
+  if (new Set([".css", ".js", ".mjs"]).has(extension)) return "no-cache";
   return "public, max-age=300, must-revalidate";
 }
 

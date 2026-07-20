@@ -48,6 +48,7 @@ test("workbench exposes honest outcomes, evidence layers, and direct organizatio
   for (const copy of [
     "Registry",
     "Vendor-MIB factual metadata",
+    "Open-source device definitions",
     "Device-reported signal",
     "Project fixture observation",
     "Not reviewed / unavailable",
@@ -65,6 +66,8 @@ test("workbench exposes honest outcomes, evidence layers, and direct organizatio
   assert.match(app, /publication_control\?\.control_revision/);
   assert.doesNotMatch(app, /organization_key\s*\?\?\s*`?pen:/i);
   assert.match(app, /Observed means a project fixture corroborates one device observation; it is not a universal mapping/);
+  assert.match(app, /entry\?\.publication_mode === "definition-only"/);
+  assert.ok(app.indexOf('return "definition"') < app.indexOf('return "vendor"'), "definition-only evidence must be classified before vendor fallback");
 });
 
 test("workbench submits the documented same-origin request and never renders raw signal values", () => {
@@ -95,17 +98,25 @@ test("workbench submits the documented same-origin request and never renders raw
 });
 
 test("workbench keeps quick examples, copying, the legacy exact route, and mobile navigation", () => {
-  for (const example of ["c9300-24t", "c9300-observed", "cisco-unknown"]) {
+  for (const example of ["racktables-sg300", "c9300-24t", "c9300-observed", "cisco-unknown"]) {
     assert.ok(html.includes(`data-identity-example="${example}"`));
     assert.ok(app.includes(`"${example}"`));
   }
   assert.match(app, /1\.3\.6\.1\.4\.1\.9\.1\.2435/);
   assert.match(app, /1\.3\.6\.1\.4\.1\.9\.1\.2494/);
+  assert.match(app, /1\.3\.6\.1\.4\.1\.9\.6\.1\.83\.10\.1/);
   assert.match(app, /C9300-48P/);
   assert.match(app, /navigator\.clipboard\.writeText\(JSON\.stringify\(safeSummary/);
   assert.match(html, /id="sysobjectid-form"/);
   assert.match(app, /loadSysObjectIdRoute/);
   assert.match(app, /\/sys-object-ids\//);
+  assert.match(html, /RackTables-derived SG 300-10 exact definition/);
+  assert.match(app, /result\.assessment\?\.candidates/);
+  assert.match(app, /result\.assessment\?\.conflicts/);
+  assert.match(app, /result\.assessment\?\.corroboration/);
+  assert.match(app, /Candidate and conflict claims/);
+  assert.match(app, /Project fixture observations/);
+  assert.match(app, /candidate\.source_id/);
   assert.match(html, /href="\/#device-identity">Device identity/);
   assert.match(styles, /@media \(max-width: 560px\)[\s\S]*\.site-header nav[\s\S]*grid-template-columns: repeat\(3, minmax\(0, 1fr\)\)/);
   assert.match(styles, /@media \(max-width: 560px\)[\s\S]*\.identity-evidence-grid[\s\S]*grid-template-columns: 1fr/);
@@ -114,6 +125,18 @@ test("workbench keeps quick examples, copying, the legacy exact route, and mobil
   assert.match(styles, /\.result-button strong\s*\{[^}]*overflow-wrap: anywhere/s);
   assert.match(styles, /\.example-panel\s*\{[^}]*overflow: hidden/s);
   assert.doesNotMatch(styles, /\.site-header nav a:not\(:first-child\)[^{]*\{[^}]*display:\s*none/s);
+});
+
+test("public identity counts distinguish claims, definitions, quarantines, and coverage", () => {
+  assert.match(html, /6,391 distinct exact mapping keys/);
+  assert.match(html, /36 reviewed vendor-MIB model normalizations/);
+  assert.match(html, /270 medium-confidence open-source project model claims/);
+  assert.match(html, /964 distinct OIDs/);
+  assert.match(html, /Thirty-three source candidates remain quarantined/);
+  assert.match(html, /four reviewed definition-observation overlaps remain explicit conflicts/);
+  assert.match(app, /Exact-model claims/);
+  assert.match(app, /Open-source definition claims/);
+  assert.doesNotMatch(app, /Reviewed exact models/);
 });
 
 test("identity result is an accessible live region with explicit focus target", () => {

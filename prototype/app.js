@@ -134,6 +134,7 @@ function identityEvidenceCategory(entry) {
     entry?.source_id,
     entry?.provenance?.source
   ].filter(Boolean).join(" ").toLowerCase();
+  if (entry?.publication_mode === "definition-only" || /open-source-project-definition/.test(discriminator)) return "definition";
   if (/fixture|observation|project/.test(discriminator)) return "project";
   if (/registry|iana|enterprise|\bpen\b/.test(discriminator)) return "registry";
   if (/device|reported|entphysical/.test(discriminator)) return "device";
@@ -349,14 +350,15 @@ function renderIdentityAssessment(body) {
 
   const evidenceSection = document.createElement("section");
   appendTextElement(evidenceSection, "h5", "Evidence and provenance");
-  appendTextElement(evidenceSection, "p", "Registry assignment, vendor-MIB factual metadata, device-reported signals, and project observations remain separate.", "identity-evidence-note");
+  appendTextElement(evidenceSection, "p", "Registry assignment, vendor-MIB factual metadata, open-source device definitions, device-reported signals, and project observations remain separate.", "identity-evidence-note");
   const evidenceGrid = document.createElement("div");
   evidenceGrid.className = "identity-evidence-grid";
-  const grouped = { registry: [], vendor: [], device: [], project: [] };
+  const grouped = { registry: [], vendor: [], definition: [], device: [], project: [] };
   for (const entry of collectIdentityEvidence(assessment)) grouped[identityEvidenceCategory(entry)].push(entry);
   for (const [category, title] of [
     ["registry", "Registry"],
     ["vendor", "Vendor-MIB factual metadata"],
+    ["definition", "Open-source device definitions"],
     ["device", "Device-reported signal"],
     ["project", "Project fixture observation"]
   ]) {
@@ -548,6 +550,12 @@ sysObjectIdForm.addEventListener("submit", async (event) => {
 });
 
 const identityExamples = {
+  "racktables-sg300": {
+    sys_object_id: "1.3.6.1.4.1.9.6.1.83.10.1",
+    ent_physical_vendor_type: "",
+    ent_physical_model_name: "",
+    sys_descr: ""
+  },
   "c9300-24t": {
     sys_object_id: "1.3.6.1.4.1.9.1.2435",
     ent_physical_vendor_type: "",
@@ -1007,6 +1015,40 @@ async function loadSysObjectIdRoute(oid, generation) {
     const organizationName = result.organization_name ?? result.enterprise?.organization;
     const enterpriseNumber = result.enterprise_number ?? result.enterprise?.number;
     const organizationKey = result.organization_key;
+    const reviewedClaims = [
+      ...(Array.isArray(result.assessment?.candidates) ? result.assessment.candidates.map((item) => ({ ...item, kind: "Candidate" })) : []),
+      ...(Array.isArray(result.assessment?.conflicts) ? result.assessment.conflicts.map((item) => ({ ...item, kind: "Conflict" })) : [])
+    ].slice(0, MAX_IDENTITY_CANDIDATES);
+    const fixtureObservations = (Array.isArray(result.assessment?.corroboration) ? result.assessment.corroboration : [])
+      .slice(0, MAX_IDENTITY_CANDIDATES);
+    const claimDetails = reviewedClaims.length ? `
+      <div class="route-card"><h2>Candidate and conflict claims</h2><ul class="route-tree">${reviewedClaims.map((item) => {
+        const label = item.model ?? item.product_family ?? item.mib_identifier ?? item.platform ?? item.kind;
+        const sourceIds = (item.evidence ?? []).map((entry) => entry?.source_id).filter(Boolean);
+        const details = [
+          item.kind,
+          item.identity_status ? identityOutcomeLabels[item.identity_status] ?? item.identity_status : null,
+          item.confidence ? `confidence ${item.confidence}` : null,
+          Array.isArray(item.models) ? `models ${item.models.join(", ")}` : null,
+          sourceIds.length ? `sources ${[...new Set(sourceIds)].join(", ")}` : null
+        ].filter(Boolean).join(" · ");
+        return `<li><strong>${escapeHtml(label)}</strong><span>${escapeHtml(details)}</span></li>`;
+      }).join("")}</ul></div>` : "";
+    const fixtureDetails = fixtureObservations.length ? `
+      <div class="route-card"><h2>Project fixture observations</h2><ul class="route-tree">${fixtureObservations.map((observation) => {
+        const candidates = (Array.isArray(observation.candidates) ? observation.candidates : [])
+          .slice(0, MAX_IDENTITY_CANDIDATES);
+        return candidates.map((candidate) => {
+          const label = candidate.model ?? candidate.product_family ?? candidate.platform ?? "Observed candidate";
+          const details = [
+            observation.evidence_state ? `state ${observation.evidence_state}` : null,
+            candidate.source_id ? `source ${candidate.source_id}` : null,
+            candidate.confidence ? `confidence ${candidate.confidence}` : null,
+            candidate.firmware_scope === "not_established" ? "firmware scope not established" : null
+          ].filter(Boolean).join(" · ");
+          return `<li><strong>${escapeHtml(label)}</strong><span>${escapeHtml(details)}</span></li>`;
+        }).join("");
+      }).join("")}</ul></div>` : "";
     const facts = candidate || enterpriseNumber !== null && enterpriseNumber !== undefined ? `
       <dl class="route-facts">
         ${candidate?.product_family ? `<div><dt>Product family</dt><dd>${escapeHtml(candidate.product_family)}</dd></div>` : ""}
@@ -1031,6 +1073,8 @@ async function loadSysObjectIdRoute(oid, generation) {
       ${facts}
       ${result.rights ? `<div class="route-card"><h2>Publication restriction</h2><p>${escapeHtml(result.rights.detail)}</p></div>` : ""}
       ${result.caveat ? `<div class="route-card"><h2>Evidence boundary</h2><p>${escapeHtml(result.caveat)}</p></div>` : ""}
+      ${claimDetails}
+      ${fixtureDetails}
       <div class="route-card"><h2>Need corroboration?</h2><p>Use the <a href="/#device-identity">device identity workbench</a> to add bounded ENTITY-MIB or platform signals. Do not upload a raw SNMP walk.</p></div>`;
   } catch (error) {
     if (generation !== routeGeneration) return;
@@ -1047,7 +1091,7 @@ async function loadReleaseRoute(releaseId, generation) {
     const stats = body.statistics;
     routeContent.innerHTML = `
       <div class="route-heading"><p class="eyebrow">Active data release</p><h1>${escapeHtml(body.data_release)}</h1><p>${escapeHtml(body.status)} · production data</p></div>
-      <dl class="route-facts"><div><dt>Published modules</dt><dd>${stats.modules.total.toLocaleString()}</dd></div><div><dt>Catalog OID nodes</dt><dd>${stats.oid_nodes.catalog_oid_nodes.toLocaleString()}</dd></div><div><dt>Searchable records</dt><dd>${stats.oid_nodes.searchable_records.toLocaleString()}</dd></div><div><dt>Textual conventions</dt><dd>${stats.definitions.textual_conventions.active_module_definitions.toLocaleString()}</dd></div><div><dt>Catalog notifications</dt><dd>${stats.definitions.notifications.catalog_oid_nodes.toLocaleString()}</dd></div><div><dt>Enterprise records</dt><dd>${stats.identity.enterprise_records.toLocaleString()}</dd></div><div><dt>sysObjectID mappings</dt><dd>${stats.identity.sys_object_id_mappings.toLocaleString()}</dd></div>${Number.isSafeInteger(body.identity_statistics?.exact_models) ? `<div><dt>Reviewed exact models</dt><dd>${body.identity_statistics.exact_models.toLocaleString()}</dd></div>` : ""}${Number.isSafeInteger(body.identity_statistics?.vendor_identifiers) ? `<div><dt>Generic vendor identifiers</dt><dd>${body.identity_statistics.vendor_identifiers.toLocaleString()}</dd></div>` : ""}<div><dt>Published sources</dt><dd>${stats.sources.total.toLocaleString()}</dd></div></dl>
+      <dl class="route-facts"><div><dt>Published modules</dt><dd>${stats.modules.total.toLocaleString()}</dd></div><div><dt>Catalog OID nodes</dt><dd>${stats.oid_nodes.catalog_oid_nodes.toLocaleString()}</dd></div><div><dt>Searchable records</dt><dd>${stats.oid_nodes.searchable_records.toLocaleString()}</dd></div><div><dt>Textual conventions</dt><dd>${stats.definitions.textual_conventions.active_module_definitions.toLocaleString()}</dd></div><div><dt>Catalog notifications</dt><dd>${stats.definitions.notifications.catalog_oid_nodes.toLocaleString()}</dd></div><div><dt>Enterprise records</dt><dd>${stats.identity.enterprise_records.toLocaleString()}</dd></div><div><dt>sysObjectID mappings</dt><dd>${stats.identity.sys_object_id_mappings.toLocaleString()}</dd></div>${Number.isSafeInteger(body.identity_statistics?.exact_models) ? `<div><dt>Exact-model claims</dt><dd>${body.identity_statistics.exact_models.toLocaleString()}</dd></div>` : ""}${Number.isSafeInteger(body.identity_statistics?.project_definition_oids) ? `<div><dt>Open-source definition claims</dt><dd>${body.identity_statistics.project_definition_oids.toLocaleString()}</dd></div>` : ""}${Number.isSafeInteger(body.identity_statistics?.vendor_identifiers) ? `<div><dt>Generic vendor identifiers</dt><dd>${body.identity_statistics.vendor_identifiers.toLocaleString()}</dd></div>` : ""}<div><dt>Published sources</dt><dd>${stats.sources.total.toLocaleString()}</dd></div></dl>
       <div class="route-card"><h2>Count boundary</h2><p>These counts cover only the active public release. Staged and quarantined content is excluded.</p><p><a href="/v1/data-release">Machine-readable release response</a></p></div>`;
   } catch (error) {
     if (generation !== routeGeneration) return;

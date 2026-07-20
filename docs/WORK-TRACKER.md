@@ -133,10 +133,15 @@ Acceptance criteria:
 
 Current evidence: the immutable candidate normalizes 1,023 sanitized LibreNMS
 and SNMP::Info observations over 713 exact OIDs, retains 72 conflicting OIDs,
-and preserves source revision/license provenance without raw fixtures or vendor
-descriptions. Exact, signature, and registry methods remain distinct. This item
-stays open because no reviewed prefix-mapping adapter or broader project-adapter
-set yet satisfies the full inventory contract.
+and adds a static, non-executing RackTables adapter with 270 medium-confidence
+exact model definitions. Thirty-three non-root source candidates are
+quarantined. The derived definition dataset is explicitly GPL-2.0-only and
+retains pinned source/license checksums without PHP, source descriptions, or
+raw device data. All 19 definition-observation overlaps have reviewed
+dispositions; four material disagreements stay ambiguous. The project-evidence
+union is 964 OIDs. Exact, signature, and registry methods remain distinct. This
+item stays open because no reviewed prefix-mapping adapter or broader
+project-adapter set yet satisfies the full inventory contract.
 
 ### DATA-05 — Evidence-backed model identity engine
 
@@ -158,9 +163,11 @@ Acceptance criteria:
 
 Verification: deterministic engine/API tests cover positive, negative,
 neighbor-SKU, family, generic vendor-identifier, platform, cross-vendor, and
-conflicting Catalyst 9300 cases. Only 36 reviewed normalizations assert an
-exact model; 1,491 mappings stop at family/category and 4,672 generic vendor
-identifiers assert neither model nor family. Every public candidate retains
+conflicting Catalyst 9300 cases. Only 36 vendor-MIB normalizations are reviewed
+exact models; 1,491 mappings stop at family/category and 4,672 generic vendor
+identifiers assert neither model nor family. A separate source-bound project
+definition layer contributes 270 medium-confidence exact-model claims and
+never inflates the reviewed vendor count. Every public candidate retains
 match type, claim scope, confidence, source evidence, and the explicit absence
 of firmware/authenticity proof. The pure engine accepts only bounded individual
 signals and does not require or retain a raw walk.
@@ -339,7 +346,8 @@ reason, evidence, alternatives, conflicts, firmware scope, and confidence.
 
 Current evidence: the responsive workbench submits only four bounded fields,
 renders model/family/vendor-identifier/platform/vendor/conflict/unknown states,
-separates evidence layers, exposes confidence and source links, and passed local
+separates registry, vendor-MIB, open-source definition, device-signal, and
+project-observation layers, exposes confidence and source links, and passed local
 desktop/mobile browser flows. Singular results and every candidate now expose
 `firmware_scope: "not_established"`; unknown and conflicting results expose
 `null`. This item remains open only because walk-fragment handoff is not
@@ -353,9 +361,10 @@ Show competing mappings side by side with source revision, date, match method,
 and evidence. Never silently convert a prefix, signature, or PEN into an exact
 model.
 
-Current evidence: competing candidates and material conflict types render
-without selecting a singular model; PEN-only, signature, family, and generic
-vendor-identifier outcomes remain weaker than exact model. It remains open
+Current evidence: competing candidates and material conflict types render in
+both the workbench and direct sysObjectID route without selecting a singular
+model; PEN-only, signature, family, and generic vendor-identifier outcomes
+remain weaker than exact model. It remains open
 until each competing row carries its own source revision/date and the complete
 browser interaction matrix is recorded against production.
 
@@ -446,6 +455,20 @@ exact device-model normalizations, 1,491 family/category assignments, 4,672
 generic vendor identifiers, and positive, negative, and conflict-tested
 Catalyst 9300 identification. The immutable tag, CI, VPS deployment, public
 API/UI smoke, production monitor, and release identity are reconciled.
+
+### v0.4.0-alpha.2 — Open-source exact device definitions
+
+Status: `in-progress`
+
+One result: a pinned open-source project-definition adapter expands exact model
+evidence without relabeling project definitions as vendor-MIB claims, hiding
+material conflicts, serving raw source code, or inferring firmware. The local
+candidate contains 270 RackTables-derived exact-model claims, 33 quarantined
+source candidates, 19 reviewed definition-observation overlap dispositions,
+6,391 distinct runtime mapping keys, and 964 distinct project model-evidence
+OIDs. Implementation and local verification may complete before release
+publication; status remains in progress until integration commit/tag, CI, VPS
+deployment, public smoke, and release reconciliation pass.
 
 ### v0.5.0-alpha.1 — Browse at scale
 
@@ -610,3 +633,21 @@ with no billing code.
   runs. The measured 640 MiB/1-vCPU mixed-load peak was 237,666,304 bytes with
   zero memory-limit, OOM, OOM-kill, or restart events; the tag, VPS SHA,
   production monitor, and public release identity are reconciled.
+
+### 2026-07-20 — v0.4.0-alpha.2 RackTables adapter candidate
+
+- Added a closed static parser for the pinned RackTables `known_switches`
+  table. It rejects executable/dynamic PHP shapes, enterprise roots,
+  out-of-range numeric arcs, sensitive values, and unbounded model labels.
+- Measured 304 literal source entries: one enterprise root is rejected, 270
+  model definitions are publishable, and 33 candidates are quarantined.
+- Bound source, review artifact, IANA registry, GPL-2.0-only notice/full text,
+  generated dataset, runtime index, release manifest, and kill-switch source ID
+  by deterministic checksums.
+- Reviewed all 19 definition-observation overlaps. Fifteen equivalent or
+  less-specific observations resolve; four material disagreements remain
+  ambiguous and expose candidates/conflicts without selecting a model.
+- Updated web examples, evidence-layer labels, direct-route conflict details,
+  README, API schemas, identity documentation, third-party notices, and
+  measured release statistics. Production publication is not claimed from the
+  isolated candidate branch.

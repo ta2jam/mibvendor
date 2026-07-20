@@ -409,7 +409,9 @@ export const PUBLIC_CORPUS_STATISTICS = Object.freeze({
     exact_models: IDENTITY_STATISTICS.exact_models,
     product_families: IDENTITY_STATISTICS.product_families,
     platforms: IDENTITY_STATISTICS.platforms,
-    project_observation_oids: IDENTITY_STATISTICS.project_observation_oids
+    project_observation_oids: IDENTITY_STATISTICS.project_observation_oids,
+    project_definition_oids: IDENTITY_STATISTICS.project_definition_oids,
+    project_identity_oid_coverage: IDENTITY_STATISTICS.project_identity_oid_coverage
   }),
   sources: Object.freeze({
     total: sources.size,

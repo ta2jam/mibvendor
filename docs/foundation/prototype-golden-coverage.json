@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "status": "provisional_phase0_open",
-  "prototype_release": "0.4.0-alpha.1",
+  "prototype_release": "0.4.0-alpha.2",
   "tasks": [
     { "id": "G01", "status": "implemented", "evidence": ["tests/prototype-core.test.mjs: search classifications preserve ranking, instances, and explicit failure states", "prototype/index.html: search-results"] },
     { "id": "G02", "status": "implemented", "evidence": ["tests/prototype-core.test.mjs: task, symbol, module-qualified, and numeric queries resolve", "prototype/app.js: enum-list"] },

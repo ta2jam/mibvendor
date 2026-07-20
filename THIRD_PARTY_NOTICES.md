@@ -46,7 +46,7 @@ identify a hardware model, prove device ownership, or authenticate the device.
 
 ## Device-identity metadata and project observations
 
-The `device-identity-2026-07-20.1` snapshot contains normalized factual OID
+The `device-identity-2026-07-20.2` snapshot contains normalized factual OID
 assignments from the LibreNMS repository at commit
 `dfba713a2ffd39c2b6619cccdec016e04a06a027`. LibreNMS identifies the repository
 as GPL-3.0-or-later; the pinned `LICENSE.txt` and `README.md` checksums are
@@ -77,6 +77,35 @@ hostnames, contact/location fields, addresses, credentials, and raw
 not universal product claims. Exact pinned license evidence and input checksums
 are recorded in
 `data/device-identities/project-fixtures-manifest.json`.
+
+## RackTables-derived exact device definitions
+
+The definition-only dataset
+[`data/device-identities/project-definitions.json`](data/device-identities/project-definitions.json)
+is derived from the static `known_switches` table in RackTables commit
+[`e5fff9f8aab339798ed47e8c6d7d977ed97a82bd`](https://github.com/RackTables/racktables/tree/e5fff9f8aab339798ed47e8c6d7d977ed97a82bd),
+source path `wwwroot/inc/snmp.php`. RackTables identifies this material as
+GPL-2.0-only. The RackTables-derived definition content in
+`project-definitions.json`, the definition rows embedded in the mixed
+`runtime-index.json`, and individual definition content returned by the API are
+therefore distributed under GPL-2.0-only. This does not classify unrelated
+runtime-index content or the rest of mibvendor as GPL; those remain under their
+own licenses except where another third-party notice says otherwise.
+
+The pinned upstream notice and full license text are retained as
+[`COPYING`](data/device-identities/licenses/racktables/COPYING) and
+[`LICENSE`](data/device-identities/licenses/racktables/LICENSE). The source
+artifact is bound by Git blob
+`36af514aae26ed22750d06fb18c8b80a41bfccdb` and SHA-256
+`9d54ec87a9678fccc9fc1c49e36888362bc2bdeb8130f2b8498cba694f5ae8fa`.
+The exact source revision, review artifact, retained-license checksums, field
+normalization contract, quarantine reasons, and overlap dispositions are
+recorded in
+[`data/device-identities/project-definitions-manifest.json`](data/device-identities/project-definitions-manifest.json).
+
+Only normalized numeric OIDs, bounded model labels, and provenance are
+published. RackTables PHP/source code, source descriptions, port summaries,
+raw device data, and firmware claims are not included or exposed by the API.
 
 ## Repository-license-derived MIB collections
 

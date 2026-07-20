@@ -22,13 +22,23 @@ test("production server exposes UI, health, version, OpenAPI, and API on one ori
     const page = await fetch(`${base}/`);
     assert.equal(page.status, 200);
     assert.match(page.headers.get("content-type"), /^text\/html/);
-    assert.equal(page.headers.get("cache-control"), "no-cache");
+    assert.equal(page.headers.get("cache-control"), "public, max-age=0, must-revalidate, no-transform");
     assert.match(await page.text(), /MIB context without the maze/);
 
     const stylesheet = await fetch(`${base}/styles.css`);
     assert.equal(stylesheet.status, 200);
     assert.equal(stylesheet.headers.get("cache-control"), "no-cache");
     await stylesheet.arrayBuffer();
+
+    const script = await fetch(`${base}/app.js`);
+    assert.equal(script.status, 200);
+    assert.equal(script.headers.get("cache-control"), "no-cache");
+    await script.arrayBuffer();
+
+    const apiRelease = await fetch(`${base}/v1/data-release`);
+    assert.equal(apiRelease.status, 200);
+    assert.equal(apiRelease.headers.get("cache-control"), "no-cache");
+    await apiRelease.json();
 
     assert.equal(await (await fetch(`${base}/healthz`)).text(), "ok\n");
     const version = await (await fetch(`${base}/version`)).json();
@@ -159,12 +169,21 @@ test("server serves the SPA shell only for explicit shareable routes", async () 
       const response = await fetch(`${base}${route}`);
       assert.equal(response.status, 200, route);
       assert.match(response.headers.get("content-type"), /^text\/html/, route);
+      assert.equal(response.headers.get("cache-control"), "public, max-age=0, must-revalidate, no-transform", route);
       assert.match(await response.text(), /id="route-view"/, route);
     }
+
+    const rootHead = await fetch(`${base}/`, { method: "HEAD" });
+    assert.equal(rootHead.status, 200);
+    assert.match(rootHead.headers.get("content-type"), /^text\/html/);
+    assert.equal(rootHead.headers.get("cache-control"), "public, max-age=0, must-revalidate, no-transform");
+    assert.equal(await rootHead.text(), "");
 
     const head = await fetch(`${base}/modules/BFD-STD-MIB`, { method: "HEAD" });
     assert.equal(head.status, 200);
     assert.match(head.headers.get("content-type"), /^text\/html/);
+    assert.equal(head.headers.get("cache-control"), "public, max-age=0, must-revalidate, no-transform");
+    assert.equal(await head.text(), "");
 
     for (const route of [
       "/objects",

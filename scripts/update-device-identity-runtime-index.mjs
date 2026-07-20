@@ -8,7 +8,7 @@ import { canonicalJsonSha256 } from "./canonical-json.mjs";
 
 const projectRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const identityRoot = path.join(projectRoot, "data", "device-identities");
-const IDENTITY_RELEASE = "device-identity-2026-07-20.1";
+const IDENTITY_RELEASE = "device-identity-2026-07-20.2";
 const BUILTIN_CLAIMS = Object.freeze({
   "net-snmp": Object.freeze({
     record_count: 18,
@@ -40,17 +40,25 @@ export async function buildDeviceIdentityRuntimeIndex() {
   const vendorManifest = await readInput("data/device-identities/vendor-mib-sources.json");
   const fixtures = await readInput("data/device-identities/project-fixtures.json");
   const fixtureManifest = await readInput("data/device-identities/project-fixtures-manifest.json");
+  const definitions = await readInput("data/device-identities/project-definitions.json");
+  const definitionManifest = await readInput("data/device-identities/project-definitions-manifest.json");
   const licenseBytes = await readFile(path.join(identityRoot, "licenses/librenms/LICENSE.txt"));
   const readmeBytes = await readFile(path.join(identityRoot, "licenses/librenms/README.md"));
   const snmpInfoLicenseBytes = await readFile(path.join(identityRoot, "licenses/SNMP-INFO-LICENSE"));
+  const rackTablesCopyingBytes = await readFile(path.join(identityRoot, "licenses/racktables/COPYING"));
+  const rackTablesLicenseBytes = await readFile(path.join(identityRoot, "licenses/racktables/LICENSE"));
 
   const vendorCanonicalSha256 = canonicalJsonSha256(withoutField(vendor.document, "dataset_sha256"));
   const fixtureCanonicalSha256 = canonicalJsonSha256(withoutField(fixtures.document, "document_sha256"));
   const vendorManifestCanonicalSha256 = canonicalJsonSha256(vendorManifest.document);
   const fixtureManifestCanonicalSha256 = canonicalJsonSha256(fixtureManifest.document);
+  const definitionCanonicalSha256 = canonicalJsonSha256(withoutField(definitions.document, "dataset_sha256"));
+  const definitionManifestCanonicalSha256 = canonicalJsonSha256(definitionManifest.document);
   if (vendor.document.dataset_sha256 !== vendorCanonicalSha256) throw new Error("Vendor identity dataset digest drift");
   if (vendor.document.source_manifest_sha256 !== vendorManifestCanonicalSha256) throw new Error("Vendor identity source manifest digest drift");
   if (fixtures.document.document_sha256 !== fixtureCanonicalSha256) throw new Error("Project fixture digest drift");
+  if (definitions.document.dataset_sha256 !== definitionCanonicalSha256) throw new Error("Project definition dataset digest drift");
+  if (definitions.document.source_manifest_sha256 !== definitionManifestCanonicalSha256) throw new Error("Project definition source manifest digest drift");
 
   const sourceIndex = new Map(vendor.document.sources.map((source, index) => [source.id, index]));
   const vendorClaims = vendor.document.records.map((record) => {
@@ -87,6 +95,48 @@ export async function buildDeviceIdentityRuntimeIndex() {
     revision: source.revision,
     repository_license_signal: source.license.spdx
   }));
+  const definitionSources = definitions.document.sources;
+  const projectDefinitions = definitions.document.definitions.map((definition) => [
+    definition.sys_object_id,
+    definition.enterprise_number,
+    definition.model,
+    definitionSources.findIndex((source) => source.id === definition.source_id),
+    definition.declaration_line,
+    definition.confidence,
+    definition.claim_scope
+  ]);
+  if (projectDefinitions.some((definition) => definition[3] < 0)) throw new Error("Project definition source index drift");
+  const vendorOids = new Set(vendorClaims.map((claim) => claim[0]));
+  const fixtureOids = new Set(projectFixtures.map((fixture) => fixture[0]));
+  const definitionOids = new Set(projectDefinitions.map((definition) => definition[0]));
+  const sourceCandidateOids = new Set([
+    ...definitions.document.definitions.map((definition) => definition.sys_object_id),
+    ...definitions.document.quarantine.map((record) => record.sys_object_id)
+  ]);
+  const fixtureOverlapOids = [...definitionOids].filter((oid) => fixtureOids.has(oid)).sort();
+  const fixtureOverlapDispositions = definitionManifest.document.fixture_overlap_dispositions;
+  const dispositionByOid = new Map(fixtureOverlapDispositions.map((item) => [item.sys_object_id, item.disposition]));
+  if (dispositionByOid.size !== fixtureOverlapDispositions.length
+    || fixtureOverlapOids.length !== fixtureOverlapDispositions.length
+    || fixtureOverlapOids.some((oid) => !dispositionByOid.has(oid))
+    || fixtureOverlapDispositions.some((item) => !definitionOids.has(item.sys_object_id) || !fixtureOids.has(item.sys_object_id))) {
+    throw new Error("Project-definition fixture-overlap dispositions drift");
+  }
+  const vendorFixtureUnion = new Set([...vendorOids, ...fixtureOids]);
+  const integrationMeasurements = {
+    source_exact_oid_candidates: sourceCandidateOids.size,
+    source_candidate_fixture_overlap_oids: [...sourceCandidateOids].filter((oid) => fixtureOids.has(oid)).length,
+    source_candidate_vendor_overlap_oids: [...sourceCandidateOids].filter((oid) => vendorOids.has(oid)).length,
+    source_candidate_new_vs_fixture_oids: [...sourceCandidateOids].filter((oid) => !fixtureOids.has(oid)).length,
+    source_candidate_new_vs_vendor_fixture_union_oids: [...sourceCandidateOids].filter((oid) => !vendorFixtureUnion.has(oid)).length,
+    model_definition_oids: definitionOids.size,
+    model_definition_fixture_overlap_oids: [...definitionOids].filter((oid) => fixtureOids.has(oid)).length,
+    model_definition_vendor_overlap_oids: [...definitionOids].filter((oid) => vendorOids.has(oid)).length,
+    model_definition_new_vs_fixture_oids: [...definitionOids].filter((oid) => !fixtureOids.has(oid)).length,
+    model_definition_new_vs_vendor_fixture_union_oids: [...definitionOids].filter((oid) => !vendorFixtureUnion.has(oid)).length,
+    project_model_oid_coverage: new Set([...fixtureOids, ...definitionOids]).size,
+    project_exact_oid_candidate_inventory: new Set([...fixtureOids, ...sourceCandidateOids]).size
+  };
 
   const document = {
     schema_version: 1,
@@ -116,6 +166,21 @@ export async function buildDeviceIdentityRuntimeIndex() {
         file_sha256: fixtureManifest.file_sha256,
         canonical_sha256: fixtureManifestCanonicalSha256
       },
+      project_definitions: {
+        path: "data/device-identities/project-definitions.json",
+        file_sha256: definitions.file_sha256,
+        canonical_sha256: definitionCanonicalSha256,
+        dataset_id: definitions.document.dataset_id,
+        dataset_license: definitions.document.dataset_license,
+        definition_count: definitions.document.counts.exact_model_definitions,
+        exact_oid_candidate_count: definitions.document.counts.exact_oid_candidates,
+        quarantined_entry_count: definitions.document.counts.quarantined_entries
+      },
+      project_definition_manifest: {
+        path: "data/device-identities/project-definitions-manifest.json",
+        file_sha256: definitionManifest.file_sha256,
+        canonical_sha256: definitionManifestCanonicalSha256
+      },
       librenms_license: {
         path: "data/device-identities/licenses/librenms/LICENSE.txt",
         file_sha256: sha256(licenseBytes)
@@ -127,12 +192,24 @@ export async function buildDeviceIdentityRuntimeIndex() {
       snmp_info_license: {
         path: "data/device-identities/licenses/SNMP-INFO-LICENSE",
         file_sha256: sha256(snmpInfoLicenseBytes)
+      },
+      racktables_copying: {
+        path: "data/device-identities/licenses/racktables/COPYING",
+        file_sha256: sha256(rackTablesCopyingBytes)
+      },
+      racktables_license: {
+        path: "data/device-identities/licenses/racktables/LICENSE",
+        file_sha256: sha256(rackTablesLicenseBytes)
       }
     },
     vendor_sources: vendor.document.sources,
     vendor_claims: vendorClaims,
     project_sources: projectSources,
     project_fixtures: projectFixtures,
+    definition_sources: definitionSources,
+    project_definitions: projectDefinitions,
+    project_definition_fixture_dispositions: fixtureOverlapDispositions.map((item) => [item.sys_object_id, item.disposition]),
+    integration_measurements: integrationMeasurements,
     reviewed_pen_links: fixtureManifest.document.organization_mapping_snapshot.reviewed_pen_links,
     runtime_index_sha256: null
   };
@@ -150,7 +227,9 @@ export function buildDeviceIdentityRelease(runtimeIndex, runtimeIndexBytes) {
       license_evidence: {
         librenms_license_sha256: runtimeIndex.inputs.librenms_license.file_sha256,
         librenms_readme_sha256: runtimeIndex.inputs.librenms_readme.file_sha256,
-        snmp_info_license_sha256: runtimeIndex.inputs.snmp_info_license.file_sha256
+        snmp_info_license_sha256: runtimeIndex.inputs.snmp_info_license.file_sha256,
+        racktables_copying_sha256: runtimeIndex.inputs.racktables_copying.file_sha256,
+        racktables_license_sha256: runtimeIndex.inputs.racktables_license.file_sha256
       },
       vendor_mib: {
         snapshot_id: runtimeIndex.inputs.vendor_mib.snapshot_id,
@@ -168,17 +247,31 @@ export function buildDeviceIdentityRelease(runtimeIndex, runtimeIndexBytes) {
         manifest_file_sha256: runtimeIndex.inputs.project_manifest.file_sha256,
         observation_count: runtimeIndex.inputs.project_fixtures.observation_count
       },
+      project_definitions: {
+        dataset_id: runtimeIndex.inputs.project_definitions.dataset_id,
+        dataset_license: runtimeIndex.inputs.project_definitions.dataset_license,
+        dataset_sha256: runtimeIndex.inputs.project_definitions.canonical_sha256,
+        file_sha256: runtimeIndex.inputs.project_definitions.file_sha256,
+        manifest_sha256: runtimeIndex.inputs.project_definition_manifest.canonical_sha256,
+        manifest_file_sha256: runtimeIndex.inputs.project_definition_manifest.file_sha256,
+        definition_count: runtimeIndex.inputs.project_definitions.definition_count,
+        exact_oid_candidate_count: runtimeIndex.inputs.project_definitions.exact_oid_candidate_count,
+        quarantined_entry_count: runtimeIndex.inputs.project_definitions.quarantined_entry_count
+      },
+      integration_measurements: runtimeIndex.integration_measurements,
       runtime_index: {
         schema_version: runtimeIndex.schema_version,
         runtime_index_sha256: runtimeIndex.runtime_index_sha256,
         file_sha256: sha256(runtimeIndexBytes),
         vendor_claim_count: runtimeIndex.vendor_claims.length,
-        project_fixture_oid_count: runtimeIndex.project_fixtures.length
+        project_fixture_oid_count: runtimeIndex.project_fixtures.length,
+        project_definition_count: runtimeIndex.project_definitions.length
       }
     },
     source_ids: [...new Set([
       ...runtimeIndex.vendor_sources.map((source) => source.id),
       ...runtimeIndex.project_sources.map((source) => source.id),
+      ...runtimeIndex.definition_sources.map((source) => source.id),
       ...Object.keys(BUILTIN_CLAIMS)
     ])].sort()
   };
@@ -219,7 +312,8 @@ async function main() {
     runtime_index_file_sha256: sha256(runtimeIndexBytes),
     release_sha256: release.release_sha256,
     vendor_claims: document.vendor_claims.length,
-    project_fixtures: document.project_fixtures.length
+    project_fixtures: document.project_fixtures.length,
+    project_definitions: document.project_definitions.length
   })}\n`);
 }
 

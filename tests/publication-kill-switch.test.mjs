@@ -123,8 +123,8 @@ test("no kill switch preserves current object, raw, dependency, and identity out
   assert.equal(result.bfdMissing.includes("IF-MIB"), false);
   assert.equal(result.netSnmpIdentity, "resolved");
   assert.equal(result.sigScaleIdentity, "resolved");
-  assert.equal(result.sysObjectIdCount, 6218);
-  assert.equal(result.statisticsSysObjectIdCount, 6218);
+  assert.equal(result.sysObjectIdCount, 6391);
+  assert.equal(result.statisticsSysObjectIdCount, 6391);
   assert.equal(result.supplementalRecords, 0);
 });
 
@@ -135,8 +135,8 @@ test("source kill switches cover legacy objects, raw bytes, dependencies, and st
   assert.equal(result.sigScaleDependencies, null);
   assert.equal(result.netSnmpIdentity, "enterprise_only");
   assert.equal(result.sigScaleIdentity, "enterprise_only");
-  assert.equal(result.sysObjectIdCount, 6199);
-  assert.equal(result.statisticsSysObjectIdCount, 6199);
+  assert.equal(result.sysObjectIdCount, 6372);
+  assert.equal(result.statisticsSysObjectIdCount, 6372);
 });
 
 test("module kill switches cover legacy objects, dependency presence, and identity owner modules", async (t) => {
@@ -146,8 +146,8 @@ test("module kill switches cover legacy objects, dependency presence, and identi
   assert.equal(result.sigScaleDependencies, null);
   assert.equal(result.netSnmpIdentity, "enterprise_only");
   assert.equal(result.sigScaleIdentity, "enterprise_only");
-  assert.equal(result.sysObjectIdCount, 6199);
-  assert.equal(result.statisticsSysObjectIdCount, 6199);
+  assert.equal(result.sysObjectIdCount, 6372);
+  assert.equal(result.statisticsSysObjectIdCount, 6372);
 });
 
 test("disabling a secondary identity evidence module invalidates only that mapping", async (t) => {
@@ -159,6 +159,6 @@ test("disabling a secondary identity evidence module invalidates only that mappi
   assert.equal(result.sigScaleRaw, true);
   assert.equal(result.sigScaleDependencies.status, "partial");
   assert.ok(result.sigScaleDependencies.missing.includes("SIGSCALE-SMI"));
-  assert.equal(result.sysObjectIdCount, 6217);
-  assert.equal(result.statisticsSysObjectIdCount, 6217);
+  assert.equal(result.sysObjectIdCount, 6390);
+  assert.equal(result.statisticsSysObjectIdCount, 6390);
 });
