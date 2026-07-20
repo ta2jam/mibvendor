@@ -153,9 +153,9 @@ the OpenAPI/health/status links, and horizontal-overflow checks. The run
 recorded no console, page, or request errors and no Cloudflare beacon
 injection; origin HTML retained the `no-transform` boundary.
 
-## v0.4.0-alpha.3 — LibreNMS platform-prefix candidate
+## v0.4.0-alpha.3 — LibreNMS platform-prefix release
 
-One measurable result: the immutable `device-identity-2026-07-20.3` candidate
+One measurable result: the immutable `device-identity-2026-07-20.3` release
 adds a source-bound project platform-prefix layer without changing the 6,391
 exact lookup keys or 964 exact project-evidence OIDs. A strict, non-executing
 adapter reads the pinned LibreNMS `resources/definitions/os_detection` tree and
@@ -187,7 +187,26 @@ The implementation performs O(A) map probes for A arcs, but repeated
 and transient allocation in the worst case. The benchmark is not production
 HTTP evidence or an energy measurement.
 
-Production status: candidate, not deployed. No tag, CI result, VPS image,
-public API/UI smoke result, rollback point, or production-monitor result is
-claimed here. Production remains `v0.4.0-alpha.2` until every completion rule
-in this document is satisfied and reconciled.
+Production status: complete. Annotated tag `v0.4.0-alpha.3`, release commit
+`c22f64758998f5ffad4979623a0add06c933c323`, and CI run `29724845067` are
+reconciled. The exact production image is
+`sha256:c5640b23d6eddc044f80de43158550f725742518fcb766620a13eacdfbb3bb5f`;
+it was activated at `2026-07-20T08:03:12Z`. The rollback point is
+`/srv/sites/mibvendor/backups/pre-v0.4.0-alpha.3-20260720T075017Z`.
+
+The isolated 640 MiB/1-vCPU preflight passed the release identity, Arista
+prefix, Cisco exact-precedence, and 32/32 concurrent HTTP checks. Its final
+sample was 197.6 MiB with no OOM kill or restart. The audit-bound activation
+recorded event SHA-256
+`a5bf695d8379b79e908b71ebda3392378e6748202847f2c32b01b89e564348ce`
+and target-tree SHA-256
+`73c7b7a16f00be9233b84dfb099e9b6e4f63601ef2101e5cfd1688b2e98f47b8`.
+
+The full public production verifier and host health contract passed. Public
+`/version` and `/status` report the release commit and
+`device-identity-2026-07-20.3`. Production Browser verification covered the
+Arista prefix workbench and deep route, the Cisco `.9.1.1117` exact claim over
+its `acs` prefix alternative, and a 390x844 viewport with matched prefix and
+revision visible. Document and body widths were equal, and the browser console
+was empty. Production-monitor run `29726660532` completed successfully against
+the immutable tag in 23 seconds.

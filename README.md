@@ -47,7 +47,7 @@ separates 12 redistributable sources from 20 directory-only sources. The PEN
 registry remains complete for the bundled IANA snapshot. Unsupported vendors
 are not converted into guessed products or models.
 
-The `v0.4.0-alpha.3` candidate retains 6,391 distinct exact lookup keys in the
+The deployed `v0.4.0-alpha.3` release retains 6,391 distinct exact lookup keys in the
 immutable `device-identity-2026-07-20.3` release. Its vendor-MIB layer remains
 6,199 assignments: 36 narrow,
 reviewed Catalyst 9300 model normalizations, 1,491 product-family/category
@@ -64,8 +64,9 @@ arc-bound platform prefixes across 406 platform keys and 266 PENs. Prefix
 evidence is evaluated only for `sysObjectID`, never asserts a model or product
 family, and never outranks an exact identity claim. No layer asserts firmware
 support, and raw source code, descriptions, walks, or private device fields are
-served. This candidate is not described as deployed until its tag, CI, VPS,
-public checks, and production monitor are reconciled.
+served. Its annotated tag, CI, active release identity, public API/UI checks,
+and production monitor are reconciled; the exact publication evidence is in
+the [release record](docs/RELEASE.md#v040-alpha3--librenms-platform-prefix-release).
 
 ## Use it safely
 
@@ -113,7 +114,7 @@ The status endpoint is a live-process self-check, not uptime history or an SLA.
 | `GET` | `/v1/modules/{moduleId}/raw` | Exact raw MIB + license/notice + provenance TAR, only when approved |
 | `GET` | `/v1/sources` | Reviewed publication modes and rights scopes |
 | `GET` | `/v1/enterprises/{number}` | IANA PEN assignment |
-| `GET` | `/v1/sys-object-ids/{oid}` | Exact identity or PEN boundary; prefix in the alpha.3 candidate |
+| `GET` | `/v1/sys-object-ids/{oid}` | Exact identity, arc-bound platform prefix, or PEN boundary |
 | `POST` | `/v1/device-identities:assess` | Bounded multi-signal device assessment |
 | `GET` | `/v1/modules/{module}/dependencies` | Dependency graph states |
 | `POST` | `/v1/resolve:batch` | Order-preserving OID resolution |
@@ -132,7 +133,7 @@ The result identifies `SG 300-10` with
 `firmware_scope: "not_established"`. Provenance reports `definition-only` and
 `raw_download: false`; it is not presented as vendor-MIB evidence.
 
-Platform-prefix candidate example:
+Platform-prefix example:
 
 ```sh
 curl --fail-with-body --compressed \
@@ -144,7 +145,7 @@ Under `device-identity-2026-07-20.3`, this matches the arc prefix
 textual lookalike such as `.30065.10` does not match `.30065.1`. The result
 keeps `model` and `product_family` null, and an exact identity claim takes
 precedence when one exists. Check the response's `identity_release` before
-depending on this candidate behavior.
+depending on this release behavior.
 
 Example batch request:
 
@@ -252,7 +253,7 @@ its source date and SHA-256. Seven reviewed PEN links expose a stable macvendor
 `organization_key`; every other key is `null`, never name-inferred. Eighteen
 Net-SNMP platform identities and one SigScale OCS platform identity are pinned
 to exact upstream revisions; none is presented as an exact hardware model. The
-candidate LibreNMS platform-prefix layer is separately pinned to its exact
+LibreNMS platform-prefix layer is separately pinned to its exact
 commit, input-tree/file blobs, SHA-256 values, recognized license markers, and
 source date. Its raw YAML is not served, and its source-specific kill switch
 removes all of its claims without weakening them into model or family guesses.

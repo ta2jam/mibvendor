@@ -7,7 +7,7 @@ while it is pre-1.0; research releases may remain unstable.
 
 ### Added
 
-- Added the immutable `device-identity-2026-07-20.3` candidate with 655
+- Added the immutable `device-identity-2026-07-20.3` release with 655
   LibreNMS-derived, arc-bound `sysObjectID` platform prefixes covering 406
   platform keys and 266 PENs. The definition-only dataset is
   GPL-3.0-or-later; raw upstream YAML and descriptions are not published.
@@ -30,11 +30,18 @@ while it is pre-1.0; research releases may remain unstable.
   adapter quarantines 358 conditional, root, non-enterprise, shared-agent, or
   conflicting literals instead of publishing ambiguous claims.
 
-### Not deployed
+### Deployed
 
-- This entry describes a release candidate. Production remains on
-  `v0.4.0-alpha.2` until the immutable tag, green CI, VPS artifact, public
-  API/UI checks, and production monitor are reconciled.
+- Published annotated tag `v0.4.0-alpha.3` at release commit
+  `c22f64758998f5ffad4979623a0add06c933c323` after CI run `29724845067`
+  passed.
+- Activated image
+  `sha256:c5640b23d6eddc044f80de43158550f725742518fcb766620a13eacdfbb3bb5f`
+  at `2026-07-20T08:03:12Z`; rollback evidence is retained at
+  `/srv/sites/mibvendor/backups/pre-v0.4.0-alpha.3-20260720T075017Z`.
+- The full public production verifier, host health contract, Arista prefix and
+  Cisco exact-precedence browser flows, 390x844 no-overflow check, empty
+  browser console, and production-monitor run `29726660532` passed.
 
 ## [0.4.0-alpha.2] - 2026-07-20
 

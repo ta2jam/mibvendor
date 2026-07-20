@@ -143,7 +143,7 @@ quarantined. The derived definition dataset is explicitly GPL-2.0-only and
 retains pinned source/license checksums without PHP, source descriptions, or
 raw device data. All 19 definition-observation overlaps have reviewed
 dispositions; four material disagreements stay ambiguous. The project-evidence
-union is 964 OIDs. The `device-identity-2026-07-20.3` candidate adds 655
+union is 964 OIDs. The active `device-identity-2026-07-20.3` release adds 655
 unconditional, arc-bound LibreNMS `sysObjectID` platform prefixes for 406
 platform keys across 266 PENs. It quarantines 358 conditional, root,
 non-enterprise, shared-agent, or multi-platform literals. Exact evidence takes
@@ -468,12 +468,16 @@ Publish a concise free-API statement, copyable curl/JavaScript/Python examples,
 real responses, error states, pagination, caching, release pinning, fair-use
 limits, OpenAPI, health/status links, and prohibited sensitive inputs.
 
-Verification: deployed `v0.4.0-alpha.2` passed exact clipboard comparisons for
+Historical verification: deployed `v0.4.0-alpha.2` passed exact clipboard comparisons for
 all five examples, cursor `0` to `1`, OpenAPI/health/status navigation, full
 forward and reverse keyboard cycles, Enter activation, live regions, result
 focus, strict no-overflow checks at 1280×900 and 390×844, and zero
 console/page/request errors. Screenshots and the immutable production identity
-are recorded in `docs/operations/ui-15-browser-evidence.md`.
+are recorded in `docs/operations/ui-15-browser-evidence.md`. The
+`v0.4.0-alpha.3` production follow-up verified the Arista prefix workbench and
+deep route, exact-over-prefix precedence for Cisco `.9.1.1117`, visible matched
+prefix/revision fields at 390x844 without horizontal overflow, and an empty
+browser console; publication evidence is recorded in `docs/RELEASE.md`.
 
 ## Outcome-based release sequence
 
@@ -515,17 +519,22 @@ and production monitor are reconciled.
 
 ### v0.4.0-alpha.3 — Open-source platform-prefix definitions
 
-Status: `in-progress`
+Status: `complete`
 
 One result: a pinned project adapter broadens platform recognition without
 turning a string prefix, PEN root, conditional rule, or project label into a
-model claim. The candidate preserves 6,391 exact keys and 964 exact
+model claim. The release preserves 6,391 exact keys and 964 exact
 project-evidence OIDs, then adds 655 arc-bound LibreNMS `sysObjectID` prefixes
 for 406 platform keys across 266 PENs. Exact matches take precedence, prefix
 matching is confined to `sysObjectID`, and the source kill switch removes the
-layer without fallback inference. The remaining release work is immutable tag,
-green CI, VPS deployment, public API/UI verification, production monitoring,
-and release-identity reconciliation.
+layer without fallback inference. Release commit
+`c22f64758998f5ffad4979623a0add06c933c323`, annotated tag
+`v0.4.0-alpha.3`, CI run `29724845067`, production image
+`sha256:c5640b23d6eddc044f80de43158550f725742518fcb766620a13eacdfbb3bb5f`,
+deployment time `2026-07-20T08:03:12Z`, rollback point
+`/srv/sites/mibvendor/backups/pre-v0.4.0-alpha.3-20260720T075017Z`, full public
+verification, Browser checks, production-monitor run `29726660532`, and the
+active release identity are reconciled.
 
 ### v0.5.0-alpha.1 — Browse at scale
 
@@ -713,7 +722,7 @@ with no billing code.
   reconciled; Cloudflare no longer injects an analytics beacon into the strict
   CSP page.
 
-### 2026-07-20 — v0.4.0-alpha.3 platform-prefix candidate
+### 2026-07-20 — v0.4.0-alpha.3 platform-prefix release
 
 - Completed the bounded DATA-04 adapter inventory with a strict, non-executing
   LibreNMS OS-detection YAML parser. It publishes 655 unconditional platform
@@ -731,8 +740,16 @@ with no billing code.
   GPL-3.0-or-later and definition-only; raw YAML and descriptions are not
   served, and the general LibreNMS `NOASSERTION` discovery snapshot remains
   quarantined.
-- Production publication is still pending. No tag, VPS state, public check, or
-  monitor result is claimed by this candidate entry.
+- Published annotated tag `v0.4.0-alpha.3` at commit
+  `c22f64758998f5ffad4979623a0add06c933c323` after CI run `29724845067`.
+  Image
+  `sha256:c5640b23d6eddc044f80de43158550f725742518fcb766620a13eacdfbb3bb5f`
+  was activated at `2026-07-20T08:03:12Z`; the rollback point is
+  `/srv/sites/mibvendor/backups/pre-v0.4.0-alpha.3-20260720T075017Z`.
+- Reconciled the full public verifier, host health contract, Arista prefix and
+  Cisco exact-precedence Browser flows, 390x844 no-overflow result, empty
+  browser console, active release identity, and successful production-monitor
+  run `29726660532`.
 
 ### 2026-07-20 — Public parser breadth gate
 

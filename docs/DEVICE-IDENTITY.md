@@ -7,7 +7,7 @@ owns, operates, or currently serves a response from a device.
 
 ## Public evidence layers
 
-The `device-identity-2026-07-20.3` candidate keeps five materially different
+The active production `device-identity-2026-07-20.3` release keeps five materially different
 layers separate:
 
 1. **Registry** — the contact-free IANA PEN snapshot supplies the enterprise

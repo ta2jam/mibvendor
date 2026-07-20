@@ -62,7 +62,7 @@ reviewed immutable snapshots. The active `license-signaled-2026-07-20.2`
 release contains 702 redistributable modules, 76,606 searchable catalog OID
 nodes, 4,138 textual conventions, 1,273 notifications, the IANA PEN registry,
 and 6,391 distinct exact identity lookup keys. The separate
-`device-identity-2026-07-20.2` release retains 6,199 vendor-MIB mappings: 36
+`device-identity-2026-07-20.3` release retains 6,199 vendor-MIB mappings: 36
 reviewed model normalizations, 1,491 product-family/category claims, and 4,672
 generic vendor identifiers. A distinct GPL-2.0-only RackTables-derived layer
 adds 270 medium-confidence exact-model claims; 33 source candidates remain
@@ -75,7 +75,7 @@ hashed, revisioned publication-control view make source kill-switch changes
 observable without rewriting historical evidence. The public source catalog
 contains 12 redistributable and 20 directory-only sources.
 
-The `v0.4.0-alpha.3` candidate advances the identity release to
+The deployed `v0.4.0-alpha.3` release advances the identity release to
 `device-identity-2026-07-20.3` without changing the 6,391 exact keys or 964
 exact project-evidence OIDs. It adds 655 definition-only LibreNMS platform
 prefixes for 406 platform keys across 266 PENs. Prefix matching is arc-bound,
@@ -84,7 +84,8 @@ identity evidence always wins, parent prefix evidence remains inspectable, and
 the `librenms-os-detection` kill switch removes the layer as a unit. The
 derived records are GPL-3.0-or-later and bind the exact source revision, tree,
 files, blobs, hashes, license markers, and source date; raw YAML is not served.
-This is a candidate until the production release identity is reconciled.
+The immutable tag, active production identity, public checks, and production
+monitor are reconciled.
 
 The current runtime remains smaller than the later data-engine hypothesis:
 

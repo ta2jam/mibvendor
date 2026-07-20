@@ -46,9 +46,8 @@ identify a hardware model, prove device ownership, or authenticate the device.
 
 ## Device-identity metadata and project observations
 
-The production `device-identity-2026-07-20.2` snapshot, retained unchanged in
-the `device-identity-2026-07-20.3` candidate, contains normalized factual OID
-assignments from the LibreNMS repository at commit
+The production `device-identity-2026-07-20.3` release contains normalized
+factual OID assignments from the LibreNMS repository at commit
 `dfba713a2ffd39c2b6619cccdec016e04a06a027`. LibreNMS identifies the repository
 as GPL-3.0-or-later; the pinned `LICENSE.txt` and `README.md` checksums are
 recorded in `data/device-identities/vendor-mib-sources.json`. The complete GPL

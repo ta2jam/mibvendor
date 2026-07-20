@@ -36,7 +36,7 @@ batch resolution. The active `license-signaled-2026-07-20.2` slice exposes 702
 manifest-bound raw modules, 76,606 searchable catalog OID nodes, 4,138 textual
 conventions, 1,273 notifications, file/source checksums, four publication
 modes, and fail-closed source decisions across 32 source records. This is
-joined by the separate `device-identity-2026-07-20.2` release: 6,391 distinct
+joined by the active `device-identity-2026-07-20.3` release: 6,391 distinct
 exact lookup keys spanning 6,199 vendor-MIB assignments and 270 separate
 medium-confidence RackTables-derived model claims. The vendor-MIB split remains
 36 reviewed model normalizations, 1,491 family/category claims, and 4,672
@@ -49,14 +49,15 @@ revisioned publication-control view expose source kill-switch changes. This is
 validation infrastructure, not evidence that Phases 1–4 or the Phase 0
 external-demand gates are complete.
 
-The `v0.4.0-alpha.3` candidate keeps those exact counts unchanged and adds a
+The deployed `v0.4.0-alpha.3` release keeps those exact counts unchanged and adds a
 separate GPL-3.0-or-later, definition-only LibreNMS layer: 655 arc-bound
 `sysObjectID` platform prefixes covering 406 platform keys and 266 PENs. Exact
 identity evidence has priority. Prefixes apply only to `sysObjectID`, stop at
 platform, retain matched-parent evidence, and are removed by their source kill
 switch. They never establish a model, product family, firmware range, or
-identity from `entPhysicalVendorType`. This candidate is not production until
-its immutable tag and deployed identity are reconciled.
+identity from `entPhysicalVendorType`. Its immutable tag, deployed identity,
+public verification, and production monitor are reconciled. The Phase 0
+participant-demand, repeat-use, and external-API gates remain open.
 
 ## Phase 1 — public foundation
 
