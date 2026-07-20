@@ -6,6 +6,9 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 
 import { canonicalJsonSha256 } from "./canonical-json.mjs";
+import { classifyPinnedLicense } from "./lib/pinned-license-classifier.mjs";
+
+export { classifyPinnedLicense } from "./lib/pinned-license-classifier.mjs";
 
 const ENTERPRISE_OID = /^\.?1\.3\.6\.1\.4\.1\.(\d+)(?:\.\d+)*$/;
 const PRIVATE_VALUE = /^(?:<private>|private|unknown|generic|null|none|n\/?a)$/i;
@@ -91,38 +94,6 @@ function uniqueMatches(content, pattern, valueGroup) {
     values.set(value, current);
   }
   return values;
-}
-
-export function classifyPinnedLicense(sourceConfig, fileBytesByPath) {
-  const failures = [];
-  const evidence = [];
-  for (const expected of sourceConfig.license_classifier.files) {
-    const bytes = fileBytesByPath.get(expected.path);
-    if (!bytes) {
-      failures.push(`missing:${expected.path}`);
-      continue;
-    }
-    const actualSha256 = sha256(bytes);
-    const actualGitBlobOid = gitBlobOid(bytes);
-    const content = bytes.toString("utf8");
-    if (actualSha256 !== expected.sha256) failures.push(`sha256:${expected.path}`);
-    if (actualGitBlobOid !== expected.git_blob_oid) failures.push(`git-blob:${expected.path}`);
-    for (const marker of expected.required_markers) {
-      if (!content.includes(marker)) failures.push(`marker:${expected.path}:${marker}`);
-    }
-    evidence.push({
-      path: expected.path,
-      git_blob_oid: actualGitBlobOid,
-      sha256: actualSha256,
-    });
-  }
-  return {
-    status: failures.length === 0 ? "approved" : "quarantine",
-    spdx: failures.length === 0 ? sourceConfig.license_classifier.expected_spdx : "NOASSERTION",
-    classifier: "manual-pinned-content-v1",
-    evidence: evidence.sort((left, right) => left.path.localeCompare(right.path)),
-    failures: failures.sort(),
-  };
 }
 
 export function extractLibreNmsFixture(document, context) {

@@ -7,7 +7,7 @@ owns, operates, or currently serves a response from a device.
 
 ## Public evidence layers
 
-The `device-identity-2026-07-20.2` release keeps four materially different
+The `device-identity-2026-07-20.3` candidate keeps five materially different
 layers separate:
 
 1. **Registry** — the contact-free IANA PEN snapshot supplies the enterprise
@@ -23,7 +23,14 @@ layers separate:
    The derived dataset is GPL-2.0-only; upstream `COPYING` and `LICENSE` are
    retained. Raw PHP, source descriptions, port summaries, and a raw-data API
    are not published.
-4. **Project observations** — sanitized LibreNMS and SNMP::Info test fixtures
+4. **Open-source project platform prefixes** — 655 unconditional,
+   enterprise-subtree `sysObjectID` prefixes are normalized from the pinned
+   LibreNMS OS-detection definitions. They identify only a project platform
+   key across 406 platforms and 266 PENs. They do not assert a model, product
+   family, vendor ownership, or firmware scope. The derived content is
+   GPL-3.0-or-later and definition-only; upstream YAML and descriptions are not
+   published by mibvendor.
+5. **Project observations** — sanitized LibreNMS and SNMP::Info test fixtures
    show that a project observed a model with an exact `sysObjectID`. These
    records can corroborate an assessment; they never turn that observation into
    a universal model mapping.
@@ -37,9 +44,12 @@ four of 19 reviewed definition-observation overlaps remain material conflicts
 and return no singular model. The source parser found 303 non-root exact OID
 candidates; 33 are quarantined and do not enter runtime lookup. The project
 observation layer remains 1,023 observations over 713 OIDs, including 72 OIDs
-with conflicting observations. Published definitions plus observations cover
-964 distinct OIDs. Candidate inventory and quarantine counts are never labeled
-as public resolution coverage.
+with conflicting observations. Published exact definitions plus observations
+cover 964 distinct OIDs. The prefix adapter publishes a separate 655 prefixes
+and quarantines 358 literals: 222 conditional clauses, 124 PEN roots, six
+values outside the enterprise tree, three shared Net-SNMP agent prefixes, and
+three prefixes used by multiple platforms. Candidate inventory and quarantine
+counts are never labeled as public resolution coverage.
 
 Only seven PEN links currently have a reviewed `organization_key` from the
 pinned public macvendor organization snapshot. Every other key is `null`; the
@@ -71,6 +81,13 @@ strength. For example, an exact OID can resolve to a family node or a generic
 vendor identifier. PEN 9 alone therefore remains Cisco vendor evidence and
 never becomes “Catalyst 9300.”
 
+A prefix lookup is weaker still. It is evaluated only for `sysObjectID`, uses
+longest arc-bound prefix matching, and can produce only a `platform` claim.
+`entPhysicalVendorType` never uses this layer. Exact identity evidence always
+takes precedence; retained parent-prefix evidence may explain the path but
+cannot replace or weaken the exact result. String-prefix lookalikes do not
+match: `.30065.1` matches `.30065.1.99`, not `.30065.10`.
+
 The Catalyst 9300 reference cases deliberately distinguish:
 
 - `.1.3.6.1.4.1.9.1.2435` as `C9300-24T`;
@@ -88,14 +105,23 @@ The RackTables reference case
 `firmware_scope: "not_established"`. Its provenance remains visibly separate
 from vendor-MIB metadata and project observations.
 
+The LibreNMS platform reference case
+`1.3.6.1.4.1.30065.1.99` matches the declared prefix
+`1.3.6.1.4.1.30065.1` and returns platform `arista_eos`, with `model` and
+`product_family` null. The evidence records the matched OID, exact pinned
+revision, source path, source date, Git blob, and SHA-256. This result
+disappears when the `librenms-os-detection` source kill switch is active; it is
+not converted to a guessed model or family.
+
 ## API and privacy boundary
 
-Use `GET /v1/sys-object-ids/{oid}` for one exact numeric lookup. Use
+Use `GET /v1/sys-object-ids/{oid}` for one exact or arc-bound prefix numeric
+lookup. Use
 `POST /v1/device-identities:assess` to correlate bounded signals:
 
 ```json
 {
-  "identity_release": "device-identity-2026-07-20.2",
+  "identity_release": "device-identity-2026-07-20.3",
   "signals": {
     "sys_object_id": "1.3.6.1.4.1.9.1.2494",
     "ent_physical_model_name": "C9300-48P"
@@ -109,10 +135,17 @@ fields, customer identifiers, or arbitrary device output. `sys_descr` is
 bounded to 2,048 characters, used only for narrow platform signatures, and is
 not returned in the response. POST responses are `no-store`.
 
-Candidates and conflicts are capped at 32. Exact lookup is expected O(1) after
-an O(V + D + F) startup build for vendor claims V, project definitions D, and
-fixture OIDs F. Index memory is O(V + D + F); source data and retained license
-bytes dominate build-time disk, while runtime maps dominate identity memory.
+Candidates and conflicts are capped at 32. Exact lookup is expected O(1).
+Prefix lookup performs at most A descending map probes for A numeric OID arcs,
+with the SNMP limit of 128 subidentifiers as the hard constant. The current
+`slice`/`join` key construction and string hashing can still perform O(A²)
+character work and transient allocation in the worst case; the probe count
+alone is O(A), not the complete runtime cost. The startup build is
+O(V + D + P + F) for vendor claims V, project definitions D, prefixes P, and
+fixture OIDs F. Index memory is O(V + D + P + F); source data and retained
+license bytes dominate build-time disk, while exact and prefix maps dominate
+identity memory. Reproducible measurements are recorded in the
+[prefix benchmark](operations/device-identity-prefix-benchmark.md).
 Assessment work is bounded by the fixed signal set and candidate cap. These
 bounds contain latency, memory, and abuse cost without creating a paid quota.
 

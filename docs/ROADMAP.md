@@ -49,6 +49,15 @@ revisioned publication-control view expose source kill-switch changes. This is
 validation infrastructure, not evidence that Phases 1–4 or the Phase 0
 external-demand gates are complete.
 
+The `v0.4.0-alpha.3` candidate keeps those exact counts unchanged and adds a
+separate GPL-3.0-or-later, definition-only LibreNMS layer: 655 arc-bound
+`sysObjectID` platform prefixes covering 406 platform keys and 266 PENs. Exact
+identity evidence has priority. Prefixes apply only to `sysObjectID`, stop at
+platform, retain matched-parent evidence, and are removed by their source kill
+switch. They never establish a model, product family, firmware range, or
+identity from `entPhysicalVendorType`. This candidate is not production until
+its immutable tag and deployed identity are reconciled.
+
 ## Phase 1 — public foundation
 
 Status: partially delivered under ADR 0010; Phase 0 is still open, so this is
@@ -66,8 +75,9 @@ Status: partial.
 
 - Complete: deterministic approved-source intake, dependency graph states,
   diagnostics, exact/symbol/instance/ancestor resolution, search, immutable
-  activation evidence, source/module kill switches, and a validated atomic
-  filesystem app-pointer rollback with external audit and recovery.
+  activation evidence, exact-precedence arc-bound identity prefixes,
+  source/module kill switches, and a validated atomic filesystem app-pointer
+  rollback with external audit and recovery.
 - Open: queryable revision variants, variant-bound dependency resolution,
   generic takedown drills, and the 100K/1M/2M storage bake-off.
 

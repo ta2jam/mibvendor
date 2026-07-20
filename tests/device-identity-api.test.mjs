@@ -289,3 +289,87 @@ test("RackTables exact definition response satisfies the public match contract w
     assert.equal(JSON.stringify(body).includes("RJ-45"), false);
   });
 });
+
+test("sysObjectID prefix lookup is arc-bound and exposes pinned platform provenance", async () => {
+  await withServer(async (base) => {
+    const response = await fetch(`${base}/v1/sys-object-ids/1.3.6.1.4.1.30065.1.99`);
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get("cache-control"), "no-cache");
+    const body = await response.json();
+    const { result } = body;
+    assert.equal(result.status, "resolved");
+    assert.equal(result.identity_status, "platform");
+    assert.equal(result.enterprise_number, 30065);
+    assert.equal(result.match.oid, "1.3.6.1.4.1.30065.1");
+    assert.equal(result.match.match_type, "prefix");
+    assert.equal(result.match.claim_scope, "open-source-project-platform-prefix");
+    assert.equal(result.match.platform, "arista_eos");
+    assert.equal(result.match.model, null);
+    assert.equal(result.match.product_family, null);
+    assert.equal(result.match.mib_identifier, null);
+    assert.equal(result.match.provenance.source_id, "librenms-os-detection");
+    assert.match(result.match.provenance.source_revision, /^[0-9a-f]{40}$/);
+    assert.match(result.match.provenance.source_date, /^\d{4}-\d{2}-\d{2}$/);
+    assert.equal(result.match.provenance.publication_mode, "definition-only");
+    assert.equal(result.match.provenance.raw_download, false);
+    const candidate = result.assessment.candidates.find((item) => item.match_type === "prefix");
+    assert.ok(candidate);
+    assert.equal(candidate.evidence[0].matched_oid, "1.3.6.1.4.1.30065.1");
+    assert.equal(candidate.evidence[0].source_revision, result.match.provenance.source_revision);
+    assert.equal(candidate.evidence[0].source_date, result.match.provenance.source_date);
+
+    const boundary = await (await fetch(`${base}/v1/sys-object-ids/1.3.6.1.4.1.30065.10`)).json();
+    assert.equal(boundary.result.status, "enterprise_only");
+    assert.equal(boundary.result.identity_status, "vendor_only");
+    assert.equal(boundary.result.match, null);
+    assert.equal(boundary.result.assessment.candidates.some((item) => item.match_type === "prefix"), false);
+  });
+});
+
+test("identity assessment accepts sysObjectID prefixes but never applies them to entPhysicalVendorType", async () => {
+  await withServer(async (base) => {
+    const sysObjectResponse = await assess(base, { sys_object_id: "1.3.6.1.4.1.30065.1.99" });
+    assert.equal(sysObjectResponse.status, 200);
+    assert.equal(sysObjectResponse.headers.get("cache-control"), "no-store");
+    const sysObject = (await sysObjectResponse.json()).assessment;
+    assert.equal(sysObject.identity_status, "platform");
+    assert.equal(sysObject.platform, "arista_eos");
+    assert.equal(sysObject.model, null);
+    assert.equal(sysObject.product_family, null);
+    const prefixCandidate = sysObject.candidates.find((item) => item.match_type === "prefix");
+    assert.ok(prefixCandidate);
+    assert.equal(prefixCandidate.claim_scope, "open-source-project-platform-prefix");
+    assert.equal(prefixCandidate.evidence[0].signal, "sys_object_id");
+    assert.equal(prefixCandidate.evidence[0].matched_oid, "1.3.6.1.4.1.30065.1");
+    assert.ok(sysObject.evidence.some((item) => item.signal === "sys_object_id" && item.match_type === "prefix"));
+
+    const physicalResponse = await assess(base, { ent_physical_vendor_type: "1.3.6.1.4.1.30065.1.99" });
+    assert.equal(physicalResponse.status, 200);
+    const physical = (await physicalResponse.json()).assessment;
+    assert.equal(physical.identity_status, "vendor_only");
+    assert.equal(physical.enterprise_number, 30065);
+    assert.equal(physical.platform, null);
+    assert.equal(physical.model, null);
+    assert.equal(physical.candidates.some((item) => item.match_type === "prefix"), false);
+    assert.ok(physical.evidence.some((item) => item.signal === "ent_physical_vendor_type" && item.match_type === "registry"));
+  });
+});
+
+test("exact sysObjectID evidence remains primary when a project prefix also matches", async () => {
+  await withServer(async (base) => {
+    const getBody = await (await fetch(`${base}/v1/sys-object-ids/1.3.6.1.4.1.9.1.1117`)).json();
+    assert.equal(getBody.result.status, "resolved");
+    assert.equal(getBody.result.identity_status, "vendor_identifier");
+    assert.equal(getBody.result.match.match_type, "exact");
+    assert.equal(getBody.result.match.mib_identifier, "ciscoSecureAccessControlSystem");
+    assert.equal(getBody.result.assessment.candidates[0].match_type, "exact");
+    assert.ok(getBody.result.assessment.candidates.some((item) => item.match_type === "prefix" && item.platform === "acs"));
+
+    const postBody = await (await assess(base, { sys_object_id: "1.3.6.1.4.1.9.1.1117" })).json();
+    assert.equal(postBody.assessment.identity_status, "vendor_identifier");
+    assert.equal(postBody.assessment.mib_identifier, "ciscoSecureAccessControlSystem");
+    assert.equal(postBody.assessment.platform, null);
+    assert.equal(postBody.assessment.candidates[0].match_type, "exact");
+    assert.ok(postBody.assessment.candidates.some((item) => item.match_type === "prefix" && item.platform === "acs"));
+  });
+});

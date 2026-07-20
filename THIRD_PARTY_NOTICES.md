@@ -46,7 +46,8 @@ identify a hardware model, prove device ownership, or authenticate the device.
 
 ## Device-identity metadata and project observations
 
-The `device-identity-2026-07-20.2` snapshot contains normalized factual OID
+The production `device-identity-2026-07-20.2` snapshot, retained unchanged in
+the `device-identity-2026-07-20.3` candidate, contains normalized factual OID
 assignments from the LibreNMS repository at commit
 `dfba713a2ffd39c2b6619cccdec016e04a06a027`. LibreNMS identifies the repository
 as GPL-3.0-or-later; the pinned `LICENSE.txt` and `README.md` checksums are
@@ -77,6 +78,36 @@ hostnames, contact/location fields, addresses, credentials, and raw
 not universal product claims. Exact pinned license evidence and input checksums
 are recorded in
 `data/device-identities/project-fixtures-manifest.json`.
+
+## LibreNMS-derived platform-prefix definitions
+
+The definition-only dataset
+[`data/device-identities/project-prefixes.json`](data/device-identities/project-prefixes.json)
+is derived from the `resources/definitions/os_detection` tree in the same
+pinned LibreNMS commit
+[`dfba713a2ffd39c2b6619cccdec016e04a06a027`](https://github.com/librenms/librenms/tree/dfba713a2ffd39c2b6619cccdec016e04a06a027/resources/definitions/os_detection),
+dated 2026-07-18. LibreNMS identifies the repository as GPL-3.0-or-later. The
+LibreNMS-derived prefix records in `project-prefixes.json`, the corresponding
+rows embedded in `runtime-index.json`, and those records returned by the API
+are therefore distributed under GPL-3.0-or-later. This does not classify
+unrelated runtime-index content or the rest of mibvendor as GPL.
+
+The adapter publishes 655 unconditional, arc-bound `sysObjectID` prefixes for
+406 platform keys across 266 PENs. It publishes a platform claim only. It does
+not publish a model, product family, vendor MIB content, raw YAML, source
+descriptions, or firmware claims. The 358 rejected literals remain quarantined
+because they are conditional, are PEN roots, fall outside the enterprise tree,
+are shared Net-SNMP agent identifiers, or conflict across platform definitions.
+
+The manifest
+[`data/device-identities/project-prefixes-manifest.json`](data/device-identities/project-prefixes-manifest.json)
+binds the exact repository and commit, input tree, all 806 tracked input paths,
+Git modes and blob identifiers, SHA-256 values, total bytes, license/README
+blob and SHA-256 values, required license markers, parser policy, and resource
+limits. A mismatch fails closed to `NOASSERTION` and quarantine. The retained
+GPL text and upstream notice are the same LibreNMS files linked above. The
+pinned upstream tree is the source for the derived records; mibvendor does not
+provide a raw-YAML endpoint.
 
 ## RackTables-derived exact device definitions
 

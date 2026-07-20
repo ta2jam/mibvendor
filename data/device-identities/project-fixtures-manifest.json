@@ -25,6 +25,7 @@
       "expected_input_files": 1383,
       "parser": "librenms-project-json-v1",
       "license_classifier": {
+        "scope": "tests/data-normalized-observations",
         "expected_spdx": "GPL-3.0-or-later",
         "files": [
           {
@@ -59,6 +60,7 @@
       "expected_input_files": 136,
       "parser": "snmp-info-literal-test-v1",
       "license_classifier": {
+        "scope": "xt/lib/test/snmp-normalized-observations",
         "expected_spdx": "BSD-3-Clause",
         "files": [
           {

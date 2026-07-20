@@ -73,8 +73,20 @@ The 713 observation OIDs and project definitions cover 964 distinct OIDs when
 deduplicated. An immutable release digest and a separately
 hashed, revisioned publication-control view make source kill-switch changes
 observable without rewriting historical evidence. The public source catalog
-contains 12 redistributable and 20 directory-only sources. This remains smaller
-than the later data-engine hypothesis:
+contains 12 redistributable and 20 directory-only sources.
+
+The `v0.4.0-alpha.3` candidate advances the identity release to
+`device-identity-2026-07-20.3` without changing the 6,391 exact keys or 964
+exact project-evidence OIDs. It adds 655 definition-only LibreNMS platform
+prefixes for 406 platform keys across 266 PENs. Prefix matching is arc-bound,
+applies only to `sysObjectID`, and yields no model or product family. Exact
+identity evidence always wins, parent prefix evidence remains inspectable, and
+the `librenms-os-detection` kill switch removes the layer as a unit. The
+derived records are GPL-3.0-or-later and bind the exact source revision, tree,
+files, blobs, hashes, license markers, and source date; raw YAML is not served.
+This is a candidate until the production release identity is reconciled.
+
+The current runtime remains smaller than the later data-engine hypothesis:
 
 - Next.js and TypeScript for UI and route handlers;
 - PostgreSQL for immutable source/module releases and active release state;
@@ -85,9 +97,12 @@ No database stack is selected until parser, corpus, demand, and target workloads
 pass Phase 0. The current in-memory resolver hashes each known numeric prefix;
 exact/ancestor resolution is `O(d)` time for OID depth `d` and `O(N)` index
 memory for `N` definitions. Text search is currently `O(N*t)` for `t` query
-tokens. Device identity exact lookup is expected `O(1)` after an
-`O(V+D+F)` startup build and uses `O(V+D+F)` identity-index memory for vendor
-claims `V`, definitions `D`, and fixture OIDs `F`. SNMP permits up to
+tokens. Device identity exact lookup is expected `O(1)`. Platform-prefix lookup
+uses O(A) descending map probes for OID arc count `A`, but current `slice`/`join`
+key construction and string hashing can require O(A²) character work and
+transient allocation in the worst case. Startup is `O(V+D+P+F)` and
+identity-index memory is `O(V+D+P+F)` for vendor claims `V`, exact definitions
+`D`, prefixes `P`, and fixture OIDs `F`. SNMP permits up to
 128 subidentifiers, so no design may assume a depth
 near 20. Measured latency and memory, not dataset size alone, decide when a
 database/search index is justified.

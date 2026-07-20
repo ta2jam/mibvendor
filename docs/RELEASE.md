@@ -152,3 +152,42 @@ five clipboard examples, cursor `0` to `1`, exact and conflicting deep routes,
 the OpenAPI/health/status links, and horizontal-overflow checks. The run
 recorded no console, page, or request errors and no Cloudflare beacon
 injection; origin HTML retained the `no-transform` boundary.
+
+## v0.4.0-alpha.3 — LibreNMS platform-prefix candidate
+
+One measurable result: the immutable `device-identity-2026-07-20.3` candidate
+adds a source-bound project platform-prefix layer without changing the 6,391
+exact lookup keys or 964 exact project-evidence OIDs. A strict, non-executing
+adapter reads the pinned LibreNMS `resources/definitions/os_detection` tree and
+publishes 655 unconditional, arc-bound `sysObjectID` prefixes for 406 platform
+keys across 266 PENs. It quarantines 358 conditional, PEN-root,
+non-enterprise, shared-agent, or multi-platform literals.
+
+The new layer is platform-only and applies only to `sysObjectID`. Exact
+identity evidence takes precedence, a numeric arc boundary prevents textual
+prefix collisions, parent prefix evidence remains inspectable, and the
+`librenms-os-detection` source kill switch removes the layer without creating a
+model or family fallback. No prefix establishes a product model, product
+family, firmware range, ownership, authenticity, or `entPhysicalVendorType`
+identity.
+
+The derived dataset is GPL-3.0-or-later and `definition-only`.
+[ADR 0012](decisions/0012-scope-bound-manual-license-classification.md) binds
+the named scope to the exact repository, commit, tree, 806 tracked file paths,
+Git modes and blobs, SHA-256 values, license markers, parser policy, and
+resource bounds. Raw YAML, source descriptions, and copied vendor MIB content
+are not served. This narrow decision does not promote the general LibreNMS
+`NOASSERTION` discovery snapshot.
+
+The local synthetic benchmark covers 8-, 16-, 32-, and 64-arc inputs and is
+recorded in
+[`device-identity-prefix-benchmark.md`](operations/device-identity-prefix-benchmark.md).
+The implementation performs O(A) map probes for A arcs, but repeated
+`slice`/`join` key construction and hashing can perform O(A²) character work
+and transient allocation in the worst case. The benchmark is not production
+HTTP evidence or an energy measurement.
+
+Production status: candidate, not deployed. No tag, CI result, VPS image,
+public API/UI smoke result, rollback point, or production-monitor result is
+claimed here. Production remains `v0.4.0-alpha.2` until every completion rule
+in this document is satisfied and reconciled.

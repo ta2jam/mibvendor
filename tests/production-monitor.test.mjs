@@ -102,6 +102,21 @@ test("production verifier exercises RackTables resolution and conflict behavior"
   assert.match(contents, /if "racktables-known-switches" not in disabled_sources/);
 });
 
+test("production verifier gates the project platform-prefix inventory and stable probe", async () => {
+  const contents = await readFile(verifier, "utf8");
+
+  assert.match(contents, /project_platform_prefixes/);
+  assert.match(contents, /project_prefix_platforms/);
+  assert.match(contents, /project_prefix_enterprises/);
+  assert.match(contents, /\(655, 406, 266\)/);
+  assert.match(contents, /\/v1\/sys-object-ids\/1\.3\.6\.1\.4\.1\.30065\.1\.99/);
+  assert.match(contents, /arista_match\["oid"\] == "1\.3\.6\.1\.4\.1\.30065\.1"/);
+  assert.match(contents, /arista_match\["match_type"\] == "prefix"/);
+  assert.match(contents, /arista_match\["model"\] is None and arista_match\["product_family"\] is None/);
+  assert.match(contents, /arista_provenance\["source_id"\] == "librenms-os-detection"/);
+  assert.match(contents, /if "librenms-os-detection" not in disabled_sources/);
+});
+
 test("production monitor fails closed when the release tag is absent", async (context) => {
   const fixture = await repositoryFixture();
   context.after(() => rm(fixture.directory, { recursive: true, force: true }));

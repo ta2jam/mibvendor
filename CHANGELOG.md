@@ -3,6 +3,39 @@
 All notable changes are documented here. The project uses Semantic Versioning
 while it is pre-1.0; research releases may remain unstable.
 
+## [0.4.0-alpha.3] - 2026-07-20
+
+### Added
+
+- Added the immutable `device-identity-2026-07-20.3` candidate with 655
+  LibreNMS-derived, arc-bound `sysObjectID` platform prefixes covering 406
+  platform keys and 266 PENs. The definition-only dataset is
+  GPL-3.0-or-later; raw upstream YAML and descriptions are not published.
+- Added a fail-closed static YAML adapter and manifest binding the clean pinned
+  repository, input tree, 806 tracked files, Git modes and blobs, SHA-256
+  values, license markers, parser policy, resource bounds, and generated data.
+- Added scope-bound manual license classification under
+  [ADR 0012](docs/decisions/0012-scope-bound-manual-license-classification.md).
+  It approves only the named derived-content scope and leaves the general
+  `NOASSERTION` discovery snapshot quarantined.
+
+### Changed
+
+- Preserved all 6,391 exact identity keys and 964 exact project-evidence OIDs.
+  Exact claims take precedence over prefixes; prefix evidence is evaluated only
+  for `sysObjectID` and can identify a platform, never a model or product
+  family.
+- Added arc-boundary, longest-prefix, exact-precedence, parent-evidence,
+  `entPhysicalVendorType` exclusion, and source-kill-switch verification. The
+  adapter quarantines 358 conditional, root, non-enterprise, shared-agent, or
+  conflicting literals instead of publishing ambiguous claims.
+
+### Not deployed
+
+- This entry describes a release candidate. Production remains on
+  `v0.4.0-alpha.2` until the immutable tag, green CI, VPS artifact, public
+  API/UI checks, and production monitor are reconciled.
+
 ## [0.4.0-alpha.2] - 2026-07-20
 
 ### Added
@@ -366,6 +399,7 @@ while it is pre-1.0; research releases may remain unstable.
   evidence cannot be marked complete.
 - Repository checks and CI without production MIB data.
 
+[0.4.0-alpha.3]: https://github.com/ta2jam/mibvendor/releases/tag/v0.4.0-alpha.3
 [0.4.0-alpha.2]: https://github.com/ta2jam/mibvendor/releases/tag/v0.4.0-alpha.2
 [0.4.0-alpha.1]: https://github.com/ta2jam/mibvendor/releases/tag/v0.4.0-alpha.1
 [0.3.0-alpha.2]: https://github.com/ta2jam/mibvendor/releases/tag/v0.3.0-alpha.2

@@ -990,9 +990,15 @@ textarea,
   margin-top: 0.4rem;
 }
 
+.identity-candidate > a,
 .identity-evidence-grid a {
   width: fit-content;
   font-weight: 800;
+}
+
+.identity-evidence-prefix {
+  border-color: #6fb29d !important;
+  box-shadow: inset 0 3px 0 #2e8b70;
 }
 
 .identity-result-conflicting_evidence,

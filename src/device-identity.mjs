@@ -28,15 +28,18 @@ let projectFixtureSnapshot = null;
 let projectFixtureSourceList = null;
 let projectDefinitionSnapshot = null;
 let projectDefinitionSourceList = null;
+let projectPrefixSnapshot = null;
+let projectPrefixSourceList = null;
 let runtimeIndexSnapshot = null;
 let identityLicenseEvidence = null;
 let baseVendorClaimByOid = null;
 let baseProjectFixturesByOid = null;
 let baseProjectDefinitionByOid = null;
 let baseProjectDefinitionFixtureDispositionByOid = null;
+let baseProjectPrefixByOid = null;
 let identitySourcesInitialized = false;
 
-export const IDENTITY_RELEASE = "device-identity-2026-07-20.2";
+export const IDENTITY_RELEASE = "device-identity-2026-07-20.3";
 export const IDENTITY_PUBLICATION_CONTROL_REVISION = identityControlDocument.control_revision;
 
 function sortedUnique(values) {
@@ -82,7 +85,7 @@ function validateIdentityReleaseManifestCore(document) {
   const allowedTop = ["datasets", "identity_release", "release_sha256", "schema_version", "source_ids"];
   const unexpectedTop = unexpectedKeys(document, allowedTop);
   if (unexpectedTop.length) failures.push(`unexpected top-level keys: ${unexpectedTop.join(", ")}`);
-  const unexpectedDatasets = unexpectedKeys(document?.datasets, ["builtin_claims", "integration_measurements", "license_evidence", "project_definitions", "project_fixtures", "runtime_index", "vendor_mib"]);
+  const unexpectedDatasets = unexpectedKeys(document?.datasets, ["builtin_claims", "integration_measurements", "license_evidence", "project_definitions", "project_fixtures", "project_prefixes", "runtime_index", "vendor_mib"]);
   if (unexpectedDatasets.length) failures.push(`unexpected datasets keys: ${unexpectedDatasets.join(", ")}`);
   const unexpectedBuiltins = unexpectedKeys(document?.datasets?.builtin_claims, ["net-snmp", "sigscale-mibs"]);
   if (unexpectedBuiltins.length) failures.push(`unexpected builtin_claims keys: ${unexpectedBuiltins.join(", ")}`);
@@ -99,14 +102,20 @@ function validateIdentityReleaseManifestCore(document) {
     "manifest_file_sha256", "manifest_sha256", "quarantined_entry_count"
   ]);
   if (unexpectedDefinitions.length) failures.push(`unexpected project_definitions keys: ${unexpectedDefinitions.join(", ")}`);
-  const unexpectedRuntime = unexpectedKeys(document?.datasets?.runtime_index, ["file_sha256", "project_definition_count", "project_fixture_oid_count", "runtime_index_sha256", "schema_version", "vendor_claim_count"]);
+  const unexpectedPrefixes = unexpectedKeys(document?.datasets?.project_prefixes, [
+    "dataset_id", "dataset_license", "dataset_sha256", "enterprise_count", "file_sha256", "manifest_file_sha256",
+    "manifest_sha256", "platform_count", "prefix_count", "quarantined_literal_count"
+  ]);
+  if (unexpectedPrefixes.length) failures.push(`unexpected project_prefixes keys: ${unexpectedPrefixes.join(", ")}`);
+  const unexpectedRuntime = unexpectedKeys(document?.datasets?.runtime_index, ["file_sha256", "project_definition_count", "project_fixture_oid_count", "project_prefix_count", "runtime_index_sha256", "schema_version", "vendor_claim_count"]);
   if (unexpectedRuntime.length) failures.push(`unexpected runtime_index keys: ${unexpectedRuntime.join(", ")}`);
   const measurementKeys = [
     "source_exact_oid_candidates", "source_candidate_fixture_overlap_oids", "source_candidate_new_vs_fixture_oids",
     "source_candidate_new_vs_vendor_fixture_union_oids", "source_candidate_vendor_overlap_oids",
     "model_definition_fixture_overlap_oids", "model_definition_new_vs_fixture_oids",
     "model_definition_new_vs_vendor_fixture_union_oids", "model_definition_oids", "model_definition_vendor_overlap_oids",
-    "project_exact_oid_candidate_inventory", "project_model_oid_coverage"
+    "project_exact_oid_candidate_inventory", "project_model_oid_coverage",
+    "project_platform_prefixes", "project_prefix_platforms", "project_prefix_enterprises"
   ];
   const unexpectedMeasurements = unexpectedKeys(document?.datasets?.integration_measurements, measurementKeys);
   if (unexpectedMeasurements.length) failures.push(`unexpected integration_measurements keys: ${unexpectedMeasurements.join(", ")}`);
@@ -138,13 +147,24 @@ function validateIdentityReleaseManifestCore(document) {
     || document?.datasets?.project_definitions?.definition_count !== projectDefinitionSnapshot.definition_count
     || document?.datasets?.project_definitions?.exact_oid_candidate_count !== projectDefinitionSnapshot.exact_oid_candidate_count
     || document?.datasets?.project_definitions?.quarantined_entry_count !== projectDefinitionSnapshot.quarantined_entry_count) failures.push("project definition dataset drifted");
+  if (document?.datasets?.project_prefixes?.dataset_id !== projectPrefixSnapshot.dataset_id
+    || document?.datasets?.project_prefixes?.dataset_sha256 !== projectPrefixSnapshot.actual_dataset_sha256
+    || document?.datasets?.project_prefixes?.file_sha256 !== projectPrefixSnapshot.file_sha256
+    || document?.datasets?.project_prefixes?.manifest_sha256 !== projectPrefixSnapshot.actual_manifest_sha256
+    || document?.datasets?.project_prefixes?.manifest_file_sha256 !== projectPrefixSnapshot.manifest_file_sha256
+    || JSON.stringify(document?.datasets?.project_prefixes?.dataset_license) !== JSON.stringify(projectPrefixSnapshot.dataset_license)
+    || document?.datasets?.project_prefixes?.prefix_count !== projectPrefixSnapshot.prefix_count
+    || document?.datasets?.project_prefixes?.platform_count !== projectPrefixSnapshot.platform_count
+    || document?.datasets?.project_prefixes?.enterprise_count !== projectPrefixSnapshot.enterprise_count
+    || document?.datasets?.project_prefixes?.quarantined_literal_count !== projectPrefixSnapshot.quarantined_literal_count) failures.push("project prefix dataset drifted");
   if (JSON.stringify(document?.datasets?.integration_measurements) !== JSON.stringify(runtimeIndexSnapshot.integration_measurements)) failures.push("identity integration measurements drifted");
   if (document?.datasets?.runtime_index?.schema_version !== 1
     || document?.datasets?.runtime_index?.runtime_index_sha256 !== runtimeIndexSnapshot.runtime_index_sha256
     || document?.datasets?.runtime_index?.file_sha256 !== runtimeIndexSnapshot.file_sha256
     || document?.datasets?.runtime_index?.vendor_claim_count !== runtimeIndexSnapshot.vendor_claim_count
     || document?.datasets?.runtime_index?.project_fixture_oid_count !== runtimeIndexSnapshot.project_fixture_oid_count
-    || document?.datasets?.runtime_index?.project_definition_count !== runtimeIndexSnapshot.project_definition_count) failures.push("runtime identity index drifted");
+    || document?.datasets?.runtime_index?.project_definition_count !== runtimeIndexSnapshot.project_definition_count
+    || document?.datasets?.runtime_index?.project_prefix_count !== runtimeIndexSnapshot.project_prefix_count) failures.push("runtime identity index drifted");
   if (document?.datasets?.license_evidence?.librenms_license_sha256 !== identityLicenseEvidence.librenms_license_sha256
     || document?.datasets?.license_evidence?.librenms_readme_sha256 !== identityLicenseEvidence.librenms_readme_sha256
     || document?.datasets?.license_evidence?.snmp_info_license_sha256 !== identityLicenseEvidence.snmp_info_license_sha256
@@ -163,6 +183,7 @@ function validateIdentityReleaseManifestCore(document) {
     ...vendorMibSnapshot.source_ids,
     ...projectFixtureSnapshot.source_ids,
     ...projectDefinitionSnapshot.source_ids,
+    ...projectPrefixSnapshot.source_ids,
     "net-snmp",
     "sigscale-mibs"
   ]);
@@ -352,6 +373,68 @@ function materializeProjectDefinitionClaim(oid, tuple, lookupEnterprise) {
   };
 }
 
+const PREFIX_TUPLE_ENTERPRISE = 0;
+const PREFIX_TUPLE_PLATFORM = 1;
+const PREFIX_TUPLE_SOURCE = 2;
+const PREFIX_TUPLE_PATH = 3;
+const PREFIX_TUPLE_BLOB = 4;
+const PREFIX_TUPLE_SHA256 = 5;
+
+const projectPrefixProvenanceCache = new Map();
+function projectPrefixProvenance(source, tuple) {
+  const sourcePath = tuple[PREFIX_TUPLE_PATH];
+  const cacheKey = `${source.id}:${sourcePath}`;
+  let provenance = projectPrefixProvenanceCache.get(cacheKey);
+  if (!provenance) {
+    provenance = Object.freeze({
+      source_id: source.id,
+      source: "Open-source project platform-prefix definition",
+      source_url: `https://github.com/${source.repository}/blob/${source.revision}/${sourcePath}`,
+      source_revision: source.revision,
+      source_date: source.source_date,
+      source_path: sourcePath,
+      git_blob_oid: tuple[PREFIX_TUPLE_BLOB],
+      sha256: tuple[PREFIX_TUPLE_SHA256],
+      repository_license_signal: source.repository_license_signal,
+      artifact_rights: "GPL-3.0-or-later derived platform-prefix definition",
+      publication_basis: "scope-bound manual pinned license classification; unconditional LibreNMS sysObjectID prefix definition",
+      publication_mode: "definition-only",
+      raw_download: false,
+      raw_distribution: "not-provided",
+      official_source_url: null,
+      official_source_status: "pinned-project-source",
+      official_source_byte_verified: true
+    });
+    projectPrefixProvenanceCache.set(cacheKey, provenance);
+  }
+  return provenance;
+}
+
+function materializeProjectPrefixClaim(oid, tuple, lookupEnterprise) {
+  const enterpriseNumber = tuple[PREFIX_TUPLE_ENTERPRISE];
+  const source = projectPrefixSourceList[tuple[PREFIX_TUPLE_SOURCE]];
+  const organization = lookupEnterprise(enterpriseNumber)?.organization ?? null;
+  return {
+    project_prefix_claim: true,
+    oid,
+    enterprise_number: enterpriseNumber,
+    organization_name: organization,
+    organization_key: reviewedOrganizationKeys.get(enterpriseNumber) ?? null,
+    organization,
+    model: null,
+    product_family: null,
+    mib_identifier: null,
+    platform: tuple[PREFIX_TUPLE_PLATFORM],
+    identity_type: "agent-platform",
+    claim_scope: "open-source-project-platform-prefix",
+    match_type: "prefix",
+    claim_strength: "platform",
+    confidence: "medium",
+    source_assignment_confidence: "medium",
+    provenance: projectPrefixProvenance(source, tuple)
+  };
+}
+
 function effectiveFixture(fixture, candidates) {
   const distinctModels = new Set(candidates.map((candidate) => candidate.model.trim().toLowerCase()));
   const conflicting = distinctModels.size > 1;
@@ -373,6 +456,8 @@ function initializeIdentitySources() {
     ["project_manifest", "data/device-identities/project-fixtures-manifest.json"],
     ["project_definitions", "data/device-identities/project-definitions.json"],
     ["project_definition_manifest", "data/device-identities/project-definitions-manifest.json"],
+    ["project_prefixes", "data/device-identities/project-prefixes.json"],
+    ["project_prefix_manifest", "data/device-identities/project-prefixes-manifest.json"],
     ["librenms_license", "data/device-identities/licenses/librenms/LICENSE.txt"],
     ["librenms_readme", "data/device-identities/licenses/librenms/README.md"],
     ["snmp_info_license", "data/device-identities/licenses/SNMP-INFO-LICENSE"],
@@ -477,6 +562,26 @@ function initializeIdentitySources() {
     if (current && current !== link.organization_key) throw new Error(`Conflicting reviewed organization key for PEN ${link.enterprise_number}`);
     reviewedOrganizationKeys.set(link.enterprise_number, link.organization_key);
   }
+  projectPrefixSourceList = Object.freeze(runtimeDocument.prefix_sources.map((source) => Object.freeze(source)));
+  projectPrefixSnapshot = Object.freeze({
+    dataset_id: runtimeDocument.inputs.project_prefixes.dataset_id,
+    dataset_license: Object.freeze(runtimeDocument.inputs.project_prefixes.dataset_license),
+    actual_dataset_sha256: runtimeDocument.inputs.project_prefixes.canonical_sha256,
+    actual_manifest_sha256: runtimeDocument.inputs.project_prefix_manifest.manifest_sha256,
+    file_sha256: runtimeDocument.inputs.project_prefixes.file_sha256,
+    manifest_file_sha256: runtimeDocument.inputs.project_prefix_manifest.file_sha256,
+    prefix_count: runtimeDocument.inputs.project_prefixes.prefix_count,
+    platform_count: runtimeDocument.inputs.project_prefixes.platform_count,
+    enterprise_count: runtimeDocument.inputs.project_prefixes.enterprise_count,
+    quarantined_literal_count: runtimeDocument.inputs.project_prefixes.quarantined_literal_count,
+    source_ids: Object.freeze(projectPrefixSourceList.map((source) => source.id))
+  });
+  baseProjectPrefixByOid = new Map();
+  for (const row of runtimeDocument.project_prefixes) {
+    const [oid, ...tuple] = row;
+    if (baseProjectPrefixByOid.has(oid)) throw new Error(`Unexpected project prefix conflict in runtime index: ${oid}`);
+    baseProjectPrefixByOid.set(oid, Object.freeze(tuple));
+  }
   for (const source of vendorMibSourceList) {
     if (!source.organization_key) continue;
     const current = reviewedOrganizationKeys.get(source.enterprise_number);
@@ -489,6 +594,7 @@ function initializeIdentitySources() {
     vendor_claim_count: baseVendorClaimByOid.size,
     project_fixture_oid_count: baseProjectFixturesByOid.size,
     project_definition_count: baseProjectDefinitionByOid.size,
+    project_prefix_count: baseProjectPrefixByOid.size,
     integration_measurements: Object.freeze(runtimeDocument.integration_measurements)
   });
   identityLicenseEvidence = Object.freeze({
@@ -526,6 +632,9 @@ function publicCandidate(claim, evidenceType = "primary") {
       type: evidenceType,
       source_id: claim.provenance?.source_id ?? null,
       source_url: claim.provenance?.source_url ?? null,
+      matched_oid: claim.oid ?? null,
+      source_revision: claim.provenance?.source_revision ?? null,
+      source_date: claim.provenance?.source_date ?? null,
       publication_mode: claim.provenance?.publication_mode ?? null,
       raw_download: false
     }]
@@ -534,6 +643,10 @@ function publicCandidate(claim, evidenceType = "primary") {
 
 function publicMatch(claim) {
   if (!claim) return null;
+  if (claim.project_prefix_claim) {
+    const { project_prefix_claim, provenance, ...fields } = claim;
+    return { ...fields, firmware_scope: FIRMWARE_SCOPE_NOT_ESTABLISHED, provenance };
+  }
   if (claim.project_definition_claim) {
     const { project_definition_claim, provenance, ...fields } = claim;
     return { ...fields, firmware_scope: FIRMWARE_SCOPE_NOT_ESTABLISHED, provenance };
@@ -580,6 +693,8 @@ function candidateRank(candidate) {
 }
 
 function compareCandidates(left, right) {
+  if (left.match_type === "exact" && right.match_type === "prefix") return -1;
+  if (right.match_type === "exact" && left.match_type === "prefix") return 1;
   const a = candidateRank(left);
   const b = candidateRank(right);
   for (let index = 0; index < a.length; index += 1) if (a[index] !== b[index]) return b[index] - a[index];
@@ -716,10 +831,11 @@ function registryEvidence(enterpriseNumber, lookupEnterprise) {
   };
 }
 
-function assessmentResult(candidates, conflicts, evidence, lookupEnterprise) {
+function assessmentResult(candidates, conflicts, evidence, lookupEnterprise, selectionCandidates = candidates) {
   const deduplicated = deduplicateCandidates(candidates);
   const materialConflicts = conflicts.length ? conflicts : conflictSet(deduplicated);
-  const selected = materialConflicts.length ? null : deduplicated[0] ?? null;
+  const selectable = deduplicateCandidates(selectionCandidates);
+  const selected = materialConflicts.length ? null : selectable[0] ?? null;
   const enterpriseNumber = selected?.enterprise_number ?? null;
   const fields = organizationFields(enterpriseNumber, lookupEnterprise);
   const identityStatus = materialConflicts.length ? "conflicting_evidence" : selected?.identity_status ?? "unknown";
@@ -801,6 +917,15 @@ export function createDeviceIdentityEngine({ lookupEnterprise, builtinClaims = [
     }
   }
 
+  let prefixByOid = baseProjectPrefixByOid;
+  if (projectPrefixSnapshot.source_ids.some((sourceId) => disabled.has(sourceId))) {
+    prefixByOid = new Map();
+    for (const [oid, tuple] of baseProjectPrefixByOid) {
+      const sourceId = projectPrefixSourceList[tuple[PREFIX_TUPLE_SOURCE]].id;
+      if (!disabled.has(sourceId)) prefixByOid.set(oid, tuple);
+    }
+  }
+
   let fixtureByOid = baseProjectFixturesByOid;
   if (projectFixtureSnapshot.source_ids.some((sourceId) => disabled.has(sourceId))) {
     fixtureByOid = new Map();
@@ -830,6 +955,9 @@ export function createDeviceIdentityEngine({ lookupEnterprise, builtinClaims = [
   claimCount += definitionByOid.size;
   strengthCounts.exact_model += definitionByOid.size;
   for (const tuple of definitionByOid.values()) vendorFamilies.add(tuple[DEFINITION_TUPLE_ENTERPRISE]);
+  claimCount += prefixByOid.size;
+  strengthCounts.platform += prefixByOid.size;
+  for (const tuple of prefixByOid.values()) vendorFamilies.add(tuple[PREFIX_TUPLE_ENTERPRISE]);
   const exactMappingOids = new Set([...vendorClaimByOid.keys(), ...builtinClaimsByOid.keys(), ...definitionByOid.keys()]);
   const projectIdentityOids = new Set([...fixtureByOid.keys(), ...definitionByOid.keys()]);
   let conflictingObservationOids = 0;
@@ -837,36 +965,40 @@ export function createDeviceIdentityEngine({ lookupEnterprise, builtinClaims = [
   const vendorSourcesById = new Map(vendorMibSourceList.map((source) => [source.id, source]));
   const projectSourcesById = new Map(projectFixtureSourceList.map((source) => [source.id, source]));
   const definitionSourcesById = new Map(projectDefinitionSourceList.map((source) => [source.id, source]));
+  const prefixSourcesById = new Map(projectPrefixSourceList.map((source) => [source.id, source]));
   const builtinSourcesById = new Map();
   for (const claim of builtinClaims) if (!builtinSourcesById.has(claim.provenance.source_id)) builtinSourcesById.set(claim.provenance.source_id, claim);
   const effectiveSources = Object.freeze(identityReleaseDocument.source_ids.map((sourceId) => {
     const vendorSource = vendorSourcesById.get(sourceId);
     const projectSource = projectSourcesById.get(sourceId);
     const definitionSource = definitionSourcesById.get(sourceId);
+    const prefixSource = prefixSourcesById.get(sourceId);
     const builtinSource = builtinSourcesById.get(sourceId);
     const sourceUrl = vendorSource?.source_url
       ?? definitionSource?.source_url
+      ?? prefixSource?.source_url
       ?? (projectSource ? `https://github.com/${projectSource.repository}/tree/${projectSource.revision}` : builtinSource?.provenance?.source_url ?? null);
     return Object.freeze({
       source_id: sourceId,
       enabled: !disabled.has(sourceId),
       source_status: disabled.has(sourceId) ? "disabled-by-publication-control" : "active",
-      source_type: vendorSource ? "vendor-mib" : definitionSource ? "open-source-project-definition" : projectSource ? "project-fixture" : "builtin",
-      evidence_layer: vendorSource ? "vendor-mib-factual-metadata" : definitionSource ? "open-source-project-device-definitions" : projectSource ? "project-fixture-observation" : "rights-cleared-builtin",
+      source_type: vendorSource ? "vendor-mib" : definitionSource ? "open-source-project-definition" : prefixSource ? "open-source-project-platform-prefix" : projectSource ? "project-fixture" : "builtin",
+      evidence_layer: vendorSource ? "vendor-mib-factual-metadata" : definitionSource ? "open-source-project-device-definitions" : prefixSource ? "open-source-project-platform-prefixes" : projectSource ? "project-fixture-observation" : "rights-cleared-builtin",
       enterprise_number: vendorSource?.enterprise_number ?? builtinSource?.enterprise_number ?? null,
       organization_key: vendorSource?.organization_key ?? null,
-      repository_revision: vendorSource?.source_repository_commit ?? definitionSource?.revision ?? projectSource?.revision ?? null,
+      repository_revision: vendorSource?.source_repository_commit ?? definitionSource?.revision ?? prefixSource?.revision ?? projectSource?.revision ?? null,
       repository_license_signal: vendorSource?.source_license_signal
         ?? projectSource?.repository_license_signal
         ?? definitionSource?.repository_license_signal
+        ?? prefixSource?.repository_license_signal
         ?? builtinSource?.provenance?.source_license
         ?? builtinSource?.provenance?.rights
         ?? null,
-      artifact_rights: vendorSource?.artifact_rights ?? (definitionSource ? "GPL-2.0-only source; mibvendor-normalized definition" : projectSource ? "project-authored-observation" : "rights-cleared-source"),
-      publication_mode: vendorSource ? "metadata-only" : definitionSource ? "definition-only" : projectSource ? "observation-only" : "release-governed",
+      artifact_rights: vendorSource?.artifact_rights ?? (definitionSource ? "GPL-2.0-only source; mibvendor-normalized definition" : prefixSource ? "GPL-3.0-or-later derived platform-prefix definition" : projectSource ? "project-authored-observation" : "rights-cleared-source"),
+      publication_mode: vendorSource ? "metadata-only" : definitionSource || prefixSource ? "definition-only" : projectSource ? "observation-only" : "release-governed",
       raw_distribution: vendorSource ? "denied" : "not-provided",
       source_url: sourceUrl,
-      official_source_status: vendorSource?.official_source_status ?? (definitionSource || builtinSource ? "pinned-source" : "not-reviewed"),
+      official_source_status: vendorSource?.official_source_status ?? (definitionSource || prefixSource || builtinSource ? "pinned-source" : "not-reviewed"),
       official_source_url: vendorSource?.official_source_url ?? (builtinSource ? sourceUrl : null)
     });
   }));
@@ -887,26 +1019,43 @@ export function createDeviceIdentityEngine({ lookupEnterprise, builtinClaims = [
     project_observation_oids: fixtureByOid.size,
     project_definition_oids: definitionByOid.size,
     project_identity_oid_coverage: projectIdentityOids.size,
+    project_platform_prefixes: prefixByOid.size,
+    project_prefix_platforms: new Set([...prefixByOid.values()].map((tuple) => tuple[PREFIX_TUPLE_PLATFORM])).size,
+    project_prefix_enterprises: new Set([...prefixByOid.values()].map((tuple) => tuple[PREFIX_TUPLE_ENTERPRISE])).size,
     conflicting_observation_oids: conflictingObservationOids,
     reviewed_organization_keys: reviewedOrganizationKeys.size,
     disabled_sources: disabled.size
   });
 
-  function primaryLookup(input) {
+  function projectPrefixClaims(parsed, lookupEnterprise) {
+    const claims = [];
+    for (let length = parsed.arcs.length; length >= ENTERPRISE_PREFIX.length + 2; length -= 1) {
+      const oid = parsed.arcs.slice(0, length).join(".");
+      const tuple = prefixByOid.get(oid);
+      if (tuple) claims.push(materializeProjectPrefixClaim(oid, tuple, lookupEnterprise));
+    }
+    return claims;
+  }
+
+  function primaryLookup(input, { includePrefixes = true } = {}) {
     const parsed = normalizeOid(input);
-    if (!parsed) return { parsed: null, enterpriseNumber: null, enterprise: null, claims: [], fixture: null };
+    if (!parsed) return { parsed: null, enterpriseNumber: null, enterprise: null, claims: [], exactClaims: [], prefixClaims: [], fixture: null };
     const enterpriseNumber = enterpriseNumberFromArcs(parsed.arcs);
     const vendorTupleMatch = vendorClaimByOid.get(parsed.oid);
     const vendorClaim = vendorTupleMatch ? materializeVendorClaim(parsed.oid, vendorTupleMatch) : null;
     const definitionTuple = definitionByOid.get(parsed.oid);
     const definitionClaim = definitionTuple ? materializeProjectDefinitionClaim(parsed.oid, definitionTuple, lookupEnterprise) : null;
     const builtinMatches = builtinClaimsByOid.get(parsed.oid) ?? [];
-    const claims = [definitionClaim, vendorClaim, ...builtinMatches].filter(Boolean);
+    const exactClaims = [definitionClaim, vendorClaim, ...builtinMatches].filter(Boolean);
+    const prefixClaims = includePrefixes ? projectPrefixClaims(parsed, lookupEnterprise) : [];
+    const claims = [...exactClaims, ...prefixClaims];
     return {
       parsed,
       enterpriseNumber,
       enterprise: enterpriseNumber === null ? null : lookupEnterprise(enterpriseNumber),
       claims,
+      exactClaims,
+      prefixClaims,
       fixture: fixtureByOid.get(parsed.oid) ?? null
     };
   }
@@ -952,7 +1101,8 @@ export function createDeviceIdentityEngine({ lookupEnterprise, builtinClaims = [
     const conflicts = [...conflictSet(candidates), ...definitionFixtureConflicts(found.claims, found.fixture)]
       .filter((conflict, index, all) => index === all.findIndex((other) => JSON.stringify(other) === JSON.stringify(conflict)))
       .slice(0, MAX_PUBLIC_ITEMS);
-    const selectedClaim = conflicts.length ? null : [...found.claims].sort((left, right) => compareCandidates(publicCandidate(left), publicCandidate(right)))[0] ?? null;
+    const selectionClaims = found.exactClaims.length ? found.exactClaims : found.prefixClaims.slice(0, 1);
+    const selectedClaim = conflicts.length ? null : [...selectionClaims].sort((left, right) => compareCandidates(publicCandidate(left), publicCandidate(right)))[0] ?? null;
     const identityStatus = conflicts.length ? "conflicting_evidence" : selectedClaim?.claim_strength ?? (found.enterprise ? "vendor_only" : "unknown");
     const status = conflicts.length ? "ambiguous" : selectedClaim ? "resolved" : found.enterprise ? "enterprise_only" : "not_found";
     return {
@@ -982,7 +1132,9 @@ export function createDeviceIdentityEngine({ lookupEnterprise, builtinClaims = [
             : selectedClaim.claim_scope === "device-model"
             ? "This device-model identifier is assigned to the exact OID in reviewed vendor MIB metadata; it does not prove the observed device is authentic or running a specific firmware."
             : "This exact OID is assigned to a vendor MIB model identifier. The identifier may denote a device, chassis, module, or component; it is not proof of a whole-device model or authenticity."
-          : "This identifies the product family or agent platform assigned to the exact OID; it does not assert a more specific hardware model."
+          : selectedClaim.match_type === "prefix"
+            ? "A pinned open-source project definition maps the longest arc-bound sysObjectID prefix to this agent platform. It does not assert a hardware model, product family, authenticity, or firmware support."
+            : "This identifies the product family or agent platform assigned to the exact OID; it does not assert a more specific hardware model."
           : found.enterprise
             ? "Only the PEN registry boundary is known. No product or model identity is asserted for this OID."
             : undefined
@@ -996,8 +1148,9 @@ export function createDeviceIdentityEngine({ lookupEnterprise, builtinClaims = [
     const fixtureConflicts = [];
     for (const field of ["sys_object_id", "ent_physical_vendor_type"]) {
       if (signals[field] === undefined) continue;
-      const found = primaryLookup(signals[field]);
-      evidence.push({ signal: field, match_type: found.claims.length ? "exact" : found.enterprise ? "registry" : "none" });
+      const found = primaryLookup(signals[field], { includePrefixes: field === "sys_object_id" });
+      const foundMatchType = found.exactClaims.length ? "exact" : found.prefixClaims.length ? "prefix" : found.enterprise ? "registry" : "none";
+      evidence.push({ signal: field, match_type: foundMatchType });
       for (const claim of found.claims) {
         const candidate = publicCandidate(claim, field);
         candidate.evidence[0].signal = field;
@@ -1035,6 +1188,10 @@ export function createDeviceIdentityEngine({ lookupEnterprise, builtinClaims = [
     }
 
     const normalizedReportedModel = modelCandidate?.model ?? null;
+    const exactEvidencePresent = candidates.some((candidate) => candidate.match_type === "exact");
+    const selectionCandidates = exactEvidencePresent
+      ? candidates.filter((candidate) => candidate.match_type !== "prefix")
+      : candidates;
     const assessment = assessmentResult(candidates, fixtureConflicts, [...evidence, ...fixtures.map((fixture) => ({
       type: "project-fixture-corroboration",
       sys_object_id: fixture.sys_object_id,
@@ -1043,7 +1200,7 @@ export function createDeviceIdentityEngine({ lookupEnterprise, builtinClaims = [
       corroborates_reported_model: normalizedReportedModel
         ? fixture.candidates.some((candidate) => candidate.model?.toUpperCase() === normalizedReportedModel)
         : false
-    }))], lookupEnterprise);
+    }))], lookupEnterprise, selectionCandidates);
     return {
       ...assessment,
       signals_used: evidence.map((item) => item.signal),

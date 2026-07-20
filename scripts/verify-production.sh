@@ -128,7 +128,9 @@ count_fields = (
     "sys_object_id_mappings", "claims", "exact_models", "product_families",
     "vendor_identifiers", "platforms", "vendor_families",
     "project_observation_oids", "project_definition_oids",
-    "project_identity_oid_coverage", "conflicting_observation_oids",
+    "project_identity_oid_coverage", "project_platform_prefixes",
+    "project_prefix_platforms", "project_prefix_enterprises",
+    "conflicting_observation_oids",
     "reviewed_organization_keys", "disabled_sources",
 )
 if any(not isinstance(identity.get(field), int) or isinstance(identity.get(field), bool) or identity[field] < 0 for field in count_fields):
@@ -149,6 +151,12 @@ if not max(identity["project_observation_oids"], identity["project_definition_oi
     raise SystemExit("project identity OID coverage violates union bounds")
 if identity["disabled_sources"] != len(disabled_sources):
     raise SystemExit("disabled-source count does not match publication controls")
+expected_prefix_counts = (0, 0, 0) if "librenms-os-detection" in disabled_sources else (655, 406, 266)
+actual_prefix_counts = tuple(identity[field] for field in (
+    "project_platform_prefixes", "project_prefix_platforms", "project_prefix_enterprises"
+))
+if actual_prefix_counts != expected_prefix_counts:
+    raise SystemExit(f"project platform-prefix inventory mismatch: {actual_prefix_counts!r}, expected {expected_prefix_counts!r}")
 identity_sources = document.get("identity_sources")
 if not isinstance(identity_sources, list) or not identity_sources:
     raise SystemExit("identity source inventory is missing")
@@ -198,6 +206,7 @@ sys_c930024p_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.9.1.2436")
 sys_c9300_family_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.9.1.2494")
 sys_cisco_identifier_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.9.1.6")
 sys_cisco_unknown_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.9.999999")
+sys_arista_prefix_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.30065.1.99")
 sys_racktables_sg300_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.9.6.1.83.10.1")
 sys_racktables_conflict_json=$(request "$ORIGIN/v1/sys-object-ids/1.3.6.1.4.1.9.1.615")
 identity_headers="$tmp_dir/identity.headers"
@@ -264,7 +273,8 @@ openapi_json=$(request "$ORIGIN/openapi.json")
 ENTERPRISE_JSON=$enterprise_json SYS_EXACT_JSON=$sys_exact_json SYS_SIGSCALE_JSON=$sys_sigscale_json \
 SYS_BOUNDARY_JSON=$sys_boundary_json SYS_C930024T_JSON=$sys_c930024t_json SYS_C930024P_JSON=$sys_c930024p_json \
 SYS_C9300_FAMILY_JSON=$sys_c9300_family_json SYS_CISCO_IDENTIFIER_JSON=$sys_cisco_identifier_json \
-SYS_CISCO_UNKNOWN_JSON=$sys_cisco_unknown_json SYS_RACKTABLES_SG300_JSON=$sys_racktables_sg300_json \
+SYS_CISCO_UNKNOWN_JSON=$sys_cisco_unknown_json SYS_ARISTA_PREFIX_JSON=$sys_arista_prefix_json \
+SYS_RACKTABLES_SG300_JSON=$sys_racktables_sg300_json \
 SYS_RACKTABLES_CONFLICT_JSON=$sys_racktables_conflict_json DATA_RELEASE_JSON=$data_release_json \
 IDENTITY_JSON=$identity_json IDENTITY_CONFLICT_JSON=$identity_conflict_json OBJECT_JSON=$object_json \
 DEPENDENCIES_JSON=$dependencies_json MODULE_JSON=$module_json SOURCE_JSON=$source_json \
@@ -272,6 +282,7 @@ BATCH_JSON=$batch_json OPENAPI_JSON=$openapi_json \
 python3 - <<'PY'
 import json
 import os
+import re
 
 release_document = json.loads(os.environ["DATA_RELEASE_JSON"])
 publication = release_document["identity_publication"]
@@ -316,10 +327,33 @@ c930024p = identity_result("SYS_C930024P_JSON")
 c9300_family = identity_result("SYS_C9300_FAMILY_JSON")
 cisco_identifier = identity_result("SYS_CISCO_IDENTIFIER_JSON")
 cisco_unknown = identity_result("SYS_CISCO_UNKNOWN_JSON")
+arista_prefix = identity_result("SYS_ARISTA_PREFIX_JSON")
 racktables_sg300 = identity_result("SYS_RACKTABLES_SG300_JSON")
 racktables_conflict = identity_result("SYS_RACKTABLES_CONFLICT_JSON")
 assert cisco_unknown["status"] == "enterprise_only" and cisco_unknown["identity_status"] == "vendor_only"
 assert cisco_unknown["enterprise_number"] == 9 and cisco_unknown["organization_key"] == "Q173395"
+
+if "librenms-os-detection" not in disabled_sources:
+    assert arista_prefix["status"] == "resolved" and arista_prefix["identity_status"] == "platform"
+    assert arista_prefix["enterprise_number"] == 30065
+    arista_match = arista_prefix["match"]
+    assert arista_match["oid"] == "1.3.6.1.4.1.30065.1"
+    assert arista_match["match_type"] == "prefix"
+    assert arista_match["claim_scope"] == "open-source-project-platform-prefix"
+    assert arista_match["platform"] == "arista_eos"
+    assert arista_match["model"] is None and arista_match["product_family"] is None
+    assert arista_match["mib_identifier"] is None
+    arista_provenance = arista_match["provenance"]
+    assert arista_provenance["source_id"] == "librenms-os-detection"
+    assert re.fullmatch(r"[0-9a-f]{40}", arista_provenance["source_revision"])
+    assert arista_provenance["source_date"] == "2026-07-18"
+    assert arista_provenance["publication_mode"] == "definition-only"
+    assert arista_provenance["raw_download"] is False
+    arista_candidates = arista_prefix["assessment"]["candidates"]
+    assert arista_candidates[0]["match_type"] == "prefix"
+    assert arista_candidates[0]["evidence"][0]["matched_oid"] == "1.3.6.1.4.1.30065.1"
+else:
+    assert arista_prefix["status"] == "enterprise_only" and arista_prefix["match"] is None
 
 if "racktables-known-switches" not in disabled_sources:
     assert racktables_sg300["status"] == "resolved" and racktables_sg300["identity_status"] == "exact_model"
@@ -374,8 +408,10 @@ if "cisco-products" not in disabled_sources:
     assert c9300_family["identity_status"] == "product_family" and c9300_family["match"]["model"] is None
     assert c9300_family["match"]["product_family"] == "Catalyst 9300"
     assert cisco_identifier["identity_status"] == "vendor_identifier"
+    assert cisco_identifier["match"]["match_type"] == "exact"
     assert cisco_identifier["match"]["mib_identifier"] == "cisco3000"
     assert cisco_identifier["match"]["model"] is None and cisco_identifier["match"]["product_family"] is None
+    assert cisco_identifier["assessment"]["candidates"][0]["match_type"] == "exact"
 
     assessment = identity_document["assessment"]
     assert assessment["identity_status"] == "exact_model" and assessment["model"] == "C9300-48P"

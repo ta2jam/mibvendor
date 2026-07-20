@@ -138,6 +138,7 @@
             </div>
             <p>Send individual identifiers, not an SNMP walk. A registry assignment proves PEN ownership only. Only a reviewed normalization can support an exact model; other vendor-MIB assignments stop at product family/category or a generic vendor identifier. A project observation can corroborate a claim but cannot turn one observed device into a universal mapping.</p>
             <p>The identity release publishes 6,391 distinct exact mapping keys. It contains 36 reviewed vendor-MIB model normalizations and 270 medium-confidence open-source project model claims; these are separate evidence layers, not 306 reviewed or universally resolved models. Project model evidence now covers 964 distinct OIDs. Thirty-three source candidates remain quarantined, and four reviewed definition-observation overlaps remain explicit conflicts.</p>
+            <p>A separate source-defined layer adds 655 platform prefixes covering 406 platform labels and 266 PENs. Longest arc-bound prefix matching applies only to <code>sysObjectID</code> and an exact OID mapping always takes precedence. A prefix can support an agent-platform result; it never asserts a hardware model or product family. Another 358 prefix candidates remain quarantined.</p>
           </div>
 
           <form id="device-identity-form" class="identity-form" action="/v1/device-identities:assess" method="post">
@@ -174,6 +175,7 @@
 
             <div class="identity-examples" aria-label="Device identity examples">
               <span>Try:</span>
+              <button type="button" data-identity-example="arista-eos-prefix" aria-controls="device-identity-result">Arista EOS descendant prefix</button>
               <button type="button" data-identity-example="racktables-sg300" aria-controls="device-identity-result">SG 300-10 open-source definition</button>
               <button type="button" data-identity-example="c9300-24t" aria-controls="device-identity-result">C9300-24T exact OID</button>
               <button type="button" data-identity-example="c9300-observed" aria-controls="device-identity-result">C9300-48P + model signal</button>
@@ -183,7 +185,7 @@
 
           <section id="device-identity-result" class="identity-result identity-result-empty" aria-live="polite" aria-atomic="true" tabindex="-1">
             <p><strong>No assessment yet.</strong></p>
-            <p>Results distinguish exact model, product family, generic vendor identifier, platform, vendor-only, conflicting evidence, and unknown outcomes.</p>
+            <p>Results distinguish exact model, product family, generic vendor identifier, platform, vendor-only, conflicting evidence, and unknown outcomes. A platform-prefix match is not a hardware-model claim.</p>
           </section>
         </article>
 
@@ -200,7 +202,7 @@
 
           <form id="sysobjectid-form" class="lookup-card" action="/sys-object-ids/1.3.6.1.4.1.9.6.1.83.10.1">
             <label for="sysobjectid">sysObjectID value</label>
-            <p>Exact rights-approved matches identify only what the source proves. A PEN-only result never becomes a model guess.</p>
+            <p>Exact rights-approved mappings take precedence. Otherwise, a longest arc-bound project prefix may identify only an agent platform. A PEN-only result never becomes a model guess.</p>
             <div class="lookup-row">
               <input id="sysobjectid" name="oid" value="1.3.6.1.4.1.9.6.1.83.10.1" maxlength="512" required>
               <button type="submit">Resolve identity</button>
@@ -334,7 +336,7 @@
               <li><span class="method get">GET</span><code>/v1/modules/{module}/raw</code><small>Exact MIB + license + provenance TAR</small></li>
               <li><span class="method get">GET</span><code>/v1/sources</code><small>Publication mode and rights scopes</small></li>
               <li><span class="method get">GET</span><code>/v1/enterprises/{number}</code><small>IANA PEN lookup</small></li>
-              <li><span class="method get">GET</span><code>/v1/sys-object-ids/{oid}</code><small>Evidence-bounded identity</small></li>
+              <li><span class="method get">GET</span><code>/v1/sys-object-ids/{oid}</code><small>Exact, platform-prefix, or PEN result</small></li>
               <li><span class="method post">POST</span><code>/v1/device-identities:assess</code><small>Bounded multi-signal identity assessment</small></li>
               <li><span class="method get">GET</span><code>/v1/modules/{module}/dependencies</code><small>Dependency graph states</small></li>
               <li><span class="method post">POST</span><code>/v1/resolve:batch</code><small>Order-preserving OID resolution</small></li>
@@ -351,6 +353,7 @@
               <li>Batch order and duplicate inputs are preserved.</li>
               <li>Invalid OIDs and valid-but-not-found OIDs remain distinct.</li>
               <li>PEN ownership never silently becomes a device-model claim.</li>
+              <li>Prefix matches are arc-bound, <code>sysObjectID</code>-only platform evidence; exact claims take precedence.</li>
               <li>Errors use RFC 9457 <code>application/problem+json</code>.</li>
             </ul>
 

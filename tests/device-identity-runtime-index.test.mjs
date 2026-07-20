@@ -49,19 +49,28 @@ test("runtime index and release manifest rebuild byte-for-byte from pinned input
     assert.equal(runtimeIndex.inputs.project_definitions.dataset_license.spdx, "GPL-2.0-only");
     assert.match(runtimeIndex.inputs.project_definitions.dataset_license.scope, /runtime-index\.json, and API responses/);
     assert.deepEqual(release.datasets.project_definitions.dataset_license, runtimeIndex.inputs.project_definitions.dataset_license);
+    assert.equal(runtimeIndex.inputs.project_prefixes.dataset_license.spdx, "GPL-3.0-or-later");
+    assert.equal(runtimeIndex.inputs.project_prefixes.prefix_count, 655);
+    assert.equal(runtimeIndex.inputs.project_prefixes.platform_count, 406);
+    assert.equal(runtimeIndex.inputs.project_prefixes.enterprise_count, 266);
+    assert.equal(runtimeIndex.inputs.project_prefixes.quarantined_literal_count, 358);
+    assert.deepEqual(release.datasets.project_prefixes.dataset_license, runtimeIndex.inputs.project_prefixes.dataset_license);
+    assert.equal(release.datasets.runtime_index.project_prefix_count, 655);
+    assert.equal(runtimeIndex.project_prefixes.length, 655);
   } finally {
     await rm(outputDirectory, { recursive: true, force: true });
   }
 });
 
-test("RackTables integration measurements are independently recomputed and overlap dispositions are exhaustive", async () => {
-  const [runtimeIndex, release, vendor, fixtures, definitions, manifest] = await Promise.all([
+test("project integration measurements are independently recomputed and overlap dispositions are exhaustive", async () => {
+  const [runtimeIndex, release, vendor, fixtures, definitions, manifest, prefixes] = await Promise.all([
     readFile(new URL("../data/device-identities/runtime-index.json", import.meta.url), "utf8").then(JSON.parse),
     readFile(new URL("../data/device-identities/release.json", import.meta.url), "utf8").then(JSON.parse),
     readFile(new URL("../data/device-identities/vendor-mib.json", import.meta.url), "utf8").then(JSON.parse),
     readFile(new URL("../data/device-identities/project-fixtures.json", import.meta.url), "utf8").then(JSON.parse),
     readFile(new URL("../data/device-identities/project-definitions.json", import.meta.url), "utf8").then(JSON.parse),
-    readFile(new URL("../data/device-identities/project-definitions-manifest.json", import.meta.url), "utf8").then(JSON.parse)
+    readFile(new URL("../data/device-identities/project-definitions-manifest.json", import.meta.url), "utf8").then(JSON.parse),
+    readFile(new URL("../data/device-identities/project-prefixes.json", import.meta.url), "utf8").then(JSON.parse)
   ]);
   const vendorOids = new Set(vendor.records.map((record) => record.sys_object_id));
   const fixtureOids = new Set(fixtures.identities.map((record) => record.sys_object_id.replace(/^\./, "")));
@@ -83,7 +92,10 @@ test("RackTables integration measurements are independently recomputed and overl
     model_definition_new_vs_fixture_oids: [...definitionOids].filter((oid) => !fixtureOids.has(oid)).length,
     model_definition_new_vs_vendor_fixture_union_oids: [...definitionOids].filter((oid) => !vendorFixtureUnion.has(oid)).length,
     project_model_oid_coverage: new Set([...fixtureOids, ...definitionOids]).size,
-    project_exact_oid_candidate_inventory: new Set([...fixtureOids, ...sourceCandidateOids]).size
+    project_exact_oid_candidate_inventory: new Set([...fixtureOids, ...sourceCandidateOids]).size,
+    project_platform_prefixes: prefixes.prefixes.length,
+    project_prefix_platforms: new Set(prefixes.prefixes.map((prefix) => prefix.platform)).size,
+    project_prefix_enterprises: new Set(prefixes.prefixes.map((prefix) => prefix.enterprise_number)).size
   };
   assert.deepEqual(independentlyMeasured, {
     source_exact_oid_candidates: 303,
@@ -97,7 +109,10 @@ test("RackTables integration measurements are independently recomputed and overl
     model_definition_new_vs_fixture_oids: 251,
     model_definition_new_vs_vendor_fixture_union_oids: 160,
     project_model_oid_coverage: 964,
-    project_exact_oid_candidate_inventory: 994
+    project_exact_oid_candidate_inventory: 994,
+    project_platform_prefixes: 655,
+    project_prefix_platforms: 406,
+    project_prefix_enterprises: 266
   });
   assert.deepEqual(runtimeIndex.integration_measurements, independentlyMeasured);
   assert.deepEqual(release.datasets.integration_measurements, independentlyMeasured);

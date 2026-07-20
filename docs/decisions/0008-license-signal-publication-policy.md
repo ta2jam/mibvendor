@@ -45,6 +45,12 @@ stronger evidence. The historical `rights-cleared-2026-07-14.1` catalog was not
 retroactively mutated; qualifying artifacts were promoted through the separate,
 immutable `license-signaled-2026-07-20.2` release.
 
+[ADR 0012](0012-scope-bound-manual-license-classification.md) adds a narrower
+manual path for a named adapter scope when automated discovery reports
+`NOASSERTION` but exact pinned license bytes, Git blobs, SHA-256 values, and
+required markers all verify. It does not reclassify the repository or allow
+general `NOASSERTION` candidates to leave quarantine.
+
 ## Consequences
 
 - Repository owners may have included third-party files they did not own or

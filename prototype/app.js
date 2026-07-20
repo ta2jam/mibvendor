@@ -134,6 +134,7 @@ function identityEvidenceCategory(entry) {
     entry?.source_id,
     entry?.provenance?.source
   ].filter(Boolean).join(" ").toLowerCase();
+  if (entry?.match_type === "prefix" || entry?.claim_scope === "open-source-project-platform-prefix" || /platform-prefix/.test(discriminator)) return "prefix";
   if (entry?.publication_mode === "definition-only" || /open-source-project-definition/.test(discriminator)) return "definition";
   if (/fixture|observation|project/.test(discriminator)) return "project";
   if (/registry|iana|enterprise|\bpen\b/.test(discriminator)) return "registry";
@@ -144,12 +145,21 @@ function identityEvidenceCategory(entry) {
 }
 
 function collectIdentityEvidence(assessment) {
-  const evidence = Array.isArray(assessment.evidence) ? assessment.evidence.filter((item) => item && typeof item === "object") : [];
+  const evidence = Array.isArray(assessment.evidence)
+    ? assessment.evidence.filter((item) => item && typeof item === "object").map((item) => ({ ...item }))
+    : [];
   const candidates = Array.isArray(assessment.candidates) ? assessment.candidates : [];
   for (const candidate of candidates) {
     if (Array.isArray(candidate?.evidence)) {
       for (const item of candidate.evidence) {
-        if (item && typeof item === "object") evidence.push(item);
+        if (item && typeof item === "object") {
+          evidence.push({
+            ...item,
+            match_type: item.match_type ?? candidate.match_type,
+            claim_scope: item.claim_scope ?? candidate.claim_scope,
+            platform: item.platform ?? candidate.platform
+          });
+        }
       }
     }
   }
@@ -204,10 +214,13 @@ function appendEvidenceItem(list, entry) {
     Number.isSafeInteger(entry.candidate_count) && `observed candidates: ${entry.candidate_count}`,
     entry.corroborates_reported_model === true && "corroborates reported model",
     entry.match_type && `match: ${entry.match_type}`,
+    entry.matched_oid && `${entry.match_type === "prefix" ? "matched prefix" : "matched OID"}: ${entry.matched_oid}`,
+    entry.claim_scope && `scope: ${entry.claim_scope}`,
     entry.publication_mode && `publication: ${entry.publication_mode}`,
     mibEvidence && entry.raw_download === false && "raw MIB: unavailable",
     mibEvidence && entry.raw_download === true && "raw MIB: available",
-    entry.source_revision && `revision: ${entry.source_revision}`,
+    (entry.source_revision ?? entry.provenance?.source_revision) && `revision: ${entry.source_revision ?? entry.provenance.source_revision}`,
+    (entry.source_date ?? entry.provenance?.source_date) && `source date: ${entry.source_date ?? entry.provenance.source_date}`,
     entry.artifact_sha256 && `SHA-256: ${entry.artifact_sha256}`
   ].filter(Boolean);
   appendTextElement(item, "span", facts.length ? facts.join(" · ") : "Returned without an additional public claim.");
@@ -227,7 +240,14 @@ function appendIdentityCandidate(list, candidate, index, kind = "candidate") {
   appendTextElement(item, "strong", title);
   const classification = candidate.identity_status ?? candidate.classification ?? candidate.claim_strength;
   if (classification) appendTextElement(item, "span", identityOutcomeLabels[classification] ?? String(classification).replaceAll("_", " "), "identity-candidate-kind");
+  const primaryEvidence = Array.isArray(candidate.evidence)
+    ? candidate.evidence.find((entry) => entry && typeof entry === "object")
+    : null;
+  const matchedOid = candidate.matched_oid ?? primaryEvidence?.matched_oid ?? candidate.oid;
+  const sourceRevision = candidate.source_revision ?? primaryEvidence?.source_revision ?? candidate.provenance?.source_revision;
+  const sourceDate = candidate.source_date ?? primaryEvidence?.source_date ?? candidate.provenance?.source_date;
   const facts = [
+    kind === "primary" ? "selected primary claim" : null,
     candidate.enterprise_number !== null && candidate.enterprise_number !== undefined ? `PEN ${candidate.enterprise_number}` : null,
     candidate.organization_key ? `organization key ${candidate.organization_key}` : null,
     candidate.product_family && candidate.product_family !== title ? candidate.product_family : null,
@@ -237,15 +257,30 @@ function appendIdentityCandidate(list, candidate, index, kind = "candidate") {
     Array.isArray(candidate.enterprise_numbers) ? `PENs ${candidate.enterprise_numbers.join(", ")}` : null,
     Array.isArray(candidate.models) ? `models ${candidate.models.join(", ")}` : null,
     candidate.match_type ? `match ${candidate.match_type}` : null,
+    matchedOid ? `${candidate.match_type === "prefix" ? "matched prefix" : "matched OID"} ${matchedOid}` : null,
     candidate.claim_scope ? `scope ${candidate.claim_scope}` : null,
+    sourceRevision ? `source revision ${sourceRevision}` : null,
+    sourceDate ? `source date ${sourceDate}` : null,
     candidate.source_assignment_confidence ? `source assignment ${candidate.source_assignment_confidence}` : null,
     candidate.confidence ? `confidence ${candidate.confidence}` : null
   ].filter(Boolean);
   if (facts.length) appendTextElement(item, "small", facts.join(" · "));
+  const sourceUrl = safeHttpUrl(primaryEvidence?.source_url ?? candidate.provenance?.source_url);
+  if (sourceUrl) {
+    const link = appendTextElement(item, "a", "Provenance source");
+    link.href = sourceUrl;
+    link.rel = "noopener noreferrer";
+  }
   list.append(item);
 }
 
 function safeIdentitySummary(body, assessment, outcome) {
+  const primaryCandidate = Array.isArray(assessment.candidates)
+    ? assessment.candidates.find((item) => item && typeof item === "object")
+    : null;
+  const primaryEvidence = Array.isArray(primaryCandidate?.evidence)
+    ? primaryCandidate.evidence.find((item) => item && typeof item === "object")
+    : null;
   return {
     data_release: body.data_release ?? null,
     identity_release: body.identity_release ?? assessment.identity_release ?? null,
@@ -261,6 +296,11 @@ function safeIdentitySummary(body, assessment, outcome) {
     product_family: assessment.product_family ?? null,
     mib_identifier: assessment.mib_identifier ?? null,
     platform: assessment.platform ?? null,
+    match_type: assessment.match_type ?? primaryCandidate?.match_type ?? null,
+    matched_oid: assessment.matched_oid ?? primaryEvidence?.matched_oid ?? null,
+    claim_scope: assessment.claim_scope ?? primaryCandidate?.claim_scope ?? null,
+    source_revision: primaryEvidence?.source_revision ?? null,
+    source_date: primaryEvidence?.source_date ?? null,
     firmware_scope: assessment.firmware_scope ?? null,
     confidence: assessment.confidence ?? null
   };
@@ -270,6 +310,14 @@ function renderIdentityAssessment(body) {
   const assessment = body?.assessment ?? body?.result ?? body ?? {};
   const outcome = normalizeIdentityOutcome(assessment);
   const safeSummary = safeIdentitySummary(body ?? {}, assessment, outcome);
+  const primaryCandidate = Array.isArray(assessment.candidates)
+    ? assessment.candidates.find((item) => item && typeof item === "object")
+    : assessment.match && typeof assessment.match === "object" ? assessment.match : null;
+  const primaryEvidence = Array.isArray(primaryCandidate?.evidence)
+    ? primaryCandidate.evidence.find((item) => item && typeof item === "object")
+    : null;
+  const matchType = assessment.match_type ?? primaryCandidate?.match_type;
+  const matchedOid = assessment.matched_oid ?? primaryEvidence?.matched_oid ?? primaryCandidate?.oid;
   deviceIdentityResult.replaceChildren();
   deviceIdentityResult.className = `identity-result identity-result-${outcome}`;
 
@@ -300,6 +348,11 @@ function renderIdentityAssessment(body) {
   appendDefinition(facts, "Product family", assessment.product_family);
   appendDefinition(facts, "Vendor MIB identifier", assessment.mib_identifier, { code: true });
   appendDefinition(facts, "Platform", assessment.platform);
+  appendDefinition(facts, "Match type", matchType);
+  appendDefinition(facts, matchType === "prefix" ? "Matched prefix" : "Matched OID", matchedOid, { code: true });
+  appendDefinition(facts, "Claim scope", assessment.claim_scope ?? primaryCandidate?.claim_scope, { code: true });
+  appendDefinition(facts, "Source revision", primaryEvidence?.source_revision ?? primaryCandidate?.provenance?.source_revision, { code: true });
+  appendDefinition(facts, "Source date", primaryEvidence?.source_date ?? primaryCandidate?.provenance?.source_date);
   appendDefinition(
     facts,
     "Firmware scope",
@@ -326,6 +379,8 @@ function renderIdentityAssessment(body) {
       ? "The enterprise is known, but this response does not prove a product family or model."
       : outcome === "vendor_identifier"
         ? "The exact vendor MIB symbol is known, but it may denote a device, chassis, module, line card, or component. No whole-device model or family is asserted."
+      : outcome === "platform"
+        ? "A longest, arc-bound sysObjectID prefix identifies an agent platform only. It does not assert a hardware model or product family, and an exact OID claim takes precedence."
       : outcome === "unknown"
         ? "No supported identity claim was found. Nothing is inferred from a numeric prefix alone."
         : "Exact means the cited source supports that scope. Observed means a project fixture corroborates one device observation; it is not a universal mapping.";
@@ -342,7 +397,7 @@ function renderIdentityAssessment(body) {
     appendTextElement(candidateSection, "h5", conflicts.length ? "Candidate and conflict claims" : "Candidate claims");
     const list = document.createElement("ol");
     list.className = "identity-candidates";
-    candidates.forEach((candidate, index) => appendIdentityCandidate(list, candidate, index));
+    candidates.forEach((candidate, index) => appendIdentityCandidate(list, candidate, index, index === 0 ? "primary" : "candidate"));
     conflicts.forEach((candidate, index) => appendIdentityCandidate(list, candidate, index, "conflict"));
     candidateSection.append(list);
     deviceIdentityResult.append(candidateSection);
@@ -350,19 +405,21 @@ function renderIdentityAssessment(body) {
 
   const evidenceSection = document.createElement("section");
   appendTextElement(evidenceSection, "h5", "Evidence and provenance");
-  appendTextElement(evidenceSection, "p", "Registry assignment, vendor-MIB factual metadata, open-source device definitions, device-reported signals, and project observations remain separate.", "identity-evidence-note");
+  appendTextElement(evidenceSection, "p", "Registry assignment, vendor-MIB factual metadata, open-source exact definitions, open-source platform-prefix definitions, device-reported signals, and project observations remain separate.", "identity-evidence-note");
   const evidenceGrid = document.createElement("div");
   evidenceGrid.className = "identity-evidence-grid";
-  const grouped = { registry: [], vendor: [], definition: [], device: [], project: [] };
+  const grouped = { registry: [], vendor: [], definition: [], prefix: [], device: [], project: [] };
   for (const entry of collectIdentityEvidence(assessment)) grouped[identityEvidenceCategory(entry)].push(entry);
   for (const [category, title] of [
     ["registry", "Registry"],
     ["vendor", "Vendor-MIB factual metadata"],
     ["definition", "Open-source device definitions"],
+    ["prefix", "Open-source platform-prefix definitions"],
     ["device", "Device-reported signal"],
     ["project", "Project fixture observation"]
   ]) {
     const card = document.createElement("article");
+    card.className = `identity-evidence-${category}`;
     appendTextElement(card, "h6", title);
     const list = document.createElement("ul");
     if (grouped[category].length) grouped[category].slice(0, MAX_IDENTITY_EVIDENCE_PER_LAYER).forEach((entry) => appendEvidenceItem(list, entry));
@@ -550,6 +607,12 @@ sysObjectIdForm.addEventListener("submit", async (event) => {
 });
 
 const identityExamples = {
+  "arista-eos-prefix": {
+    sys_object_id: "1.3.6.1.4.1.30065.1.99",
+    ent_physical_vendor_type: "",
+    ent_physical_model_name: "",
+    sys_descr: ""
+  },
   "racktables-sg300": {
     sys_object_id: "1.3.6.1.4.1.9.6.1.83.10.1",
     ent_physical_vendor_type: "",
@@ -599,7 +662,7 @@ document.querySelector("#device-identity-clear").addEventListener("click", () =>
   deviceIdentityResult.replaceChildren();
   const lead = appendTextElement(deviceIdentityResult, "p", "");
   appendTextElement(lead, "strong", "No assessment yet.");
-  appendTextElement(deviceIdentityResult, "p", "Results distinguish exact model, product family, platform, vendor-only, conflicting evidence, and unknown outcomes.");
+  appendTextElement(deviceIdentityResult, "p", "Results distinguish exact model, product family, generic vendor identifier, platform, vendor-only, conflicting evidence, and unknown outcomes. A platform-prefix match is not a hardware-model claim.");
 });
 
 deviceIdentityForm.addEventListener("submit", async (event) => {
@@ -996,7 +1059,7 @@ async function loadEnterpriseRoute(number, generation) {
 }
 
 async function loadSysObjectIdRoute(oid, generation) {
-  openRoute("sysObjectID", oid, "Exact mappings and PEN-only boundaries remain separate.");
+  openRoute("sysObjectID", oid, "Exact mappings, platform-prefix matches, and PEN-only boundaries remain separate.");
   try {
     const body = await fetchApi(`/v1/sys-object-ids/${encodeURIComponent(oid)}`);
     if (generation !== routeGeneration) return;
@@ -1024,10 +1087,17 @@ async function loadSysObjectIdRoute(oid, generation) {
     const claimDetails = reviewedClaims.length ? `
       <div class="route-card"><h2>Candidate and conflict claims</h2><ul class="route-tree">${reviewedClaims.map((item) => {
         const label = item.model ?? item.product_family ?? item.mib_identifier ?? item.platform ?? item.kind;
-        const sourceIds = (item.evidence ?? []).map((entry) => entry?.source_id).filter(Boolean);
+        const itemEvidence = (item.evidence ?? []).filter((entry) => entry && typeof entry === "object");
+        const primaryEvidence = itemEvidence[0] ?? null;
+        const sourceIds = itemEvidence.map((entry) => entry.source_id).filter(Boolean);
         const details = [
           item.kind,
           item.identity_status ? identityOutcomeLabels[item.identity_status] ?? item.identity_status : null,
+          item.match_type ? `match ${item.match_type}` : null,
+          primaryEvidence?.matched_oid ? `${item.match_type === "prefix" ? "matched prefix" : "matched OID"} ${primaryEvidence.matched_oid}` : null,
+          item.claim_scope ? `scope ${item.claim_scope}` : null,
+          primaryEvidence?.source_revision ? `source revision ${primaryEvidence.source_revision}` : null,
+          primaryEvidence?.source_date ? `source date ${primaryEvidence.source_date}` : null,
           item.confidence ? `confidence ${item.confidence}` : null,
           Array.isArray(item.models) ? `models ${item.models.join(", ")}` : null,
           sourceIds.length ? `sources ${[...new Set(sourceIds)].join(", ")}` : null
@@ -1055,6 +1125,9 @@ async function loadSysObjectIdRoute(oid, generation) {
         ${candidate?.mib_identifier ? `<div><dt>Vendor MIB identifier</dt><dd><code>${escapeHtml(candidate.mib_identifier)}</code></dd></div>` : ""}
         ${candidate?.platform ? `<div><dt>Platform</dt><dd>${escapeHtml(candidate.platform)}</dd></div>` : ""}
         <div><dt>Model</dt><dd>${escapeHtml(candidate?.model ?? "not asserted")}</dd></div>
+        ${candidate?.match_type ? `<div><dt>Match type</dt><dd>${escapeHtml(candidate.match_type)}</dd></div>` : ""}
+        ${candidate?.oid ? `<div><dt>${candidate.match_type === "prefix" ? "Matched prefix" : "Matched OID"}</dt><dd><code>${escapeHtml(candidate.oid)}</code></dd></div>` : ""}
+        ${candidate?.claim_scope ? `<div><dt>Claim scope</dt><dd><code>${escapeHtml(candidate.claim_scope)}</code></dd></div>` : ""}
         ${candidate?.claim_strength ? `<div><dt>Claim strength</dt><dd>${escapeHtml(candidate.claim_strength)}</dd></div>` : ""}
         ${candidate?.confidence ?? result.confidence ? `<div><dt>Confidence</dt><dd>${escapeHtml(candidate?.confidence ?? result.confidence)}</dd></div>` : ""}
         ${enterpriseNumber !== null && enterpriseNumber !== undefined ? `<div><dt>PEN</dt><dd><code>${escapeHtml(enterpriseNumber)}</code></dd></div>` : ""}
@@ -1063,6 +1136,8 @@ async function loadSysObjectIdRoute(oid, generation) {
         ${result.organization_key_status ? `<div><dt>Organization-key status</dt><dd>${escapeHtml(result.organization_key_status)}</dd></div>` : ""}
         ${provenance.source ? `<div><dt>Evidence</dt><dd>${sourceUrl ? `<a href="${escapeHtml(sourceUrl)}">${escapeHtml(provenance.source)}</a>` : escapeHtml(provenance.source)}</dd></div>` : ""}
         ${provenance.source_revision ? `<div><dt>Source revision</dt><dd><code>${escapeHtml(provenance.source_revision)}</code></dd></div>` : ""}
+        ${provenance.source_date ? `<div><dt>Source date</dt><dd>${escapeHtml(provenance.source_date)}</dd></div>` : ""}
+        ${provenance.publication_basis ? `<div><dt>Publication basis</dt><dd>${escapeHtml(provenance.publication_basis)}</dd></div>` : ""}
         ${body.identity_release ? `<div><dt>Identity release</dt><dd><code>${escapeHtml(body.identity_release)}</code></dd></div>` : ""}
         ${result.identity_release_sha256 ? `<div><dt>Identity release SHA-256</dt><dd><code>${escapeHtml(result.identity_release_sha256)}</code></dd></div>` : ""}
         ${result.identity_view ? `<div><dt>Identity view</dt><dd><code>${escapeHtml(result.identity_view)}</code></dd></div>` : ""}

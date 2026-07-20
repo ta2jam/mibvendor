@@ -22,29 +22,32 @@ const projectDefinitionManifest = JSON.parse(await readFile(
 ));
 
 test("identity release is immutable, source-bound, and exposes deterministic counts", () => {
-  assert.equal(IDENTITY_RELEASE, "device-identity-2026-07-20.2");
+  assert.equal(IDENTITY_RELEASE, "device-identity-2026-07-20.3");
   assert.deepEqual(validateIdentityReleaseManifest(), []);
   assert.equal(IDENTITY_STATISTICS.sys_object_id_mappings, 6391);
-  assert.equal(IDENTITY_STATISTICS.claims, 6488);
+  assert.equal(IDENTITY_STATISTICS.claims, 7143);
   assert.equal(IDENTITY_STATISTICS.exact_models, 306);
   assert.equal(IDENTITY_STATISTICS.product_families, 1491);
   assert.equal(IDENTITY_STATISTICS.vendor_identifiers, 4672);
   assert.equal(IDENTITY_STATISTICS.exact_models + IDENTITY_STATISTICS.product_families
     + IDENTITY_STATISTICS.vendor_identifiers + IDENTITY_STATISTICS.platforms, IDENTITY_STATISTICS.claims);
-  assert.equal(IDENTITY_STATISTICS.platforms, 19);
-  assert.equal(IDENTITY_STATISTICS.vendor_families, 31);
+  assert.equal(IDENTITY_STATISTICS.platforms, 674);
+  assert.equal(IDENTITY_STATISTICS.vendor_families, 279);
   assert.equal(IDENTITY_STATISTICS.project_observation_oids, 713);
   assert.equal(IDENTITY_STATISTICS.project_definition_oids, 270);
   assert.equal(IDENTITY_STATISTICS.project_identity_oid_coverage, 964);
+  assert.equal(IDENTITY_STATISTICS.project_platform_prefixes, 655);
+  assert.equal(IDENTITY_STATISTICS.project_prefix_platforms, 406);
+  assert.equal(IDENTITY_STATISTICS.project_prefix_enterprises, 266);
   assert.equal(IDENTITY_STATISTICS.conflicting_observation_oids, 72);
   assert.equal(IDENTITY_STATISTICS.reviewed_organization_keys, 7);
   assert.equal(IDENTITY_STATISTICS.disabled_sources, 0);
   assert.equal(Object.hasOwn(IDENTITY_STATISTICS, "effective_sources"), false);
-  assert.equal(IDENTITY_SOURCES.length, 15);
+  assert.equal(IDENTITY_SOURCES.length, 16);
   assert.equal(IDENTITY_SOURCES.every((source) => source.enabled), true);
   assert.match(IDENTITY_STATISTICS.identity_release_sha256, /^[0-9a-f]{64}$/);
   assert.match(IDENTITY_STATISTICS.runtime_index_sha256, /^[0-9a-f]{64}$/);
-  assert.match(IDENTITY_STATISTICS.identity_view, /^device-identity-2026-07-20\.2\./);
+  assert.match(IDENTITY_STATISTICS.identity_view, /^device-identity-2026-07-20\.3\./);
   assert.equal(IDENTITY_STATISTICS.publication_control_revision, 1);
   const malformed = {
     schema_version: 1,
@@ -66,6 +69,87 @@ test("identity release is immutable, source-bound, and exposes deterministic cou
     disabled_sources: ["unknown"]
   });
   assert.ok(controlFailures.some((failure) => failure.includes("unknown disabled source")));
+});
+
+test("LibreNMS platform prefixes use longest arc-bound matching, retain parents, and never outrank exact identity", () => {
+  const direct = lookupSysObjectId("1.3.6.1.4.1.30065.1");
+  assert.equal(direct.status, "resolved");
+  assert.equal(direct.identity_status, "platform");
+  assert.equal(direct.match.oid, "1.3.6.1.4.1.30065.1");
+  assert.equal(direct.match.platform, "arista_eos");
+  assert.equal(direct.match.model, null);
+  assert.equal(direct.match.product_family, null);
+  assert.equal(direct.match.match_type, "prefix");
+  assert.equal(direct.match.claim_scope, "open-source-project-platform-prefix");
+  assert.equal(direct.match.provenance.source_id, "librenms-os-detection");
+  assert.equal(direct.match.provenance.source_revision, "dfba713a2ffd39c2b6619cccdec016e04a06a027");
+  assert.equal(direct.match.provenance.source_date, "2026-07-18");
+  assert.equal(direct.match.provenance.repository_license_signal, "GPL-3.0-or-later");
+  assert.equal(direct.match.provenance.raw_download, false);
+
+  const descendant = lookupSysObjectId("1.3.6.1.4.1.30065.1.99");
+  assert.equal(descendant.match.oid, "1.3.6.1.4.1.30065.1");
+  assert.equal(descendant.platform, undefined);
+  assert.equal(descendant.match.platform, "arista_eos");
+  const boundaryMiss = lookupSysObjectId("1.3.6.1.4.1.30065.10");
+  assert.equal(boundaryMiss.status, "enterprise_only");
+  assert.equal(boundaryMiss.match, null);
+
+  const unregisteredPen = lookupSysObjectId("1.3.6.1.4.1.1004849.3.2.7");
+  assert.equal(unregisteredPen.status, "resolved");
+  assert.equal(unregisteredPen.enterprise, null);
+  assert.equal(unregisteredPen.organization_name, null);
+  assert.equal(unregisteredPen.match.organization, null);
+  assert.equal(unregisteredPen.match.platform, "dahua-nvr");
+  assert.equal(unregisteredPen.match.model, null);
+
+  const nested = lookupSysObjectId("1.3.6.1.4.1.259.10.1.27.101.9");
+  assert.equal(nested.match.oid, "1.3.6.1.4.1.259.10.1.27.101");
+  assert.deepEqual(nested.assessment.candidates[0].evidence.map((item) => item.matched_oid), [
+    "1.3.6.1.4.1.259.10.1.27.101",
+    "1.3.6.1.4.1.259.10.1.27"
+  ]);
+
+  const exactWins = lookupSysObjectId("1.3.6.1.4.1.9.1.1117");
+  assert.equal(exactWins.identity_status, "vendor_identifier");
+  assert.equal(exactWins.match.match_type, "exact");
+  assert.equal(exactWins.match.mib_identifier, "ciscoSecureAccessControlSystem");
+  assert.equal(exactWins.assessment.candidates[0].match_type, "exact");
+  assert.ok(exactWins.assessment.candidates.some((candidate) => candidate.match_type === "prefix" && candidate.platform === "acs"));
+
+  const assessment = assessDeviceIdentity({
+    sys_object_id: "1.3.6.1.4.1.9.1.1117.999",
+    ent_physical_model_name: "C9300-48P"
+  });
+  assert.equal(assessment.identity_status, "platform");
+  assert.equal(assessment.platform, "acs");
+  assert.equal(assessment.model, null);
+  assert.equal(assessment.product_family, null);
+  assert.ok(assessment.evidence.some((item) => item.signal === "sys_object_id" && item.match_type === "prefix"));
+
+  const vendorTypeOnly = assessDeviceIdentity({ ent_physical_vendor_type: "1.3.6.1.4.1.30065.1.99" });
+  assert.equal(vendorTypeOnly.identity_status, "vendor_only");
+  assert.equal(vendorTypeOnly.platform, null);
+});
+
+test("platform-prefix kill switch removes only prefix evidence", () => {
+  const baseline = createDeviceIdentityEngine({ lookupEnterprise });
+  const disabled = createDeviceIdentityEngine({ lookupEnterprise, disabledSources: ["librenms-os-detection"] });
+  const removed = disabled.lookup("1.3.6.1.4.1.30065.1.99");
+  assert.equal(removed.status, "enterprise_only");
+  assert.equal(removed.match, null);
+  assert.equal(disabled.statistics.project_platform_prefixes, 0);
+  assert.equal(disabled.statistics.project_prefix_platforms, 0);
+  assert.equal(disabled.statistics.project_prefix_enterprises, 0);
+  assert.equal(disabled.statistics.platforms, 0);
+  assert.equal(disabled.statistics.sys_object_id_mappings, baseline.statistics.sys_object_id_mappings);
+  assert.equal(disabled.statistics.claims, baseline.statistics.claims - 655);
+  assert.equal(disabled.sources.find((source) => source.source_id === "librenms-os-detection").enabled, false);
+
+  const exactRemains = disabled.lookup("1.3.6.1.4.1.9.1.1117");
+  assert.equal(exactRemains.identity_status, "vendor_identifier");
+  assert.equal(exactRemains.match.match_type, "exact");
+  assert.equal(exactRemains.assessment.candidates.some((candidate) => candidate.match_type === "prefix"), false);
 });
 
 test("RackTables exact definitions resolve, corroborate, quarantine conflicts, and obey their kill switch", () => {

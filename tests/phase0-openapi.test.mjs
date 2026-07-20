@@ -155,7 +155,7 @@ function assertConformsToOpenApi(value, schemaName) {
 
 test("OpenAPI surface is exact and explicitly public alpha", () => {
   assert.equal(specification.openapi, "3.1.0");
-  assert.equal(packageDocument.version, "0.4.0-alpha.2");
+  assert.equal(packageDocument.version, "0.4.0-alpha.3");
   assert.equal(specification.info.version, packageDocument.version);
   assert.equal(specification.info.title, "mibvendor Permanently Free Public API");
   assert.match(specification.info.description, /Permanently free/);
@@ -268,6 +268,8 @@ test("identity examples and runtime responses reject undocumented properties", a
     for (const oid of [
       "1.3.6.1.4.1.9.1.2435",
       "1.3.6.1.4.1.9.6.1.83.10.1",
+      "1.3.6.1.4.1.30065.1.99",
+      "1.3.6.1.4.1.1004849.3.2.7",
       "1.3.6.1.4.1.8072.3.2.10"
     ]) {
       const lookup = await (await fetch(`${base}/v1/sys-object-ids/${oid}`)).json();

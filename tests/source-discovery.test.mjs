@@ -33,6 +33,20 @@ test("a source without a repository license stays NOASSERTION", () => {
   assert.ok(failures.some((failure) => failure.includes("no license file but claims an SPDX license")));
 });
 
+test("scope-bound LibreNMS prefix approval does not publish bundled MIBs or os_discovery definitions", () => {
+  const source = discovery.sources.find((candidate) => candidate.id === "librenms");
+  const candidates = discovery.candidates.filter((candidate) => candidate.source_id === "librenms");
+  const byRoot = {
+    mibs: candidates.filter((candidate) => candidate.path.startsWith("mibs/")).length,
+    os_detection: candidates.filter((candidate) => candidate.path.startsWith("resources/definitions/os_detection/")).length,
+    os_discovery: candidates.filter((candidate) => candidate.path.startsWith("resources/definitions/os_discovery/")).length,
+  };
+  assert.deepEqual(byRoot, { mibs: 4_822, os_detection: 806, os_discovery: 694 });
+  assert.equal(source.repository_license.spdx, "NOASSERTION");
+  assert.equal(source.repository_license.status, "signal-only");
+  assert.ok(candidates.every((candidate) => candidate.publication_mode === "quarantine"));
+});
+
 test("a recognized repository license promotes candidates under the selected policy", () => {
   const source = discovery.sources.find((candidate) => candidate.id === "erlang-otp-snmp");
   assert.equal(source.repository_license.spdx, "Apache-2.0");

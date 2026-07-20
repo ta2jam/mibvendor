@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "identity_release": "device-identity-2026-07-20.2",
-  "release_sha256": "5c15557ebf975f75cba9fdde64f50c6189ae29aac54f7ae160be4c7342023fd0",
+  "identity_release": "device-identity-2026-07-20.3",
+  "release_sha256": "8f00a2a9478d7876809286f1f5fd3dceb62c9f638d5b5fc5e5a7718ba0d4ff00",
   "datasets": {
     "builtin_claims": {
       "net-snmp": {
@@ -34,8 +34,8 @@
       "dataset_id": "project-authored-device-identity-fixtures",
       "document_sha256": "4472fd539647050d784c5a83f2b70aa0598e89afda071b2a97fdff8029552d66",
       "file_sha256": "e1f73eb5bf973c8945e1c2c86262254509c807422f95c8c22d1ce7287c8918ee",
-      "manifest_sha256": "77cb5703e60861c099f375c35c43e1dd65cc03805a520ca99089dbf24d3e0dec",
-      "manifest_file_sha256": "3e2e0ae316565fbf821063096c87e63b1d92038cb3d12ca5b371960c4ef9eb6a",
+      "manifest_sha256": "b9a54cd9df45f6931b26979e69947384e70312983039c52a12c4fd651e3bab7f",
+      "manifest_file_sha256": "4ab5777cfd97126ec4265300ec5108446ad1ef56a5128710ddae56578da7006c",
       "observation_count": 1023
     },
     "project_definitions": {
@@ -54,6 +54,23 @@
       "exact_oid_candidate_count": 303,
       "quarantined_entry_count": 33
     },
+    "project_prefixes": {
+      "dataset_id": "librenms-platform-prefixes-2026-07-20.1",
+      "dataset_license": {
+        "spdx": "GPL-3.0-or-later",
+        "license_path": "data/device-identities/licenses/librenms/LICENSE.txt",
+        "notice_path": "data/device-identities/licenses/librenms/README.md",
+        "source_offer_url": "https://github.com/librenms/librenms/tree/dfba713a2ffd39c2b6619cccdec016e04a06a027/resources/definitions/os_detection"
+      },
+      "dataset_sha256": "3fdef269c86bbcfdd94f45f88c60d26088ef11d67b91a205d20103378a7d246c",
+      "file_sha256": "8b3fcd20f06983a0a2685e46d17cbc79c19de3428e8d9148ea92dfeaeee9229b",
+      "manifest_sha256": "1c3509998c617f9855ee0c42bc7c1abfde211f5714c55d860294d54dae7b47ab",
+      "manifest_file_sha256": "ab3df8eb4c9b6de5f6aa0f8eefd44ab6649b27576e54edee660624be9a637261",
+      "prefix_count": 655,
+      "platform_count": 406,
+      "enterprise_count": 266,
+      "quarantined_literal_count": 358
+    },
     "integration_measurements": {
       "source_exact_oid_candidates": 303,
       "source_candidate_fixture_overlap_oids": 22,
@@ -66,15 +83,19 @@
       "model_definition_new_vs_fixture_oids": 251,
       "model_definition_new_vs_vendor_fixture_union_oids": 160,
       "project_model_oid_coverage": 964,
-      "project_exact_oid_candidate_inventory": 994
+      "project_exact_oid_candidate_inventory": 994,
+      "project_platform_prefixes": 655,
+      "project_prefix_platforms": 406,
+      "project_prefix_enterprises": 266
     },
     "runtime_index": {
       "schema_version": 1,
-      "runtime_index_sha256": "d543c3492211029285c0f127d56d1fdd6814dc2c6c4015e45a0e3adb96abc5b6",
-      "file_sha256": "4df7f3b5f4ef864932c06a95631f8385902620d149a8fe572e006e61931c5bd6",
+      "runtime_index_sha256": "6e987d51a988a28eb548c99eb6453dbd42b5e5aee1c04fa86d9653b854f73c3c",
+      "file_sha256": "191964256b622a8dfe2a250aa3e54c82a8fe47f5878cb262bc114ec746b0a0b8",
       "vendor_claim_count": 6199,
       "project_fixture_oid_count": 713,
-      "project_definition_count": 270
+      "project_definition_count": 270,
+      "project_prefix_count": 655
     }
   },
   "source_ids": [
@@ -84,6 +105,7 @@
     "cisco-products",
     "colubris-products",
     "dasan-products",
+    "librenms-os-detection",
     "librenms-project-tests",
     "net-snmp",
     "netscreen-products",

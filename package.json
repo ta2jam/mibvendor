@@ -1,6 +1,6 @@
 {
   "name": "mibvendor",
-  "version": "0.4.0-alpha.2",
+  "version": "0.4.0-alpha.3",
   "private": true,
   "description": "Research foundation and task prototype for a source-aware MIB browser and API",
   "license": "MIT",
@@ -21,6 +21,7 @@
     "check:device-identities": "node scripts/validate-device-identities.mjs",
     "check:project-identity-definitions": "node scripts/validate-project-identity-definitions.mjs",
     "check:project-identity-fixtures": "node scripts/validate-project-identity-fixtures.mjs",
+    "check:project-identity-prefixes": "node scripts/validate-project-identity-prefixes.mjs",
     "check:rights-requests": "node scripts/validate-rights-requests.mjs",
     "check:demand": "node scripts/validate-demand-evidence.mjs",
     "check:foundation": "node scripts/validate-foundation-contracts.mjs",
@@ -28,8 +29,9 @@
     "check:parser-selection": "python3 experiments/parser-bakeoff/scripts/validate_public_multiarch_results.py --expected-source-commit 94e60809f3a01a8ba482ffc7319c8dc8a358fd30 experiments/parser-bakeoff/results/2026-07-20-public-linux-amd64 experiments/parser-bakeoff/results/2026-07-20-public-linux-arm64 && python3 experiments/parser-bakeoff/scripts/select_public_parser.py --expected-source-commit 94e60809f3a01a8ba482ffc7319c8dc8a358fd30 experiments/parser-bakeoff/results/2026-07-20-public-linux-amd64 experiments/parser-bakeoff/results/2026-07-20-public-linux-arm64 experiments/parser-bakeoff/results/2026-07-13-linux-amd64 experiments/parser-bakeoff/results/2026-07-14-linux-arm64 | cmp - experiments/parser-bakeoff/results/2026-07-20-public-validation/parser-selection.json",
     "check:production": "./scripts/verify-production.sh",
     "test": "node --test tests/*.test.mjs",
-    "verify": "npm run check && npm run check:rights && npm run check:mibs && npm run check:sources && npm run check:publication-controls && npm run check:release-evidence && npm run check:license-derived && npm run check:compiled-mibs && npm run check:corpus-candidates && npm run check:raw-analysis && npm run check:compiled-fidelity && npm run check:legacy-rfcs && npm run check:device-identities && npm run check:project-identity-definitions && npm run check:project-identity-fixtures && npm run check:rights-requests && npm run check:demand && npm run check:foundation && npm run check:parser-results && npm run check:parser-selection && npm test",
+    "verify": "npm run check && npm run check:rights && npm run check:mibs && npm run check:sources && npm run check:publication-controls && npm run check:release-evidence && npm run check:license-derived && npm run check:compiled-mibs && npm run check:corpus-candidates && npm run check:raw-analysis && npm run check:compiled-fidelity && npm run check:legacy-rfcs && npm run check:device-identities && npm run check:project-identity-definitions && npm run check:project-identity-fixtures && npm run check:project-identity-prefixes && npm run check:rights-requests && npm run check:demand && npm run check:foundation && npm run check:parser-results && npm run check:parser-selection && npm test",
     "benchmark:prototype": "node scripts/benchmark-walk-prototype.mjs 50000",
+    "benchmark:identity-prefixes": "node scripts/benchmark-device-identity-prefixes.mjs",
     "serve:prototype": "python3 -m http.server 4173 --directory prototype",
     "serve:api-mock": "node scripts/phase0-api-mock.mjs",
     "serve": "node server.mjs",
@@ -44,9 +46,13 @@
     "update:device-identities": "node scripts/update-device-identities.mjs",
     "update:project-identity-definitions": "node scripts/update-project-identity-definitions.mjs",
     "update:device-identity-runtime": "node scripts/update-device-identity-runtime-index.mjs",
-    "update:project-identity-fixtures": "node scripts/update-project-identity-fixtures.mjs"
+    "update:project-identity-fixtures": "node scripts/update-project-identity-fixtures.mjs",
+    "update:project-identity-prefixes": "node scripts/update-project-identity-prefixes.mjs"
   },
   "engines": {
     "node": ">=20.9"
+  },
+  "devDependencies": {
+    "yaml": "2.9.0"
   }
 }

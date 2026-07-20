@@ -160,7 +160,10 @@ test("LibreNMS extraction retains only allowlisted identity fields and rejects p
 test("manual pinned license classification quarantines any content or marker mismatch", () => {
   const bytes = Buffer.from("Redistribution approved\nmarker two\n", "utf8");
   const sourceConfig = {
+    repository: "example/project",
+    revision: "a".repeat(40),
     license_classifier: {
+      scope: "tests/normalized-observations",
       expected_spdx: "BSD-3-Clause",
       files: [{
         path: "LICENSE",

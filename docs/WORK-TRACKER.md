@@ -18,6 +18,10 @@ higher item is externally blocked and the lower item can progress safely.
   custom licenses remain quarantined. License-derived approval does not prove
   third-party file ownership, so provenance, obligations, correction, and
   takedown controls remain mandatory.
+- [ADR 0012](decisions/0012-scope-bound-manual-license-classification.md)
+  permits manual classification only for a named adapter scope whose exact
+  pinned license bytes, blobs, SHA-256 values, and markers verify. It does not
+  reclassify a repository or release general `NOASSERTION` candidates.
 - Corpus counts must separate active public, metadata-only, directory-only, and
   quarantined records. Candidate or duplicate files do not inflate public
   coverage.
@@ -108,7 +112,7 @@ unknown decision cannot escape quarantine.
 
 ### DATA-04 — Open-source device identity inventory and adapters
 
-Status: `in-progress`
+Status: `complete`
 
 Inventory independently authored device definitions and model mappings from
 projects such as LibreNMS, Netdisco, Zabbix, and OpenNMS. Keep project-authored
@@ -139,9 +143,21 @@ quarantined. The derived definition dataset is explicitly GPL-2.0-only and
 retains pinned source/license checksums without PHP, source descriptions, or
 raw device data. All 19 definition-observation overlaps have reviewed
 dispositions; four material disagreements stay ambiguous. The project-evidence
-union is 964 OIDs. Exact, signature, and registry methods remain distinct. This
-item stays open because no reviewed prefix-mapping adapter or broader
-project-adapter set yet satisfies the full inventory contract.
+union is 964 OIDs. The `device-identity-2026-07-20.3` candidate adds 655
+unconditional, arc-bound LibreNMS `sysObjectID` platform prefixes for 406
+platform keys across 266 PENs. It quarantines 358 conditional, root,
+non-enterprise, shared-agent, or multi-platform literals. Exact evidence takes
+priority; prefix evidence applies only to `sysObjectID`, stops at platform,
+retains its matched-parent provenance, and has an independent source kill
+switch. The definition-only dataset is GPL-3.0-or-later and binds the pinned
+commit, tree, all 806 input files, Git blobs, SHA-256 values, license markers,
+parser policy, and limits without serving raw YAML or source descriptions.
+
+Completion covers the bounded LibreNMS, SNMP::Info, and RackTables adapters
+selected for this outcome; it is not a claim that every mapping in every named
+open-source monitoring project has been ingested. Exact, prefix, signature,
+and registry methods remain distinct, and field-level provenance and material
+conflicts survive normalization.
 
 ### DATA-05 — Evidence-backed model identity engine
 
@@ -497,6 +513,20 @@ OIDs. Integration commit `4b8a89dcddea11ef8b7afdd262daf7e8a6cffbc8`,
 annotated tag, green CI, exact image, VPS deployment, public API/browser smoke,
 and production monitor are reconciled.
 
+### v0.4.0-alpha.3 — Open-source platform-prefix definitions
+
+Status: `in-progress`
+
+One result: a pinned project adapter broadens platform recognition without
+turning a string prefix, PEN root, conditional rule, or project label into a
+model claim. The candidate preserves 6,391 exact keys and 964 exact
+project-evidence OIDs, then adds 655 arc-bound LibreNMS `sysObjectID` prefixes
+for 406 platform keys across 266 PENs. Exact matches take precedence, prefix
+matching is confined to `sysObjectID`, and the source kill switch removes the
+layer without fallback inference. The remaining release work is immutable tag,
+green CI, VPS deployment, public API/UI verification, production monitoring,
+and release-identity reconciliation.
+
 ### v0.5.0-alpha.1 — Browse at scale
 
 Status: `planned`
@@ -682,6 +712,27 @@ with no billing code.
   keyboard and interaction matrix, and GitHub production monitor are
   reconciled; Cloudflare no longer injects an analytics beacon into the strict
   CSP page.
+
+### 2026-07-20 — v0.4.0-alpha.3 platform-prefix candidate
+
+- Completed the bounded DATA-04 adapter inventory with a strict, non-executing
+  LibreNMS OS-detection YAML parser. It publishes 655 unconditional platform
+  prefixes for 406 platform keys and 266 PENs and quarantines 358 literals.
+- Enforced numeric-arc boundaries, longest-prefix selection, exact precedence,
+  `sysObjectID`-only use, retained parent evidence, platform-only claim
+  strength, and a source-level kill switch. Prefixes never create model,
+  product-family, firmware, or `entPhysicalVendorType` claims.
+- Bound the clean pinned repository, commit and tree, 806 tracked files, modes,
+  blobs, SHA-256 values, license markers, parser policy, generated dataset, and
+  runtime/release indexes. Any drift fails closed.
+- Adopted
+  [ADR 0012](decisions/0012-scope-bound-manual-license-classification.md) for
+  scope-bound manual license classification. The derived records are
+  GPL-3.0-or-later and definition-only; raw YAML and descriptions are not
+  served, and the general LibreNMS `NOASSERTION` discovery snapshot remains
+  quarantined.
+- Production publication is still pending. No tag, VPS state, public check, or
+  monitor result is claimed by this candidate entry.
 
 ### 2026-07-20 — Public parser breadth gate
 

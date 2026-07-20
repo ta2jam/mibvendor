@@ -49,6 +49,7 @@ test("workbench exposes honest outcomes, evidence layers, and direct organizatio
     "Registry",
     "Vendor-MIB factual metadata",
     "Open-source device definitions",
+    "Open-source platform-prefix definitions",
     "Device-reported signal",
     "Project fixture observation",
     "Not reviewed / unavailable",
@@ -66,7 +67,11 @@ test("workbench exposes honest outcomes, evidence layers, and direct organizatio
   assert.match(app, /publication_control\?\.control_revision/);
   assert.doesNotMatch(app, /organization_key\s*\?\?\s*`?pen:/i);
   assert.match(app, /Observed means a project fixture corroborates one device observation; it is not a universal mapping/);
+  assert.match(app, /A longest, arc-bound sysObjectID prefix identifies an agent platform only/);
+  assert.match(app, /an exact OID claim takes precedence/);
   assert.match(app, /entry\?\.publication_mode === "definition-only"/);
+  assert.match(app, /entry\?\.match_type === "prefix"/);
+  assert.ok(app.indexOf('return "prefix"') < app.indexOf('return "definition"'), "prefix evidence must remain a distinct layer even when publication is definition-only");
   assert.ok(app.indexOf('return "definition"') < app.indexOf('return "vendor"'), "definition-only evidence must be classified before vendor fallback");
 });
 
@@ -81,6 +86,9 @@ test("workbench submits the documented same-origin request and never renders raw
   assert.match(app, /const MAX_IDENTITY_EVIDENCE = 128/);
   assert.match(app, /return url\.protocol === "https:" \? url\.href : null/);
   assert.match(app, /raw MIB: unavailable/);
+  assert.match(app, /matched prefix/);
+  assert.match(app, /source date/);
+  assert.match(app, /source revision/);
 
   const safeSummary = app.slice(app.indexOf("function safeIdentitySummary"), app.indexOf("function renderIdentityAssessment"));
   assert.doesNotMatch(safeSummary, /sys_descr|ent_physical_model_name|ent_physical_vendor_type/);
@@ -95,16 +103,20 @@ test("workbench submits the documented same-origin request and never renders raw
   assert.doesNotMatch(renderer, /innerHTML|insertAdjacentHTML|\.raw\b|sys_descr/);
   assert.match(renderer, /Firmware scope/);
   assert.match(renderer, /Not established/);
+  assert.match(renderer, /Matched prefix/);
+  assert.match(renderer, /Source revision/);
+  assert.match(renderer, /Source date/);
 });
 
 test("workbench keeps quick examples, copying, the legacy exact route, and mobile navigation", () => {
-  for (const example of ["racktables-sg300", "c9300-24t", "c9300-observed", "cisco-unknown"]) {
+  for (const example of ["arista-eos-prefix", "racktables-sg300", "c9300-24t", "c9300-observed", "cisco-unknown"]) {
     assert.ok(html.includes(`data-identity-example="${example}"`));
     assert.ok(app.includes(`"${example}"`));
   }
   assert.match(app, /1\.3\.6\.1\.4\.1\.9\.1\.2435/);
   assert.match(app, /1\.3\.6\.1\.4\.1\.9\.1\.2494/);
   assert.match(app, /1\.3\.6\.1\.4\.1\.9\.6\.1\.83\.10\.1/);
+  assert.match(app, /1\.3\.6\.1\.4\.1\.30065\.1\.99/);
   assert.match(app, /C9300-48P/);
   assert.match(app, /navigator\.clipboard\.writeText\(JSON\.stringify\(safeSummary/);
   assert.match(html, /id="sysobjectid-form"/);
@@ -117,6 +129,7 @@ test("workbench keeps quick examples, copying, the legacy exact route, and mobil
   assert.match(app, /Candidate and conflict claims/);
   assert.match(app, /Project fixture observations/);
   assert.match(app, /candidate\.source_id/);
+  assert.match(html, /Arista EOS descendant prefix/);
   assert.match(html, /href="\/#device-identity">Device identity/);
   assert.match(styles, /@media \(max-width: 560px\)[\s\S]*\.site-header nav[\s\S]*grid-template-columns: repeat\(3, minmax\(0, 1fr\)\)/);
   assert.match(styles, /@media \(max-width: 560px\)[\s\S]*\.identity-evidence-grid[\s\S]*grid-template-columns: 1fr/);
@@ -134,9 +147,36 @@ test("public identity counts distinguish claims, definitions, quarantines, and c
   assert.match(html, /964 distinct OIDs/);
   assert.match(html, /Thirty-three source candidates remain quarantined/);
   assert.match(html, /four reviewed definition-observation overlaps remain explicit conflicts/);
+  assert.match(html, /655 platform prefixes covering 406 platform labels and 266 PENs/);
+  assert.match(html, /exact OID mapping always takes precedence/);
+  assert.match(html, /never asserts a hardware model or product family/);
+  assert.match(html, /358 prefix candidates remain quarantined/);
   assert.match(app, /Exact-model claims/);
   assert.match(app, /Open-source definition claims/);
   assert.doesNotMatch(app, /Reviewed exact models/);
+});
+
+test("prefix provenance is explicit and all dynamic route values stay escaped", () => {
+  const collector = app.slice(app.indexOf("function collectIdentityEvidence"), app.indexOf("function appendEvidenceItem"));
+  assert.match(collector, /match_type: item\.match_type \?\? candidate\.match_type/);
+  assert.match(collector, /claim_scope: item\.claim_scope \?\? candidate\.claim_scope/);
+  assert.match(collector, /platform: item\.platform \?\? candidate\.platform/);
+
+  const evidenceRenderer = app.slice(app.indexOf("function appendEvidenceItem"), app.indexOf("function safeIdentitySummary"));
+  assert.match(evidenceRenderer, /entry\.matched_oid/);
+  assert.match(evidenceRenderer, /entry\.source_revision/);
+  assert.match(evidenceRenderer, /entry\.source_date/);
+  assert.match(evidenceRenderer, /safeHttpUrl/);
+  assert.match(evidenceRenderer, /textContent|appendTextElement/);
+  assert.doesNotMatch(evidenceRenderer, /innerHTML|insertAdjacentHTML/);
+
+  const route = app.slice(app.indexOf("async function loadSysObjectIdRoute"), app.indexOf("async function loadReleaseRoute"));
+  for (const field of ["Match type", "Matched prefix", "Claim scope", "Source revision", "Source date", "Publication basis"]) {
+    assert.ok(route.includes(field), `missing route provenance field: ${field}`);
+  }
+  assert.match(route, /escapeHtml\(candidate\.oid\)/);
+  assert.match(route, /escapeHtml\(provenance\.source_date\)/);
+  assert.match(route, /escapeHtml\(provenance\.publication_basis\)/);
 });
 
 test("identity result is an accessible live region with explicit focus target", () => {

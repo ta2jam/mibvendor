@@ -177,6 +177,9 @@ test("developer mini documentation matches the live public alpha", async () => {
   assert.match(html, /64 KiB/);
   assert.match(html, /200/);
   assert.match(html, /application\/problem\+json/);
+  assert.match(html, /Exact, platform-prefix, or PEN result/);
+  assert.match(html, /Prefix matches are arc-bound/);
+  assert.match(html, /exact claims take precedence/);
   assert.match(html, /OpenAPI 3\.1 specification/);
   assert.match(html, /Copy curl/);
   assert.match(html, /Copy pagination/);

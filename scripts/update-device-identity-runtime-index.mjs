@@ -8,7 +8,7 @@ import { canonicalJsonSha256 } from "./canonical-json.mjs";
 
 const projectRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const identityRoot = path.join(projectRoot, "data", "device-identities");
-const IDENTITY_RELEASE = "device-identity-2026-07-20.2";
+const IDENTITY_RELEASE = "device-identity-2026-07-20.3";
 const BUILTIN_CLAIMS = Object.freeze({
   "net-snmp": Object.freeze({
     record_count: 18,
@@ -42,6 +42,8 @@ export async function buildDeviceIdentityRuntimeIndex() {
   const fixtureManifest = await readInput("data/device-identities/project-fixtures-manifest.json");
   const definitions = await readInput("data/device-identities/project-definitions.json");
   const definitionManifest = await readInput("data/device-identities/project-definitions-manifest.json");
+  const prefixes = await readInput("data/device-identities/project-prefixes.json");
+  const prefixManifest = await readInput("data/device-identities/project-prefixes-manifest.json");
   const licenseBytes = await readFile(path.join(identityRoot, "licenses/librenms/LICENSE.txt"));
   const readmeBytes = await readFile(path.join(identityRoot, "licenses/librenms/README.md"));
   const snmpInfoLicenseBytes = await readFile(path.join(identityRoot, "licenses/SNMP-INFO-LICENSE"));
@@ -54,11 +56,16 @@ export async function buildDeviceIdentityRuntimeIndex() {
   const fixtureManifestCanonicalSha256 = canonicalJsonSha256(fixtureManifest.document);
   const definitionCanonicalSha256 = canonicalJsonSha256(withoutField(definitions.document, "dataset_sha256"));
   const definitionManifestCanonicalSha256 = canonicalJsonSha256(definitionManifest.document);
+  const prefixCanonicalSha256 = canonicalJsonSha256(withoutField(prefixes.document, "dataset_sha256"));
+  const prefixManifestCanonicalSha256 = canonicalJsonSha256(withoutField(prefixManifest.document, "manifest_sha256"));
   if (vendor.document.dataset_sha256 !== vendorCanonicalSha256) throw new Error("Vendor identity dataset digest drift");
   if (vendor.document.source_manifest_sha256 !== vendorManifestCanonicalSha256) throw new Error("Vendor identity source manifest digest drift");
   if (fixtures.document.document_sha256 !== fixtureCanonicalSha256) throw new Error("Project fixture digest drift");
   if (definitions.document.dataset_sha256 !== definitionCanonicalSha256) throw new Error("Project definition dataset digest drift");
   if (definitions.document.source_manifest_sha256 !== definitionManifestCanonicalSha256) throw new Error("Project definition source manifest digest drift");
+  if (prefixes.document.dataset_sha256 !== prefixCanonicalSha256) throw new Error("Project prefix dataset digest drift");
+  if (prefixes.document.source_manifest_sha256 !== prefixManifest.document.manifest_sha256
+    || prefixManifest.document.manifest_sha256 !== prefixManifestCanonicalSha256) throw new Error("Project prefix source manifest digest drift");
 
   const sourceIndex = new Map(vendor.document.sources.map((source, index) => [source.id, index]));
   const vendorClaims = vendor.document.records.map((record) => {
@@ -106,6 +113,17 @@ export async function buildDeviceIdentityRuntimeIndex() {
     definition.claim_scope
   ]);
   if (projectDefinitions.some((definition) => definition[3] < 0)) throw new Error("Project definition source index drift");
+  const prefixSources = prefixes.document.sources;
+  const projectPrefixes = prefixes.document.prefixes.map((prefix) => [
+    prefix.oid_prefix,
+    prefix.enterprise_number,
+    prefix.platform,
+    prefixSources.findIndex((source) => source.id === prefix.source_id),
+    prefix.source_path,
+    prefix.git_blob_oid,
+    prefix.source_sha256
+  ]);
+  if (projectPrefixes.some((prefix) => prefix[3] < 0)) throw new Error("Project prefix source index drift");
   const vendorOids = new Set(vendorClaims.map((claim) => claim[0]));
   const fixtureOids = new Set(projectFixtures.map((fixture) => fixture[0]));
   const definitionOids = new Set(projectDefinitions.map((definition) => definition[0]));
@@ -135,7 +153,10 @@ export async function buildDeviceIdentityRuntimeIndex() {
     model_definition_new_vs_fixture_oids: [...definitionOids].filter((oid) => !fixtureOids.has(oid)).length,
     model_definition_new_vs_vendor_fixture_union_oids: [...definitionOids].filter((oid) => !vendorFixtureUnion.has(oid)).length,
     project_model_oid_coverage: new Set([...fixtureOids, ...definitionOids]).size,
-    project_exact_oid_candidate_inventory: new Set([...fixtureOids, ...sourceCandidateOids]).size
+    project_exact_oid_candidate_inventory: new Set([...fixtureOids, ...sourceCandidateOids]).size,
+    project_platform_prefixes: projectPrefixes.length,
+    project_prefix_platforms: new Set(projectPrefixes.map((prefix) => prefix[2])).size,
+    project_prefix_enterprises: new Set(projectPrefixes.map((prefix) => prefix[1])).size
   };
 
   const document = {
@@ -181,6 +202,23 @@ export async function buildDeviceIdentityRuntimeIndex() {
         file_sha256: definitionManifest.file_sha256,
         canonical_sha256: definitionManifestCanonicalSha256
       },
+      project_prefixes: {
+        path: "data/device-identities/project-prefixes.json",
+        file_sha256: prefixes.file_sha256,
+        canonical_sha256: prefixCanonicalSha256,
+        dataset_id: prefixes.document.dataset_id,
+        dataset_license: prefixes.document.dataset_license,
+        prefix_count: prefixes.document.counts.prefixes,
+        platform_count: prefixes.document.counts.platforms,
+        enterprise_count: prefixes.document.counts.enterprises,
+        quarantined_literal_count: prefixes.document.counts.quarantined_literals
+      },
+      project_prefix_manifest: {
+        path: "data/device-identities/project-prefixes-manifest.json",
+        file_sha256: prefixManifest.file_sha256,
+        canonical_sha256: prefixManifestCanonicalSha256,
+        manifest_sha256: prefixManifest.document.manifest_sha256
+      },
       librenms_license: {
         path: "data/device-identities/licenses/librenms/LICENSE.txt",
         file_sha256: sha256(licenseBytes)
@@ -208,6 +246,8 @@ export async function buildDeviceIdentityRuntimeIndex() {
     project_fixtures: projectFixtures,
     definition_sources: definitionSources,
     project_definitions: projectDefinitions,
+    prefix_sources: prefixSources,
+    project_prefixes: projectPrefixes,
     project_definition_fixture_dispositions: fixtureOverlapDispositions.map((item) => [item.sys_object_id, item.disposition]),
     integration_measurements: integrationMeasurements,
     reviewed_pen_links: fixtureManifest.document.organization_mapping_snapshot.reviewed_pen_links,
@@ -258,6 +298,18 @@ export function buildDeviceIdentityRelease(runtimeIndex, runtimeIndexBytes) {
         exact_oid_candidate_count: runtimeIndex.inputs.project_definitions.exact_oid_candidate_count,
         quarantined_entry_count: runtimeIndex.inputs.project_definitions.quarantined_entry_count
       },
+      project_prefixes: {
+        dataset_id: runtimeIndex.inputs.project_prefixes.dataset_id,
+        dataset_license: runtimeIndex.inputs.project_prefixes.dataset_license,
+        dataset_sha256: runtimeIndex.inputs.project_prefixes.canonical_sha256,
+        file_sha256: runtimeIndex.inputs.project_prefixes.file_sha256,
+        manifest_sha256: runtimeIndex.inputs.project_prefix_manifest.manifest_sha256,
+        manifest_file_sha256: runtimeIndex.inputs.project_prefix_manifest.file_sha256,
+        prefix_count: runtimeIndex.inputs.project_prefixes.prefix_count,
+        platform_count: runtimeIndex.inputs.project_prefixes.platform_count,
+        enterprise_count: runtimeIndex.inputs.project_prefixes.enterprise_count,
+        quarantined_literal_count: runtimeIndex.inputs.project_prefixes.quarantined_literal_count
+      },
       integration_measurements: runtimeIndex.integration_measurements,
       runtime_index: {
         schema_version: runtimeIndex.schema_version,
@@ -265,13 +317,15 @@ export function buildDeviceIdentityRelease(runtimeIndex, runtimeIndexBytes) {
         file_sha256: sha256(runtimeIndexBytes),
         vendor_claim_count: runtimeIndex.vendor_claims.length,
         project_fixture_oid_count: runtimeIndex.project_fixtures.length,
-        project_definition_count: runtimeIndex.project_definitions.length
+        project_definition_count: runtimeIndex.project_definitions.length,
+        project_prefix_count: runtimeIndex.project_prefixes.length
       }
     },
     source_ids: [...new Set([
       ...runtimeIndex.vendor_sources.map((source) => source.id),
       ...runtimeIndex.project_sources.map((source) => source.id),
       ...runtimeIndex.definition_sources.map((source) => source.id),
+      ...runtimeIndex.prefix_sources.map((source) => source.id),
       ...Object.keys(BUILTIN_CLAIMS)
     ])].sort()
   };
@@ -313,7 +367,8 @@ async function main() {
     release_sha256: release.release_sha256,
     vendor_claims: document.vendor_claims.length,
     project_fixtures: document.project_fixtures.length,
-    project_definitions: document.project_definitions.length
+    project_definitions: document.project_definitions.length,
+    project_prefixes: document.project_prefixes.length
   })}\n`);
 }
 
