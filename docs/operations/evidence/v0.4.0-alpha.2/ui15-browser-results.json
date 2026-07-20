@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "run_at": "2026-07-20T04:20:49Z",
+  "origin": "https://mibvendor.io",
+  "release": {
+    "version": "0.4.0-alpha.2",
+    "commit": "4b8a89dcddea11ef8b7afdd262daf7e8a6cffbc8",
+    "data_release": "license-signaled-2026-07-20.2",
+    "identity_release": "device-identity-2026-07-20.2"
+  },
+  "browser": {
+    "engine": "Chromium",
+    "version": "149.0.7827.55",
+    "headless": true
+  },
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1280,
+      "height": 900,
+      "focusable_controls_forward_and_reverse": 77,
+      "copy_examples_enter_activated": 5,
+      "cursor_pages_enter_activated": [0, 1],
+      "details_enter_toggled": true,
+      "secondary_links_enter_activated": 3,
+      "clipboard_cleared": true,
+      "horizontal_overflow": false,
+      "console_errors": 0,
+      "page_errors": 0,
+      "failed_requests": 0,
+      "cloudflare_beacon_injected": false
+    },
+    {
+      "name": "mobile-390",
+      "width": 390,
+      "height": 844,
+      "focusable_controls_forward_and_reverse": 81,
+      "copy_examples_enter_activated": 5,
+      "cursor_pages_enter_activated": [0, 1],
+      "details_enter_toggled": true,
+      "secondary_links_enter_activated": 3,
+      "clipboard_cleared": true,
+      "horizontal_overflow": false,
+      "console_errors": 0,
+      "page_errors": 0,
+      "failed_requests": 0,
+      "cloudflare_beacon_injected": false
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "docs/operations/evidence/v0.4.0-alpha.2/ui15-desktop.png",
+      "width": 1280,
+      "height": 900,
+      "sha256": "07eb90473b68aabb0d52188a96c5e5190c6861c165932204e02ad700ba0fe0cd"
+    },
+    {
+      "path": "docs/operations/evidence/v0.4.0-alpha.2/ui15-desktop-controls.png",
+      "width": 1280,
+      "height": 900,
+      "sha256": "ca906024e3593a1e99999cd76f7277edff09d6ffd1f31d6d663b0a4aecbb6541"
+    },
+    {
+      "path": "docs/operations/evidence/v0.4.0-alpha.2/ui15-mobile-390.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "13ec9f361e89798c56ebe414006d4dedcbe77da1baf06fa604daac3baadd6050"
+    },
+    {
+      "path": "docs/operations/evidence/v0.4.0-alpha.2/ui15-mobile-390-controls.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "029a6b070c1fad1e85ae4c1553d0022ff4271f5a47d5d4153d7205dbfd66d1ec"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 # ADR 0005: Prepare provisional foundation contracts without opening Phase 1
 
-Status: Accepted; Phase 0 remains open
+Status: Partially superseded by ADR 0010; provisional contracts and open Phase
+0 gates remain
 Date: 2026-07-14
 
 ## Decision

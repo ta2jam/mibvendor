@@ -14,9 +14,14 @@ and a task status diverge.
 - observe at least three users returning to the prototype for a second task;
 - validate three concrete API integration scenarios;
 - classify top-priority module/vendor sources across five rights scopes;
-- obtain a viable public Tier A/B seed and at least one vendor permission path;
+- obtain a viable public Tier A/B seed and at least one licensed source path
+  capable of vendor-family coverage;
 - run a reproducible PySMI/libsmi/Net-SNMP bake-off and select one canonical
   parser on measured results.
+
+The parser's 100-file public positive-breadth eligibility gate is complete.
+Native amd64/arm64 execution and the selection decision remain open; they do
+not require owner-supplied files or authority.
 
 Phase 1 cannot start merely because documents exist. See
 [the binding gate](PHASE-0.md).
@@ -46,38 +51,63 @@ external-demand gates are complete.
 
 ## Phase 1 — public foundation
 
-- freeze source governance, canonical intermediate schema, immutable release
-  model, adapter contract, and 20 UX golden tasks;
-- establish application skeleton and reproducible CI;
-- bundle no unapproved third-party data.
+Status: partially delivered under ADR 0010; Phase 0 is still open, so this is
+not a declaration that Phase 1 formally started.
+
+- Complete: source governance, canonical intermediate schemas, immutable
+  release model, adapter contract, 20 UX golden tasks, reproducible CI, and
+  fail-closed publication controls.
+- Open: the provisional contracts may still change before Phase 0 closes;
+  community-contribution governance and the canonical parser decision remain
+  unfinished.
 
 ## Phase 2 — data engine and internal resolver
 
-- deterministic importer, dependency graph, diagnostics, revisions, and module
-  variants;
-- exact, symbol, instance, and ancestor resolver;
-- atomic activation, rollback, search, and measured performance baselines.
+Status: partial.
+
+- Complete: deterministic approved-source intake, dependency graph states,
+  diagnostics, exact/symbol/instance/ancestor resolution, search, immutable
+  activation evidence, source/module kill switches, and a validated atomic
+  filesystem app-pointer rollback with external audit and recovery.
+- Open: queryable revision variants, variant-bound dependency resolution,
+  generic takedown drills, and the 100K/1M/2M storage bake-off.
 
 ## Phase 3 — task-first web and walk decoder
 
-- omnibox, grouped results, object/module/notification pages, table/index
-  guidance, command generation, lazy tree, and accessibility;
-- browser-local streaming walk parse and local value join;
-- target benchmark: 10 MiB or 50,000 lines, with no raw-walk logging.
+Status: partial.
+
+- Complete: routable search/object/module/enterprise/identity/release views,
+  structured object semantics, bounded tree navigation, dependency states,
+  device identity, table/index guidance, command examples, and a production
+  desktop/mobile API-documentation matrix.
+- Open: unified query classification, facets, full module context,
+  virtualization, semantic revision comparison, accessible graph/table parity,
+  and a full-corpus Web Worker walk decoder. The existing 50,000-line decoder
+  benchmark uses a limited local resolver and never uploads raw values.
 
 ## Phase 4 — public API
 
-- versioned search, resolve, object, module, dependency, batch, and data-release
-  endpoints;
-- provenance and rights fields, OpenAPI 3.1, JSON Schema, RFC 9457 errors,
-  bounded pagination, caching, and protective rate limits;
-- permanently free access with no paid tier or paid quota upgrade, bounded by
-  fair use and no availability SLA.
+Status: public alpha delivered; stability evidence remains open.
+
+- Complete: versioned search, resolve, object, navigation, module, raw,
+  dependency, source, enterprise, identity, batch, status, and release
+  endpoints; provenance and rights fields; OpenAPI 3.1; RFC 9457 errors;
+  bounded pagination; cache contracts; fair-use controls; and permanently free
+  access with no paid tier or paid quota upgrade.
+- Open: three independent external integrations and any compatibility or SLA
+  claim. The API is prerelease and intentionally carries no availability SLA.
 
 ## Phase 5 — production and controlled expansion
 
-- isolated application/database/volume/secrets/backups on the shared VPS;
-- restore, failed-release, and rollback drills;
-- Cloudflare DNS/edge configuration and production verification;
-- source freshness, rights expiry, corrections, and takedown operations;
-- only approved Tier A/B sources; local CLI if private-MIB demand is measured.
+Status: partial production operation.
+
+- Complete: isolated release directories and Compose project on the shared
+  VPS, loopback-only application binding, least-privilege read-only container,
+  rollback points, host Caddy, proxied Cloudflare DNS/edge, immutable tags,
+  CI, five-minute host checks, scheduled GitHub production verification, and
+  source/module publication kill switches.
+- Open: generic correction/takedown drills and source-expiry automation. No
+  production database or application volume exists because the current
+  immutable in-memory release does not need either; they must not be added
+  merely to satisfy an old architecture sketch. A local private-MIB workflow
+  remains conditional on measured demand.

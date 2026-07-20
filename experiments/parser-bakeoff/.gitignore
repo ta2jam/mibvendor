@@ -2,3 +2,5 @@
 .work/
 corpus/private/
 results/latest/
+results/public-*/
+scripts/__pycache__/

@@ -1,6 +1,6 @@
 # ADR 0001: Close Phase 0 before selecting the production stack
 
-Status: Accepted
+Status: Partially superseded by ADR 0010; the open evidence gates remain
 Date: 2026-07-13
 
 ## Decision

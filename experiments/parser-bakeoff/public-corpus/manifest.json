@@ -1,0 +1,3973 @@
+{
+  "schema_version": 1,
+  "corpus_id": "public-positive-breadth-v1",
+  "selection_seed": "mibvendor-public-parser-breadth-v1",
+  "catalog_data_release": "license-signaled-2026-07-20.2",
+  "catalog_sha256": "f85842c12be24a0adfc1b8571782c5550f3f2ef82118ab657e2fb00f64c5414c",
+  "corpus_sha256": "e299b9fd2c05200a5ca01740bf7e99e90628bafeb97a1a73fd97f385a011a2cd",
+  "scope": {
+    "eligibility_gate": "public-positive-breadth",
+    "parser_results": "not-recorded",
+    "canonical_parser_gate": "open",
+    "open_reasons": [
+      "no three-candidate results are committed for this corpus",
+      "Linux amd64 and arm64 parity is not evidenced for this corpus",
+      "positive public files do not replace malformed and revision-pair evidence"
+    ]
+  },
+  "policy": {
+    "cases": 100,
+    "category_counts": {
+      "compatibility-edge": 20,
+      "standards-origin": 20,
+      "textual-convention": 20,
+      "table-structure": 20,
+      "repository-license-signal": 20
+    },
+    "compatibility_edge_counts": {
+      "unresolved-static-baseline": 5,
+      "dependency-heavy": 5,
+      "legacy-smi": 10
+    },
+    "maximum_cases_per_source": 30,
+    "minimum_distinct_sources": 8,
+    "minimum_coverage": {
+      "augments": 10,
+      "dependency-heavy": 10,
+      "imports": 90,
+      "legacy-smi": 15,
+      "module-identity": 60,
+      "notification-or-trap": 25,
+      "object-type": 70,
+      "revision": 40,
+      "table-structure": 60,
+      "textual-convention": 40,
+      "unresolved-static-baseline": 5
+    },
+    "case_expectation": "observe"
+  },
+  "coverage": {
+    "augments": 16,
+    "dependency-heavy": 14,
+    "imports": 100,
+    "legacy-smi": 15,
+    "module-compliance": 54,
+    "module-identity": 82,
+    "notification-or-trap": 34,
+    "notification-type": 30,
+    "object-group": 56,
+    "object-type": 86,
+    "revision": 68,
+    "table-index": 80,
+    "table-structure": 80,
+    "textual-convention": 62,
+    "trap-type-v1": 4,
+    "unresolved-static-baseline": 5
+  },
+  "cases": [
+    {
+      "id": "compatibility-edge-df7ab2edb944",
+      "category": "compatibility-edge",
+      "selection_basis": "unresolved-static-baseline",
+      "module": "IPFIX-MIB",
+      "file": "data/mibs/redistributable/ietf-post-2008/IPFIX-MIB.mib",
+      "sha256": "df7ab2edb9442e1c2cd8667947ec7724cf911125839d18956a50f17602936e73",
+      "bytes": 67125,
+      "source_id": "ietf-post-2008",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6615.txt",
+      "source_revision": "RFC 6615",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "ipfixMIB",
+      "detail_symbols": [
+        "ipfixMIB",
+        "ipfixTransportSessionTable",
+        "ipfixObjects",
+        "ipfixTransportSessionEntry",
+        "ipfixTemplateEntry",
+        "ipfixTemplateDefinitionEntry",
+        "ipfixExportEntry",
+        "ipfixMeteringProcessEntry"
+      ],
+      "features": [
+        "augments",
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index"
+      ],
+      "compatibility_flags": [
+        "unresolved-static-baseline"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 87,
+        "resolved_oid_count": 86,
+        "dependency_count": 6
+      }
+    },
+    {
+      "id": "compatibility-edge-7ee1e98fc255",
+      "category": "compatibility-edge",
+      "selection_basis": "unresolved-static-baseline",
+      "module": "UCD-SNMP-MIB",
+      "file": "data/mibs/redistributable/net-snmp/UCD-SNMP-MIB.mib",
+      "sha256": "7ee1e98fc2554475bf2c8fb11885e6eb8a54c2d55dc492bd9226723de26ff9fd",
+      "bytes": 53419,
+      "source_id": "net-snmp",
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/UCD-SNMP-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "license_spdx": "LicenseRef-Net-SNMP",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "ucdavis",
+      "detail_symbols": [
+        "ucdavis",
+        "prTable",
+        "ucdStart",
+        "ucdInternal",
+        "Float",
+        "prEntry",
+        "extEntry",
+        "dskEntry"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "notification-type",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [
+        "unresolved-static-baseline"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 181,
+        "resolved_oid_count": 180,
+        "dependency_count": 3
+      }
+    },
+    {
+      "id": "compatibility-edge-635c2c26ca7c",
+      "category": "compatibility-edge",
+      "selection_basis": "unresolved-static-baseline",
+      "module": "NET-SNMP-PASS-MIB",
+      "file": "data/mibs/redistributable/net-snmp/NET-SNMP-PASS-MIB.mib",
+      "sha256": "635c2c26ca7c603f7dce5eb161a4f64e2be14ade4d1a614e8cabfcb019f940f5",
+      "bytes": 3730,
+      "source_id": "net-snmp",
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/NET-SNMP-PASS-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "license_spdx": "LicenseRef-Net-SNMP",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "netSnmpPassExamples",
+      "detail_symbols": [
+        "netSnmpPassExamples",
+        "netSnmpPassString",
+        "netSnmpPassOIDValue",
+        "netSnmpPassEntry"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "object-type",
+        "table-index"
+      ],
+      "compatibility_flags": [
+        "unresolved-static-baseline"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 14,
+        "resolved_oid_count": 13,
+        "dependency_count": 3
+      }
+    },
+    {
+      "id": "compatibility-edge-3e8db9f7bb22",
+      "category": "compatibility-edge",
+      "selection_basis": "unresolved-static-baseline",
+      "module": "VM-MIB",
+      "file": "data/mibs/redistributable/ietf-post-2008/VM-MIB.mib",
+      "sha256": "3e8db9f7bb22978b6bb78d5e8a0afa786394f1823498f5b48d8f8b771c586fea",
+      "bytes": 59908,
+      "source_id": "ietf-post-2008",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7666.txt",
+      "source_revision": "RFC 7666",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "vmMIB",
+      "detail_symbols": [
+        "vmMIB",
+        "vmHvSoftware",
+        "vmRunning",
+        "vmNotifications",
+        "VirtualMachineIndex",
+        "vmEntry",
+        "vmCpuEntry",
+        "vmCpuAffinityEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [
+        "unresolved-static-baseline"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 90,
+        "resolved_oid_count": 89,
+        "dependency_count": 7
+      }
+    },
+    {
+      "id": "compatibility-edge-028439714ce4",
+      "category": "compatibility-edge",
+      "selection_basis": "unresolved-static-baseline",
+      "module": "NET-SNMP-AGENT-MIB",
+      "file": "data/mibs/redistributable/net-snmp/NET-SNMP-AGENT-MIB.mib",
+      "sha256": "028439714ce4774c7ec4fc03225249b185aa17a6920de5857f052b3eba5c1ad7",
+      "bytes": 15901,
+      "source_id": "net-snmp",
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/NET-SNMP-AGENT-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "license_spdx": "LicenseRef-Net-SNMP",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "netSnmpAgentMIB",
+      "detail_symbols": [
+        "netSnmpAgentMIB",
+        "nsCacheDefaultTimeout",
+        "nsNotifyStart",
+        "nsVersion",
+        "NetsnmpCacheStatus",
+        "nsCacheEntry",
+        "nsDebugTokenEntry",
+        "nsLoggingEntry"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [
+        "unresolved-static-baseline"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 48,
+        "resolved_oid_count": 46,
+        "dependency_count": 5
+      }
+    },
+    {
+      "id": "compatibility-edge-d337410228d2",
+      "category": "compatibility-edge",
+      "selection_basis": "dependency-heavy",
+      "module": "FORTINET-FORTIGATE-MIB",
+      "file": "data/mibs/redistributable/license-derived/pandora-open-mibs/files/pandora_console/attachment/mibs/FORTINET-FORTIGATE-MIB.mib",
+      "sha256": "d337410228d29a5280ee69a3a4bce16c0969ea28eca45a52e2fef7c1773c2597",
+      "bytes": 248923,
+      "source_id": "pandora-open-mibs",
+      "source_url": "https://raw.githubusercontent.com/pandorafms/pandora-open/ab7e2a4c20707834cd1ed28fefc06631cbfa8f15/pandora_console/attachment/mibs/FORTINET-FORTIGATE-MIB.mib",
+      "source_revision": "ab7e2a4c20707834cd1ed28fefc06631cbfa8f15",
+      "license_spdx": "GPL-2.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "fnFortiGateMib",
+      "detail_symbols": [
+        "fnFortiGateMib",
+        "fgVdNumber",
+        "fgTrapVpnTunUp",
+        "fgModel",
+        "FgVdIndex",
+        "fgVdEntry",
+        "fgVdTpEntry",
+        "fgHwSensorEntry"
+      ],
+      "features": [
+        "augments",
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [
+        "dependency-heavy"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 853,
+        "resolved_oid_count": 853,
+        "dependency_count": 9
+      }
+    },
+    {
+      "id": "compatibility-edge-16c9212599d4",
+      "category": "compatibility-edge",
+      "selection_basis": "dependency-heavy",
+      "module": "CISCO-UNIFIED-COMPUTING-AAA-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/CISCO-UNIFIED-COMPUTING-AAA-MIB.mib",
+      "sha256": "16c9212599d4e24ea66d2dd80fb479d59a0c3984893de64a43a89fca40e1fc9a",
+      "bytes": 255034,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/CISCO-UNIFIED-COMPUTING-AAA-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "cucsAaaObjects",
+      "detail_symbols": [
+        "cucsAaaObjects",
+        "cucsAaaAuthRealmTable",
+        "cucsAaaAuthRealmEntry",
+        "cucsAaaAuthRealmFsmEntry",
+        "cucsAaaAuthRealmFsmStageEntry",
+        "cucsAaaCimcSessionEntry",
+        "cucsAaaConsoleAuthEntry",
+        "cucsAaaDefaultAuthEntry"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "object-type",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [
+        "dependency-heavy"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 778,
+        "resolved_oid_count": 778,
+        "dependency_count": 8
+      }
+    },
+    {
+      "id": "compatibility-edge-aca45a054843",
+      "category": "compatibility-edge",
+      "selection_basis": "dependency-heavy",
+      "module": "CISCO-UNIFIED-COMPUTING-EPQOS-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/CISCO-UNIFIED-COMPUTING-EPQOS-MIB.mib",
+      "sha256": "aca45a0548431f530198e6924eff31c71df8400c6b86b9c9b2d802d7d4ea88f8",
+      "bytes": 44296,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/CISCO-UNIFIED-COMPUTING-EPQOS-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "cucsEpqosObjects",
+      "detail_symbols": [
+        "cucsEpqosObjects",
+        "cucsEpqosDefinitionTable",
+        "cucsEpqosDefinitionEntry",
+        "cucsEpqosDefinitionDelTaskEntry",
+        "cucsEpqosDefinitionDelTaskFsmEntry",
+        "cucsEpqosDefinitionDelTaskFsmStageEntry",
+        "cucsEpqosDefinitionDelTaskFsmTaskEntry",
+        "cucsEpqosDefinitionFsmEntry"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "object-type",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [
+        "dependency-heavy"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 120,
+        "resolved_oid_count": 120,
+        "dependency_count": 8
+      }
+    },
+    {
+      "id": "compatibility-edge-b42f482a7edb",
+      "category": "compatibility-edge",
+      "selection_basis": "dependency-heavy",
+      "module": "CISCO-UNIFIED-COMPUTING-FSM-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/CISCO-UNIFIED-COMPUTING-FSM-MIB.mib",
+      "sha256": "b42f482a7edbd71c90cb55a6931a5e4b4dcc2b85a340e290bfba348c1ed93460",
+      "bytes": 5229,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/CISCO-UNIFIED-COMPUTING-FSM-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "cucsFsmObjects",
+      "detail_symbols": [
+        "cucsFsmObjects",
+        "cucsFsmStatusTable",
+        "cucsFsmStatusEntry"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "object-type",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [
+        "dependency-heavy"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 12,
+        "resolved_oid_count": 12,
+        "dependency_count": 8
+      }
+    },
+    {
+      "id": "compatibility-edge-992a9d929e5f",
+      "category": "compatibility-edge",
+      "selection_basis": "dependency-heavy",
+      "module": "CISCO-UNIFIED-COMPUTING-PROC-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/CISCO-UNIFIED-COMPUTING-PROC-MIB.mib",
+      "sha256": "992a9d929e5f0ecfe740f8ff0e5f26ab8113e13ce6c792dd23a891585b9214ac",
+      "bytes": 20442,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/CISCO-UNIFIED-COMPUTING-PROC-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "cucsProcObjects",
+      "detail_symbols": [
+        "cucsProcObjects",
+        "cucsProcDoerTable",
+        "cucsProcDoerEntry",
+        "cucsProcManagerEntry",
+        "cucsProcPrtEntry",
+        "cucsProcPrtCountsEntry",
+        "cucsProcStimulusCountsEntry",
+        "cucsProcSvcEntry"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "object-type",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [
+        "dependency-heavy"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 61,
+        "resolved_oid_count": 61,
+        "dependency_count": 8
+      }
+    },
+    {
+      "id": "compatibility-edge-a031ad485ebe",
+      "category": "compatibility-edge",
+      "selection_basis": "legacy-smi",
+      "module": "CTRON-SFPS-CALL-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/CTRON-SFPS-CALL-MIB.mib",
+      "sha256": "a031ad485ebe17540089f19eb736cf99b30cca08a80da696aed3f3daa6811a41",
+      "bytes": 21796,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/CTRON-SFPS-CALL-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "sfpsSapTable",
+      "detail_symbols": [
+        "sfpsSapTable",
+        "sfpsSapTableEntry",
+        "sfpsCallByTupleEntry"
+      ],
+      "features": [
+        "imports",
+        "object-type",
+        "table-index"
+      ],
+      "compatibility_flags": [
+        "legacy-smi"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 54,
+        "resolved_oid_count": 54,
+        "dependency_count": 4
+      }
+    },
+    {
+      "id": "compatibility-edge-360ac32e9935",
+      "category": "compatibility-edge",
+      "selection_basis": "legacy-smi",
+      "module": "CTRON-SFPS-TOPOLOGY-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/CTRON-SFPS-TOPOLOGY-MIB.mib",
+      "sha256": "360ac32e9935c2767360924c5c97857087e236363fb87eccaedbb30aad8930ff",
+      "bytes": 95988,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/CTRON-SFPS-TOPOLOGY-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "sfpsServiceCenterTopologyTable",
+      "detail_symbols": [
+        "sfpsServiceCenterTopologyTable",
+        "sfpsServiceCenterTopologyEntry",
+        "sfpsHistoryTopologyServerEntry",
+        "sfpsTPMPortEntry",
+        "sfpsCommonNeighborEntry",
+        "sfpsTopologyFCLEntry",
+        "sfpsRATopAgentNeighborEntry",
+        "sfpsRATopAgentPortEntry"
+      ],
+      "features": [
+        "imports",
+        "object-type",
+        "table-index"
+      ],
+      "compatibility_flags": [
+        "legacy-smi"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 284,
+        "resolved_oid_count": 284,
+        "dependency_count": 4
+      }
+    },
+    {
+      "id": "compatibility-edge-e06656e657ee",
+      "category": "compatibility-edge",
+      "selection_basis": "legacy-smi",
+      "module": "IPX",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/IPX.mib",
+      "sha256": "e06656e657eee87a3e7002856d7c1f909deff0c9c53a1667b0b62ab3fcf343fd",
+      "bytes": 43002,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/IPX.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "ipxBasicSysTable",
+      "detail_symbols": [
+        "ipxBasicSysTable",
+        "ipxTrapCircuitDown",
+        "novell",
+        "ipxBasicSysEntry",
+        "ipxAdvSysEntry",
+        "ipxCircEntry",
+        "ipxDestEntry",
+        "ipxStaticRouteEntry"
+      ],
+      "features": [
+        "imports",
+        "object-type",
+        "table-index",
+        "trap-type-v1"
+      ],
+      "compatibility_flags": [
+        "legacy-smi"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 122,
+        "resolved_oid_count": 122,
+        "dependency_count": 4
+      }
+    },
+    {
+      "id": "compatibility-edge-903d8376163b",
+      "category": "compatibility-edge",
+      "selection_basis": "legacy-smi",
+      "module": "CT-ELS10-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/CT-ELS10-MIB.mib",
+      "sha256": "903d8376163b3d6befef608154942ce0728cec96ef9de14cbfc5b1c7e4d1cbf8",
+      "bytes": 117239,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/CT-ELS10-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "sysID",
+      "detail_symbols": [
+        "sysID",
+        "els10-27WriteStatusTrap",
+        "sigma",
+        "els10-27hwPortEntry",
+        "els10-27swFilesetEntry",
+        "els10-27ifEntry",
+        "els10-27dot3Entry",
+        "els10-27uartEntry"
+      ],
+      "features": [
+        "imports",
+        "object-type",
+        "table-index",
+        "trap-type-v1"
+      ],
+      "compatibility_flags": [
+        "legacy-smi"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 292,
+        "resolved_oid_count": 292,
+        "dependency_count": 5
+      }
+    },
+    {
+      "id": "compatibility-edge-0b66fabbea5a",
+      "category": "compatibility-edge",
+      "selection_basis": "legacy-smi",
+      "module": "ELH100-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/ELH100-MIB.mib",
+      "sha256": "0b66fabbea5a3e86e60d0d2e95e1bd9126c05dbdbfa056b210f57c9d208ca717",
+      "bytes": 63779,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/ELH100-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "elh100MajorVer",
+      "detail_symbols": [
+        "elh100MajorVer",
+        "cabletron",
+        "elh100CommunityEntry",
+        "elh100TrapMgtEntry",
+        "serialNumberEntry",
+        "groupEntry",
+        "backplaneEntry",
+        "portEntry"
+      ],
+      "features": [
+        "imports",
+        "object-type",
+        "table-index"
+      ],
+      "compatibility_flags": [
+        "legacy-smi"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 130,
+        "resolved_oid_count": 130,
+        "dependency_count": 3
+      }
+    },
+    {
+      "id": "compatibility-edge-1f71ec4221e2",
+      "category": "compatibility-edge",
+      "selection_basis": "legacy-smi",
+      "module": "CTELS100-NG-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/CTELS100-NG-MIB.mib",
+      "sha256": "1f71ec4221e2f443ffebc91ffa489e992b26f1e2e6cf7a2577ef0678e0151aaf",
+      "bytes": 32444,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/CTELS100-NG-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "els100SysSerialno",
+      "detail_symbols": [
+        "els100SysSerialno",
+        "mib-2",
+        "els100PortEntry",
+        "els100SwitchVlanEntry",
+        "els100SwitchVlanPortEntry",
+        "els100SwitchPriorityPortEntry"
+      ],
+      "features": [
+        "imports",
+        "object-type",
+        "table-index"
+      ],
+      "compatibility_flags": [
+        "legacy-smi"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 69,
+        "resolved_oid_count": 69,
+        "dependency_count": 3
+      }
+    },
+    {
+      "id": "compatibility-edge-10f6442caf2a",
+      "category": "compatibility-edge",
+      "selection_basis": "legacy-smi",
+      "module": "RIPSAP",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/RIPSAP.mib",
+      "sha256": "10f6442caf2ad11aa51c1e1f4ecdfc6beaa6b5a9858d8d502f7bfc5b90d31419",
+      "bytes": 13038,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/RIPSAP.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "ripSysTable",
+      "detail_symbols": [
+        "ripSysTable",
+        "novell",
+        "ripSysEntry",
+        "sapSysEntry",
+        "ripCircEntry",
+        "sapCircEntry"
+      ],
+      "features": [
+        "imports",
+        "object-type",
+        "table-index"
+      ],
+      "compatibility_flags": [
+        "legacy-smi"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 38,
+        "resolved_oid_count": 38,
+        "dependency_count": 3
+      }
+    },
+    {
+      "id": "compatibility-edge-5d332cc234ef",
+      "category": "compatibility-edge",
+      "selection_basis": "legacy-smi",
+      "module": "ZEBRA-QL-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/ZEBRA-QL-MIB.mib",
+      "sha256": "5d332cc234ef677891e8c83889a4a8d2eff9a0220ffa38f4571423d61365f62d",
+      "bytes": 44313,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/ZEBRA-QL-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "zql-bluetooth-discoverable",
+      "detail_symbols": [
+        "zql-bluetooth-discoverable",
+        "zebra"
+      ],
+      "features": [
+        "imports",
+        "object-type",
+        "trap-type-v1"
+      ],
+      "compatibility_flags": [
+        "legacy-smi"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 343,
+        "resolved_oid_count": 343,
+        "dependency_count": 3
+      }
+    },
+    {
+      "id": "compatibility-edge-4b37df8de9a4",
+      "category": "compatibility-edge",
+      "selection_basis": "legacy-smi",
+      "module": "RFC1381-MIB",
+      "file": "data/mibs/redistributable/license-derived/openss7-mibs/files/src/mibs/RFC1381-MIB.mib",
+      "sha256": "4b37df8de9a4d1961cfe5391f4a839da19aa435523bad04cc4245880d2914fbd",
+      "bytes": 29118,
+      "source_id": "openss7-mibs",
+      "source_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/src/mibs/RFC1381-MIB.mib",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license_spdx": "AGPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "lapbAdmnTable",
+      "detail_symbols": [
+        "lapbAdmnTable",
+        "lapb",
+        "lapbAdmnEntry",
+        "lapbOperEntry",
+        "lapbFlowEntry",
+        "lapbXidEntry"
+      ],
+      "features": [
+        "imports",
+        "object-type",
+        "table-index"
+      ],
+      "compatibility_flags": [
+        "legacy-smi"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 57,
+        "resolved_oid_count": 57,
+        "dependency_count": 2
+      }
+    },
+    {
+      "id": "compatibility-edge-493e3cf6fa1a",
+      "category": "compatibility-edge",
+      "selection_basis": "legacy-smi",
+      "module": "CTRON-SFPS-ESYS-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/CTRON-SFPS-ESYS-MIB.mib",
+      "sha256": "493e3cf6fa1a0df52a68fe270be05c5ecb8cb70bed5195c7814b3c53a83b458e",
+      "bytes": 45798,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/CTRON-SFPS-ESYS-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "sfpsSysConfigTable",
+      "detail_symbols": [
+        "sfpsSysConfigTable",
+        "sfpsSysConfigEntry",
+        "sfpsSysStatsEntry",
+        "sfpsVccPortEntry",
+        "sfpsPoolTableEntry",
+        "sfpsAnibIfoStatsTableEntry",
+        "sfpsATMPortsTableEntry",
+        "sfpsATMLecPortTableEntry"
+      ],
+      "features": [
+        "imports",
+        "object-type",
+        "table-index"
+      ],
+      "compatibility_flags": [
+        "legacy-smi"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 145,
+        "resolved_oid_count": 145,
+        "dependency_count": 4
+      }
+    },
+    {
+      "id": "standards-origin-5305bb53ebe2",
+      "category": "standards-origin",
+      "selection_basis": "standards-origin",
+      "module": "ENTITY-MIB",
+      "file": "data/mibs/redistributable/ietf-post-2008/ENTITY-MIB.mib",
+      "sha256": "5305bb53ebe29e9665ce285a953de815f3b9e067d6822618b71d0c190b608b7f",
+      "bytes": 67138,
+      "source_id": "ietf-post-2008",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6933.txt",
+      "source_revision": "RFC 6933",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "entityMIB",
+      "detail_symbols": [
+        "entityMIB",
+        "entPhysicalTable",
+        "entConfigChange",
+        "entityMIBObjects",
+        "PhysicalIndex",
+        "entPhysicalEntry",
+        "entLogicalEntry",
+        "entLPMappingEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 54,
+        "resolved_oid_count": 54,
+        "dependency_count": 6
+      }
+    },
+    {
+      "id": "standards-origin-67931d9566f5",
+      "category": "standards-origin",
+      "selection_basis": "standards-origin",
+      "module": "PTPBASE-MIB",
+      "file": "data/mibs/redistributable/ietf-post-2008/PTPBASE-MIB.mib",
+      "sha256": "67931d9566f5b3f8ce05992a5dde4814f48e82d51a95cdecb0b4c5855c219ca5",
+      "bytes": 92414,
+      "source_id": "ietf-post-2008",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc8173.txt",
+      "source_revision": "RFC 8173",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "ptpbaseMIB",
+      "detail_symbols": [
+        "ptpbaseMIB",
+        "ptpbaseSystemTable",
+        "ptpbaseMIBNotifs",
+        "PtpClockDomainType",
+        "ptpbaseSystemEntry",
+        "ptpbaseSystemDomainEntry",
+        "ptpbaseClockCurrentDSEntry",
+        "ptpbaseClockParentDSEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 163,
+        "resolved_oid_count": 163,
+        "dependency_count": 4
+      }
+    },
+    {
+      "id": "standards-origin-c6a90922d1ab",
+      "category": "standards-origin",
+      "selection_basis": "standards-origin",
+      "module": "VPLS-LDP-MIB",
+      "file": "data/mibs/redistributable/ietf-post-2008/VPLS-LDP-MIB.mib",
+      "sha256": "c6a90922d1abcc74bd1ff1a36ad74f227a162ef1b20d5d400823307c124092f4",
+      "bytes": 9677,
+      "source_id": "ietf-post-2008",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7257.txt",
+      "source_revision": "RFC 7257",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "vplsLdpMIB",
+      "detail_symbols": [
+        "vplsLdpMIB",
+        "vplsLdpConfigTable",
+        "vplsLdpPwBindMacTableFull",
+        "vplsLdpNotifications",
+        "vplsLdpConfigEntry",
+        "vplsLdpPwBindEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 13,
+        "resolved_oid_count": 13,
+        "dependency_count": 5
+      }
+    },
+    {
+      "id": "standards-origin-b484c6887ce4",
+      "category": "standards-origin",
+      "selection_basis": "standards-origin",
+      "module": "NET-SNMP-VACM-MIB",
+      "file": "data/mibs/redistributable/net-snmp/NET-SNMP-VACM-MIB.mib",
+      "sha256": "b484c6887ce4c06be4ae9c6365ea8b111d65ce2f8c1eb5c9b80f23762759a738",
+      "bytes": 5039,
+      "source_id": "net-snmp",
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/NET-SNMP-VACM-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "license_spdx": "LicenseRef-Net-SNMP",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "netSnmpVacmMIB",
+      "detail_symbols": [
+        "netSnmpVacmMIB",
+        "nsVacmAccessTable",
+        "nsVacmAccessEntry"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 8,
+        "resolved_oid_count": 8,
+        "dependency_count": 6
+      }
+    },
+    {
+      "id": "standards-origin-ebb99136429f",
+      "category": "standards-origin",
+      "selection_basis": "standards-origin",
+      "module": "NET-SNMP-EXAMPLES-MIB",
+      "file": "data/mibs/redistributable/net-snmp/NET-SNMP-EXAMPLES-MIB.mib",
+      "sha256": "ebb99136429fc5e75208928333e9ec44437a63bedb396b807c53d0372f7b9099",
+      "bytes": 9160,
+      "source_id": "net-snmp",
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/NET-SNMP-EXAMPLES-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "license_spdx": "LicenseRef-Net-SNMP",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "netSnmpExamples",
+      "detail_symbols": [
+        "netSnmpExamples",
+        "netSnmpExampleInteger",
+        "netSnmpExampleHeartbeatNotification",
+        "netSnmpExampleScalars",
+        "netSnmpIETFWGEntry",
+        "netSnmpHostsEntry"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "notification-type",
+        "object-type",
+        "revision",
+        "table-index"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 25,
+        "resolved_oid_count": 25,
+        "dependency_count": 5
+      }
+    },
+    {
+      "id": "standards-origin-080ee9e01438",
+      "category": "standards-origin",
+      "selection_basis": "standards-origin",
+      "module": "G9982-MIB",
+      "file": "data/mibs/redistributable/ietf-post-2008/G9982-MIB.mib",
+      "sha256": "080ee9e014383cd5dee9de3292cec43e9cb3d776db36f4c95c7df3683263706d",
+      "bytes": 69757,
+      "source_id": "ietf-post-2008",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6767.txt",
+      "source_revision": "RFC 6767",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "g9982MIB",
+      "detail_symbols": [
+        "g9982MIB",
+        "g9982PortConfTable",
+        "g9982Objects",
+        "G9982PtmTcType",
+        "g9982PortConfEntry",
+        "g9982PortCapEntry",
+        "g9982PortStatEntry",
+        "g9982PortPmCurEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 86,
+        "resolved_oid_count": 86,
+        "dependency_count": 5
+      }
+    },
+    {
+      "id": "standards-origin-0f939a92d810",
+      "category": "standards-origin",
+      "selection_basis": "standards-origin",
+      "module": "MPLS-LPS-MIB",
+      "file": "data/mibs/redistributable/ietf-post-2008/MPLS-LPS-MIB.mib",
+      "sha256": "0f939a92d8102711868413324f87bd42b3e9aed7325124fc3fcd382b24796767",
+      "bytes": 49005,
+      "source_id": "ietf-post-2008",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc8150.txt",
+      "source_revision": "RFC 8150",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "mplsLpsMIB",
+      "detail_symbols": [
+        "mplsLpsMIB",
+        "mplsLpsConfigDomainIndexNext",
+        "mplsLpsEventSwitchover",
+        "MplsLpsReq",
+        "mplsLpsConfigEntry",
+        "mplsLpsStatusEntry",
+        "mplsLpsMeConfigEntry",
+        "mplsLpsMeStatusEntry"
+      ],
+      "features": [
+        "augments",
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 58,
+        "resolved_oid_count": 58,
+        "dependency_count": 7
+      }
+    },
+    {
+      "id": "standards-origin-d8d4cf1274f3",
+      "category": "standards-origin",
+      "selection_basis": "standards-origin",
+      "module": "BATTERY-MIB",
+      "file": "data/mibs/redistributable/ietf-post-2008/BATTERY-MIB.mib",
+      "sha256": "d8d4cf1274f3ddee2e89452ec7ff6dd8d6c20cf2d4d24c837551a01c632e3f73",
+      "bytes": 41790,
+      "source_id": "ietf-post-2008",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7577.txt",
+      "source_revision": "RFC 7577",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "batteryMIB",
+      "detail_symbols": [
+        "batteryMIB",
+        "batteryTable",
+        "batteryChargingStateNotification",
+        "batteryNotifications",
+        "batteryEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 40,
+        "resolved_oid_count": 40,
+        "dependency_count": 5
+      }
+    },
+    {
+      "id": "standards-origin-5d85781828d2",
+      "category": "standards-origin",
+      "selection_basis": "standards-origin",
+      "module": "NET-SNMP-SYSTEM-MIB",
+      "file": "data/mibs/redistributable/net-snmp/NET-SNMP-SYSTEM-MIB.mib",
+      "sha256": "5d85781828d215922fec813523de16c6d160db17edbca0c687153cdbd8ea97a7",
+      "bytes": 1226,
+      "source_id": "net-snmp",
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/NET-SNMP-SYSTEM-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "license_spdx": "LicenseRef-Net-SNMP",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "netSnmpSystemMIB",
+      "detail_symbols": [
+        "netSnmpSystemMIB",
+        "nsMemory"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "notification-type",
+        "object-type",
+        "revision"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 6,
+        "resolved_oid_count": 6,
+        "dependency_count": 4
+      }
+    },
+    {
+      "id": "standards-origin-fdc2329b9d31",
+      "category": "standards-origin",
+      "selection_basis": "standards-origin",
+      "module": "IANA-LANGUAGE-MIB",
+      "file": "data/mibs/redistributable/iana-maintained-mibs/IANA-LANGUAGE-MIB.mib",
+      "sha256": "fdc2329b9d311ce17bdc4bb69d3054bdff08a88ab8afa60e1e1744e1eca770eb",
+      "bytes": 4717,
+      "source_id": "iana-maintained-mibs",
+      "source_url": "https://www.iana.org/assignments/ianalanguage-mib/ianalanguage-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "license_spdx": "CC0-1.0",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "ianaLanguages",
+      "detail_symbols": [
+        "ianaLanguages"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "revision"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 8,
+        "resolved_oid_count": 8,
+        "dependency_count": 1
+      }
+    },
+    {
+      "id": "standards-origin-d2dcd810905c",
+      "category": "standards-origin",
+      "selection_basis": "standards-origin",
+      "module": "IPV6-UDP-MIB",
+      "file": "data/mibs/redistributable/ietf-post-2008/IPV6-UDP-MIB.mib",
+      "sha256": "d2dcd810905c99cb7e319f0f0a5ff2ec94b1642a23892ab87c67f7f522e34949",
+      "bytes": 6866,
+      "source_id": "ietf-post-2008",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc8096.txt",
+      "source_revision": "RFC 8096",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "ipv6UdpMIB",
+      "detail_symbols": [
+        "ipv6UdpMIB",
+        "ipv6UdpTable",
+        "udp",
+        "ipv6UdpEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 10,
+        "resolved_oid_count": 10,
+        "dependency_count": 3
+      }
+    },
+    {
+      "id": "standards-origin-8ba1e2691d75",
+      "category": "standards-origin",
+      "selection_basis": "standards-origin",
+      "module": "RPKI-ROUTER-MIB",
+      "file": "data/mibs/redistributable/ietf-post-2008/RPKI-ROUTER-MIB.mib",
+      "sha256": "8ba1e2691d75b2eaff1bd8ca874611696fe3b2794722d1f8f2b6939c243f6f76",
+      "bytes": 35806,
+      "source_id": "ietf-post-2008",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6945.txt",
+      "source_revision": "RFC 6945",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "rpkiRtrMIB",
+      "detail_symbols": [
+        "rpkiRtrMIB",
+        "rpkiRtrDiscontinuityTimer",
+        "rpkiRtrCacheServerConnectionStateChange",
+        "rpkiRtrNotifications",
+        "RpkiRtrConnectionType",
+        "rpkiRtrCacheServerTableEntry",
+        "rpkiRtrCacheServerErrorsTableEntry",
+        "rpkiRtrPrefixOriginTableEntry"
+      ],
+      "features": [
+        "augments",
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 52,
+        "resolved_oid_count": 52,
+        "dependency_count": 5
+      }
+    },
+    {
+      "id": "standards-origin-056d547a26ba",
+      "category": "standards-origin",
+      "selection_basis": "standards-origin",
+      "module": "NTPv4-MIB",
+      "file": "data/mibs/redistributable/ietf-post-2008/NTPv4-MIB.mib",
+      "sha256": "056d547a26babc65fbf7b84fa0b271067b5c8e1e4d4559f13a3ce56e8cd8b537",
+      "bytes": 30774,
+      "source_id": "ietf-post-2008",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc5907.txt",
+      "source_revision": "RFC 5907",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "ntpSnmpMIB",
+      "detail_symbols": [
+        "ntpSnmpMIB",
+        "ntpEntSoftwareName",
+        "ntpEntNotifModeChange",
+        "ntpSnmpMIBObjects",
+        "NtpStratum",
+        "ntpEntStatPktModeEntry",
+        "ntpAssociationEntry",
+        "ntpAssociationStatisticsEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 67,
+        "resolved_oid_count": 67,
+        "dependency_count": 5
+      }
+    },
+    {
+      "id": "standards-origin-64056ad295a0",
+      "category": "standards-origin",
+      "selection_basis": "standards-origin",
+      "module": "SMF-MIB",
+      "file": "data/mibs/redistributable/ietf-post-2008/SMF-MIB.mib",
+      "sha256": "64056ad295a022163ac68a4edd007f9722dc2a61b14df90241dd90751ca17fec",
+      "bytes": 73645,
+      "source_id": "ietf-post-2008",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7367.txt",
+      "source_revision": "RFC 7367",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "smfMIB",
+      "detail_symbols": [
+        "smfMIB",
+        "smfCapabilitiesTable",
+        "smfNotifAdminStatusChange",
+        "smfMIBNotifications",
+        "SmfStatus",
+        "smfCapabilitiesEntry",
+        "smfCfgAddrForwardingEntry",
+        "smfCfgInterfaceEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 88,
+        "resolved_oid_count": 88,
+        "dependency_count": 7
+      }
+    },
+    {
+      "id": "standards-origin-b0460053145e",
+      "category": "standards-origin",
+      "selection_basis": "standards-origin",
+      "module": "NET-SNMP-MIB",
+      "file": "data/mibs/redistributable/net-snmp/NET-SNMP-MIB.mib",
+      "sha256": "b0460053145ec563a026ccc7e792ab9ebb370c6aab3d57a9f95f3964cdd9d399",
+      "bytes": 2036,
+      "source_id": "net-snmp",
+      "source_url": "https://raw.githubusercontent.com/net-snmp/net-snmp/319bbd0bb36547992c0e1302fef278c6f49d0c80/mibs/NET-SNMP-MIB.txt",
+      "source_revision": "v5.9.5.2 (319bbd0bb36547992c0e1302fef278c6f49d0c80)",
+      "license_spdx": "LicenseRef-Net-SNMP",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "netSnmp",
+      "detail_symbols": [
+        "netSnmp",
+        "netSnmpObjects"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "revision"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 14,
+        "resolved_oid_count": 14,
+        "dependency_count": 1
+      }
+    },
+    {
+      "id": "standards-origin-769f38d0ae0b",
+      "category": "standards-origin",
+      "selection_basis": "standards-origin",
+      "module": "MPLS-TC-EXT-STD-MIB",
+      "file": "data/mibs/redistributable/ietf-post-2008/MPLS-TC-EXT-STD-MIB.mib",
+      "sha256": "769f38d0ae0bf8f8803e532687b36444da6847f88d882c60ac6a5890a31b1b2b",
+      "bytes": 6205,
+      "source_id": "ietf-post-2008",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7453.txt",
+      "source_revision": "RFC 7453",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "mplsTcExtStdMIB",
+      "detail_symbols": [
+        "mplsTcExtStdMIB",
+        "MplsGlobalId"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "revision",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 1,
+        "resolved_oid_count": 1,
+        "dependency_count": 3
+      }
+    },
+    {
+      "id": "standards-origin-199cb8484daf",
+      "category": "standards-origin",
+      "selection_basis": "standards-origin",
+      "module": "IANA-ADDRESS-FAMILY-NUMBERS-MIB",
+      "file": "data/mibs/redistributable/iana-maintained-mibs/IANA-ADDRESS-FAMILY-NUMBERS-MIB.mib",
+      "sha256": "199cb8484daf5a99e1ca01ce7dfc169f4221d1eccdf5ce712e293786d80753fa",
+      "bytes": 8517,
+      "source_id": "iana-maintained-mibs",
+      "source_url": "https://www.iana.org/assignments/ianaaddressfamilynumbers-mib/ianaaddressfamilynumbers-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "license_spdx": "CC0-1.0",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "ianaAddressFamilyNumbers",
+      "detail_symbols": [
+        "ianaAddressFamilyNumbers",
+        "AddressFamilyNumbers"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "revision",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 1,
+        "resolved_oid_count": 1,
+        "dependency_count": 2
+      }
+    },
+    {
+      "id": "standards-origin-1813035ef71f",
+      "category": "standards-origin",
+      "selection_basis": "standards-origin",
+      "module": "IPFIX-SELECTOR-MIB",
+      "file": "data/mibs/redistributable/ietf-post-2008/IPFIX-SELECTOR-MIB.mib",
+      "sha256": "1813035ef71f765a90a28b2b8cb8c9352c13dc5ca63db78f563ae0c2bfd862b3",
+      "bytes": 7998,
+      "source_id": "ietf-post-2008",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6615.txt",
+      "source_revision": "RFC 6615",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "ipfixSelectorMIB",
+      "detail_symbols": [
+        "ipfixSelectorMIB",
+        "ipfixFuncSelectAllAvail",
+        "ipfixSelectorObjects"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 8,
+        "resolved_oid_count": 8,
+        "dependency_count": 3
+      }
+    },
+    {
+      "id": "standards-origin-4575d0b2a4fa",
+      "category": "standards-origin",
+      "selection_basis": "standards-origin",
+      "module": "IPV6-TC",
+      "file": "data/mibs/redistributable/ietf-post-2008/IPV6-TC.mib",
+      "sha256": "4575d0b2a4fa840cb5d11d2fee0fec147695cf38192de7e436aa375154bc6a61",
+      "bytes": 4322,
+      "source_id": "ietf-post-2008",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc8096.txt",
+      "source_revision": "RFC 8096",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "Ipv6Address",
+      "detail_symbols": [
+        "Ipv6Address"
+      ],
+      "features": [
+        "imports",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 0,
+        "resolved_oid_count": 0,
+        "dependency_count": 2
+      }
+    },
+    {
+      "id": "standards-origin-d93e1dffc9be",
+      "category": "standards-origin",
+      "selection_basis": "standards-origin",
+      "module": "PSAMP-MIB",
+      "file": "data/mibs/redistributable/ietf-post-2008/PSAMP-MIB.mib",
+      "sha256": "d93e1dffc9be269033eef30a7da58502559d4c866b33c1f0ded2666711d387a6",
+      "bytes": 28081,
+      "source_id": "ietf-post-2008",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6727.txt",
+      "source_revision": "RFC 6727",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "psampMIB",
+      "detail_symbols": [
+        "psampMIB",
+        "psampSampCountBasedAvail",
+        "psampObjects",
+        "psampSampCountBasedParamSetEntry",
+        "psampSampTimeBasedParamSetEntry",
+        "psampSampRandOutOfNParamSetEntry",
+        "psampSampUniProbParamSetEntry",
+        "psampFiltHashParamSetEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 48,
+        "resolved_oid_count": 48,
+        "dependency_count": 6
+      }
+    },
+    {
+      "id": "textual-convention-8594bb4b8571",
+      "category": "textual-convention",
+      "selection_basis": "textual-convention",
+      "module": "PNNI-MOB-EXT-MIB",
+      "file": "data/mibs/redistributable/license-derived/openss7-mibs/files/src/mibs/PNNI-MOB-EXT-MIB.mib",
+      "sha256": "8594bb4b8571a967073c70bc4cef6ee113baf54641374252594da72fba160528",
+      "bytes": 29822,
+      "source_id": "openss7-mibs",
+      "source_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/src/mibs/PNNI-MOB-EXT-MIB.mib",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license_spdx": "AGPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "pnniMobExtMIB",
+      "detail_symbols": [
+        "pnniMobExtMIB",
+        "pnniMobExtVersion",
+        "atmForum",
+        "PnniOnhlIndex",
+        "pnniMSMobileIfEntry",
+        "pnniMSOnhlEntry",
+        "pnniMSNodeEntry",
+        "pnniMSInputOnhlEntry"
+      ],
+      "features": [
+        "augments",
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 42,
+        "resolved_oid_count": 42,
+        "dependency_count": 5
+      }
+    },
+    {
+      "id": "textual-convention-0b4d3ac7afc0",
+      "category": "textual-convention",
+      "selection_basis": "textual-convention",
+      "module": "BEGEMOT-SNMPD-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/BEGEMOT-SNMPD.mib",
+      "sha256": "0b4d3ac7afc01b7ac709aa454593d86a63b4fdb1b5f27d622a95772d413fb705",
+      "bytes": 16537,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/BEGEMOT-SNMPD.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "begemotSnmpd",
+      "detail_symbols": [
+        "begemotSnmpd",
+        "begemotSnmpdTransmitBuffer",
+        "begemotSnmpdObjects",
+        "SectionName",
+        "begemotTrapSinkTable",
+        "begemotTrapSinkEntry",
+        "begemotSnmpdPortEntry",
+        "begemotSnmpdCommunityEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 53,
+        "resolved_oid_count": 53,
+        "dependency_count": 4
+      }
+    },
+    {
+      "id": "textual-convention-d3ee23d2fd46",
+      "category": "textual-convention",
+      "selection_basis": "textual-convention",
+      "module": "PNNI-MIB",
+      "file": "data/mibs/redistributable/license-derived/openss7-mibs/files/src/mibs/PNNI-MIB.mib",
+      "sha256": "d3ee23d2fd463bb96d36beb77830cf7817e915558165cd0a8bf0f1730266a476",
+      "bytes": 201071,
+      "source_id": "openss7-mibs",
+      "source_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/src/mibs/PNNI-MIB.mib",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license_spdx": "AGPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "pnniMIB",
+      "detail_symbols": [
+        "pnniMIB",
+        "pnniHighestVersion",
+        "atmForum",
+        "PnniAtmAddr",
+        "pnniNodeEntry",
+        "pnniNodePglEntry",
+        "pnniNodeTimerEntry",
+        "pnniNodeSvccEntry"
+      ],
+      "features": [
+        "augments",
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 312,
+        "resolved_oid_count": 312,
+        "dependency_count": 5
+      }
+    },
+    {
+      "id": "textual-convention-d949188251c9",
+      "category": "textual-convention",
+      "selection_basis": "textual-convention",
+      "module": "SIGSCALE-TC",
+      "file": "data/mibs/redistributable/license-derived/sigscale-mibs/files/mibs/SIGSCALE-TC.mib",
+      "sha256": "d949188251c920128db917c833610447ace76fc886e05e4040a5fc492e41b3fa",
+      "bytes": 854,
+      "source_id": "sigscale-mibs",
+      "source_url": "https://raw.githubusercontent.com/sigscale/sigscale_mibs/14259b9e52a5cd7ff0fd60b33728da616792887d/mibs/SIGSCALE-TC.mib",
+      "source_revision": "14259b9e52a5cd7ff0fd60b33728da616792887d",
+      "license_spdx": "Apache-2.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "sigscaleTextualConvention",
+      "detail_symbols": [
+        "sigscaleTextualConvention",
+        "SigScaleCustomerName"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 1,
+        "resolved_oid_count": 1,
+        "dependency_count": 3
+      }
+    },
+    {
+      "id": "textual-convention-837f150118c8",
+      "category": "textual-convention",
+      "selection_basis": "textual-convention",
+      "module": "ENTERASYS-RADIUS-AUTH-CLIENT-ENCRYPT-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/ENTERASYS-RADIUS-AUTH-CLIENT-ENCRYPT-MIB.mib",
+      "sha256": "837f150118c8bd54e9961448b564b75785beffaca4515e58aa4bf4233d285ef8",
+      "bytes": 24615,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/ENTERASYS-RADIUS-AUTH-CLIENT-ENCRYPT-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "etsysRadiusAuthClientEncryptMIB",
+      "detail_symbols": [
+        "etsysRadiusAuthClientEncryptMIB",
+        "etsysRadiusAuthClientRetryTimeoutEncrypt",
+        "etsysRadiusAuthClientEncryptMIBObjects",
+        "RadiusEncryptedString",
+        "etsysRadiusAuthServerEncryptEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 19,
+        "resolved_oid_count": 19,
+        "dependency_count": 4
+      }
+    },
+    {
+      "id": "textual-convention-3dd12f0497d3",
+      "category": "textual-convention",
+      "selection_basis": "textual-convention",
+      "module": "ENTERASYS-SYSLOG-CLIENT-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/ENTERASYS-SYSLOG-CLIENT-MIB.mib",
+      "sha256": "3dd12f0497d3cebe759db23d91c1b2dd83cc8fdeae562cc81a27aa985700aa96",
+      "bytes": 30500,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/ENTERASYS-SYSLOG-CLIENT-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "etsysSyslogClientMIB",
+      "detail_symbols": [
+        "etsysSyslogClientMIB",
+        "etsysSyslogClientMessages",
+        "etsysSyslogSecureLogArchiveNotification",
+        "etsysSyslogClient",
+        "SyslogUdpPort",
+        "etsysSyslogServerEntry",
+        "etsysSyslogApplicationEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 39,
+        "resolved_oid_count": 39,
+        "dependency_count": 6
+      }
+    },
+    {
+      "id": "textual-convention-aaefc12f4370",
+      "category": "textual-convention",
+      "selection_basis": "textual-convention",
+      "module": "URI-TC-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/URI-TC-MIB.mib",
+      "sha256": "aaefc12f43704764872ecfe3ee8960dece6ba3fa8325e2a346027faee2205b57",
+      "bytes": 5898,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/URI-TC-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "uriTcMIB",
+      "detail_symbols": [
+        "uriTcMIB",
+        "Uri"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "revision",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 1,
+        "resolved_oid_count": 1,
+        "dependency_count": 2
+      }
+    },
+    {
+      "id": "textual-convention-9d399c1faea4",
+      "category": "textual-convention",
+      "selection_basis": "textual-convention",
+      "module": "ENTERASYS-IEEE8021-Q-BRIDGE-MIB-EXT-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/ENTERASYS-IEEE8021-Q-BRIDGE-MIB-EXT-MIB.mib",
+      "sha256": "9d399c1faea46981716223e4a5f4635efd35820b9420bc3ae812ddb2342dcfe1",
+      "bytes": 15361,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/ENTERASYS-IEEE8021-Q-BRIDGE-MIB-EXT-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "etsysIeee8021QBridgeMibExtMIB",
+      "detail_symbols": [
+        "etsysIeee8021QBridgeMibExtMIB",
+        "etsysIeee8021QVlanMvrpRestrictedTable",
+        "EtsysIeee8021QBridgeFdbEntries",
+        "etsysIeee8021QVlanMvrpRestrictedEntry",
+        "etsysIeee8021QBridgeMibExtPortVlanEntry"
+      ],
+      "features": [
+        "augments",
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 21,
+        "resolved_oid_count": 21,
+        "dependency_count": 7
+      }
+    },
+    {
+      "id": "textual-convention-8c02adb19e13",
+      "category": "textual-convention",
+      "selection_basis": "textual-convention",
+      "module": "CISCO-UNIFIED-COMPUTING-EQUIPMENT-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/CISCO-UNIFIED-COMPUTING-EQUIPMENT-MIB.mib",
+      "sha256": "8c02adb19e137d40e2987fb46bf31903702391c7809256266c5f01c55b26cf02",
+      "bytes": 1227976,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/CISCO-UNIFIED-COMPUTING-EQUIPMENT-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "cucsEquipmentObjects",
+      "detail_symbols": [
+        "cucsEquipmentObjects",
+        "cucsEquipmentAdaptorConnDefTable",
+        "cucsEquipmentAdaptorConnDefEntry",
+        "cucsEquipmentAdaptorDefEntry",
+        "cucsEquipmentAdvancedBootOrderEntry",
+        "cucsEquipmentAutoconfigPolicyEntry",
+        "cucsEquipmentBaseBoardCapProviderEntry",
+        "cucsEquipmentBeaconCapProviderEntry"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "object-type",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [
+        "dependency-heavy"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 3349,
+        "resolved_oid_count": 3349,
+        "dependency_count": 8
+      }
+    },
+    {
+      "id": "textual-convention-83cd9645f520",
+      "category": "textual-convention",
+      "selection_basis": "textual-convention",
+      "module": "CISCO-UNIFIED-COMPUTING-DUPE-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/CISCO-UNIFIED-COMPUTING-DUPE-MIB.mib",
+      "sha256": "83cd9645f520f79f4eda26dd4d8d01d2dfb6852bed53f4f36bcfcca517a39281",
+      "bytes": 8165,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/CISCO-UNIFIED-COMPUTING-DUPE-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "cucsDupeObjects",
+      "detail_symbols": [
+        "cucsDupeObjects",
+        "cucsDupeScopeTable",
+        "cucsDupeScopeEntry",
+        "cucsDupeScopeResultEntry"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "object-type",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [
+        "dependency-heavy"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 21,
+        "resolved_oid_count": 21,
+        "dependency_count": 8
+      }
+    },
+    {
+      "id": "textual-convention-936aedb4d6a3",
+      "category": "textual-convention",
+      "selection_basis": "textual-convention",
+      "module": "ATM-TRACE-MIB",
+      "file": "data/mibs/redistributable/license-derived/openss7-mibs/files/src/mibs/ATM-TRACE-MIB.mib",
+      "sha256": "936aedb4d6a39a723f4dd235b4dd6cce86b04471f01d5cd06006274656a074dd",
+      "bytes": 90511,
+      "source_id": "openss7-mibs",
+      "source_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/src/mibs/ATM-TRACE-MIB.mib",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license_spdx": "AGPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "atmTraceMIB",
+      "detail_symbols": [
+        "atmTraceMIB",
+        "atmTraceFilterControl",
+        "atmTraceConnCompletion",
+        "atmForum",
+        "CallReference",
+        "atmTraceConnEntry",
+        "atmTracePathTestEntry",
+        "atmTraceFilterEntry"
+      ],
+      "features": [
+        "augments",
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 138,
+        "resolved_oid_count": 138,
+        "dependency_count": 6
+      }
+    },
+    {
+      "id": "textual-convention-a6652109c452",
+      "category": "textual-convention",
+      "selection_basis": "textual-convention",
+      "module": "ISDN-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/ISDN-MIB.mib",
+      "sha256": "a6652109c452c9e9a19f02c1603633aade7f1ae4340c191eb3f29faec4919825",
+      "bytes": 45689,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/ISDN-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "isdnMib",
+      "detail_symbols": [
+        "isdnMib",
+        "isdnBasicRateTable",
+        "isdnMibCallInformation",
+        "isdnMibObjects",
+        "IsdnSignalingProtocol",
+        "isdnBasicRateEntry",
+        "isdnBearerEntry",
+        "isdnSignalingEntry"
+      ],
+      "features": [
+        "augments",
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 72,
+        "resolved_oid_count": 72,
+        "dependency_count": 6
+      }
+    },
+    {
+      "id": "textual-convention-93b8b832b908",
+      "category": "textual-convention",
+      "selection_basis": "textual-convention",
+      "module": "ENTERASYS-ACTIVATION-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/ENTERASYS-ACTIVATION-MIB.mib",
+      "sha256": "93b8b832b908d471058d507f72bc78c0de298994319c7ae4acc483e29f1341c7",
+      "bytes": 15649,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/ENTERASYS-ACTIVATION-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "etsysActivationMIB",
+      "detail_symbols": [
+        "etsysActivationMIB",
+        "etsysMaxActivationKeyRow",
+        "EnterasysKeyType",
+        "etsysActivationKeyEntry",
+        "etsysActivationKeyFeatureEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 18,
+        "resolved_oid_count": 18,
+        "dependency_count": 5
+      }
+    },
+    {
+      "id": "textual-convention-2d0845668a8b",
+      "category": "textual-convention",
+      "selection_basis": "textual-convention",
+      "module": "OTP-TC",
+      "file": "data/mibs/redistributable/license-derived/erlang-otp-snmp/files/lib/snmp/mibs/OTP-TC.mib",
+      "sha256": "2d0845668a8baa5e3a066af826e66ec148068a2ab7ebb207c727e749b68766b9",
+      "bytes": 3612,
+      "source_id": "erlang-otp-snmp",
+      "source_url": "https://raw.githubusercontent.com/erlang/otp/34baca942c370d385ed03daa1fcd8c0f7c3bb88b/lib/snmp/mibs/OTP-TC.mib",
+      "source_revision": "34baca942c370d385ed03daa1fcd8c0f7c3bb88b",
+      "license_spdx": "Apache-2.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "otpTcModule",
+      "detail_symbols": [
+        "otpTcModule",
+        "OwnerString"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "revision",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 1,
+        "resolved_oid_count": 1,
+        "dependency_count": 3
+      }
+    },
+    {
+      "id": "textual-convention-920d05128d11",
+      "category": "textual-convention",
+      "selection_basis": "textual-convention",
+      "module": "ENTERASYS-RIPv2-EXT-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/ENTERASYS-RIPV2-EXT-MIB.mib",
+      "sha256": "920d05128d115c3fb6d19811bb4556312bc73b9d6e24c2936727e3f143d46d7e",
+      "bytes": 9918,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/ENTERASYS-RIPV2-EXT-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "etsysRip2ExtMIB",
+      "detail_symbols": [
+        "etsysRip2ExtMIB",
+        "etsysRip2ExtAdminStatus",
+        "etsysRip2ExtObjects"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 15,
+        "resolved_oid_count": 15,
+        "dependency_count": 4
+      }
+    },
+    {
+      "id": "textual-convention-3b5c5d7e3481",
+      "category": "textual-convention",
+      "selection_basis": "textual-convention",
+      "module": "IEEE8021-TPMR-MIB",
+      "file": "data/mibs/redistributable/license-derived/openss7-mibs/files/src/mibs/IEEE8021-TPMR-MIB.mib",
+      "sha256": "3b5c5d7e34815c48b48d57bc6237595a305a43bfd453be781eb77719ce1ed108",
+      "bytes": 25617,
+      "source_id": "openss7-mibs",
+      "source_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/src/mibs/IEEE8021-TPMR-MIB.mib",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license_spdx": "AGPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "ieee8021TpmrMib",
+      "detail_symbols": [
+        "ieee8021TpmrMib",
+        "ieee8021TpmrPortTable",
+        "ieee8021TpmrNotifications",
+        "IEEE8021TpmrFrameDiscardErrorReason",
+        "ieee8021TpmrPortEntry",
+        "ieee8021TpmrPortStatsEntry",
+        "ieee8021TpmrPortDiscardDetailsEntry",
+        "ieee8021TpmrMspEntry"
+      ],
+      "features": [
+        "augments",
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 49,
+        "resolved_oid_count": 49,
+        "dependency_count": 6
+      }
+    },
+    {
+      "id": "textual-convention-c676192edc49",
+      "category": "textual-convention",
+      "selection_basis": "textual-convention",
+      "module": "IANAifType-MIB",
+      "file": "data/mibs/redistributable/iana-maintained-mibs/IANAifType-MIB.mib",
+      "sha256": "c676192edc492eb068c3aa2755991c34c061e103ddd12e6653795b3813b82a59",
+      "bytes": 39630,
+      "source_id": "iana-maintained-mibs",
+      "source_url": "https://www.iana.org/assignments/ianaiftype-mib/ianaiftype-mib",
+      "source_revision": "retrieved 2026-07-14",
+      "license_spdx": "CC0-1.0",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "ianaifType",
+      "detail_symbols": [
+        "ianaifType",
+        "IANAifType"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "revision",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 1,
+        "resolved_oid_count": 1,
+        "dependency_count": 2
+      }
+    },
+    {
+      "id": "textual-convention-b3e0a1134281",
+      "category": "textual-convention",
+      "selection_basis": "textual-convention",
+      "module": "IPOA-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/IPOA-MIB.mib",
+      "sha256": "b3e0a113428151b58516b9865d98f7d67679c453448890890b86f79a2412d3dc",
+      "bytes": 55004,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/IPOA-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "ipoaMIB",
+      "detail_symbols": [
+        "ipoaMIB",
+        "ipoaLisTrapEnable",
+        "ipoaMtuExceeded",
+        "ipoaObjects",
+        "IpoaEncapsType",
+        "ipoaLisEntry",
+        "ipoaLisIfMappingEntry",
+        "ipoaArpClientEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 88,
+        "resolved_oid_count": 88,
+        "dependency_count": 5
+      }
+    },
+    {
+      "id": "textual-convention-c1379575e6a0",
+      "category": "textual-convention",
+      "selection_basis": "textual-convention",
+      "module": "SNMPv2-TC",
+      "file": "data/mibs/redistributable/license-derived/osnmpd-mibs/files/doc/mib/SNMPv2-TC.mib",
+      "sha256": "c1379575e6a0ad25b2d7da68294153c1fd79750827376f2aa6323d072d73f0b8",
+      "bytes": 38034,
+      "source_id": "osnmpd-mibs",
+      "source_url": "https://raw.githubusercontent.com/verrio/osnmpd/a7c7830cfbbb77fc20d18021531e250267da67e3/doc/mib/SNMPv2-TC.mib",
+      "source_revision": "a7c7830cfbbb77fc20d18021531e250267da67e3",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "DisplayString",
+      "detail_symbols": [
+        "DisplayString"
+      ],
+      "features": [
+        "imports",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 0,
+        "resolved_oid_count": 0,
+        "dependency_count": 1
+      }
+    },
+    {
+      "id": "textual-convention-285caba72782",
+      "category": "textual-convention",
+      "selection_basis": "textual-convention",
+      "module": "PW-CEP-STD-MIB",
+      "file": "data/mibs/redistributable/ietf-post-2008/PW-CEP-STD-MIB.mib",
+      "sha256": "285caba72782f1aa8ebeb37eaca6a134da9afbc082b7b35f09c6f07cab828a2b",
+      "bytes": 89453,
+      "source_id": "ietf-post-2008",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6240.txt",
+      "source_revision": "RFC 6240",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "pwCepStdMIB",
+      "detail_symbols": [
+        "pwCepStdMIB",
+        "pwCepTable",
+        "pwCepObjects",
+        "PwCepSonetEbm",
+        "pwCepEntry",
+        "pwCepCfgEntry",
+        "pwCepFracEntry",
+        "pwCepPerfCurrentEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [
+        "dependency-heavy"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 129,
+        "resolved_oid_count": 129,
+        "dependency_count": 9
+      }
+    },
+    {
+      "id": "table-structure-e15f2a546805",
+      "category": "table-structure",
+      "selection_basis": "table-structure",
+      "module": "BGP-MPLS-LAYER3-VPN-MULTICAST-MIB",
+      "file": "data/mibs/redistributable/ietf-post-2008/BGP-MPLS-LAYER3-VPN-MULTICAST-MIB.mib",
+      "sha256": "e15f2a546805520bdb0d2192b9e7348343e99c1874af177875421280a09485e3",
+      "bytes": 74099,
+      "source_id": "ietf-post-2008",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc8503.txt",
+      "source_revision": "RFC 8503",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "mvpnMIB",
+      "detail_symbols": [
+        "mvpnMIB",
+        "mvpnMvrfs",
+        "mvpnMvrfActionTaken",
+        "mvpnNotifications",
+        "mvpnGenericEntry",
+        "mvpnBgpEntry",
+        "mvpnPmsiEntry",
+        "mvpnSpmsiEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index"
+      ],
+      "compatibility_flags": [
+        "dependency-heavy"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 116,
+        "resolved_oid_count": 116,
+        "dependency_count": 8
+      }
+    },
+    {
+      "id": "table-structure-48061823725f",
+      "category": "table-structure",
+      "selection_basis": "table-structure",
+      "module": "SONET-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/SONET-MIB.mib",
+      "sha256": "48061823725f9618840bb9f32ed12547ea8bcb403fb722101ac77719cd3d3c26",
+      "bytes": 75166,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/SONET-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "sonetMIB",
+      "detail_symbols": [
+        "sonetMIB",
+        "sonetMediumTable",
+        "sonetObjects",
+        "sonetMediumEntry",
+        "sonetSectionCurrentEntry",
+        "sonetSectionIntervalEntry",
+        "sonetLineCurrentEntry",
+        "sonetLineIntervalEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 130,
+        "resolved_oid_count": 130,
+        "dependency_count": 5
+      }
+    },
+    {
+      "id": "table-structure-21ae5bb52d44",
+      "category": "table-structure",
+      "selection_basis": "table-structure",
+      "module": "DISMAN-EVENT-MIB",
+      "file": "data/mibs/redistributable/license-derived/pandora-open-mibs/files/pandora_agent/win32/bin/util/mibs/DISMAN-EVENT-MIB.txt",
+      "sha256": "21ae5bb52d44df8d65b2f490c425efb769e3ffef834958e67be97aa76bb0f1a4",
+      "bytes": 70132,
+      "source_id": "pandora-open-mibs",
+      "source_url": "https://raw.githubusercontent.com/pandorafms/pandora-open/ab7e2a4c20707834cd1ed28fefc06631cbfa8f15/pandora_agent/win32/bin/util/mibs/DISMAN-EVENT-MIB.txt",
+      "source_revision": "ab7e2a4c20707834cd1ed28fefc06631cbfa8f15",
+      "license_spdx": "GPL-2.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "dismanEventMIB",
+      "detail_symbols": [
+        "dismanEventMIB",
+        "mteResourceSampleMinimum",
+        "mteTriggerFired",
+        "dismanEventMIBObjects",
+        "FailureReason",
+        "mteTriggerEntry",
+        "mteTriggerDeltaEntry",
+        "mteTriggerExistenceEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 108,
+        "resolved_oid_count": 108,
+        "dependency_count": 6
+      }
+    },
+    {
+      "id": "table-structure-f4195b89d644",
+      "category": "table-structure",
+      "selection_basis": "table-structure",
+      "module": "CTRON-SFPS-FLOOD-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/CTRON-SFPS-FLOOD-MIB.mib",
+      "sha256": "f4195b89d644185d9353c1a2329d8aa617cb6718071f9e7bf11c0ab12fbb9bf2",
+      "bytes": 9925,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/CTRON-SFPS-FLOOD-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "sfpsServiceCenterFloodTable",
+      "detail_symbols": [
+        "sfpsServiceCenterFloodTable",
+        "sfpsServiceCenterFloodEntry",
+        "sfpsResolveCounterTableEntry"
+      ],
+      "features": [
+        "imports",
+        "object-type",
+        "table-index"
+      ],
+      "compatibility_flags": [
+        "legacy-smi"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 28,
+        "resolved_oid_count": 28,
+        "dependency_count": 4
+      }
+    },
+    {
+      "id": "table-structure-f9a01bc460ac",
+      "category": "table-structure",
+      "selection_basis": "table-structure",
+      "module": "OPENSS7-SNARE-MIB",
+      "file": "data/mibs/redistributable/license-derived/openss7-mibs/files/src/mibs/OPENSS7-SNARE-MIB.mib",
+      "sha256": "f9a01bc460acebcedca6f77c795dcb7ab5b00f28a39761bf9b3bd5d926a0609e",
+      "bytes": 11841,
+      "source_id": "openss7-mibs",
+      "source_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/src/mibs/OPENSS7-SNARE-MIB.mib",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license_spdx": "AGPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "snare-MIB",
+      "detail_symbols": [
+        "snare-MIB",
+        "snareTable",
+        "snareNotifications",
+        "snareEntry",
+        "snareAddressDiscoveryEntry",
+        "snareConfigSubsetEntry",
+        "snareNetEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 32,
+        "resolved_oid_count": 32,
+        "dependency_count": 6
+      }
+    },
+    {
+      "id": "table-structure-f29315666a5d",
+      "category": "table-structure",
+      "selection_basis": "table-structure",
+      "module": "CISCO-UNIFIED-COMPUTING-GMETA-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/CISCO-UNIFIED-COMPUTING-GMETA-MIB.mib",
+      "sha256": "f29315666a5da5238ed13495d7568d5cb5603751f85e0965a52e917f8f38b29f",
+      "bytes": 31131,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/CISCO-UNIFIED-COMPUTING-GMETA-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "cucsGmetaObjects",
+      "detail_symbols": [
+        "cucsGmetaObjects",
+        "cucsGmetaClassTable",
+        "cucsGmetaClassEntry",
+        "cucsGmetaEpEntry",
+        "cucsGmetaHolderEntry",
+        "cucsGmetaHolderFsmEntry",
+        "cucsGmetaHolderFsmStageEntry",
+        "cucsGmetaHolderFsmTaskEntry"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "object-type",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [
+        "dependency-heavy"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 90,
+        "resolved_oid_count": 90,
+        "dependency_count": 8
+      }
+    },
+    {
+      "id": "table-structure-4610684020ed",
+      "category": "table-structure",
+      "selection_basis": "table-structure",
+      "module": "TCPIPX-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/TCPIPX-MIB.mib",
+      "sha256": "4610684020edad6510f1af693b08d1695c2b6a30a7bab4ed53055619fba45f70",
+      "bytes": 10973,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/TCPIPX-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "tcpIpxConnTable",
+      "detail_symbols": [
+        "tcpIpxConnTable",
+        "novell",
+        "tcpIpxConnEntry",
+        "udpIpxEntry",
+        "tcpUnspecConnEntry",
+        "udpUnspecEntry"
+      ],
+      "features": [
+        "imports",
+        "object-type",
+        "table-index"
+      ],
+      "compatibility_flags": [
+        "legacy-smi"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 23,
+        "resolved_oid_count": 23,
+        "dependency_count": 2
+      }
+    },
+    {
+      "id": "table-structure-5629f40d2f45",
+      "category": "table-structure",
+      "selection_basis": "table-structure",
+      "module": "OPENSS7-CONS-MIB",
+      "file": "data/mibs/redistributable/license-derived/openss7-mibs/files/src/mibs/OPENSS7-CONS-MIB.mib",
+      "sha256": "5629f40d2f453200c1985ce75490086ea5d85c5453e6d38068dd5337c1c53f6d",
+      "bytes": 23716,
+      "source_id": "openss7-mibs",
+      "source_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/src/mibs/OPENSS7-CONS-MIB.mib",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license_spdx": "AGPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "cONS-MIB",
+      "detail_symbols": [
+        "cONS-MIB",
+        "cONSNSAPConfigTable",
+        "cONSNotifications",
+        "CONSSystemTypes",
+        "cONSNSAPConfigEntry",
+        "cONSNetworkEntityEntry",
+        "cONSNetworkEntityTitleEntry",
+        "cONSEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 54,
+        "resolved_oid_count": 54,
+        "dependency_count": 5
+      }
+    },
+    {
+      "id": "table-structure-1b573fef246f",
+      "category": "table-structure",
+      "selection_basis": "table-structure",
+      "module": "IFCP-MGMT-MIB",
+      "file": "data/mibs/redistributable/ietf-post-2008/IFCP-MGMT-MIB.mib",
+      "sha256": "1b573fef246f94a05e4c17c9e9d8cad29aacc5116a3dabfa93dbcc4bf516a60e",
+      "bytes": 42229,
+      "source_id": "ietf-post-2008",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc6173.txt",
+      "source_revision": "RFC 6173",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "ifcpMgmtMIB",
+      "detail_symbols": [
+        "ifcpMgmtMIB",
+        "ifcpLclGtwyInstTable",
+        "ifcpGatewayObjects",
+        "IfcpIpTOVorZero",
+        "ifcpLclGtwyInstEntry",
+        "ifcpSessionAttributesEntry",
+        "ifcpSessionStatsEntry",
+        "ifcpSessionLcStatsEntry"
+      ],
+      "features": [
+        "augments",
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [
+        "dependency-heavy"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 63,
+        "resolved_oid_count": 63,
+        "dependency_count": 10
+      }
+    },
+    {
+      "id": "table-structure-fcbb9ee86b94",
+      "category": "table-structure",
+      "selection_basis": "table-structure",
+      "module": "SQUID-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/SQUID-MIB.mib",
+      "sha256": "fcbb9ee86b94b8cb8a8b13c5111248af97448157ec4e7215b1db377c41f5fb6c",
+      "bytes": 30832,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/SQUID-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "squid",
+      "detail_symbols": [
+        "squid",
+        "cacheSysVMsize",
+        "nlanr",
+        "ValidPort",
+        "cacheMedianSvcEntry",
+        "cachePeerEntry",
+        "cacheClientEntry"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 114,
+        "resolved_oid_count": 114,
+        "dependency_count": 3
+      }
+    },
+    {
+      "id": "table-structure-a52c6480eaca",
+      "category": "table-structure",
+      "selection_basis": "table-structure",
+      "module": "OPENSS7-ISIS-MIB",
+      "file": "data/mibs/redistributable/license-derived/openss7-mibs/files/src/mibs/OPENSS7-ISIS-MIB.mib",
+      "sha256": "a52c6480eacad816384770f22c199f7d92a7e4235e38316186a221ed700ccc38",
+      "bytes": 96393,
+      "source_id": "openss7-mibs",
+      "source_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/src/mibs/OPENSS7-ISIS-MIB.mib",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license_spdx": "AGPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "isisMib",
+      "detail_symbols": [
+        "isisMib",
+        "isisAdjacencyTable",
+        "isisNotifications",
+        "CircuitType",
+        "isisAdjacencyEntry",
+        "isisVirtualAdjacencyEntry",
+        "isisDestinationSystemEntry",
+        "isisDestinationAreaEntry"
+      ],
+      "features": [
+        "augments",
+        "imports",
+        "module-identity",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 158,
+        "resolved_oid_count": 158,
+        "dependency_count": 7
+      }
+    },
+    {
+      "id": "table-structure-58a1a25342ff",
+      "category": "table-structure",
+      "selection_basis": "table-structure",
+      "module": "RAPID-CITY",
+      "file": "data/mibs/redistributable/license-derived/pandora-open-mibs/files/pandora_console/attachment/mibs/RAPID-CITY.mib",
+      "sha256": "58a1a25342ff01d66a77324a03d318594f824244e4b10c127508fe4f8dac411a",
+      "bytes": 167495,
+      "source_id": "pandora-open-mibs",
+      "source_url": "https://raw.githubusercontent.com/pandorafms/pandora-open/ab7e2a4c20707834cd1ed28fefc06631cbfa8f15/pandora_console/attachment/mibs/RAPID-CITY.mib",
+      "source_revision": "ab7e2a4c20707834cd1ed28fefc06631cbfa8f15",
+      "license_spdx": "GPL-2.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "rapidCity",
+      "detail_symbols": [
+        "rapidCity",
+        "rcSysIpAddr",
+        "rcMgmt",
+        "EnableValue",
+        "rcSysTrapRecvEntry",
+        "rcSysAccessPolicyEntry",
+        "rcSysTrapSenderEntry",
+        "rcSysDnsServerListEntry"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 539,
+        "resolved_oid_count": 539,
+        "dependency_count": 6
+      }
+    },
+    {
+      "id": "table-structure-eb96b820919c",
+      "category": "table-structure",
+      "selection_basis": "table-structure",
+      "module": "DOT12-RPTR-MIB",
+      "file": "data/mibs/redistributable/license-derived/kmalinich-snmp-mibs/files/DOT12-RPTR-MIB.mib",
+      "sha256": "eb96b820919c5045a7a682d2cd80122881017211ca485d6f884e98a5864bfc96",
+      "bytes": 83522,
+      "source_id": "kmalinich-snmp-mibs",
+      "source_url": "https://raw.githubusercontent.com/kmalinich/snmp-mibs/4ad06ab6c6d205b2844495dae032ae23f1970c95/DOT12-RPTR-MIB.mib",
+      "source_revision": "4ad06ab6c6d205b2844495dae032ae23f1970c95",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "vgRptrMIB",
+      "detail_symbols": [
+        "vgRptrMIB",
+        "vgRptrInfoTable",
+        "vgRptrHealth",
+        "vgRptrObjects",
+        "vgRptrInfoEntry",
+        "vgRptrBasicGroupEntry",
+        "vgRptrBasicPortEntry",
+        "vgRptrMonitorEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "table-index"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 90,
+        "resolved_oid_count": 90,
+        "dependency_count": 3
+      }
+    },
+    {
+      "id": "table-structure-22a967940831",
+      "category": "table-structure",
+      "selection_basis": "table-structure",
+      "module": "IEEE8021-MSTP-MIB",
+      "file": "data/mibs/redistributable/license-derived/openss7-mibs/files/src/mibs/IEEE8021-MSTP-MIB.mib",
+      "sha256": "22a96794083146733e1662df97ad6b85e7c500644110823e506226a99e2d63c5",
+      "bytes": 61462,
+      "source_id": "openss7-mibs",
+      "source_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/src/mibs/IEEE8021-MSTP-MIB.mib",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license_spdx": "AGPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "ieee8021MstpMib",
+      "detail_symbols": [
+        "ieee8021MstpMib",
+        "ieee8021MstpCistTable",
+        "ieee8021MstpNotifications",
+        "ieee8021MstpCistEntry",
+        "ieee8021MstpEntry",
+        "ieee8021MstpCistPortEntry",
+        "ieee8021MstpPortEntry",
+        "ieee8021MstpFidToMstiEntry"
+      ],
+      "features": [
+        "augments",
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 101,
+        "resolved_oid_count": 101,
+        "dependency_count": 6
+      }
+    },
+    {
+      "id": "table-structure-7e51f33bc5f0",
+      "category": "table-structure",
+      "selection_basis": "table-structure",
+      "module": "CIRCUIT-IF-MIB",
+      "file": "data/mibs/redistributable/license-derived/ntopng-mibs/files/packages/mibs/CIRCUIT-IF-MIB",
+      "sha256": "7e51f33bc5f041c9fd8f9ae92d08c3712a48d58ac562f4af3a674fb0b7c690a5",
+      "bytes": 13252,
+      "source_id": "ntopng-mibs",
+      "source_url": "https://raw.githubusercontent.com/ntop/ntopng/b225f45d319cbc7ed45e4044ab5c3f3abd08c747/packages/mibs/CIRCUIT-IF-MIB",
+      "source_revision": "b225f45d319cbc7ed45e4044ab5c3f3abd08c747",
+      "license_spdx": "GPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "circuitIfMIB",
+      "detail_symbols": [
+        "circuitIfMIB",
+        "ciCircuitTable",
+        "ciObjects",
+        "CiFlowDirection",
+        "ciCircuitEntry",
+        "ciIfMapEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 20,
+        "resolved_oid_count": 20,
+        "dependency_count": 4
+      }
+    },
+    {
+      "id": "table-structure-dd5b6519110d",
+      "category": "table-structure",
+      "selection_basis": "table-structure",
+      "module": "QLASP-Statistics-MIB",
+      "file": "data/mibs/redistributable/license-derived/ska-low-sre-vendor-mibs/files/Dell/qlaspStat.mib",
+      "sha256": "dd5b6519110daa0cbc7182923db6d690651a1de54171864be7a46b571c99a601",
+      "bytes": 15581,
+      "source_id": "ska-low-sre-vendor-mibs",
+      "source_url": "https://raw.githubusercontent.com/ska-telescope/ska-low-sre-vendor-mib/47e13d3d6aa8413f9d44779a3180e407d536d847/Dell/qlaspStat.mib",
+      "source_revision": "47e13d3d6aa8413f9d44779a3180e407d536d847",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "btsTeamNumber",
+      "detail_symbols": [
+        "btsTeamNumber",
+        "qlogic",
+        "btsTeamEntry",
+        "btsPhyAdapterStatEntry",
+        "btsVirAdapterStatEntry"
+      ],
+      "features": [
+        "imports",
+        "object-type",
+        "table-index"
+      ],
+      "compatibility_flags": [
+        "legacy-smi"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 42,
+        "resolved_oid_count": 42,
+        "dependency_count": 3
+      }
+    },
+    {
+      "id": "table-structure-513be8f92938",
+      "category": "table-structure",
+      "selection_basis": "table-structure",
+      "module": "TCP-MIB",
+      "file": "data/mibs/redistributable/license-derived/osnmpd-mibs/files/doc/mib/TCP-MIB.mib",
+      "sha256": "513be8f929389f20c6e203598e4b2a4e9b85a45fe6d4b816445bc143eeb2f6c6",
+      "bytes": 28564,
+      "source_id": "osnmpd-mibs",
+      "source_url": "https://raw.githubusercontent.com/verrio/osnmpd/a7c7830cfbbb77fc20d18021531e250267da67e3/doc/mib/TCP-MIB.mib",
+      "source_revision": "a7c7830cfbbb77fc20d18021531e250267da67e3",
+      "license_spdx": "MIT",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "tcpMIB",
+      "detail_symbols": [
+        "tcpMIB",
+        "tcpRtoAlgorithm",
+        "tcp",
+        "tcpConnectionEntry",
+        "tcpListenerEntry",
+        "tcpConnEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 44,
+        "resolved_oid_count": 44,
+        "dependency_count": 3
+      }
+    },
+    {
+      "id": "table-structure-3eca597c07b7",
+      "category": "table-structure",
+      "selection_basis": "table-structure",
+      "module": "APS-MIB",
+      "file": "data/mibs/redistributable/license-derived/ntopng-mibs/files/packages/mibs/APS-MIB",
+      "sha256": "3eca597c07b74cdeebd85925bb88ab44374f0ed401c2643bc20c040e6d4e407e",
+      "bytes": 56680,
+      "source_id": "ntopng-mibs",
+      "source_url": "https://raw.githubusercontent.com/ntop/ntopng/b225f45d319cbc7ed45e4044ab5c3f3abd08c747/packages/mibs/APS-MIB",
+      "source_revision": "b225f45d319cbc7ed45e4044ab5c3f3abd08c747",
+      "license_spdx": "GPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "apsMIB",
+      "detail_symbols": [
+        "apsMIB",
+        "apsConfigGroups",
+        "apsEventSwitchover",
+        "apsMIBObjects",
+        "ApsK1K2",
+        "apsConfigEntry",
+        "apsStatusEntry",
+        "apsMapEntry"
+      ],
+      "features": [
+        "augments",
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 66,
+        "resolved_oid_count": 66,
+        "dependency_count": 5
+      }
+    },
+    {
+      "id": "table-structure-d30ca5ad3426",
+      "category": "table-structure",
+      "selection_basis": "table-structure",
+      "module": "ATM-APS-MIB",
+      "file": "data/mibs/redistributable/license-derived/openss7-mibs/files/src/mibs/ATM-APS-MIB.mib",
+      "sha256": "d30ca5ad34269c19fad29336e99c00f0ea32bfc2293c65ff5728c21bf4097760",
+      "bytes": 54660,
+      "source_id": "openss7-mibs",
+      "source_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/src/mibs/ATM-APS-MIB.mib",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license_spdx": "AGPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "atmfApsMIB",
+      "detail_symbols": [
+        "atmfApsMIB",
+        "atmfApsEpTable",
+        "atmfApsEpStatusChange",
+        "atmForum",
+        "SignalId",
+        "atmfApsEpEntry",
+        "atmfApsWpPairEntry",
+        "atmfApsExtraTrafEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 87,
+        "resolved_oid_count": 87,
+        "dependency_count": 5
+      }
+    },
+    {
+      "id": "table-structure-83680f0cfc6d",
+      "category": "table-structure",
+      "selection_basis": "table-structure",
+      "module": "TRILL-OAM-MIB",
+      "file": "data/mibs/redistributable/ietf-post-2008/TRILL-OAM-MIB.mib",
+      "sha256": "83680f0cfc6d2227b65e354353d72dc0b825fa9f3669c6ad44a78136a2d74e3c",
+      "bytes": 62211,
+      "source_id": "ietf-post-2008",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc7784.txt",
+      "source_revision": "RFC 7784",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "source-specific-public-license",
+      "expected": "observe",
+      "probe_symbol": "trillOamMib",
+      "detail_symbols": [
+        "trillOamMib",
+        "trillOamMepTable",
+        "trillOamFaultAlarm",
+        "trillOamNotifications",
+        "trillOamMepEntry",
+        "trillOamMepFlowCfgEntry",
+        "trillOamPtrEntry",
+        "trillOamMtvrEntry"
+      ],
+      "features": [
+        "augments",
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 100,
+        "resolved_oid_count": 100,
+        "dependency_count": 5
+      }
+    },
+    {
+      "id": "repository-license-signal-0b6055cd9754",
+      "category": "repository-license-signal",
+      "selection_basis": "repository-license-signal",
+      "module": "RMON-MIB",
+      "file": "data/mibs/redistributable/license-derived/pandora-open-mibs/files/pandora_agent/win32/bin/util/mibs/RMON-MIB.txt",
+      "sha256": "0b6055cd97547623d5eaa521fd94173cce3b0e0f93987b8def727efa4fbec580",
+      "bytes": 151802,
+      "source_id": "pandora-open-mibs",
+      "source_url": "https://raw.githubusercontent.com/pandorafms/pandora-open/ab7e2a4c20707834cd1ed28fefc06631cbfa8f15/pandora_agent/win32/bin/util/mibs/RMON-MIB.txt",
+      "source_revision": "ab7e2a4c20707834cd1ed28fefc06631cbfa8f15",
+      "license_spdx": "GPL-2.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "rmonMibModule",
+      "detail_symbols": [
+        "rmonMibModule",
+        "etherStatsTable",
+        "risingAlarm",
+        "rmon",
+        "OwnerString",
+        "etherStatsEntry",
+        "historyControlEntry",
+        "etherHistoryEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 215,
+        "resolved_oid_count": 215,
+        "dependency_count": 3
+      }
+    },
+    {
+      "id": "repository-license-signal-220e2a7ef640",
+      "category": "repository-license-signal",
+      "selection_basis": "repository-license-signal",
+      "module": "OPENSS7-M2UA-SL-MIB",
+      "file": "data/mibs/redistributable/license-derived/openss7-mibs/files/src/mibs/OPENSS7-M2UA-SL-MIB.mib",
+      "sha256": "220e2a7ef640c3b7d4cdd98ddb3a4f42ebe90a69debf7ab17f77d36ad6014929",
+      "bytes": 7638,
+      "source_id": "openss7-mibs",
+      "source_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/src/mibs/OPENSS7-M2UA-SL-MIB.mib",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license_spdx": "AGPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "m2slMIB",
+      "detail_symbols": [
+        "m2slMIB",
+        "m2slNotifications"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision"
+      ],
+      "compatibility_flags": [
+        "dependency-heavy"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 20,
+        "resolved_oid_count": 20,
+        "dependency_count": 8
+      }
+    },
+    {
+      "id": "repository-license-signal-fcb133b6709e",
+      "category": "repository-license-signal",
+      "selection_basis": "repository-license-signal",
+      "module": "HC-ALARM-MIB",
+      "file": "data/mibs/redistributable/license-derived/ntopng-mibs/files/packages/mibs/HC-ALARM-MIB",
+      "sha256": "fcb133b6709e63699e6bfb652cf06d5f1e906268139ddba0af139476f830e611",
+      "bytes": 28139,
+      "source_id": "ntopng-mibs",
+      "source_url": "https://raw.githubusercontent.com/ntop/ntopng/b225f45d319cbc7ed45e4044ab5c3f3abd08c747/packages/mibs/HC-ALARM-MIB",
+      "source_revision": "b225f45d319cbc7ed45e4044ab5c3f3abd08c747",
+      "license_spdx": "GPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "hcAlarmMIB",
+      "detail_symbols": [
+        "hcAlarmMIB",
+        "hcAlarmTable",
+        "hcRisingAlarm",
+        "hcAlarmObjects",
+        "HcValueStatus",
+        "hcAlarmEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 33,
+        "resolved_oid_count": 33,
+        "dependency_count": 5
+      }
+    },
+    {
+      "id": "repository-license-signal-cc3ae91d315e",
+      "category": "repository-license-signal",
+      "selection_basis": "repository-license-signal",
+      "module": "EtherLike-MIB",
+      "file": "data/mibs/redistributable/license-derived/pandora-open-mibs/files/pandora_agent/win32/bin/util/mibs/EtherLike-MIB.txt",
+      "sha256": "cc3ae91d315e1f26a130ae981a1e6b10f33b6de77aaf688bf049e1122f4537b7",
+      "bytes": 86354,
+      "source_id": "pandora-open-mibs",
+      "source_url": "https://raw.githubusercontent.com/pandorafms/pandora-open/ab7e2a4c20707834cd1ed28fefc06631cbfa8f15/pandora_agent/win32/bin/util/mibs/EtherLike-MIB.txt",
+      "source_revision": "ab7e2a4c20707834cd1ed28fefc06631cbfa8f15",
+      "license_spdx": "GPL-2.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "etherMIB",
+      "detail_symbols": [
+        "etherMIB",
+        "dot3StatsTable",
+        "etherMIBObjects",
+        "dot3StatsEntry",
+        "dot3CollEntry",
+        "dot3ControlEntry",
+        "dot3PauseEntry",
+        "dot3HCStatsEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 56,
+        "resolved_oid_count": 56,
+        "dependency_count": 4
+      }
+    },
+    {
+      "id": "repository-license-signal-84cafec9b40c",
+      "category": "repository-license-signal",
+      "selection_basis": "repository-license-signal",
+      "module": "OPENSS7-LLC2-MIB",
+      "file": "data/mibs/redistributable/license-derived/openss7-mibs/files/src/mibs/OPENSS7-LLC2-MIB.mib",
+      "sha256": "84cafec9b40ce93fd83f1e61b72385020afcf80ab7fec444f8917a144ca078ea",
+      "bytes": 203171,
+      "source_id": "openss7-mibs",
+      "source_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/src/mibs/OPENSS7-LLC2-MIB.mib",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license_spdx": "AGPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "llcMIB",
+      "detail_symbols": [
+        "llcMIB",
+        "mACDLETable",
+        "lLCConnection2Event",
+        "llcNotifications",
+        "LLCServices",
+        "mACDLEEntry",
+        "mACEntry",
+        "resourceTypeIdEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 277,
+        "resolved_oid_count": 277,
+        "dependency_count": 6
+      }
+    },
+    {
+      "id": "repository-license-signal-ec0b8b094439",
+      "category": "repository-license-signal",
+      "selection_basis": "repository-license-signal",
+      "module": "IMA-MIB",
+      "file": "data/mibs/redistributable/license-derived/openss7-mibs/files/src/mibs/IMA-MIB.mib",
+      "sha256": "ec0b8b09443957bcacf4d2e18477733fc019c10adcc07f3d7c6fcd81e4bec373",
+      "bytes": 104370,
+      "source_id": "openss7-mibs",
+      "source_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/src/mibs/IMA-MIB.mib",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license_spdx": "AGPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "atmfImaMib",
+      "detail_symbols": [
+        "atmfImaMib",
+        "imaGroupNumber",
+        "imaFailureAlarm",
+        "atmForum",
+        "MilliSeconds",
+        "imaGroupEntry",
+        "imaGroupMappingEntry",
+        "imaLinkEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 167,
+        "resolved_oid_count": 167,
+        "dependency_count": 4
+      }
+    },
+    {
+      "id": "repository-license-signal-f7d83c08dfd6",
+      "category": "repository-license-signal",
+      "selection_basis": "repository-license-signal",
+      "module": "AGGREGATE-MIB",
+      "file": "data/mibs/redistributable/license-derived/ntopng-mibs/files/packages/mibs/AGGREGATE-MIB",
+      "sha256": "f7d83c08dfd66229086af00c69254a2fa36338727d53be25dfc64615eee4867b",
+      "bytes": 16935,
+      "source_id": "ntopng-mibs",
+      "source_url": "https://raw.githubusercontent.com/ntop/ntopng/b225f45d319cbc7ed45e4044ab5c3f3abd08c747/packages/mibs/AGGREGATE-MIB",
+      "source_revision": "b225f45d319cbc7ed45e4044ab5c3f3abd08c747",
+      "license_spdx": "GPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "aggrMIB",
+      "detail_symbols": [
+        "aggrMIB",
+        "aggrCtlTable",
+        "aggrConformance",
+        "AggrMOErrorStatus",
+        "aggrCtlEntry",
+        "aggrMOEntry",
+        "aggrDataEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 25,
+        "resolved_oid_count": 25,
+        "dependency_count": 5
+      }
+    },
+    {
+      "id": "repository-license-signal-656f13eb592b",
+      "category": "repository-license-signal",
+      "selection_basis": "repository-license-signal",
+      "module": "SNMP-COMMUNITY-MIB",
+      "file": "data/mibs/redistributable/license-derived/erlang-otp-snmp/files/lib/snmp/mibs/SNMP-COMMUNITY-MIB.mib",
+      "sha256": "656f13eb592b936a29441ebd56a88d308062cb8dea91132baaef9b2a9740922c",
+      "bytes": 13904,
+      "source_id": "erlang-otp-snmp",
+      "source_url": "https://raw.githubusercontent.com/erlang/otp/34baca942c370d385ed03daa1fcd8c0f7c3bb88b/lib/snmp/mibs/SNMP-COMMUNITY-MIB.mib",
+      "source_revision": "34baca942c370d385ed03daa1fcd8c0f7c3bb88b",
+      "license_spdx": "Apache-2.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "snmpCommunityMIB",
+      "detail_symbols": [
+        "snmpCommunityMIB",
+        "snmpCommunityTable",
+        "snmpCommunityMIBObjects",
+        "snmpCommunityEntry",
+        "snmpTargetAddrExtEntry"
+      ],
+      "features": [
+        "augments",
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "table-index"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 21,
+        "resolved_oid_count": 21,
+        "dependency_count": 6
+      }
+    },
+    {
+      "id": "repository-license-signal-5ae3dc11a34e",
+      "category": "repository-license-signal",
+      "selection_basis": "repository-license-signal",
+      "module": "OPENSS7-SL-MUX-MIB",
+      "file": "data/mibs/redistributable/license-derived/openss7-mibs/files/src/mibs/OPENSS7-SL-MUX-MIB.mib",
+      "sha256": "5ae3dc11a34e9c2d8e8ebe8c1a860ffb963493b6aad0feb913d960dc09e9a749",
+      "bytes": 13132,
+      "source_id": "openss7-mibs",
+      "source_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/src/mibs/OPENSS7-SL-MUX-MIB.mib",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license_spdx": "AGPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "slMuxMIB",
+      "detail_symbols": [
+        "slMuxMIB",
+        "slMuxNameTable",
+        "slMuxNotifications",
+        "GlobalPPA",
+        "slMuxNameEntry",
+        "slMuxLinkEntry"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 33,
+        "resolved_oid_count": 33,
+        "dependency_count": 5
+      }
+    },
+    {
+      "id": "repository-license-signal-7bd486741e70",
+      "category": "repository-license-signal",
+      "selection_basis": "repository-license-signal",
+      "module": "DS0BUNDLE-MIB",
+      "file": "data/mibs/redistributable/license-derived/openss7-mibs/files/src/mibs/RFC2494-EXT-MIB.mib",
+      "sha256": "7bd486741e7046b93034455505a1a1209f04c27dd4237bf61dbcbef85dfe6dd4",
+      "bytes": 9020,
+      "source_id": "openss7-mibs",
+      "source_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/src/mibs/RFC2494-EXT-MIB.mib",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license_spdx": "AGPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "ds0Bundle",
+      "detail_symbols": [
+        "ds0Bundle",
+        "dsx0BundleNextIndex",
+        "ds0BundleConformance",
+        "dsx0BundleEntry",
+        "dsx0BondingEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 16,
+        "resolved_oid_count": 16,
+        "dependency_count": 4
+      }
+    },
+    {
+      "id": "repository-license-signal-a71e5a822d30",
+      "category": "repository-license-signal",
+      "selection_basis": "repository-license-signal",
+      "module": "OPENSS7-SL-MIB",
+      "file": "data/mibs/redistributable/license-derived/openss7-mibs/files/src/mibs/OPENSS7-SL-MIB.mib",
+      "sha256": "a71e5a822d30affd9a4606ce3c1df778a3701327efdf36ecc4d6e80de95c6d3f",
+      "bytes": 139604,
+      "source_id": "openss7-mibs",
+      "source_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/src/mibs/OPENSS7-SL-MIB.mib",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license_spdx": "AGPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "slMIB",
+      "detail_symbols": [
+        "slMIB",
+        "slProfileTable",
+        "slNotifications",
+        "slProfileEntry",
+        "slEntry",
+        "slSdlListEntry",
+        "slSdtListEntry",
+        "slNbEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index"
+      ],
+      "compatibility_flags": [
+        "dependency-heavy"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 183,
+        "resolved_oid_count": 183,
+        "dependency_count": 8
+      }
+    },
+    {
+      "id": "repository-license-signal-fd52403b80c2",
+      "category": "repository-license-signal",
+      "selection_basis": "repository-license-signal",
+      "module": "IANA-PWE3-MIB",
+      "file": "data/mibs/redistributable/license-derived/ntopng-mibs/files/packages/mibs/IANA-PWE3-MIB",
+      "sha256": "fd52403b80c203bf94f4266dab217681a8cab4e9ce655d4aaaf1e42c2144dc2b",
+      "bytes": 4580,
+      "source_id": "ntopng-mibs",
+      "source_url": "https://raw.githubusercontent.com/ntop/ntopng/b225f45d319cbc7ed45e4044ab5c3f3abd08c747/packages/mibs/IANA-PWE3-MIB",
+      "source_revision": "b225f45d319cbc7ed45e4044ab5c3f3abd08c747",
+      "license_spdx": "GPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "ianaPwe3MIB",
+      "detail_symbols": [
+        "ianaPwe3MIB",
+        "IANAPwTypeTC"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "revision",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 1,
+        "resolved_oid_count": 1,
+        "dependency_count": 2
+      }
+    },
+    {
+      "id": "repository-license-signal-957971969e30",
+      "category": "repository-license-signal",
+      "selection_basis": "repository-license-signal",
+      "module": "ATM-FORUM-TC-MIB",
+      "file": "data/mibs/redistributable/license-derived/openss7-mibs/files/src/mibs/ATM-FORUM-TC-MIB.mib",
+      "sha256": "957971969e30d4d7024ee88750b98e7c35b0d40b1087044a01027d1875aba57b",
+      "bytes": 10126,
+      "source_id": "openss7-mibs",
+      "source_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/src/mibs/ATM-FORUM-TC-MIB.mib",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license_spdx": "AGPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "atmForum",
+      "detail_symbols": [
+        "atmForum"
+      ],
+      "features": [
+        "imports"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 42,
+        "resolved_oid_count": 42,
+        "dependency_count": 1
+      }
+    },
+    {
+      "id": "repository-license-signal-a8ab77e52898",
+      "category": "repository-license-signal",
+      "selection_basis": "repository-license-signal",
+      "module": "HC-PerfHist-TC-MIB",
+      "file": "data/mibs/redistributable/license-derived/openss7-mibs/files/src/mibs/HC-PerfHist-TC-MIB.mib",
+      "sha256": "a8ab77e528989b8273bab5004f90d5e9ecc9af69219b33fad6209e947c3029ae",
+      "bytes": 8935,
+      "source_id": "openss7-mibs",
+      "source_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/src/mibs/HC-PerfHist-TC-MIB.mib",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license_spdx": "AGPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "hcPerfHistTCMIB",
+      "detail_symbols": [
+        "hcPerfHistTCMIB",
+        "HCPerfValidIntervals"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "revision",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 1,
+        "resolved_oid_count": 1,
+        "dependency_count": 2
+      }
+    },
+    {
+      "id": "repository-license-signal-faf42deadab7",
+      "category": "repository-license-signal",
+      "selection_basis": "repository-license-signal",
+      "module": "QLASP-Config-MIB",
+      "file": "data/mibs/redistributable/license-derived/ska-low-sre-vendor-mibs/files/Dell/qlaspCfg.mib",
+      "sha256": "faf42deadab7e6ee87aa878ebc6c9273b7af7751da8307da5442705fc21c5753",
+      "bytes": 18638,
+      "source_id": "ska-low-sre-vendor-mibs",
+      "source_url": "https://raw.githubusercontent.com/ska-telescope/ska-low-sre-vendor-mib/47e13d3d6aa8413f9d44779a3180e407d536d847/Dell/qlaspCfg.mib",
+      "source_revision": "47e13d3d6aa8413f9d44779a3180e407d536d847",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "btTeamNumber",
+      "detail_symbols": [
+        "btTeamNumber",
+        "qlogic",
+        "btTeamEntry",
+        "btPhyAdapterEntry",
+        "btVirAdapterEntry"
+      ],
+      "features": [
+        "imports",
+        "object-type",
+        "table-index"
+      ],
+      "compatibility_flags": [
+        "legacy-smi"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 47,
+        "resolved_oid_count": 47,
+        "dependency_count": 3
+      }
+    },
+    {
+      "id": "repository-license-signal-3d1061158120",
+      "category": "repository-license-signal",
+      "selection_basis": "repository-license-signal",
+      "module": "QLGC-QLASPTrap-MIB",
+      "file": "data/mibs/redistributable/license-derived/ska-low-sre-vendor-mibs/files/Dell/qlaspTrap.mib",
+      "sha256": "3d1061158120b8371c0306b835612b63a8a23b35d9212c09f7b4bbed3fcc9301",
+      "bytes": 2324,
+      "source_id": "ska-low-sre-vendor-mibs",
+      "source_url": "https://raw.githubusercontent.com/ska-telescope/ska-low-sre-vendor-mib/47e13d3d6aa8413f9d44779a3180e407d536d847/Dell/qlaspTrap.mib",
+      "source_revision": "47e13d3d6aa8413f9d44779a3180e407d536d847",
+      "license_spdx": "BSD-3-Clause",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "trapAdapterName",
+      "detail_symbols": [
+        "trapAdapterName",
+        "failoverEvent",
+        "qlogic"
+      ],
+      "features": [
+        "imports",
+        "object-type",
+        "trap-type-v1"
+      ],
+      "compatibility_flags": [
+        "legacy-smi"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 10,
+        "resolved_oid_count": 10,
+        "dependency_count": 4
+      }
+    },
+    {
+      "id": "repository-license-signal-bbd49e441759",
+      "category": "repository-license-signal",
+      "selection_basis": "repository-license-signal",
+      "module": "FORTINET-CORE-MIB",
+      "file": "data/mibs/redistributable/license-derived/pandora-open-mibs/files/pandora_console/attachment/mibs/FORTINET-CORE-MIB.mib",
+      "sha256": "bbd49e44175964e94367932eaf0be989a74d2dcb4f5bfc3488e373e009cb41b3",
+      "bytes": 14369,
+      "source_id": "pandora-open-mibs",
+      "source_url": "https://raw.githubusercontent.com/pandorafms/pandora-open/ab7e2a4c20707834cd1ed28fefc06631cbfa8f15/pandora_console/attachment/mibs/FORTINET-CORE-MIB.mib",
+      "source_revision": "ab7e2a4c20707834cd1ed28fefc06631cbfa8f15",
+      "license_spdx": "GPL-2.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "fortinet",
+      "detail_symbols": [
+        "fortinet",
+        "fnSysSerial",
+        "fnTrapCpuThreshold",
+        "fnCoreMib",
+        "FnBoolState",
+        "fnAdminEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 31,
+        "resolved_oid_count": 31,
+        "dependency_count": 6
+      }
+    },
+    {
+      "id": "repository-license-signal-de8d7f2c506b",
+      "category": "repository-license-signal",
+      "selection_basis": "repository-license-signal",
+      "module": "OPENSS7-UMC-MIB",
+      "file": "data/mibs/redistributable/license-derived/openss7-mibs/files/src/mibs/OPENSS7-UMC-MIB.mib",
+      "sha256": "de8d7f2c506bbbd9474c628d1f71e3235e8d845db6703a5549d2a801a56f1ea3",
+      "bytes": 74916,
+      "source_id": "openss7-mibs",
+      "source_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/src/mibs/OPENSS7-UMC-MIB.mib",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license_spdx": "AGPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "umcMIB",
+      "detail_symbols": [
+        "umcMIB",
+        "usageMeteringRecordTable",
+        "usageReport",
+        "umcNotifications",
+        "TimePeriod",
+        "usageMeteringRecordEntry",
+        "usageMeteringControlObjectEntry",
+        "accountableObjectsReferenceEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "notification-type",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 79,
+        "resolved_oid_count": 79,
+        "dependency_count": 5
+      }
+    },
+    {
+      "id": "repository-license-signal-0a184c6d32b0",
+      "category": "repository-license-signal",
+      "selection_basis": "repository-license-signal",
+      "module": "OPENSS7-PROBE-MIB",
+      "file": "data/mibs/redistributable/license-derived/openss7-mibs/files/src/mibs/OPENSS7-PROBE-MIB.mib",
+      "sha256": "0a184c6d32b0319626885680dbf0db275f4e9e5f96a5dddf35958c25517cab4b",
+      "bytes": 189332,
+      "source_id": "openss7-mibs",
+      "source_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/src/mibs/OPENSS7-PROBE-MIB.mib",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license_spdx": "AGPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "probeMIB",
+      "detail_symbols": [
+        "probeMIB",
+        "probeMonitorName",
+        "probeNotifications",
+        "TimesOfDay",
+        "probeInterfaceEntry",
+        "probeStatsEntry",
+        "probeHistEntry",
+        "probeTotalEntry"
+      ],
+      "features": [
+        "imports",
+        "module-compliance",
+        "module-identity",
+        "object-group",
+        "object-type",
+        "revision",
+        "table-index",
+        "textual-convention"
+      ],
+      "compatibility_flags": [
+        "dependency-heavy"
+      ],
+      "static_baseline": {
+        "declared_oid_count": 261,
+        "resolved_oid_count": 261,
+        "dependency_count": 9
+      }
+    },
+    {
+      "id": "repository-license-signal-149ca2670a9d",
+      "category": "repository-license-signal",
+      "selection_basis": "repository-license-signal",
+      "module": "ATM-TC-MIB",
+      "file": "data/mibs/redistributable/license-derived/openss7-mibs/files/src/mibs/RFC2514-MIB.mib",
+      "sha256": "149ca2670a9d7a5f6b6dddc6acebd568240dc9a7e2087b0b261af42987af25ad",
+      "bytes": 26412,
+      "source_id": "openss7-mibs",
+      "source_url": "https://raw.githubusercontent.com/openss7/openss7/7c7fc62a98b820d5d13946717661d2f32b898c03/src/mibs/RFC2514-MIB.mib",
+      "source_revision": "7c7fc62a98b820d5d13946717661d2f32b898c03",
+      "license_spdx": "AGPL-3.0",
+      "rights_basis": "repository-license-signal",
+      "expected": "observe",
+      "probe_symbol": "atmTCMIB",
+      "detail_symbols": [
+        "atmTCMIB",
+        "atmTrafficDescriptorTypes",
+        "AtmAddr"
+      ],
+      "features": [
+        "imports",
+        "module-identity",
+        "revision",
+        "textual-convention"
+      ],
+      "compatibility_flags": [],
+      "static_baseline": {
+        "declared_oid_count": 18,
+        "resolved_oid_count": 18,
+        "dependency_count": 2
+      }
+    }
+  ]
+}

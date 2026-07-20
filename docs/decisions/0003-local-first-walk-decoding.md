@@ -1,6 +1,6 @@
 # ADR 0003: Decode raw walk data locally by default
 
-Status: Accepted for prototype; production implementation requires measurement
+Status: Accepted; clarified by ADR 0010 for the bounded public-alpha resolver
 Date: 2026-07-13
 
 ## Decision

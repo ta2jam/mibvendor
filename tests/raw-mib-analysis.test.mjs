@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { gunzipSync } from "node:zlib";
@@ -29,6 +30,25 @@ test("raw parser success cannot be claimed while partial modules remain", () => 
   const failures = validateRawMibAnalysis(candidates, intake, active, aliases, mutated, objects, types);
   assert.ok(failures.includes("Raw MIB parser gate claim drifted"));
   assert.ok(failures.includes("Raw MIB analysis manifest digest drifted"));
+});
+
+test("an empty raw selection cannot vacuously pass the parser gate", () => {
+  const emptyAnalysis = {
+    ...structuredClone(analysis),
+    parser_gate: "open",
+    counts: Object.fromEntries(Object.keys(analysis.counts).map((key) => [key, 0])),
+    manifest_sha256: null,
+    modules: []
+  };
+  emptyAnalysis.manifest_sha256 = createHash("sha256").update(JSON.stringify({ ...emptyAnalysis, manifest_sha256: null })).digest("hex");
+  const emptyObjects = { schema_version: 1, activation_state: "staged-not-active", objects: [] };
+  const emptyTypes = { schema_version: 1, activation_state: "staged-not-active", definitions: [] };
+  assert.deepEqual(validateRawMibAnalysis({ modules: [] }, { artifacts: [] }, active, { schema_version: 1, aliases: [] }, emptyAnalysis, emptyObjects, emptyTypes), []);
+
+  const overclaimed = { ...emptyAnalysis, parser_gate: "passed", manifest_sha256: null };
+  overclaimed.manifest_sha256 = createHash("sha256").update(JSON.stringify({ ...overclaimed, manifest_sha256: null })).digest("hex");
+  assert.ok(validateRawMibAnalysis({ modules: [] }, { artifacts: [] }, active, { schema_version: 1, aliases: [] }, overclaimed, emptyObjects, emptyTypes)
+    .includes("Raw MIB parser gate claim drifted"));
 });
 
 test("dependency aliases remain evidence-bound and do not hide real missing modules", () => {

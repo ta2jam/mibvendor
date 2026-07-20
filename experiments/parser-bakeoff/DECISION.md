@@ -11,7 +11,9 @@ for behaviors that must match common SNMP tooling.
 
 This is not a final selection. The 9-case synthetic run cannot establish vendor
 compatibility. Pinned containers pass on native Linux amd64 and arm64 with
-identical normalized case evidence, but no rights-approved 100-case result exists.
+identical normalized case evidence. A deterministic rights-approved 100-file
+positive-breadth corpus now passes its eligibility gate; three-parser native
+Linux amd64/arm64 results and their parity decision are still missing.
 
 ## Evidence
 
@@ -45,28 +47,28 @@ bad SNMP tool; they make this CLI path a weak canonical ingest contract.
 
 The measured timing and RSS do not decide the selection. Nine small files mostly
 measure process startup, and RSS is a per-candidate child high-water mark. The
-100-case multi-architecture container run must supply representative throughput
-and memory data.
+100-file multi-architecture container run must supply the broader success,
+feature, throughput, CPU, and memory evidence.
 
 ## Exit criteria for the parser gate
 
 The parser gate may move from provisional only when all items below are met:
 
-1. Build the planned 100-case corpus:
-   - 20 IETF/IANA cases;
-   - 20 valid vendor cases;
-   - 20 known-broken vendor cases;
-   - 20 revision-pair cases;
-   - 20 collision/import cases.
-2. Record source URL, SHA-256, acquisition date, and approved test/redistribution
-   scope for every external fixture. Unknown-rights material stays private and
-   no MIB text leaks into committed results or diagnostics.
+1. Keep the deterministic public gate at exactly 100 unique tracked files,
+   hashes, and modules, at least eight sources, no more than 30 files from one
+   source, and all recorded feature-coverage floors. Preserve source URL,
+   revision, SPDX basis, and SHA-256 for every case.
+2. Keep malformed, truncated, missing-import, collision, and revision-shape
+   behavior in the separate CC0 edge suite. Do not relabel valid public files as
+   known-broken or historical revision pairs merely to satisfy a category count.
 3. Run all candidates from the locked containers with runtime network disabled;
    reproduce at least on Linux arm64 and one clean Linux amd64 runner.
-4. Require no crashes/timeouts, 100% deterministic normalized output, 20/20
-   module-qualified collision preservation, and at least 95% fidelity across the
-   requested fields. Any missing revision, INDEX, AUGMENTS, or notification must
-   be explained case by case rather than averaged away.
+4. Require no crashes/timeouts, 100% deterministic normalized output and native
+   cross-architecture parity. A canonical candidate must parse at least 90% of
+   the positive corpus, pass at least 90% of applicable feature probes, and keep
+   10/10 requested fields plus module-qualified collisions in the edge suite.
+   Every public failure remains recorded; aggregate scores cannot erase a
+   missing revision, INDEX, AUGMENTS, or notification class.
 5. Measure warm batch throughput, CPU, peak RSS, installed/image size, and
    malformed-input behavior. Do not compare the current process-startup totals
    as parser throughput.

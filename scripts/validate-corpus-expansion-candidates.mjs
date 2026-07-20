@@ -4,7 +4,7 @@ import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 
-export function validateCorpusExpansionCandidates(active, raw, compiled, document) {
+export function validateCorpusExpansionCandidates(active, raw, compiled, document, { enforceTarget = true } = {}) {
   const failures = [];
   if (document.schema_version !== 1) failures.push("Corpus candidate schema version must be 1");
   if (document.activation_state !== "candidate-not-active") failures.push("Corpus candidates escaped staging");
@@ -13,6 +13,7 @@ export function validateCorpusExpansionCandidates(active, raw, compiled, documen
   const expectedDigest = createHash("sha256").update(JSON.stringify({ ...document, manifest_sha256: null })).digest("hex");
   if (document.manifest_sha256 !== expectedDigest) failures.push("Corpus candidate manifest digest drifted");
   const moduleNames = new Set();
+  const casefoldedModuleNames = new Map();
   const selectedArtifacts = new Set();
   const knownArtifacts = new Set([
     ...active.modules.map((module) => `active:${module.id}`),
@@ -22,6 +23,14 @@ export function validateCorpusExpansionCandidates(active, raw, compiled, documen
   for (const module of document.modules ?? []) {
     if (moduleNames.has(module.module)) failures.push(`Duplicate corpus candidate module ${module.module}`);
     moduleNames.add(module.module);
+    if (typeof module.module !== "string" || !module.module) {
+      failures.push("Corpus candidate module name is invalid");
+    } else {
+      const casefoldedName = module.module.normalize("NFD").toLowerCase();
+      const existingSpelling = casefoldedModuleNames.get(casefoldedName);
+      if (existingSpelling !== undefined && existingSpelling !== module.module) failures.push(`Case-insensitive corpus candidate module collision ${existingSpelling}:${module.module}`);
+      casefoldedModuleNames.set(casefoldedName, module.module);
+    }
     if (!knownArtifacts.has(module.selected_artifact_id)) failures.push(`Unknown selected corpus artifact ${module.module}`);
     if (selectedArtifacts.has(module.selected_artifact_id)) failures.push(`Selected corpus artifact reused ${module.selected_artifact_id}`);
     selectedArtifacts.add(module.selected_artifact_id);
@@ -42,7 +51,7 @@ export function validateCorpusExpansionCandidates(active, raw, compiled, documen
   const selectedFormats = Object.fromEntries(["active", "compiled", "raw"].map((format) => [format, (document.modules ?? []).filter((module) => module.selected_format === format).length]));
   if (JSON.stringify(document.counts?.selected_formats) !== JSON.stringify(selectedFormats)) failures.push("Corpus candidate format count drift");
   if (document.target_met_in_candidate_set !== ((document.modules?.length ?? 0) >= document.target_unique_module_count)) failures.push("Corpus candidate target claim drift");
-  if ((document.modules?.length ?? 0) < 550) failures.push("Corpus candidate unique module target not met");
+  if (enforceTarget && (document.modules?.length ?? 0) < 550) failures.push("Corpus candidate unique module target not met");
   return failures;
 }
 

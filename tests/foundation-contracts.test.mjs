@@ -26,7 +26,7 @@ test("foundation schemas, examples, semantics, and golden tasks pass", () => {
     examples: 5,
     objects: 2,
     goldenTasks: 20,
-    coverage: { implemented: 11, partial: 5, "not-implemented": 4 },
+    coverage: { implemented: 12, partial: 6, "not-implemented": 2 },
   });
 });
 

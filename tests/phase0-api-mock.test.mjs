@@ -138,15 +138,31 @@ test("enterprise and sysObjectID lookup separate registry identity from exact ev
 
 test("module dependencies distinguish graph states", async () => {
   await withServer(async (base) => {
-    const response = await fetch(`${base}/v1/modules/IF-MIB/dependencies`);
-    const body = await response.json();
-    assert.equal(response.status, 200);
-    assert.deepEqual(body.direct, ["IANAifType-MIB", "SNMPv2-CONF", "SNMPv2-MIB", "SNMPv2-SMI", "SNMPv2-TC"]);
-    assert.deepEqual(body.transitive, []);
-    assert.deepEqual(body.missing, []);
-    assert.deepEqual(body.cyclic, []);
-    assert.deepEqual(body.diagnostics, []);
-    assert.equal(body.status, "complete");
+    const request = async (module) => {
+      const response = await fetch(`${base}/v1/modules/${module}/dependencies`);
+      const body = await response.json();
+      assert.equal(response.status, 200);
+      for (const field of ["direct", "transitive", "missing", "cyclic", "diagnostics"]) {
+        assert.ok(Array.isArray(body[field]), `${module}.${field} must be a machine-readable array`);
+      }
+      return body;
+    };
+
+    const complete = await request("BFD-STD-MIB");
+    assert.equal(complete.status, "complete");
+    assert.ok(complete.direct.includes("IF-MIB"));
+    assert.ok(complete.transitive.includes("IANAifType-MIB"));
+    assert.deepEqual(complete.missing, []);
+    assert.deepEqual(complete.cyclic, []);
+
+    const partial = await request("BGP-MPLS-LAYER3-VPN-MULTICAST-MIB");
+    assert.equal(partial.status, "partial");
+    assert.ok(partial.missing.includes("MPLS-L3VPN-STD-MIB"));
+    assert.ok(partial.diagnostics.some((item) => /missing state is explicit/i.test(item)));
+
+    const cyclic = await request("OPENSS7-DLM-MIB");
+    assert.equal(cyclic.status, "complete");
+    assert.ok(cyclic.cyclic.some((item) => item === "OPENSS7-NLM-MIB -> OPENSS7-ISIS-MIB -> OPENSS7-NLM-MIB"));
   });
 });
 

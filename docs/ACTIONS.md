@@ -11,7 +11,6 @@ complete. Order is dependency-driven.
 | 4 | Keep the prototype available for 14 days and have consenting participants use it on a second real task. | `0/3` repeat-use gate; elapsed real use cannot be simulated. | Stated intent is not counted. |
 | 5 | Have at least 3 external tool developers exercise the public-alpha API and provide code/test artifacts. | `0/3` real API-integration gate. | The live endpoint has a machine-checked OpenAPI 3.1 contract; external use remains `0/3`, so the contracts are still hypotheses. |
 | 6 | Send first-wave vendor rights and source-verification requests from an accountable owner identity: Cisco, Juniper, Arista, HPE Aruba, Fortinet, Palo Alto Networks, VMware/Broadcom, NetApp, Dell, Synology. | Official-source corroboration and any vendor-authorized raw/rendered scope. | License-signaled project sources may publish governed metadata, but artifact restrictions still block vendor raw text/descriptions and unverified official references remain labelled as such. |
-| 7 | Supply or authorize a rights-approved 100-case parser corpus: 20 IETF/IANA, 20 valid vendor, 20 broken vendor, 20 revision-pair, and 20 collision/import cases. | Final canonical parser selection and real-vendor compatibility evidence. | Private intake now rejects unapproved, unbalanced, duplicate, hash-mismatched, oversized, or path-escaping inputs; nine CC0 synthetic cases still support only a provisional recommendation. |
 
 ## Dependency notes
 
@@ -21,9 +20,12 @@ complete. Order is dependency-driven.
   reachable to integrators.
 - Action 6 can start immediately but vendor response time is open-ended. Silence
   is not approval.
-- Action 7 closes the remaining parser decision gate; it does not permit
-  third-party MIB text to be committed or exposed in diagnostics.
 - The Linux amd64 container run is complete: all three candidates met all nine
   synthetic expectations with no timeout and deterministic normalized output.
   The native Linux arm64 run reproduced the same normalized evidence. This is
   multi-architecture reproducibility evidence, not vendor-compatibility evidence.
+- Parser corpus construction no longer needs owner action: 100 unique tracked
+  redistributable files pass the deterministic public eligibility gate. The
+  three-parser native amd64/arm64 workflow and final decision are repository
+  work; they are not owner blockers. The public corpus is positive breadth;
+  malformed and revision-shape behavior remains in the separate CC0 suite.

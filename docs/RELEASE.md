@@ -36,7 +36,7 @@ Deploying a working directory without publishing the corresponding commit/tag
 is not production completion. Pushing code without deploying and verifying the
 VPS is also not production completion.
 
-## Current deployed Phase 0 release
+## v0.3 corpus-expansion baseline
 
 `v0.3.0-alpha.2` defines the corpus-expansion release contract. Its immutable
 `license-signaled-2026-07-20.2` data release contains 702 redistributable
@@ -110,9 +110,9 @@ The GitHub production monitor resolves the expected commit from the immutable
 deployed; staged corpus and parser work may safely advance `main` while the
 published production release remains pinned to its tag.
 
-## v0.4.0-alpha.2 — RackTables exact definitions candidate
+## v0.4.0-alpha.2 — RackTables exact definitions release
 
-One measurable result: the immutable `device-identity-2026-07-20.2` candidate
+One measurable result: the immutable `device-identity-2026-07-20.2` release
 adds a source-bound open-source project-definition layer while preserving the
 vendor-MIB and project-observation boundaries. A static, non-executing parser
 finds 303 non-root exact OID candidates in pinned RackTables commit
@@ -135,6 +135,20 @@ Origin HTML shell responses, including explicit SPA fallback routes, use
 injection or other edge HTML mutation under the strict CSP. CSS, JavaScript,
 OpenAPI, and API cache contracts remain independently defined and unchanged.
 
-Production status: not deployed from this candidate branch. Commit, tag, CI,
-VPS deployment, public smoke, and release reconciliation remain integration
-work under the completion rule above.
+Production status: complete. Annotated tag `v0.4.0-alpha.2`, commit
+`4b8a89dcddea11ef8b7afdd262daf7e8a6cffbc8`, and image
+`sha256:a233549f91570819d11bf6f573d19fb6cec6c35c1f8fde9fe51abb92f0af20c7`
+were reconciled before deployment at `2026-07-20T04:01:07Z`. CI run
+`29715595292`, the full production verifier, and production-monitor run
+`29716094534` passed. The pre-deployment rollback point is
+`/srv/sites/mibvendor/backups/pre-v0.4.0-alpha.2-20260720T040107Z`.
+
+Three mixed-load runs each completed 75 requests at up to 40 concurrent
+requests with 75/75 HTTP 200 responses. Measured p95 latency was 3.557–3.898
+seconds and peak memory was 232,353,792–243,404,800 bytes; no run recorded an
+OOM, OOM kill, or restart. Production Chromium verification passed at
+1280×900 and 390×844 for the assessment keyboard path and result focus, all
+five clipboard examples, cursor `0` to `1`, exact and conflicting deep routes,
+the OpenAPI/health/status links, and horizontal-overflow checks. The run
+recorded no console, page, or request errors and no Cloudflare beacon
+injection; origin HTML retained the `no-transform` boundary.

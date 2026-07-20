@@ -93,7 +93,7 @@ export function validateRawMibAnalysis(candidateSet, rawIntake, activeCatalog, a
     modules_with_missing_dependencies: analysis.modules?.filter((module) => module.missing_dependency_count > 0).length ?? 0
   };
   if (JSON.stringify(analysis.counts) !== JSON.stringify(expectedCounts)) failures.push("Raw MIB analysis top-level counts drifted");
-  const expectedGate = expectedCounts.static_pass === expectedCounts.modules ? "passed" : "open";
+  const expectedGate = expectedCounts.modules > 0 && expectedCounts.static_pass === expectedCounts.modules ? "passed" : "open";
   if (analysis.parser_gate !== expectedGate) failures.push("Raw MIB parser gate claim drifted");
   return failures;
 }

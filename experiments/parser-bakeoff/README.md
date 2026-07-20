@@ -2,8 +2,9 @@
 
 This experiment compares PySMI 2.0.0, libsmi 0.5.0, and the Net-SNMP 5.9.4
 release archive against the same MIB inputs. It does not make the Phase 0 parser
-gate pass. The checked-in corpus has nine synthetic cases; the required
-rights-approved 100-case corpus is still missing.
+gate pass by itself. The checked-in evidence now has two deliberately separate
+parts: nine CC0 edge cases and a deterministic 100-file positive-breadth corpus
+selected from the active redistributable release.
 
 ## Current result
 
@@ -12,6 +13,10 @@ Linux amd64 and arm64. Runtime networking was disabled, the root filesystem was
 read-only, and all output was written by the invoking host UID/GID. Both
 architectures produced identical normalized case evidence. The earlier macOS
 arm64 source-build result remains available as a separate baseline.
+
+Those committed results cover the nine synthetic edge cases. The 100-file
+public corpus eligibility gate passes, but its native Linux amd64/arm64 parser
+results are not yet committed. Canonical selection therefore remains open.
 
 Linux amd64:
 
@@ -44,10 +49,25 @@ product runtime dependency. The evidence and remaining gate are in
 
 ## Corpus and rights
 
+`public-corpus/manifest.json` selects 100 unique files, content hashes, and
+modules from the tracked active release. It uses five 20-file strata, covers 11
+sources with at most 30 cases from one source, and totals 5.95 MiB. Every case
+retains source revision, URL, SPDX signal, artifact hash, a bounded probe
+symbol, and observed static-parser baseline. Selection is deterministic from a
+fixed seed; duplicate bytes, path escape, hash drift, count drift, and a
+manifest that claims parser success are rejected.
+
+The public corpus is positive breadth evidence, not a disguised malformed-file
+suite. The nine CC0 cases remain the explicit negative, collision, missing
+import, and revision-shape evidence. A real malformed or historical revision
+corpus may be added later if it is both useful and rights-approved; it is not
+fabricated by relabelling valid files.
+
 All checked-in `MIBVENDOR-*` fixtures were written for this experiment and are
-CC0-1.0. No vendor MIB text is committed. Standard import dependencies are
-extracted at runtime from the hash-locked libsmi source archive and are not
-vendored into Git.
+CC0-1.0. The experiment copies no additional vendor MIB text: its public
+manifest references files already governed and tracked in the active
+redistributable release. Standard import dependencies are extracted at runtime
+from the hash-locked libsmi source archive and are not newly vendored here.
 
 Future external fixtures belong under ignored `corpus/private/` unless their
 redistribution scope is explicitly approved. A source being publicly
@@ -57,7 +77,7 @@ Git and the parser Docker build context both exclude `corpus/private/`; private
 fixtures must be mounted read-only at execution time and must never be copied
 into an image layer.
 
-Before any 100-case run, the private manifest and files must pass:
+Before any optional private-corpus run, its manifest and files must pass:
 
 ```sh
 ./scripts/validate_corpus_intake.py corpus/private/manifest.json \
@@ -65,7 +85,7 @@ Before any 100-case run, the private manifest and files must pass:
   --evidence-dir corpus/private/evidence
 ```
 
-The intake requires exactly 20 cases in each planned category, ten two-file
+That legacy private intake requires exactly 20 cases in each planned category, ten two-file
 revision comparison groups, unique files and content hashes, an exact SHA-256
 for every file, a known rights-matrix source, and explicit approved testing
 authority backed by a present, non-symlinked evidence file with an exact
@@ -84,8 +104,8 @@ The nine current cases cover:
 - old/new revision shapes;
 - missing import, truncated input, and bounded malformed nesting.
 
-They validate the harness semantics. They do not represent real IETF, IANA, or
-vendor diversity.
+They validate the harness semantics. Public source diversity is measured by the
+separate 100-file manifest rather than inferred from these synthetic cases.
 
 ## Reproduce locally
 
@@ -108,16 +128,45 @@ The committed evidence can be checked without parser binaries or downloads:
   results/2026-07-13-linux-amd64 results/2026-07-14-linux-arm64
 ```
 
+The tracked public corpus can be regenerated and validated without parser
+binaries:
+
+```sh
+python3 scripts/public_corpus_gate.py --write-manifest
+python3 scripts/public_corpus_gate.py
+```
+
 ## Reproduce in pinned containers
 
 The Dockerfiles lock the Python, GCC, and Debian base image indexes by digest,
 verify the libsmi and Net-SNMP archives by SHA-256, and use exact Python package
-versions with wheel hashes for Linux amd64 and arm64. Runtime parsing is invoked
-with no network, a read-only root filesystem, and a bounded tmpfs.
+versions with wheel hashes for Linux amd64 and arm64. Both container runners use
+the host UID/GID, no runtime network, a read-only root filesystem, and a bounded
+tmpfs. The public runner additionally drops all Linux capabilities, disables
+privilege escalation, and bounds CPU, memory, and PIDs. It mounts only the
+tracked data, parser scripts, public manifest, and a safe synthetic manifest;
+it does not expose the whole checkout, `.git`, or an optional private corpus to
+parser processes.
 
 ```sh
 ./scripts/run_containers.sh results/latest
 ```
+
+The heavier public run executes three parsers, 100 cases, and two repetitions
+on the host architecture:
+
+```sh
+./scripts/run_public_containers.sh results/public-linux-amd64
+```
+
+Use native runners, not QEMU, for the second architecture. The manually
+dispatched `Parser public corpus` GitHub workflow runs `ubuntu-24.04` and
+`ubuntu-24.04-arm`, uploads each result set separately, then rejects missing,
+unpinned, nondeterministic, timed-out, or cross-architecture divergent
+evidence. Each result must match the workflow source commit and the exact
+manifest, catalog, and data-release hashes; empty applicable feature maps or
+missing resource measurements also fail. It intentionally does not run in the
+five-minute normal CI path.
 
 The committed Linux evidence is in
 [`results/2026-07-13-linux-amd64/`](results/2026-07-13-linux-amd64/) and
@@ -143,10 +192,13 @@ current status.
   startup cost and is not a throughput benchmark.
 - Installed footprint and container image size are recorded separately.
 
-Harness work is approximately `O(P * C * R * parse(input))`, with three parsers,
-nine cases, and two repetitions. Peak working space is the largest parser plus
-one emitted artifact. Process startup and container compilation are the main
-constant and energy costs in this small run.
+Harness work is approximately `O(P * C * R * parse(input))`. The public run has
+`P=3`, `C=100`, and `R=2` and invokes roughly 800 tool subprocesses because
+some adapters have separate lint/dump or per-symbol probes. Eligibility scans
+702 catalog files (about 41.8 MiB) once per validation and uses `O(C)` manifest
+memory. Peak working space is bounded by the largest parser plus one emitted
+artifact and the 512 MiB container tmpfs. Process startup and container builds
+are the main energy constants.
 
 ## Files
 
@@ -158,6 +210,11 @@ constant and energy costs in this small run.
 - `scripts/validate_results.py`: dependency-free result consistency check.
 - `scripts/validate_multiarch_results.py`: architecture and normalized parity check.
 - `scripts/validate_corpus_intake.py`: private 100-case balance, rights, hash, and path gate.
+- `public-corpus/manifest.json`: deterministic rights-approved positive-breadth cases.
+- `scripts/public_corpus_gate.py`: public selection, hash, provenance, and coverage gate.
+- `scripts/run_public_bakeoff.py`: public-corpus runner and bounded result writer.
+- `scripts/run_public_containers.sh`: read-only/no-network public container run.
+- `scripts/validate_public_multiarch_results.py`: complete native result and parity gate.
 - `containers/`: one pinned Dockerfile per candidate.
 - `results/2026-07-13-macos-arm64/`: committed real local run.
 - `results/2026-07-13-linux-amd64/`: committed pinned-container run.

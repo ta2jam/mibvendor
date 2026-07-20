@@ -28,3 +28,12 @@ test("duplicate modules and manifest mutation cannot inflate the target", () => 
   assert.ok(failures.some((failure) => failure.includes("Duplicate corpus candidate module")));
   assert.ok(failures.includes("Corpus candidate manifest digest drifted"));
 });
+
+test("case-insensitive module aliases cannot create ambiguous candidate identities", () => {
+  const mutated = structuredClone(candidates);
+  const duplicate = structuredClone(mutated.modules[0]);
+  duplicate.module = duplicate.module.toLowerCase();
+  mutated.modules.push(duplicate);
+  const failures = validateCorpusExpansionCandidates(active, raw, compiled, mutated);
+  assert.ok(failures.some((failure) => failure.includes("Case-insensitive corpus candidate module collision")));
+});

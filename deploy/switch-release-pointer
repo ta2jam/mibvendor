@@ -1,0 +1,75 @@
+#!/bin/sh
+set -eu
+
+site=${MIBVENDOR_SITE_ROOT:-/srv/sites/mibvendor}
+case "$site" in
+  /*) ;;
+  *) printf '%s\n' 'ERROR: MIBVENDOR_SITE_ROOT must be absolute' >&2; exit 2 ;;
+esac
+site=$(CDPATH='' cd -P -- "$site" && pwd)
+
+for entry in "$site"/* "$site"/.[!.]* "$site"/..?*; do
+  if [ ! -e "$entry" ] && [ ! -L "$entry" ]; then
+    continue
+  fi
+  name=${entry##*/}
+  case "$name" in
+    app|releases|backups|operations|.env|release.env) ;;
+    *) printf '%s\n' "ERROR: unexpected top-level site path would be exposed to the release-switch container: $name" >&2; exit 2 ;;
+  esac
+done
+
+if [ -e "$site/operations" ] || [ -L "$site/operations" ]; then
+  test -d "$site/operations" && test ! -L "$site/operations" || { printf '%s\n' "ERROR: $site/operations must be a real directory" >&2; exit 2; }
+  for entry in "$site/operations"/* "$site/operations"/.[!.]* "$site/operations"/..?*; do
+    if [ ! -e "$entry" ] && [ ! -L "$entry" ]; then
+      continue
+    fi
+    name=${entry##*/}
+    case "$name" in
+      production-publication-audit|.release-switch.lock)
+        test -d "$entry" && test ! -L "$entry" || { printf '%s\n' "ERROR: $entry must be a real directory" >&2; exit 2; }
+        ;;
+      *) printf '%s\n' "ERROR: unexpected operations path would be exposed to the release-switch container: $name" >&2; exit 2 ;;
+    esac
+  done
+fi
+
+script_dir=$(CDPATH='' cd -P -- "$(dirname -- "$0")" && pwd)
+node_script=$(dirname -- "$script_dir")/scripts/switch-production-app-pointer.mjs
+case "$node_script" in
+  "$site"/releases/*/app/scripts/switch-production-app-pointer.mjs) ;;
+  *) printf '%s\n' 'ERROR: run this wrapper from a release under <site>/releases/<version>/app' >&2; exit 2 ;;
+esac
+
+release_env=$site/release.env
+test -f "$release_env" && test -r "$release_env" && test ! -L "$release_env" || { printf '%s\n' "ERROR: $release_env must be a readable regular non-symlink file" >&2; exit 2; }
+test -f "$site/.env" && test ! -L "$site/.env" || { printf '%s\n' "ERROR: $site/.env must be a regular non-symlink file" >&2; exit 2; }
+test -d "$site/backups" && test ! -L "$site/backups" || { printf '%s\n' "ERROR: $site/backups must be a real directory" >&2; exit 2; }
+runner_version=$(awk -F= '$1 == "APP_VERSION" { print substr($0, index($0, "=") + 1) }' "$release_env")
+case "$runner_version" in
+  ''|*[!0-9A-Za-z._+-]*) printf '%s\n' 'ERROR: release.env APP_VERSION is missing or unsafe' >&2; exit 2 ;;
+esac
+
+runner_image=mibvendor:$runner_version
+docker image inspect "$runner_image" >/dev/null
+
+exec docker run --rm \
+  --network none \
+  --read-only \
+  --tmpfs /tmp:rw,noexec,nosuid,size=16m \
+  --cap-drop ALL \
+  --security-opt no-new-privileges \
+  --pids-limit 64 \
+  --cpus 1 \
+  --memory 640m \
+  --user "$(id -u):$(id -g)" \
+  --entrypoint node \
+  --mount "type=bind,src=$site,dst=$site" \
+  --mount "type=bind,src=$site/releases,dst=$site/releases,readonly" \
+  --mount "type=bind,src=/dev/null,dst=$site/.env,readonly" \
+  --mount "type=bind,src=/dev/null,dst=$site/release.env,readonly" \
+  --tmpfs "$site/backups:ro,noexec,nosuid,nodev,size=1m,mode=000" \
+  --workdir "$site" \
+  "$runner_image" \
+  "$node_script" --site "$site" "$@"

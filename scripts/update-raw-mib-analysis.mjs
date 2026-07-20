@@ -153,7 +153,7 @@ const document = {
   generated_at: new Date().toISOString(),
   activation_state: "staged-not-active",
   baseline_data_release: activeCatalog.data_release,
-  parser_gate: counts.static_pass === counts.modules ? "passed" : "open",
+  parser_gate: counts.modules > 0 && counts.static_pass === counts.modules ? "passed" : "open",
   parser_security: "no-source-code-execution-no-system-mib-enrichment",
   counts,
   manifest_sha256: null,

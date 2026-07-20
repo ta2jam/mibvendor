@@ -131,7 +131,7 @@ Acceptance criteria:
 - copied vendor descriptions are not smuggled through an open-source project
   license.
 
-Current evidence: the immutable candidate normalizes 1,023 sanitized LibreNMS
+Current evidence: the immutable release normalizes 1,023 sanitized LibreNMS
 and SNMP::Info observations over 713 exact OIDs, retains 72 conflicting OIDs,
 and adds a static, non-executing RackTables adapter with 270 medium-confidence
 exact model definitions. Thirty-three non-root source candidates are
@@ -190,7 +190,7 @@ Acceptance criteria:
 
 ### DATA-07 — Vendor-ready quarantine and promotion pipeline
 
-Status: `in-progress`
+Status: `complete`
 
 Implement `discover -> download -> verify -> parse -> normalize -> quarantine
 -> review -> activate -> rollback` for source adapters. Development uses
@@ -202,6 +202,26 @@ Acceptance criteria:
   parser or UI rewrite;
 - a source can be disabled without deleting historical release evidence;
 - rollback restores the previous active pointer without mutating releases.
+
+Verification: a repository-owned materialized-source adapter now starts from a
+real clean Git worktree whose origin, HEAD, tracked blob IDs, license hash, and
+candidate bytes match the reviewed manifest. It executes discovery,
+checksum-bound intake, restrictive-notice screening, static parsing,
+normalization, variant review/quarantine, and the existing canonical validators
+before writing an isolated candidate workspace. False commit/origin claims,
+dirty bytes, unrecognized or changed license evidence, symlinks, submodules,
+missing dependencies, duplicate symbols, unreviewed content variants, and a
+non-empty target workspace fail without deleting existing evidence.
+
+The lifecycle test then executes the deterministic candidate builder,
+append-only promotion, activation-evidence validation, public runtime probes,
+source disable/enable, and rollback. A separate production-owned app-pointer
+command validates both immutable application release trees twice, performs an
+atomic relative-symlink replacement, and records external hash-chained audit
+events with explicit recovery. Validation or release-tree drift leaves the
+pointer unchanged. Release trees remain byte-identical. This command manages
+only the filesystem app pointer: production deployment must still reconcile
+`release.env`, recreate the Docker workload, and run public health checks.
 
 ### DATA-08 — Browser-local private MIB workspace
 
@@ -364,9 +384,9 @@ model.
 Current evidence: competing candidates and material conflict types render in
 both the workbench and direct sysObjectID route without selecting a singular
 model; PEN-only, signature, family, and generic vendor-identifier outcomes
-remain weaker than exact model. It remains open
-until each competing row carries its own source revision/date and the complete
-browser interaction matrix is recorded against production.
+remain weaker than exact model. The complete production browser interaction
+matrix is recorded. This item remains open until each competing row carries
+its own source revision and date.
 
 ### UI-08 — Operational object detail
 
@@ -426,11 +446,18 @@ tree/graph table alternatives.
 
 ### UI-15 — Free API documentation
 
-Status: `in-progress`
+Status: `complete`
 
 Publish a concise free-API statement, copyable curl/JavaScript/Python examples,
 real responses, error states, pagination, caching, release pinning, fair-use
 limits, OpenAPI, health/status links, and prohibited sensitive inputs.
+
+Verification: deployed `v0.4.0-alpha.2` passed exact clipboard comparisons for
+all five examples, cursor `0` to `1`, OpenAPI/health/status navigation, full
+forward and reverse keyboard cycles, Enter activation, live regions, result
+focus, strict no-overflow checks at 1280×900 and 390×844, and zero
+console/page/request errors. Screenshots and the immutable production identity
+are recorded in `docs/operations/ui-15-browser-evidence.md`.
 
 ## Outcome-based release sequence
 
@@ -458,7 +485,7 @@ API/UI smoke, production monitor, and release identity are reconciled.
 
 ### v0.4.0-alpha.2 — Open-source exact device definitions
 
-Status: `in-progress`
+Status: `complete`
 
 One result: a pinned open-source project-definition adapter expands exact model
 evidence without relabeling project definitions as vendor-MIB claims, hiding
@@ -466,9 +493,9 @@ material conflicts, serving raw source code, or inferring firmware. The local
 candidate contains 270 RackTables-derived exact-model claims, 33 quarantined
 source candidates, 19 reviewed definition-observation overlap dispositions,
 6,391 distinct runtime mapping keys, and 964 distinct project model-evidence
-OIDs. Implementation and local verification may complete before release
-publication; status remains in progress until integration commit/tag, CI, VPS
-deployment, public smoke, and release reconciliation pass.
+OIDs. Integration commit `4b8a89dcddea11ef8b7afdd262daf7e8a6cffbc8`,
+annotated tag, green CI, exact image, VPS deployment, public API/browser smoke,
+and production monitor are reconciled.
 
 ### v0.5.0-alpha.1 — Browse at scale
 
@@ -634,7 +661,7 @@ with no billing code.
   zero memory-limit, OOM, OOM-kill, or restart events; the tag, VPS SHA,
   production monitor, and public release identity are reconciled.
 
-### 2026-07-20 — v0.4.0-alpha.2 RackTables adapter candidate
+### 2026-07-20 — v0.4.0-alpha.2 RackTables adapter release
 
 - Added a closed static parser for the pinned RackTables `known_switches`
   table. It rejects executable/dynamic PHP shapes, enterprise roots,
@@ -649,5 +676,36 @@ with no billing code.
   ambiguous and expose candidates/conflicts without selecting a model.
 - Updated web examples, evidence-layer labels, direct-route conflict details,
   README, API schemas, identity documentation, third-party notices, and
-  measured release statistics. Production publication is not claimed from the
-  isolated candidate branch.
+  measured release statistics.
+- Published the immutable tag after green CI and three isolated mixed-load
+  runs. The exact image, VPS commit, public API verifier, complete desktop/mobile
+  keyboard and interaction matrix, and GitHub production monitor are
+  reconciled; Cloudflare no longer injects an analytics beacon into the strict
+  CSP page.
+
+### 2026-07-20 — Public parser breadth gate
+
+- Selected 100 unique tracked redistributable files, hashes, and modules from
+  11 sources with five deterministic 20-file strata and a 30-case source cap.
+- Enforced source/revision/license/hash provenance, path and size bounds,
+  duplicate rejection, deterministic selection, and measured feature floors.
+- Kept positive public breadth separate from the nine CC0 malformed,
+  missing-import, collision, and revision-shape cases. No valid file is
+  relabelled as a known parser failure.
+- Added pinned, read-only, network-disabled public runners and a native Linux
+  amd64/arm64 result-parity gate. The canonical parser decision remains open
+  until that manually dispatched evidence run completes.
+
+### 2026-07-20 — DATA-07 executable source and pointer lifecycle
+
+- Replaced hand-built early-stage lifecycle evidence with a materialized-source
+  adapter that verifies a clean commit-pinned Git checkout and runs the real
+  discovery, rights/intake, parse, normalize, and review/quarantine code.
+- Reused the existing restrictive-notice scanner, static parser, candidate
+  builder, and canonical discovery/intake/analysis validators instead of
+  defining a second parser contract.
+- Added a bounded app-pointer command with two-pass immutable-tree validation,
+  fail-closed TOCTOU handling, atomic replacement, private append-only audit,
+  explicit interrupted-operation recovery, and a constrained host wrapper.
+- Kept the operational boundary explicit: pointer activation is not a Docker
+  restart, `release.env` update, or complete production deployment.

@@ -1,16 +1,33 @@
 import assert from "node:assert/strict";
+import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { mkdtemp, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { copyFile, mkdtemp, mkdir, readFile, readdir, realpath, rename, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 import { gunzipSync, gzipSync } from "node:zlib";
 
 import { scanArtifactRestrictiveNotices } from "../scripts/lib/artifact-restrictive-notices.mjs";
 import { buildReleaseCandidate, verifyReleaseCandidate } from "../scripts/lib/corpus-release-candidate.mjs";
+import {
+  gitBlobOid,
+  sourceDiscoveryRegistryForMaterializedAdapter
+} from "../scripts/lib/materialized-mib-source-adapter.mjs";
+import { validateActiveReleaseEvidence } from "../scripts/lib/release-evidence.mjs";
+import { validateLicenseDerivedIntake } from "../scripts/validate-license-derived-intake.mjs";
+import { validateRawMibAnalysis } from "../scripts/validate-raw-mib-analysis.mjs";
+import { validateSourceDiscovery } from "../scripts/validate-source-discovery.mjs";
+import {
+  appendPublicationPromotion,
+  derivePublicationControlState,
+  publicationControlEventDigest,
+  validatePublicationControls
+} from "../src/publication-controls.mjs";
 
 const RELEASE = "synthetic-candidate-1";
 const GENERATED_AT = "2026-07-20T10:00:00.000Z";
+const repositoryRoot = fileURLToPath(new URL("../", import.meta.url));
 
 function sha(value) {
   return createHash("sha256").update(value).digest("hex");
@@ -19,6 +36,17 @@ function sha(value) {
 async function json(file, value) {
   await mkdir(path.dirname(file), { recursive: true });
   await writeFile(file, `${JSON.stringify(value, null, 2)}\n`);
+}
+
+function fixtureGit(root, arguments_) {
+  return execFileSync("git", ["-C", root, ...arguments_], {
+    encoding: "utf8",
+    env: {
+      ...process.env,
+      GIT_AUTHOR_DATE: "2026-07-20T09:00:00Z",
+      GIT_COMMITTER_DATE: "2026-07-20T09:00:00Z"
+    }
+  }).trim();
 }
 
 async function fixture() {
@@ -107,6 +135,105 @@ async function fixture() {
   return root;
 }
 
+async function rawAdapterFixture() {
+  const workspace = await mkdtemp(path.join(tmpdir(), "mibvendor-materialized-adapter-workspace-"));
+  const upstream = await mkdtemp(path.join(tmpdir(), "mibvendor-materialized-adapter-upstream-"));
+  const activeRaw = "ACTIVE-MIB DEFINITIONS ::= BEGIN\nactive OBJECT IDENTIFIER ::= { 1 3 }\nEND\n";
+  const activeSha = sha(activeRaw);
+  await mkdir(path.join(workspace, "data", "mibs", "redistributable", "active"), { recursive: true });
+  await writeFile(path.join(workspace, "data", "mibs", "redistributable", "active", "ACTIVE-MIB.mib"), activeRaw);
+  await json(path.join(workspace, "data", "mib-catalog.json"), {
+    schema_version: 1,
+    data_release: "active-1",
+    generated_at: "2026-07-19T00:00:00Z",
+    policy: "fail-closed",
+    inventory_scope: "Synthetic active fixture.",
+    source_snapshots: {},
+    counts: { modules: 1, resolved_objects: 1, publishers: { Active: 1 }, publication_modes: { redistributable: 1, "metadata-only": 0, "directory-only": 0 } },
+    modules: [{
+      id: "ACTIVE-MIB", publisher: "Active", source_id: "active", publication_mode: "redistributable", raw_download: true,
+      source_url: "https://example.test/ACTIVE-MIB", source_revision: "active-rev", source_sha256: activeSha, artifact_sha256: activeSha,
+      raw_path: "mibs/redistributable/active/ACTIVE-MIB.mib", license: { spdx: "MIT", name: "MIT", url: "https://example.test/LICENSE", notice_required: true },
+      revision: null, dependencies: [], declared_oid_count: 1, resolved_oid_count: 1
+    }]
+  });
+  await json(path.join(workspace, "data", "mib-objects.json"), {
+    schema_version: 1,
+    data_release: "active-1",
+    objects: [{ id: "active-mib--active", module: "ACTIVE-MIB", symbol: "active", oid: "1.3", kind: "object-identifier", syntax: null, access: null, status: null, description: null, enums: {}, parent: null, oid_resolution: "source-absolute" }]
+  });
+  await json(path.join(workspace, "data", "source-catalog.json"), {
+    schema_version: 1,
+    data_release: "active-1",
+    sources: [{ id: "active", publisher: "Active", official_source_url: "https://example.test", rights_evidence_url: "https://example.test/LICENSE", checked_at: "2026-07-19", publication_mode: "redistributable", content_intake: "approved", scopes: { raw_download: "approved" }, public_fields: [] }]
+  });
+
+  const license = Buffer.from("Synthetic MIT license\n");
+  const rawFiles = new Map([
+    ["mibs/good.mib", "GOOD-MIB DEFINITIONS ::= BEGIN\nIMPORTS active FROM ACTIVE-MIB;\ngood OBJECT IDENTIFIER ::= { active 1 }\nEND\n"],
+    ["mibs/conflict-a.mib", "CONFLICT-MIB DEFINITIONS ::= BEGIN\nconflictA OBJECT IDENTIFIER ::= { 1 3 6 10 }\nEND\n"],
+    ["mibs/conflict-b.mib", "CONFLICT-MIB DEFINITIONS ::= BEGIN\nconflictB OBJECT IDENTIFIER ::= { 1 3 6 11 }\nEND\n"],
+    ["mibs/missing.mib", "MISSING-MIB DEFINITIONS ::= BEGIN\nIMPORTS absentRoot FROM ABSENT-MIB;\nmissing OBJECT IDENTIFIER ::= { absentRoot 1 }\nEND\n"],
+    ["mibs/duplicate.mib", "DUPLICATE-MIB DEFINITIONS ::= BEGIN\nunique OBJECT IDENTIFIER ::= { 1 3 6 20 }\nduplicate OBJECT IDENTIFIER ::= { unique 1 }\nduplicate OBJECT IDENTIFIER ::= { unique 2 }\nEND\n"],
+    ["mibs/restricted.mib", "-- No part of this material may be copied, distributed, or disclosed without written permission.\nRESTRICTED-MIB DEFINITIONS ::= BEGIN\nrestricted OBJECT IDENTIFIER ::= { 1 3 6 30 }\nEND\n"]
+  ]);
+  await writeFile(path.join(upstream, "LICENSE"), license);
+  for (const [relativePath, contents] of rawFiles) {
+    await mkdir(path.dirname(path.join(upstream, relativePath)), { recursive: true });
+    await writeFile(path.join(upstream, relativePath), contents);
+  }
+  fixtureGit(upstream, ["init", "--quiet"]);
+  fixtureGit(upstream, ["remote", "add", "origin", "https://github.com/example/safe.git"]);
+  fixtureGit(upstream, ["add", "--", "LICENSE", "mibs"]);
+  fixtureGit(upstream, ["-c", "user.name=MIBvendor Test", "-c", "user.email=test@mibvendor.invalid", "commit", "--quiet", "--no-gpg-sign", "-m", "Synthetic materialized upstream"]);
+  const sourceCommit = fixtureGit(upstream, ["rev-parse", "HEAD"]);
+  const adapterManifest = {
+    schema_version: 1,
+    source: {
+      id: "safe-source",
+      repository: "example/safe",
+      homepage: "https://example.invalid/safe",
+      source_roles: ["mib-corpus"],
+      default_branch: "main",
+      commit: sourceCommit,
+      minimum_candidate_count: rawFiles.size,
+      license: {
+        status: "license-derived-approval",
+        path: "LICENSE",
+        spdx: "MIT",
+        name: "MIT License",
+        sha256: sha(license),
+        git_blob_oid: gitBlobOid(license)
+      },
+      candidate_roots: [{ path: "mibs", kind: "mib-file", matcher: "extensions", extensions: [".mib"] }]
+    },
+    conflict_reviews: []
+  };
+  const manifestPath = path.join(workspace, "materialized-source-adapter.json");
+  await json(manifestPath, adapterManifest);
+  return { workspace, upstream, manifestPath, adapterManifest };
+}
+
+function runMaterializedAdapter({ workspace, upstream, manifestPath }) {
+  return execFileSync(process.execPath, [
+    path.join(repositoryRoot, "scripts", "build-materialized-mib-source-adapter.mjs"),
+    "--upstream", upstream,
+    "--workspace", workspace,
+    "--manifest", manifestPath,
+    "--generated-at", GENERATED_AT
+  ], { encoding: "utf8", maxBuffer: 2 * 1024 * 1024 });
+}
+
+function spawnMaterializedAdapter({ workspace, upstream, manifestPath, env = {} }) {
+  return spawnSync(process.execPath, [
+    path.join(repositoryRoot, "scripts", "build-materialized-mib-source-adapter.mjs"),
+    "--upstream", upstream,
+    "--workspace", workspace,
+    "--manifest", manifestPath,
+    "--generated-at", GENERATED_AT
+  ], { encoding: "utf8", env: { ...process.env, ...env }, maxBuffer: 2 * 1024 * 1024 });
+}
+
 async function treeSnapshot(root) {
   async function walk(directory) {
     const rows = [];
@@ -118,6 +245,130 @@ async function treeSnapshot(root) {
     return rows;
   }
   return (await walk(root)).sort(([left], [right]) => left.localeCompare(right));
+}
+
+function publicationEvent(sequence, action, targetType, targetId, previous, occurredAt) {
+  const event = {
+    sequence,
+    occurred_at: occurredAt,
+    action,
+    target_type: targetType,
+    target_id: targetId,
+    reason: `Synthetic lifecycle ${action}.`,
+    evidence_url: action === "promotion" ? "https://example.invalid/releases/tag/v9.9.9-test" : null,
+    supersedes_event_sha256: null,
+    previous_event_sha256: previous,
+    event_sha256: null
+  };
+  event.event_sha256 = publicationControlEventDigest(event);
+  return event;
+}
+
+function controlsFromEvents(events) {
+  const state = derivePublicationControlState(events);
+  return {
+    schema_version: 1,
+    active_data_release: state.activeRelease,
+    updated_at: events.at(-1).occurred_at,
+    disabled_sources: [...state.disabledSources].sort(),
+    disabled_modules: [...state.disabledModules].sort(),
+    events
+  };
+}
+
+function appendControlEvent(document, { action, targetType, targetId, occurredAt }) {
+  return controlsFromEvents([
+    ...document.events,
+    publicationEvent(
+      document.events.length + 1,
+      action,
+      targetType,
+      targetId,
+      document.events.at(-1).event_sha256,
+      occurredAt
+    )
+  ]);
+}
+
+async function installSyntheticRuntime(runtimeRoot) {
+  for (const directory of ["src", "prototype", "scripts"]) {
+    await mkdir(path.join(runtimeRoot, directory), { recursive: true });
+  }
+  for (const relativePath of [
+    "server.mjs",
+    "src/api.mjs",
+    "src/device-identity.mjs",
+    "src/intelligence.mjs",
+    "src/publication-controls.mjs",
+    "src/tar.mjs",
+    "prototype/core.mjs",
+    "scripts/canonical-json.mjs"
+  ]) {
+    await copyFile(path.join(repositoryRoot, relativePath), path.join(runtimeRoot, relativePath));
+  }
+  await writeFile(path.join(runtimeRoot, "prototype", "data.mjs"), "export const records = [];\n", "utf8");
+  await symlink(
+    path.join(repositoryRoot, "data", "iana-private-enterprise-numbers.json"),
+    path.join(runtimeRoot, "data", "iana-private-enterprise-numbers.json")
+  );
+  await symlink(
+    path.join(repositoryRoot, "data", "device-identities"),
+    path.join(runtimeRoot, "data", "device-identities"),
+    "dir"
+  );
+}
+
+async function switchRuntimePointer(pointer, target) {
+  const next = `${pointer}.next`;
+  await rm(next, { force: true });
+  await symlink(target, next, "dir");
+  await rename(next, pointer);
+  assert.equal(await realpath(pointer), await realpath(target));
+}
+
+function probePublicRuntime(runtimeRoot) {
+  const runner = `
+    const { pathToFileURL } = await import("node:url");
+    const { once } = await import("node:events");
+    const { createMibvendorServer } = await import(pathToFileURL(process.env.MIBVENDOR_SYNTHETIC_SERVER).href);
+    const server = createMibvendorServer();
+    server.listen(0, "127.0.0.1");
+    await once(server, "listening");
+    const base = \`http://127.0.0.1:\${server.address().port}\`;
+    async function request(route) {
+      const response = await fetch(base + route);
+      const contentType = response.headers.get("content-type") ?? "";
+      return {
+        status: response.status,
+        body: contentType.includes("json") ? await response.json() : null,
+        mib_sha256: response.headers.get("x-mib-sha256")
+      };
+    }
+    try {
+      process.stdout.write(JSON.stringify({
+        release: await request("/v1/data-release"),
+        object: await request("/v1/objects/good-mib--good"),
+        module: await request("/v1/modules/GOOD-MIB"),
+        source: await request("/v1/sources/safe-source"),
+        raw: await request("/v1/modules/GOOD-MIB/raw"),
+        predecessor_object: await request("/v1/objects/active-mib--active"),
+        predecessor_module: await request("/v1/modules/ACTIVE-MIB"),
+        predecessor_source: await request("/v1/sources/active"),
+        predecessor_raw: await request("/v1/modules/ACTIVE-MIB/raw")
+      }));
+    } finally {
+      server.close();
+      await once(server, "close");
+    }
+  `;
+  return JSON.parse(execFileSync(process.execPath, ["--input-type=module", "--eval", runner], {
+    encoding: "utf8",
+    env: {
+      ...process.env,
+      MIBVENDOR_SYNTHETIC_SERVER: path.join(runtimeRoot, "server.mjs")
+    },
+    maxBuffer: 2 * 1024 * 1024
+  }));
 }
 
 test("release candidate gates fail closed and dependency rejection cascades", async () => {
@@ -176,6 +427,409 @@ test("release candidate gates fail closed and dependency rejection cascades", as
   const promoted = objects.objects.find((object) => object.module === "CONFLICT-MIB");
   assert.equal(promoted.symbol, "conflict-a");
   for (const redundant of ["source_id", "source_artifact_id", "activation_state", "parser_method", "provenance"]) assert.equal(Object.hasOwn(promoted, redundant), false);
+});
+
+test("materialized source adapter fails closed before staging when reviewed license bytes drift", async (t) => {
+  const { workspace, upstream, manifestPath } = await rawAdapterFixture();
+  t.after(() => Promise.all([
+    rm(workspace, { recursive: true, force: true }),
+    rm(upstream, { recursive: true, force: true })
+  ]));
+  await writeFile(path.join(upstream, "LICENSE"), "mutated license\n", "utf8");
+  fixtureGit(upstream, ["update-index", "--assume-unchanged", "--", "LICENSE"]);
+  const result = spawnMaterializedAdapter({ workspace, upstream, manifestPath });
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /license bytes differ from the reviewed digests/);
+  await assert.rejects(readFile(path.join(workspace, "data", "source-discovery.json")), { code: "ENOENT" });
+  await assert.rejects(readFile(path.join(workspace, "data", "license-derived-intake.json")), { code: "ENOENT" });
+});
+
+test("materialized source adapter rejects claimed commit/origin and tracked-byte tampering before staging", async (t) => {
+  const { workspace, upstream, manifestPath, adapterManifest } = await rawAdapterFixture();
+  t.after(() => Promise.all([
+    rm(workspace, { recursive: true, force: true }),
+    rm(upstream, { recursive: true, force: true })
+  ]));
+
+  await json(manifestPath, {
+    ...adapterManifest,
+    source: { ...adapterManifest.source, commit: "f".repeat(40) }
+  });
+  const falseCommit = spawnMaterializedAdapter({ workspace, upstream, manifestPath });
+  assert.equal(falseCommit.status, 1);
+  assert.match(falseCommit.stderr, /Git HEAD .* does not match reviewed commit/);
+
+  await json(manifestPath, {
+    ...adapterManifest,
+    source: { ...adapterManifest.source, repository: "example/wrong-repository" }
+  });
+  const falseOrigin = spawnMaterializedAdapter({ workspace, upstream, manifestPath });
+  assert.equal(falseOrigin.status, 1);
+  assert.match(falseOrigin.stderr, /Git origin does not match reviewed repository/);
+
+  await json(manifestPath, adapterManifest);
+  await writeFile(path.join(upstream, "mibs", "good.mib"), "tampered tracked bytes\n", "utf8");
+  const dirtyCheckout = spawnMaterializedAdapter({ workspace, upstream, manifestPath });
+  assert.equal(dirtyCheckout.status, 1);
+  assert.match(dirtyCheckout.stderr, /Git worktree must be clean/);
+  await assert.rejects(readFile(path.join(workspace, "data", "source-discovery.json")), { code: "ENOENT" });
+  await assert.rejects(readFile(path.join(workspace, "data", "license-derived-intake.json")), { code: "ENOENT" });
+});
+
+test("materialized source adapter refuses non-isolated staging without deleting unrelated source evidence", async (t) => {
+  const { workspace, upstream, manifestPath } = await rawAdapterFixture();
+  t.after(() => Promise.all([
+    rm(workspace, { recursive: true, force: true }),
+    rm(upstream, { recursive: true, force: true })
+  ]));
+  const sentinel = path.join(workspace, "data", "staging", "license-derived", "raw-mibs", "other-source", "files", "evidence.mib");
+  await mkdir(path.dirname(sentinel), { recursive: true });
+  await writeFile(sentinel, "historical evidence\n", "utf8");
+
+  const result = spawnMaterializedAdapter({ workspace, upstream, manifestPath });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /requires an isolated candidate workspace/);
+  assert.equal(await readFile(sentinel, "utf8"), "historical evidence\n");
+  await assert.rejects(readFile(path.join(workspace, "data", "source-discovery.json")), { code: "ENOENT" });
+});
+
+test("materialized source adapter ignores inherited Git control variables", async (t) => {
+  const { workspace, upstream, manifestPath } = await rawAdapterFixture();
+  t.after(() => Promise.all([
+    rm(workspace, { recursive: true, force: true }),
+    rm(upstream, { recursive: true, force: true })
+  ]));
+
+  const result = spawnMaterializedAdapter({
+    workspace,
+    upstream,
+    manifestPath,
+    env: {
+      GIT_CONFIG_COUNT: "1",
+      GIT_CONFIG_KEY_0: "core.fsmonitor",
+      GIT_CONFIG_VALUE_0: "/definitely/not/a/command",
+      GIT_DIR: path.join(workspace, "attacker-controlled.git"),
+      GIT_INDEX_FILE: path.join(workspace, "attacker-controlled.index"),
+      GIT_WORK_TREE: workspace
+    }
+  });
+
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(JSON.parse(result.stdout).candidates, 6);
+});
+
+test("materialized source adapter rejects repository traversal before staging", async (t) => {
+  const { workspace, upstream, manifestPath, adapterManifest } = await rawAdapterFixture();
+  t.after(() => Promise.all([
+    rm(workspace, { recursive: true, force: true }),
+    rm(upstream, { recursive: true, force: true })
+  ]));
+  await json(manifestPath, {
+    ...adapterManifest,
+    source: { ...adapterManifest.source, repository: "../safe" }
+  });
+
+  const result = spawnMaterializedAdapter({ workspace, upstream, manifestPath });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /repository must be a safe owner\/name/);
+  await assert.rejects(readFile(path.join(workspace, "data", "source-discovery.json")), { code: "ENOENT" });
+});
+
+test("materialized source adapter refuses symlinked workspace ancestors without writing outside", async (t) => {
+  const { workspace, upstream, manifestPath } = await rawAdapterFixture();
+  const external = await mkdtemp(path.join(tmpdir(), "mibvendor-materialized-adapter-external-"));
+  t.after(() => Promise.all([
+    rm(workspace, { recursive: true, force: true }),
+    rm(upstream, { recursive: true, force: true }),
+    rm(external, { recursive: true, force: true })
+  ]));
+  await symlink(external, path.join(workspace, "data", "staging"), "dir");
+
+  const result = spawnMaterializedAdapter({ workspace, upstream, manifestPath });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /traverses a symlink or non-directory/);
+  assert.deepEqual(await readdir(external), []);
+  await assert.rejects(readFile(path.join(workspace, "data", "source-discovery.json")), { code: "ENOENT" });
+});
+
+test("materialized source adapter rejects case-insensitive module identity collisions", async (t) => {
+  const { workspace, upstream, manifestPath, adapterManifest } = await rawAdapterFixture();
+  t.after(() => Promise.all([
+    rm(workspace, { recursive: true, force: true }),
+    rm(upstream, { recursive: true, force: true })
+  ]));
+  await writeFile(path.join(upstream, "mibs", "case.mib"), "active-mib DEFINITIONS ::= BEGIN\ncaseObject OBJECT IDENTIFIER ::= { 1 3 7 }\nEND\n", "utf8");
+  fixtureGit(upstream, ["add", "--", "mibs/case.mib"]);
+  fixtureGit(upstream, ["-c", "user.name=MIBvendor Test", "-c", "user.email=test@mibvendor.invalid", "commit", "--quiet", "--no-gpg-sign", "-m", "Add colliding module"]);
+  const commit = fixtureGit(upstream, ["rev-parse", "HEAD"]);
+  await json(manifestPath, {
+    ...adapterManifest,
+    source: {
+      ...adapterManifest.source,
+      commit,
+      minimum_candidate_count: adapterManifest.source.minimum_candidate_count + 1
+    }
+  });
+
+  const result = spawnMaterializedAdapter({ workspace, upstream, manifestPath });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /case-insensitive module identity collision: ACTIVE-MIB, active-mib/);
+  await assert.rejects(readFile(path.join(workspace, "data", "source-discovery.json")), { code: "ENOENT" });
+});
+
+test("materialized source adapter output is byte-deterministic for the same commit and timestamp", async (t) => {
+  const left = await rawAdapterFixture();
+  const right = await rawAdapterFixture();
+  t.after(() => Promise.all([
+    rm(left.workspace, { recursive: true, force: true }),
+    rm(left.upstream, { recursive: true, force: true }),
+    rm(right.workspace, { recursive: true, force: true }),
+    rm(right.upstream, { recursive: true, force: true })
+  ]));
+  assert.equal(left.adapterManifest.source.commit, right.adapterManifest.source.commit);
+
+  runMaterializedAdapter(left);
+  runMaterializedAdapter(right);
+  assert.deepEqual(await treeSnapshot(path.join(left.workspace, "data")), await treeSnapshot(path.join(right.workspace, "data")));
+});
+
+test("synthetic adapter lifecycle stays quarantined until promotion and preserves evidence through disable and rollback", async (t) => {
+  const { workspace: input, upstream, manifestPath, adapterManifest } = await rawAdapterFixture();
+  const parent = await mkdtemp(path.join(tmpdir(), "mibvendor-lifecycle-parent-"));
+  const candidate = path.join(parent, "candidate");
+  const activePointer = path.join(parent, "app");
+  t.after(() => Promise.all([
+    rm(input, { recursive: true, force: true }),
+    rm(upstream, { recursive: true, force: true }),
+    rm(parent, { recursive: true, force: true })
+  ]));
+
+  const baseline = publicationEvent(1, "baseline", "release", "active-1", null, "2026-07-20T09:59:00Z");
+  const baselineControls = controlsFromEvents([baseline]);
+  await json(path.join(input, "data", "publication-controls.json"), baselineControls);
+  await installSyntheticRuntime(input);
+  await switchRuntimePointer(activePointer, input);
+  const adapterSummary = JSON.parse(runMaterializedAdapter({ workspace: input, upstream, manifestPath }));
+  assert.deepEqual(adapterSummary, {
+    candidates: 6,
+    retained: 5,
+    quarantined: 1,
+    selected_raw_modules: 3,
+    conflict_quarantines: 1,
+    static_pass: 1,
+    static_partial: 2,
+    static_empty: 0
+  });
+
+  const [activeCatalog, discovery, intake, analysis, manifest, staged, stagedTypes] = await Promise.all([
+    readFile(path.join(input, "data", "mib-catalog.json"), "utf8").then(JSON.parse),
+    readFile(path.join(input, "data", "source-discovery.json"), "utf8").then(JSON.parse),
+    readFile(path.join(input, "data", "license-derived-intake.json"), "utf8").then(JSON.parse),
+    readFile(path.join(input, "data", "raw-mib-analysis.json"), "utf8").then(JSON.parse),
+    readFile(path.join(input, "data", "corpus-expansion-candidates.json"), "utf8").then(JSON.parse),
+    readFile(path.join(input, "data", "raw-mib-objects-staging.json.gz")).then((bytes) => JSON.parse(gunzipSync(bytes))),
+    readFile(path.join(input, "data", "raw-mib-types-staging.json.gz")).then((bytes) => JSON.parse(gunzipSync(bytes)))
+  ]);
+  const artifactId = "safe-source:mibs/good.mib";
+  const discovered = discovery.candidates.find((row) => row.id === artifactId);
+  const downloaded = intake.artifacts.find((row) => row.id === artifactId);
+  const parsed = analysis.modules.find((row) => row.selected_artifact_id === artifactId);
+  const normalized = staged.objects.find((row) => row.source_artifact_id === artifactId);
+  const reviewed = manifest.modules.find((row) => row.selected_artifact_id === artifactId);
+  const stagedBytes = await readFile(path.join(input, "data", downloaded.staged_path));
+  const restrictive = intake.artifacts.find((row) => row.id.endsWith("restricted.mib"));
+  const missing = analysis.modules.find((row) => row.module === "MISSING-MIB");
+  const duplicate = analysis.modules.find((row) => row.module === "DUPLICATE-MIB");
+  const conflict = manifest.modules.find((row) => row.module === "CONFLICT-MIB");
+
+  assert.equal(activeCatalog.modules.some((row) => row.id === "GOOD-MIB"), false);
+  assert.deepEqual(validateSourceDiscovery(sourceDiscoveryRegistryForMaterializedAdapter(adapterManifest), discovery), []);
+  assert.deepEqual(await validateLicenseDerivedIntake(input, discovery, activeCatalog, intake), []);
+  assert.deepEqual(validateRawMibAnalysis(manifest, intake, activeCatalog, { schema_version: 1, aliases: [] }, analysis, staged, stagedTypes), []);
+  assert.deepEqual(discovery.sources[0].checkout_verification, {
+    basis: "clean-git-worktree-head-and-index-blobs",
+    head: adapterManifest.source.commit,
+    origin: "https://github.com/example/safe.git",
+    tracked_candidate_count: 6,
+    symlinks_allowed: false,
+    submodules_allowed: false
+  });
+  assert.equal(discovered.rights_review, "approved-by-repository-license-signal");
+  assert.equal(discovered.publication_mode, "redistributable");
+  assert.equal(downloaded.activation_state, "staged");
+  assert.equal(sha(stagedBytes), downloaded.artifact_sha256);
+  assert.equal(parsed.parser_status, "static-pass");
+  assert.equal(parsed.unresolved_object_count, 0);
+  assert.equal(normalized.activation_state, "staged");
+  assert.equal(normalized.id, "good-mib--good");
+  assert.equal(reviewed.activation_state, "candidate");
+  assert.equal(reviewed.selected_artifact_id, artifactId);
+  assert.equal(restrictive.retention_state, "metadata-only-evidence");
+  assert.equal(restrictive.staged_path, null);
+  assert.ok(restrictive.restrictive_notice_conflicts.length > 0);
+  assert.equal(missing.parser_status, "static-partial");
+  assert.deepEqual(missing.dependencies, [{ module: "ABSENT-MIB", state: "missing" }]);
+  assert.equal(duplicate.parser_status, "static-partial");
+  assert.deepEqual(duplicate.duplicate_symbols, ["duplicate"]);
+  assert.equal(conflict.conflict_state, "content-variants");
+  assert.equal(conflict.selected_format, "quarantine");
+  assert.equal(conflict.selection_policy, "content-variants-require-explicit-review");
+
+  const quarantined = probePublicRuntime(activePointer);
+  assert.equal(quarantined.release.body.data_release, "active-1");
+  for (const response of [quarantined.object, quarantined.module, quarantined.source, quarantined.raw]) {
+    assert.equal(response.status, 404);
+  }
+  for (const response of [quarantined.predecessor_object, quarantined.predecessor_module, quarantined.predecessor_source, quarantined.predecessor_raw]) {
+    assert.equal(response.status, 200);
+  }
+
+  const stagedEvidenceBefore = await Promise.all([
+    "source-discovery.json",
+    "license-derived-intake.json",
+    "raw-mib-analysis.json",
+    "raw-mib-objects-staging.json.gz",
+    "corpus-expansion-candidates.json"
+  ].map(async (filename) => [filename, sha(await readFile(path.join(input, "data", filename)))]));
+  const { report, verification } = await buildReleaseCandidate(input, candidate, {
+    releaseId: RELEASE,
+    generatedAt: GENERATED_AT,
+    minimumModules: 1
+  });
+  assert.equal(verification.ok, true);
+  assert.equal(report.readiness.activation_ready, true);
+  assert.deepEqual(report.selected.map((row) => row.artifact_id), [artifactId]);
+  assert.ok(report.rejected.find((row) => row.artifact_id.endsWith("restricted.mib")).reasons.includes("artifact-restrictive-notice-conflict"));
+  assert.ok(report.rejected.find((row) => row.artifact_id.endsWith("missing.mib")).reasons.includes("missing-dependency-diagnostic"));
+  assert.ok(report.rejected.find((row) => row.artifact_id.endsWith("duplicate.mib")).reasons.includes("duplicate-symbol-diagnostic"));
+  assert.equal(report.selected.some((row) => row.module === "CONFLICT-MIB"), false);
+  assert.deepEqual(await Promise.all(stagedEvidenceBefore.map(async ([filename]) => [
+    filename,
+    sha(await readFile(path.join(input, "data", filename)))
+  ])), stagedEvidenceBefore);
+
+  const promotedControls = appendPublicationPromotion(baselineControls, {
+    releaseId: RELEASE,
+    occurredAt: "2026-07-20T10:01:00Z",
+    reason: "Activate the verified synthetic lifecycle candidate.",
+    evidenceUrl: "https://example.invalid/releases/tag/v9.9.9-test"
+  });
+  const candidateData = path.join(candidate, "data");
+  await json(path.join(candidateData, "publication-controls.json"), promotedControls);
+  await writeFile(path.join(candidate, "VERSION"), "9.9.9-test\n", "utf8");
+
+  const releaseDirectory = path.join(candidateData, "releases", RELEASE);
+  await mkdir(releaseDirectory, { recursive: true });
+  const reportBytes = await readFile(path.join(candidateData, "corpus-release-report.json"));
+  await writeFile(path.join(releaseDirectory, "corpus-release-report.json"), reportBytes);
+  await json(path.join(releaseDirectory, "publication-controls-at-activation.json"), promotedControls);
+  const [catalogBytes, objectBytes, sourceBytes, controlSnapshotBytes] = await Promise.all([
+    readFile(path.join(candidateData, "mib-catalog.json")),
+    readFile(path.join(candidateData, "mib-objects.json")),
+    readFile(path.join(candidateData, "source-catalog.json")),
+    readFile(path.join(releaseDirectory, "publication-controls-at-activation.json"))
+  ]);
+  await json(path.join(releaseDirectory, "activation.json"), {
+    schema_version: 1,
+    data_release: RELEASE,
+    predecessor_data_release: "active-1",
+    candidate_generated_at: GENERATED_AT,
+    activated_at: "2026-07-20T10:01:00Z",
+    application_release: "9.9.9-test",
+    candidate_report_sha256: sha(reportBytes),
+    documents: {
+      mib_catalog_sha256: sha(catalogBytes),
+      mib_objects_sha256: sha(objectBytes),
+      source_catalog_sha256: sha(sourceBytes),
+      publication_controls_sha256: sha(controlSnapshotBytes)
+    },
+    publication_control_event_sha256: promotedControls.events.at(-1).event_sha256,
+    activation_basis: "Synthetic end-to-end adapter lifecycle verification."
+  });
+
+  const activationEvidence = await validateActiveReleaseEvidence(candidate);
+  assert.equal(activationEvidence.ok, true, activationEvidence.failures.join("\n"));
+  await installSyntheticRuntime(candidate);
+  await switchRuntimePointer(activePointer, candidate);
+  const active = probePublicRuntime(activePointer);
+  assert.equal(active.release.body.data_release, RELEASE);
+  assert.equal(active.object.status, 200);
+  assert.equal(active.object.body.object.id, "good-mib--good");
+  assert.equal(active.object.body.object.provenance.source_revision, adapterManifest.source.commit);
+  assert.equal(active.object.body.object.provenance.artifact_sha256, downloaded.artifact_sha256);
+  assert.equal(active.object.body.object.provenance.publication_mode, "redistributable");
+  assert.equal(active.module.status, 200);
+  assert.equal(active.module.body.module.license.basis, "repository-license-signal");
+  assert.equal(active.source.status, 200);
+  assert.equal(active.source.body.source.source_revision, adapterManifest.source.commit);
+  assert.equal(active.raw.status, 200);
+  assert.equal(active.raw.mib_sha256, downloaded.artifact_sha256);
+
+  const immutableEvidenceBefore = await treeSnapshot(releaseDirectory);
+  const disabledControls = appendControlEvent(promotedControls, {
+    action: "disable",
+    targetType: "source",
+    targetId: "active",
+    occurredAt: "2026-07-20T10:02:00Z"
+  });
+  const candidateCatalog = JSON.parse(catalogBytes);
+  const candidateSources = JSON.parse(sourceBytes);
+  assert.deepEqual(validatePublicationControls(disabledControls, {
+    releaseId: RELEASE,
+    sourceIds: new Set(candidateSources.sources.map((row) => row.id)),
+    moduleIds: new Set(candidateCatalog.modules.map((row) => row.id))
+  }), []);
+  await json(path.join(candidateData, "publication-controls.json"), disabledControls);
+
+  const disabled = probePublicRuntime(activePointer);
+  assert.equal(disabled.release.body.data_release, RELEASE);
+  for (const response of [disabled.predecessor_object, disabled.predecessor_module, disabled.predecessor_source, disabled.predecessor_raw]) {
+    assert.equal(response.status, 404);
+  }
+  for (const response of [disabled.object, disabled.module, disabled.source, disabled.raw]) {
+    assert.equal(response.status, 200);
+  }
+  const disabledEvidence = await validateActiveReleaseEvidence(candidate);
+  assert.equal(disabledEvidence.ok, true, disabledEvidence.failures.join("\n"));
+  assert.deepEqual(await treeSnapshot(releaseDirectory), immutableEvidenceBefore);
+
+  const enabledControls = appendControlEvent(disabledControls, {
+    action: "enable",
+    targetType: "source",
+    targetId: "active",
+    occurredAt: "2026-07-20T10:03:00Z"
+  });
+  await json(path.join(candidateData, "publication-controls.json"), enabledControls);
+  const reenabled = probePublicRuntime(activePointer);
+  for (const response of [reenabled.predecessor_object, reenabled.predecessor_module, reenabled.predecessor_source, reenabled.predecessor_raw]) {
+    assert.equal(response.status, 200);
+  }
+
+  const rollbackControls = appendControlEvent(enabledControls, {
+    action: "rollback",
+    targetType: "release",
+    targetId: "active-1",
+    occurredAt: "2026-07-20T10:04:00Z"
+  });
+  assert.deepEqual(validatePublicationControls(rollbackControls, {
+    releaseId: "active-1",
+    sourceIds: new Set(activeCatalog.modules.map((row) => row.source_id)),
+    moduleIds: new Set(activeCatalog.modules.map((row) => row.id))
+  }), []);
+  assert.equal(derivePublicationControlState(rollbackControls.events).activeRelease, "active-1");
+  await json(path.join(input, "data", "publication-controls.json"), rollbackControls);
+  await switchRuntimePointer(activePointer, input);
+  const rolledBack = probePublicRuntime(activePointer);
+  assert.equal(rolledBack.release.body.data_release, "active-1");
+  for (const response of [rolledBack.predecessor_object, rolledBack.predecessor_module, rolledBack.predecessor_source, rolledBack.predecessor_raw]) {
+    assert.equal(response.status, 200);
+  }
+  for (const response of [rolledBack.object, rolledBack.module, rolledBack.source, rolledBack.raw]) {
+    assert.equal(response.status, 404);
+  }
+  assert.deepEqual(await treeSnapshot(releaseDirectory), immutableEvidenceBefore);
+  assert.equal(JSON.parse(await readFile(path.join(candidateData, "mib-catalog.json"), "utf8")).data_release, RELEASE);
 });
 
 test("notice scanner ignores standalone copyright, rights-reserved, and trademark lines", () => {
